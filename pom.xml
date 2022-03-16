@@ -11,7 +11,15 @@
     <packaging>war</packaging>
     
     <developers>
-        
+        <developer>
+            <name>Michal Piotrowski</name>
+            <id>229983</id>
+            <email>229983@edu.p.lodz.pl</email>
+            <roles>
+                <role>kontrola jakosci</role>
+            </roles>
+        </developer>
+
     </developers>
 
     <properties>
