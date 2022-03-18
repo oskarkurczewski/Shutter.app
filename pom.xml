@@ -11,7 +11,14 @@
     <packaging>war</packaging>
     
     <developers>
-        
+        <developer>
+            <id>229935</id>
+            <name>Oskar Kurczewski</name>
+            <email>229935@edu.p.lodz.pl</email>
+            <roles>
+                <role>dokumentacja</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
