@@ -11,7 +11,14 @@
     <packaging>war</packaging>
     
     <developers>
-        
+        <developer>
+            <id>229874</id>
+            <name>Michal Dzieciuchowicz</name>
+            <email>229874@edu.p.lodz.pl</email>
+            <roles>
+                <role>kontrola jakosci</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
