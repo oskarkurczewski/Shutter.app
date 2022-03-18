@@ -11,7 +11,14 @@
     <packaging>war</packaging>
     
     <developers>
-        
+        <developer>
+            <id>229858</id>
+            <name>Jakub Czarnecki</name>
+            <email>229858@edu.p.lodz.pl</email>
+            <roles>
+                <role>baza</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
