@@ -55,6 +55,15 @@
                 <role>kontrola jakosci</role>
             </roles>
         </developer>
+
+        <developer>
+            <id>229959</id>
+            <name>Filip Michalski</name>
+            <email>229959@edu.p.lodz.pl</email>
+            <roles>
+                <role>wdrożenie</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
