@@ -9,7 +9,7 @@
     <version>0.0.1</version>
     <name>ssbd02</name>
     <packaging>war</packaging>
-    
+
     <developers>
         <developer>
             <name>Michal Piotrowski</name>
@@ -28,6 +28,15 @@
 			    <role>kontrola jakosci</role>
 		    </roles>
             </developer>
+
+        <developer>
+            <id>229888</id>
+            <name>Filip Grzechnik</name>
+            <email>229888@edu.p.lodz.pl</email>
+            <roles>
+                <role>architektura</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
