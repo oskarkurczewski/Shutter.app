@@ -9,7 +9,7 @@
     <version>0.0.1</version>
     <name>ssbd02</name>
     <packaging>war</packaging>
-
+    
     <developers>
         <developer>
             <name>Michal Piotrowski</name>
@@ -44,6 +44,15 @@
             <email>229858@edu.p.lodz.pl</email>
             <roles>
                 <role>baza</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>229874</id>
+            <name>Michal Dzieciuchowicz</name>
+            <email>229874@edu.p.lodz.pl</email>
+            <roles>
+                <role>kontrola jakosci</role>
             </roles>
         </developer>
     </developers>
