@@ -12,6 +12,17 @@
     
     <developers>
         <developer>
+            <name>Dominik Łapiński</name>
+            <id>229944</id>
+            <email>229944@edu.p.lodz.pl</email>
+            <roles>
+                <role>szef</role>
+                <role>repozytorium</role>
+                <role>kontrola zgodności</role>
+            </roles>
+        </developer>
+
+        <developer>
             <name>Michal Piotrowski</name>
             <id>229983</id>
             <email>229983@edu.p.lodz.pl</email>
