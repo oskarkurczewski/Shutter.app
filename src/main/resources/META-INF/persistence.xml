@@ -4,42 +4,37 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="ssbd02mokPU" transaction-type="JTA">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/ssbd02mok</jta-data-source>
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
-    <properties>
-      <property name="eclipselink.cannonicalmodel.subpackage" value="mokMetamodel"/>
-    </properties>
+  </persistence-unit>
+
+  <persistence-unit name="ssbd02adminPU" transaction-type="JTA">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <jta-data-source>java:app/jdbc/ssbd02admin</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
   </persistence-unit>
 
   <persistence-unit name="ssbd02authPU" transaction-type="JTA">
+      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/ssbd02auth</jta-data-source>
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
-    <properties>
-      <property name="eclipselink.cannonicalmodel.subpackage" value="authMetamodel"/>
-    </properties>
   </persistence-unit>
 
   <persistence-unit name="ssbd02morPU" transaction-type="JTA">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/ssbd02mor</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
-    <properties>
-      <property name="eclipselink.cannonicalmodel.subpackage" value="morMetamodel"/>
-    </properties>
   </persistence-unit>
 
   <persistence-unit name="ssbd02mowPU" transaction-type="JTA">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/ssbd02mow</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
-    <properties>
-      <property name="eclipselink.cannonicalmodel.subpackage" value="mowMetamodel"/>
-    </properties>
   </persistence-unit>
 </persistence>
