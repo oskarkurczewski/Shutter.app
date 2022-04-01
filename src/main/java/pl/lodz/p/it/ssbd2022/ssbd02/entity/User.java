@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -24,12 +25,15 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @NotNull
     @Column(name = "login", nullable = false)
     private String login;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
     @Column(name = "surname", nullable = false)
     private String surname;
 

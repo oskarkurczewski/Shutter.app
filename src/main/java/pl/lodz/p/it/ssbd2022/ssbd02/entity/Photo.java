@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,13 +32,15 @@ public class Photo {
     @Column(name = "data", nullable = false)
     private byte[] data;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
+    @NotNull
     private String title;
 
     @Column(name = "description")
     private String description;
 
     @OneToMany
+    @ToString.Exclude
     private List<PhotoLike> likes = new ArrayList<>();
 
     @Override

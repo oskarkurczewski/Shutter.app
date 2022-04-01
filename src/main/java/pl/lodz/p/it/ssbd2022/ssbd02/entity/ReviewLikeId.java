@@ -6,7 +6,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,24 +13,22 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 public class ReviewLikeId implements Serializable {
-    @ManyToOne
     @JoinColumn(name = "review_id", nullable = false)
-    private Review reviewId;
-    @ManyToOne
+    private Long reviewId;
+
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private Long userid;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         ReviewLikeId that = (ReviewLikeId) o;
-        return reviewId != null && Objects.equals(reviewId, that.reviewId)
-                && userId != null && Objects.equals(userId, that.userId);
+        return reviewId.equals(that.getReviewId()) && userid.equals(that.getUserid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reviewId, userId);
+        return Objects.hash(reviewId, userid);
     }
 }

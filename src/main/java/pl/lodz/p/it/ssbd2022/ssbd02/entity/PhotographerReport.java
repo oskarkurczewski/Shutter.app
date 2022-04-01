@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Getter
@@ -22,14 +23,17 @@ public class PhotographerReport {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @NotNull
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
 
     @Column(name = "cause", nullable = false)
+    @NotNull
     private String cause;
 
     @Override

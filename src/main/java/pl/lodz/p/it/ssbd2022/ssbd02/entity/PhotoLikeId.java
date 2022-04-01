@@ -6,18 +6,19 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Embeddable
 @Getter
 @NoArgsConstructor
 class PhotoLikeId implements Serializable {
-    @ManyToOne
+    @NotNull
     @JoinColumn(name = "photo_id", nullable = false)
-    Photo photo;
-    @ManyToOne
+    Long photoId;
+    @NotNull
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    Long userId;
 
     @Override
     public boolean equals(Object o) {
@@ -26,13 +27,13 @@ class PhotoLikeId implements Serializable {
 
         PhotoLikeId that = (PhotoLikeId) o;
 
-        return photo.equals(that.photo) && user.equals(that.getUser());
+        return photoId.equals(that.photoId) && userId.equals(that.getUserId());
     }
 
     @Override
     public int hashCode() {
-        int result = photo != null ? photo.hashCode() : 0;
-        result = 31 * result + (user != null ? user.hashCode() : 0);
+        int result = photoId != null ? photoId.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
     }
 }

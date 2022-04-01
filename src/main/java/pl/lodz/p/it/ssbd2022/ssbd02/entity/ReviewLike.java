@@ -1,12 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -22,11 +21,13 @@ public class ReviewLike {
     @Column(name = "version")
     private Long version;
 
-    @Column(name = "review_id", nullable = false, insertable = false, updatable = false)
-    private Long reviewId;
+    @ManyToOne
+    @JoinColumn(name = "review_id", nullable = false, insertable = false, updatable = false)
+    private Review  review;
 
-    @Column(name = "user_id", nullable = false, insertable = false, updatable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
+    private User user;
 
     @Override
     public boolean equals(Object o) {

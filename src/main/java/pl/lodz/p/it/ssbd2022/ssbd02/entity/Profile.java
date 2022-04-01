@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Getter
@@ -22,6 +23,7 @@ public class Profile {
     private Long id;
 
     @OneToOne
+    @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
 

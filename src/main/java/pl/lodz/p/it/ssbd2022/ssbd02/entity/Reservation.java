@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -25,19 +26,24 @@ public class Reservation {
     private Long id;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @NotNull
     @Column(name = "day", nullable = false)
     private LocalDate day;
 
+    @NotNull
     @Column(name = "from", nullable = false)
     private LocalTime from;
 
+    @NotNull
     @Column(name = "to", nullable = false)
     private LocalTime to;
 

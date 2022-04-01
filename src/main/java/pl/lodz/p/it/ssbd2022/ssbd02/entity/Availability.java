@@ -1,12 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -27,16 +28,18 @@ public class Availability {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "photographer_id", nullable = false)
-    private Long photographerId;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "photographer_id", nullable = false)
+    private Photographer photographer;
 
-    @Column(name = "day", nullable = false)
+    @Column(name = "day")
     private LocalDate day;
 
-    @Column(name = "from", nullable = false)
+    @Column(name = "from")
     private LocalTime from;
 
-    @Column(name = "to", nullable = false)
+    @Column(name = "to")
     private LocalTime to;
 
     @Override

@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
@@ -21,10 +22,12 @@ public class PhotoLike {
     private Long version;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "photo_id", nullable = false, insertable = false, updatable = false)
     private Photo photo;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     private User user;
 
