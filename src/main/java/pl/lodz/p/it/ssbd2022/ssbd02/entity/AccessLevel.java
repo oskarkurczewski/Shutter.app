@@ -26,8 +26,9 @@ public class AccessLevel {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "level", nullable = false)
-    private String level;
+    private AccessLevelEnum level;
 
     @Column(name = "active", nullable = false)
     private Boolean active;
