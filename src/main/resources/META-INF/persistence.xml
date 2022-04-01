@@ -8,6 +8,9 @@
     <jta-data-source>java:app/jdbc/ssbd02mok</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property name="hibernate.show_sql" value="true"/>
+    </properties>
   </persistence-unit>
 
   <persistence-unit name="ssbd02adminPU" transaction-type="JTA">
