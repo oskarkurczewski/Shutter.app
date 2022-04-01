@@ -10,6 +10,7 @@ $gray-300: #454545;
 
 $white: #ffffff;
 $blue-gray-100: #eff1f8;
+$blue-gray-200: #dde1ee;
 
 $blue-100: #e4effa;
 $blue-200: #e3e9fe;
@@ -20,6 +21,23 @@ $blue-500-transparent: #1666af80;
 
 $red-100: #fae4e4;
 $red-200: #eb7c7c;
+
+// Shadows
+$elevation-1: rgba($gray-300, 0.8) 0 0 3px;
+$elevation-2: rgba($gray-300, 0.8) 0 0 5px;
+$elevation-3: rgba($gray-300, 0.8) 0 0 8px;
+$shadow-bottom: #00000012 solid 3px;
+
+// Scale
+$scale-1: 1.333;
+$scale-2: calc($scale-1 * $scale-1);
+$scale-3: calc($scale-1 * $scale-2);
+$scale-4: calc($scale-1 * $scale-3);
+$scale-5: calc($scale-1 * $scale-4);
+$scale-6: calc($scale-1 * $scale-5);
+
+// Misc
+$border-radius: 10px;
 
 // Breakpoints
 $screen-sm-min: 320px;
