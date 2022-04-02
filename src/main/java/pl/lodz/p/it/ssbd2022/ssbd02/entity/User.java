@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +40,12 @@ public class User {
     @NotNull
     @Column(name = "surname", nullable = false)
     private String surname;
+
+    @NotNull
+    @Size(min = 8, max = 64)
+    @Column(name = "password", nullable = false)
+    @ToString.Exclude
+    private String password;
 
     @OneToMany
     @ToString.Exclude
