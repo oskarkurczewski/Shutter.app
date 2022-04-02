@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -11,11 +14,11 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-
+@ToString
 @Entity
 @Table(name = "User")
+@NamedQuery(name = "User.findByLogin", query = "select u from User u where u.login = :login")
 public class User {
 
     @Column(name = "version")
@@ -38,6 +41,7 @@ public class User {
     private String surname;
 
     @OneToMany
+    @ToString.Exclude
     private List<AccessLevel> accessLevelList = new LinkedList<>();
 
     @Override
@@ -53,3 +57,4 @@ public class User {
         return getClass().hashCode();
     }
 }
+
