@@ -39,8 +39,9 @@ public class User {
     private String surname;
 
     @NotNull
-    @Size(max = 64)
+    @Size(min = 8, max = 64)
     @Column(name = "password", nullable = false)
+    @ToString.Exclude
     private String password;
 
     @OneToMany
