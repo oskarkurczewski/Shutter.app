@@ -18,6 +18,6 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
 
     @Override
     public EntityManager getEm() {
-        return null;
+        return em;
     }
 }

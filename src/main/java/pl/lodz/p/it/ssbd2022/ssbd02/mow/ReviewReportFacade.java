@@ -18,6 +18,6 @@ public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
 
     @Override
     public EntityManager getEm() {
-        return null;
+        return em;
     }
 }

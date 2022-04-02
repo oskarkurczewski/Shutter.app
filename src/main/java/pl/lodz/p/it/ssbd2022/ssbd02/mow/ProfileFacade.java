@@ -18,6 +18,6 @@ public class ProfileFacade extends FacadeTemplate<Profile> {
 
     @Override
     public EntityManager getEm() {
-        return null;
+        return em;
     }
 }

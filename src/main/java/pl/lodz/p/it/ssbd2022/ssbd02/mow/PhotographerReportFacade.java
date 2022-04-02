@@ -18,6 +18,6 @@ public class PhotographerReportFacade extends FacadeTemplate<PhotographerReport>
 
     @Override
     public EntityManager getEm() {
-        return null;
+        return em;
     }
 }

@@ -18,6 +18,6 @@ public class AvailabilityFacade extends FacadeTemplate<Availability> {
 
     @Override
     public EntityManager getEm() {
-        return null;
+        return em;
     }
 }
