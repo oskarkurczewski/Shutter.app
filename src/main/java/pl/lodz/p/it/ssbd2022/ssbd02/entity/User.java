@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +38,13 @@ public class User {
     @Column(name = "surname", nullable = false)
     private String surname;
 
+    @NotNull
+    @Size(max = 64)
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @OneToMany
+    @ToString.Exclude
     private List<AccessLevel> accessLevelList = new LinkedList<>();
 
     @Override
