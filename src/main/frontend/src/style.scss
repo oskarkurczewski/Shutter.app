@@ -1,0 +1,73 @@
+@import "./variables.scss";
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+* {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+   color: $gray-200;
+}
+
+a {
+   text-decoration: none;
+}
+
+body {
+   background-color: $blue-gray-100;
+   font-family: "Roboto", sans-serif;
+}
+
+// Typography
+html {
+   .section-title {
+      font-size: calc($scale-2 * 1rem);
+      letter-spacing: 1%;
+   }
+
+   .category-title {
+      font-size: calc($scale-3 * 1rem);
+      letter-spacing: 2.5%;
+   }
+
+   h3 {
+      font-size: calc($scale-4 * 1rem);
+   }
+
+   h2 {
+      font-size: calc($scale-5 * 1rem);
+   }
+
+   h1 {
+      font-size: calc($scale-6 * 1rem);
+   }
+}
+
+// Misc
+.material-icons {
+   user-select: none; /* Standard */
+   -webkit-user-select: none; /* Safari */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* IE10+/Edge */
+   color: $gray-200;
+}
+
+// RWD
+html {
+   @include sm {
+      font-size: 12px;
+   }
+
+   @include md {
+      font-size: 16px;
+   }
+}

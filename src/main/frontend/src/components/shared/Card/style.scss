@@ -1,0 +1,7 @@
+@import "../../../variables.scss";
+
+div.card-wrapper {
+   border-radius: $border-radius;
+   box-shadow: $elevation-2;
+   background-color: $white;
+}

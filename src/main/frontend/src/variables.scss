@@ -1,0 +1,70 @@
+// Color scheme
+$purple-100: #7143d2;
+$purple-100-transparent: #7043d280;
+$purple-200: #4716af;
+$purple-200-transparent: #4716af80;
+
+$gray-100: #d1d1d1;
+$gray-200: #707070;
+$gray-300: #454545;
+
+$white: #ffffff;
+$blue-gray-100: #eff1f8;
+$blue-gray-200: #dde1ee;
+
+$blue-100: #e4effa;
+$blue-200: #e3e9fe;
+$blue-300: #6b8aff;
+$blue-400: #3f66f8;
+$blue-500: #1666af;
+$blue-500-transparent: #1666af80;
+
+$red-100: #fae4e4;
+$red-200: #eb7c7c;
+
+// Shadows
+$elevation-1: rgba($gray-300, 0.8) 0 0 3px;
+$elevation-2: rgba($gray-300, 0.8) 0 0 5px;
+$elevation-3: rgba($gray-300, 0.8) 0 0 8px;
+$shadow-bottom: #00000012 solid 3px;
+
+// Scale
+$scale-1: 1.333;
+$scale-2: calc($scale-1 * $scale-1);
+$scale-3: calc($scale-1 * $scale-2);
+$scale-4: calc($scale-1 * $scale-3);
+$scale-5: calc($scale-1 * $scale-4);
+$scale-6: calc($scale-1 * $scale-5);
+
+// Misc
+$border-radius: 10px;
+
+// Breakpoints
+$screen-sm-min: 320px;
+$screen-md-min: 768px;
+$screen-lg-min: 1024px;
+$screen-xl-min: 1200px;
+
+@mixin sm {
+   @media (min-width: #{$screen-sm-min}) {
+      @content;
+   }
+}
+
+@mixin md {
+   @media (min-width: #{$screen-md-min}) {
+      @content;
+   }
+}
+
+@mixin lg {
+   @media (min-width: #{$screen-lg-min}) {
+      @content;
+   }
+}
+
+@mixin xl {
+   @media (min-width: #{$screen-xl-min}) {
+      @content;
+   }
+}
