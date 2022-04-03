@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
 import javax.security.enterprise.identitystore.DatabaseIdentityStoreDefinition;
 
+//TODO do poprawy
 @DatabaseIdentityStoreDefinition(
         dataSourceLookup = "java:app/jdbc/ssbd02auth",
         callerQuery = "select distinct password from User where login = ?",
