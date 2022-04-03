@@ -135,6 +135,13 @@
             <version>1.18.22</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.fusionauth</groupId>
+            <artifactId>fusionauth-jwt</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
