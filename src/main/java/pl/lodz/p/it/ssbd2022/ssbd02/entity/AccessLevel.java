@@ -13,12 +13,13 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "AccessLevel")
+@Table(name = "AccessLevel", schema = "public")
 public class AccessLevel {
 
     @Column(name = "version")
     private Long version;
 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     @NotNull
     @Column(name = "id", nullable = false)

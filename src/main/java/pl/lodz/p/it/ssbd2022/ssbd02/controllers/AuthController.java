@@ -1,11 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoginData;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.PasswordHashImpl;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
@@ -17,7 +18,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@RequestScoped
 @Path("auth")
 public class AuthController {
 
@@ -25,15 +25,13 @@ public class AuthController {
     private IdentityStoreHandler storeHandler;
 
     @Inject
-    SecurityContext securityContext;
+    AuthenticationFacade facade;
 
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(@NotNull LoginData data) {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
-
-        System.out.println(validationResult.getStatus().toString());
 
         if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
             String token = JWTHandler.generateJWT(validationResult);
