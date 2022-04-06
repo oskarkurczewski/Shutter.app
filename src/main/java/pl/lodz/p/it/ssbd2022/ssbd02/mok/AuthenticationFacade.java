@@ -10,8 +10,7 @@ import javax.persistence.TypedQuery;
 
 @Stateless
 public class AuthenticationFacade extends FacadeTemplate<User> {
-    //TODO zamienić na mok
-    @PersistenceContext(unitName = "ssbd02adminPU")
+    @PersistenceContext(unitName = "ssbd02mokPU")
     private EntityManager em;
 
     public AuthenticationFacade() {
