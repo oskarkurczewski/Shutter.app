@@ -11,14 +11,10 @@
         <role-name>MODERATOR</role-name>
     </security-role>
     <security-role>
-        <role-name>KLIENT</role-name>
+        <role-name>CLIENT</role-name>
     </security-role>
     <security-role>
-        <role-name>FOTOGRAF</role-name>
+        <role-name>PHOTOGRAPHER</role-name>
     </security-role>
 
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <realm-name>ssbd02Realm</realm-name>
-    </login-config>
 </web-app>

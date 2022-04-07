@@ -18,19 +18,20 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "User")
-@NamedQuery(name = "User.findByLogin", query = "select u from User u where u.login = :login")
+@Table(name = "Account")
+@NamedQuery(name = "user.findByLogin", query = "SELECT u from User u WHERE u.login = :login")
 public class User {
 
     @Column(name = "version")
     private Long version;
 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Column(name = "login", nullable = false)
+    @Column(name = "login", nullable = false, unique = true)
     private String login;
 
     @NotNull

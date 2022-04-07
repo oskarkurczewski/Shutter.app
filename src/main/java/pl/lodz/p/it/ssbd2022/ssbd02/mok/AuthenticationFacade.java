@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 
 @Stateless
 public class AuthenticationFacade extends FacadeTemplate<User> {
-    @PersistenceContext(unitName = "ssbd02authPU")
+    @PersistenceContext(unitName = "ssbd02mokPU")
     private EntityManager em;
 
     public AuthenticationFacade() {
@@ -22,8 +22,9 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
         return em;
     }
 
-    public User findByLogin() {
-        TypedQuery<User> query = getEm().createNamedQuery("User.findByLogin", User.class);
+    public User findByLogin(String login) {
+        TypedQuery<User> query = getEm().createNamedQuery("user.findByLogin", User.class);
+        query.setParameter("login", login);
         return query.getSingleResult();
     }
 }

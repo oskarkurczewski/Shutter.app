@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.util;
+package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 

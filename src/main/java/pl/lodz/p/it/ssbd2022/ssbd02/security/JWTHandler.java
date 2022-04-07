@@ -11,13 +11,22 @@ import javax.security.enterprise.identitystore.CredentialValidationResult;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
+/**
+ * Klasa służąca tworzeniu żetonów JWT oraz ich walidacji
+ */
 public class JWTHandler {
 
     private static final String SECRET = "90FAB1385C02FE80158890349649253C7F39121342FC09388427E8F49C4E7BF8";
     private static final int TIMEOUT = 10;
-
     private static final String ISSUER = "Shutter.app";
 
+    /**
+     * Metoda tworząca podpisany żeton JWT algorytmem HS512 przechowujący poziomy dostępu użytkownika, czas wygaśnięcia żetonu,
+     * identyfikator użytkownika, czas podpisania, identyfikator jednostki wystawiającej
+     *
+     * @param validationResult Obiekt klasy CredentialValidationResult zawierający rezultat walidacji poświadczeń użytkownika
+     * @return String przedstawiający utworzony żeton JWT
+     */
     public static String generateJWT(CredentialValidationResult validationResult) {
 
         String subject = validationResult.getCallerPrincipal().getName();
@@ -33,11 +42,16 @@ public class JWTHandler {
 
         String encodedJWT = JWT.getEncoder().encode(jwt, signer);
 
-        return  encodedJWT;
+        return encodedJWT;
     }
 
+    /**
+     * Metoda weryfikująca sygnaturę żetonu JWT oraz czy dalej jest ważny
+     *
+     * @param token żeton JWT przesłany przez użytkownika
+     * @return Zwraca czy żeton jest prawidłowy i ważny
+     */
     public static Boolean validateJWT(String token) {
-
         try {
             Verifier verifier = HMACVerifier.newVerifier(SECRET);
             JWT jwt = JWT.getDecoder().decode(token, verifier);
