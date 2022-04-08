@@ -1,10 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -13,24 +18,23 @@ import java.util.Objects;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "Photographer")
+@Table(name = "photographer")
 public class Photographer {
 
     @Column(name = "version")
     private Long version;
 
     @Id
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     private Long id;
 
     @OneToOne
     @NotNull
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
-    @NotNull
-    @Column(name = "specialization", nullable = false)
-    private String specialization;
+//    private List<Specialization> specializationList = new ArrayList<>();
 
     @Column(name = "score")
     private Long score;

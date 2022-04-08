@@ -1,18 +1,20 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "Profile")
+@Table(name = "profile")
 public class Profile {
 
     @Column(name = "version")

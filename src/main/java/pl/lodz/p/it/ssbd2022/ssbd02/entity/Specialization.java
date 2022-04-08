@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
@@ -13,49 +12,31 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-
 @Entity
-@NoArgsConstructor
-@Table(name = "photographer_report")
-public class PhotographerReport {
-
-    @Column(name = "version")
-    private Long version;
-
+@Table(name = "specialization")
+public class Specialization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull
-    @Column(name = "reviewed")
-    private Boolean reviewed;
+    @Column
+    private Long version;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private User user;
-
-    @ManyToOne
-    @NotNull
-    @JoinColumn(name = "photographer_id", nullable = false)
-    private Photographer photographer;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "cause_id", nullable = false)
-    @NotNull
-    private PhotographerReportCause cause;
+    @Column(unique = true, nullable = false)
+    private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        PhotographerReport that = (PhotographerReport) o;
+        Specialization that = (Specialization) o;
         return id != null && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getClass().hashCode();
     }
 }

@@ -8,7 +8,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -18,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "Availability")
+@Table(name = "availability")
 public class Availability {
 
     @Column(name = "version")
@@ -33,8 +32,9 @@ public class Availability {
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
 
-    @Column(name = "day")
-    private LocalDate day;
+    @Column(name = "weekday")
+    @Enumerated(value = EnumType.ORDINAL)
+    private WeekDay day;
 
     @Column(name = "from")
     private LocalTime from;

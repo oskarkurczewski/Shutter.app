@@ -1,12 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -15,13 +17,14 @@ import java.util.Objects;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "Reservation")
+@Table(name = "reservation")
 public class Reservation {
 
     @Column(name = "version")
     private Long version;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -32,20 +35,16 @@ public class Reservation {
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
     @NotNull
-    @Column(name = "day", nullable = false)
-    private LocalDate day;
-
-    @NotNull
     @Column(name = "from", nullable = false)
-    private LocalTime from;
+    private LocalDateTime from;
 
     @NotNull
     @Column(name = "to", nullable = false)
-    private LocalTime to;
+    private LocalDateTime to;
 
     @Override
     public boolean equals(Object o) {

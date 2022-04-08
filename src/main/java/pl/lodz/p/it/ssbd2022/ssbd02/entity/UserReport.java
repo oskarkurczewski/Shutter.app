@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -13,13 +16,14 @@ import java.util.Objects;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "UserReport")
+@Table(name = "account_report")
 public class UserReport {
 
     @Column(name = "version")
     private Long version;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -33,9 +37,14 @@ public class UserReport {
     @JoinColumn(name = "reportee_id", nullable = false)
     private User reportee;
 
-    @Column(name = "cause", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cause_id", nullable = false)
     @NotNull
-    private String cause;
+    private AccountReportCause cause;
+
+    @NotNull
+    @Column(name = "reviewed", nullable = false)
+    private Boolean reviewed;
 
     @Override
     public boolean equals(Object o) {
