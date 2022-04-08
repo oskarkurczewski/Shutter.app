@@ -27,12 +27,12 @@ public class UserReport {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "reported_id", nullable = false)
     private User reported;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "reportee_id", nullable = false)
     private User reportee;

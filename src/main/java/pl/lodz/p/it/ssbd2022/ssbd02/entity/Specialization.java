@@ -7,6 +7,8 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -26,6 +28,10 @@ public class Specialization {
     @NotNull
     @Column(unique = true, nullable = false)
     private String name;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "specializationList")
+    private List<Photographer> photographers = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

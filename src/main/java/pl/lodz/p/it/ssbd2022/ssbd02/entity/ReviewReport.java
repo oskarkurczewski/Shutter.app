@@ -25,7 +25,7 @@ public class ReviewReport {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
@@ -35,7 +35,7 @@ public class ReviewReport {
     @Column(name = "reviewed", nullable = false)
     private Boolean reviewed;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "account_id", nullable = false)
     private User user;

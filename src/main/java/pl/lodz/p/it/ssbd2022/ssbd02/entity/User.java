@@ -9,6 +9,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -60,9 +61,33 @@ public class User {
     @ToString.Exclude
     private String password;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private List<AccessLevelAssignment> accessLevelAssignmentList = new LinkedList<>();
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "likedList")
+    private List<Review> likedReviews = new ArrayList<>();
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "likes")
+    private List<Photo> likedPhotos = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "reported")
+    private List<UserReport> reportedUsers = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "reportee")
+    private List<UserReport> ownReports = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user")
+    private List<PhotographerReport> photographerReports = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
