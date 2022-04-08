@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -39,11 +40,11 @@ public class Reservation {
 
     @NotNull
     @Column(name = "from", nullable = false)
-    private Long from;
+    private LocalDateTime from;
 
     @NotNull
     @Column(name = "to", nullable = false)
-    private Long to;
+    private LocalDateTime to;
 
     @Override
     public boolean equals(Object o) {
