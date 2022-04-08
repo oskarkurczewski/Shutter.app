@@ -16,7 +16,7 @@ public class ReviewReportCause {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column
+    @Column(name = "version")
     private Long version;
 
     @NotNull
