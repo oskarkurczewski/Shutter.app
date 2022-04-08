@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -13,15 +16,20 @@ import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "Review")
+@Table(name = "review")
 public class Review {
 
     @Column(name = "version")
     private Long version;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "active", nullable = false)
+    @NotNull
+    private Boolean active = true;
 
     @ManyToOne
     @NotNull
@@ -30,7 +38,7 @@ public class Review {
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
     @NotNull
@@ -39,6 +47,10 @@ public class Review {
 
     @Column(name = "content")
     private String content;
+
+    @NotNull
+    @Column(name = "like_count", nullable = false)
+    private Long likeCount;
 
     @Override
     public boolean equals(Object o) {

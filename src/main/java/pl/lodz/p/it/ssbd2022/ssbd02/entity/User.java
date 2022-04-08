@@ -18,17 +18,29 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "Account")
+@Table(name = "account")
 @NamedQuery(name = "user.findByLogin", query = "SELECT u from User u WHERE u.login = :login")
 public class User {
 
     @Column(name = "version")
     private Long version;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @NotNull
+    @Column(name = "registered", nullable = false)
+    private Boolean registered;
+
+    @NotNull
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
+    @NotNull
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @NotNull
     @Column(name = "login", nullable = false, unique = true)
@@ -50,7 +62,7 @@ public class User {
 
     @OneToMany
     @ToString.Exclude
-    private List<AccessLevel> accessLevelList = new LinkedList<>();
+    private List<AccessLevelAssignment> accessLevelAssignmentList = new LinkedList<>();
 
     @Override
     public boolean equals(Object o) {
