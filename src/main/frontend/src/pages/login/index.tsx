@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import "./style.scss";
-import Card from "../../components/shared/Card/Card";
-import TextInput from "../../components/shared/TextInput/TextInput";
-import Button from "../../components/shared/Button/Button";
+import Card from "components/shared/Card";
+import TextInput from "components/shared/TextInput";
+import Button from "components/shared/Button";
 
-const LoginPage = () => {
+interface LoginProps {
+   setToken: (token: string) => void;
+}
+
+const LoginPage = ({ setToken }: LoginProps) => {
    const [login, setLogin] = useState<string>("");
    const [password, setPassword] = useState<string>("");
 

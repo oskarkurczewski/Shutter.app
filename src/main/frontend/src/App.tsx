@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style.scss";
 
-import LoginPage from "./pages/login/login";
+import LoginPage from "pages/login";
+import DashboardPage from "pages/dashboard";
 
 function App() {
+   const [token, setToken] = useState("");
    return (
       <BrowserRouter>
          <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage setToken={setToken} />} />
+            <Route path="/dashboard" element={<DashboardPage token={token} />} />
          </Routes>
       </BrowserRouter>
    );

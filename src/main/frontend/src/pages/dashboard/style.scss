@@ -1,0 +1,10 @@
+@import "variables.scss";
+section.dashboard-wrapper {
+   margin: 2rem auto;
+   width: 50rem;
+   .card-wrapper {
+      padding: calc($scale-1 * 1rem);
+      display: flex;
+      flex-direction: column;
+   }
+}
