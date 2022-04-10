@@ -50,6 +50,6 @@ public class Photographer {
 
     @Override
     public int hashCode() {
-        return user.getId().hashCode();
+        return Objects.hashCode(user.getId());
     }
 }

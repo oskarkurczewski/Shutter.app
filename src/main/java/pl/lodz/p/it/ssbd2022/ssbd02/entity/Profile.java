@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -42,6 +43,6 @@ public class Profile {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hashCode(photographer.getId());
     }
 }
