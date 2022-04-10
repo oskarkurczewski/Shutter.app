@@ -8,8 +8,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -72,6 +70,6 @@ public class Photographer {
 
     @Override
     public int hashCode() {
-        return user.getId().hashCode();
+        return Objects.hashCode(user.getId());
     }
 }

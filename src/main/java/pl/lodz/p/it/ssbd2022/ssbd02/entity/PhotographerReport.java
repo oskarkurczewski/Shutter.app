@@ -56,6 +56,6 @@ public class PhotographerReport {
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
 }
