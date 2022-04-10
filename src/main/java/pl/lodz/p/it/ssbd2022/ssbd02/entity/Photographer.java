@@ -34,10 +34,32 @@ public class Photographer {
     @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
-//    private List<Specialization> specializationList = new ArrayList<>();
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "photographer_specialization",
+            joinColumns = {@JoinColumn(name = "photographer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "specialization_id")}
+    )
+    private List<Specialization> specializationList = new ArrayList<>();
 
     @Column(name = "score")
     private Long score;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "photographer")
+    private List<Availability> availability;
+
+    @OneToOne(mappedBy = "photographer")
+    private Profile profile;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "photographer")
+    private List<PhotographerReport> reports = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "photographer")
+    private List<Reservation> reservations = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

@@ -27,7 +27,7 @@ public class Availability {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;

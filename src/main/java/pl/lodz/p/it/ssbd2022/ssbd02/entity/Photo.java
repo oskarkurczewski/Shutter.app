@@ -8,6 +8,8 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -46,6 +48,15 @@ public class Photo {
     @NotNull
     @Column(name = "like_count", nullable = false)
     private Long likeCount;
+
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "photo_like",
+            joinColumns = {@JoinColumn(name = "photo_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private List<User> likes = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

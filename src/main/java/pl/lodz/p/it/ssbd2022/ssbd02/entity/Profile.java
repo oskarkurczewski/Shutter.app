@@ -24,7 +24,7 @@ public class Profile {
     @Column(name = "photographer_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
