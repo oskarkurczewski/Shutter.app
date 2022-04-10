@@ -45,8 +45,8 @@ public class AuthController {
 
             return Response.ok().entity(token).build();
         }
-        // TODO Wyciągnąć do wyjątku / internacjonalizacja
-        return Response.ok().entity("Wrong login or password!").build();
+        //TODO: Wyciągnąć do wyjątku / internacjonalizacja
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 }
