@@ -6,7 +6,7 @@ import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
 
 function App() {
-   const [token, setToken] = useState("");
+   const [token, setToken] = useState<string>("");
    return (
       <BrowserRouter>
          <Routes>
