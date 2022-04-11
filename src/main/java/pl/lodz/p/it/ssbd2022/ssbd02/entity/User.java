@@ -61,7 +61,7 @@ public class User {
     @ToString.Exclude
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     private List<AccessLevelAssignment> accessLevelAssignmentList = new LinkedList<>();
 
