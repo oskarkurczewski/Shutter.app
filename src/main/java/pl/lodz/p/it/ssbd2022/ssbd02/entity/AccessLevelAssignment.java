@@ -27,6 +27,7 @@ public class AccessLevelAssignment {
     private Long version;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     @Id
     @Column(name = "id", nullable = false)
     private Long id;

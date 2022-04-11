@@ -30,6 +30,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @NotNull
     private Long id;
 
     /**
@@ -59,7 +60,7 @@ public class Review {
     @Column(name = "score", nullable = false)
     private Long score;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 4096)
     private String content;
 
     @NotNull

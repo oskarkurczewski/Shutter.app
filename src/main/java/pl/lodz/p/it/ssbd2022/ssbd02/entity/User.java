@@ -30,6 +30,7 @@ public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -78,33 +79,33 @@ public class User {
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "likedList")
-    private List<Review> likedReviews = new ArrayList<>();
+    private List<Review> likedReviewsList = new ArrayList<>();
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "likes")
-    private List<Photo> likedPhotos = new ArrayList<>();
+    @ManyToMany(mappedBy = "likesList")
+    private List<Photo> likedPhotosList = new ArrayList<>();
 
     /**
      * Użytkownicy zgłoszeni z konta
      */
     @ToString.Exclude
     @OneToMany(mappedBy = "reportee")
-    private List<UserReport> reportedUsers = new ArrayList<>();
+    private List<UserReport> userReportsList = new ArrayList<>();
 
     /**
      * Zgłoszenia dotyczące konta
      */
     @ToString.Exclude
     @OneToMany(mappedBy = "reported")
-    private List<UserReport> ownReports = new ArrayList<>();
+    private List<UserReport> ownReportsList = new ArrayList<>();
 
     @ToString.Exclude
     @OneToMany(mappedBy = "user")
-    private List<PhotographerReport> photographerReports = new ArrayList<>();
+    private List<PhotographerReport> photographerReportsList = new ArrayList<>();
 
     @ToString.Exclude
     @OneToMany(mappedBy = "user")
-    private List<Reservation> reservations = new ArrayList<>();
+    private List<Reservation> reservationsList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

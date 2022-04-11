@@ -24,6 +24,7 @@ public class Specialization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @NotNull
     private Long id;
 
     @Setter(value = AccessLevel.NONE)
@@ -32,7 +33,7 @@ public class Specialization {
     private Long version;
 
     @NotNull
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true, length = 64)
     private String name;
 
     /**
@@ -40,7 +41,7 @@ public class Specialization {
      */
     @ToString.Exclude
     @ManyToMany(mappedBy = "specializationList")
-    private List<Photographer> photographers = new ArrayList<>();
+    private List<Photographer> photographersList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

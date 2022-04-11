@@ -20,6 +20,7 @@ import java.util.Objects;
 public class ReviewReportCause {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -29,7 +30,7 @@ public class ReviewReportCause {
     private Long version;
 
     @NotNull
-    @Column(name = "cause", nullable = false)
+    @Column(name = "cause", nullable = false, length = 128)
     private String cause;
 
     @Override

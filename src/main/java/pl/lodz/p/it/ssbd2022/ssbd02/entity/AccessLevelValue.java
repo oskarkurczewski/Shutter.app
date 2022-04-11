@@ -21,6 +21,7 @@ import java.util.Objects;
 public class AccessLevelValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -30,7 +31,7 @@ public class AccessLevelValue {
     private Long version;
 
     @NotNull
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true, length = 64)
     private String name;
 
     @Override

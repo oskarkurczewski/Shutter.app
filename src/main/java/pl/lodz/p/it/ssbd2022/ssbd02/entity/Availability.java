@@ -28,6 +28,7 @@ public class Availability {
 
     @Id
     @Column(name = "id", nullable = false)
+    @NotNull
     private Long id;
 
     @ManyToOne(optional = false)
@@ -36,13 +37,16 @@ public class Availability {
     private Photographer photographer;
 
     @Column(name = "weekday")
+    @NotNull
     @Enumerated(value = EnumType.ORDINAL)
     private WeekDay day;
 
     @Column(name = "from")
+    @NotNull
     private LocalTime from;
 
     @Column(name = "to")
+    @NotNull
     private LocalTime to;
 
     @Override
