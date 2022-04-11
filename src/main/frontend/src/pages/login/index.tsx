@@ -1,19 +1,33 @@
 import React, { useState } from "react";
 import "./style.scss";
-import Card from "../../components/shared/Card/Card";
-import TextInput from "../../components/shared/TextInput/TextInput";
-import Button from "../../components/shared/Button/Button";
+import Card from "components/shared/Card";
+import TextInput from "components/shared/TextInput";
+import Button from "components/shared/Button";
+import { getToken } from "actions/loginActions";
+import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+interface LoginProps {
+   setToken: (token: string) => void;
+}
+
+const LoginPage = ({ setToken }: LoginProps) => {
    const [login, setLogin] = useState<string>("");
    const [password, setPassword] = useState<string>("");
+   const [showMesage, setShowMessage] = useState<boolean>(false);
+   const navigate = useNavigate();
 
-   const onSubmit = (
+   const onSubmit = async (
       e: React.MouseEvent<HTMLDivElement, MouseEvent> &
          React.KeyboardEvent<HTMLDivElement>
    ) => {
-      console.log(e);
-      // logowanie
+      try {
+         const token = await getToken(login, password);
+         setShowMessage(false);
+         setToken(token);
+         navigate("/dashboard");
+      } catch (err) {
+         setShowMessage(true);
+      }
    };
 
    return (
@@ -33,6 +47,7 @@ const LoginPage = () => {
                value={password}
                onChange={(e) => setPassword(e.target.value)}
             />
+            <p className={`message ${showMesage ? "" : "hidden"}`}>Zły login lub hasło</p>
             <Button icon="send" onClick={onSubmit}>
                Zaloguj się
             </Button>

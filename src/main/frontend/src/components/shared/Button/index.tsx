@@ -3,16 +3,16 @@ import "./style.scss";
 
 interface ButtonProps {
    children: string;
-   classes?: string;
+   className?: string;
    icon?: string;
    onClick: React.MouseEventHandler<HTMLDivElement> &
       React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-const Button = ({ children, classes, icon, onClick }: ButtonProps) => {
+const Button = ({ children, className, icon, onClick }: ButtonProps) => {
    return (
       <div
-         className={`button-wrapper ${classes ? classes : ""}`}
+         className={`button-wrapper ${className ? className : ""}`}
          onClick={(e) => onClick(e)}
          onKeyDown={(e) => onClick(e)}
          tabIndex={0}

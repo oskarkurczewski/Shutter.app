@@ -4,8 +4,8 @@ import javax.security.enterprise.identitystore.DatabaseIdentityStoreDefinition;
 
 @DatabaseIdentityStoreDefinition(
         dataSourceLookup = "java:app/jdbc/ssbd02auth",
-        callerQuery = "select distinct password from authorizationview where login = ?",
-        groupsQuery = "select level from authorizationview where login = ?",
+        callerQuery = "select distinct password from authorization_view where login = ?",
+        groupsQuery = "select access_level from authorization_view where login = ?",
         hashAlgorithm = PasswordHashImpl.class
 )
 public class PostgresIdentityStore {
