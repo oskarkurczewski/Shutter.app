@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -20,6 +17,8 @@ import java.util.Objects;
 @Table(name = "reservation")
 public class Reservation {
 
+    @Setter(value = AccessLevel.NONE)
+    @Version
     @Column(name = "version")
     private Long version;
 
