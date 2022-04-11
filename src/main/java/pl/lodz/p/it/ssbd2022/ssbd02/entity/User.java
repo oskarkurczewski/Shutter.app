@@ -72,7 +72,7 @@ public class User {
     /**
      * Lista reprezentująca poziomy dostępu danego konta
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     private List<AccessLevelAssignment> accessLevelAssignmentList = new LinkedList<>();
 

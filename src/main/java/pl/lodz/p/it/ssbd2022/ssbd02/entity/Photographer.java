@@ -38,6 +38,10 @@ public class Photographer {
     private User user;
 
     @ToString.Exclude
+    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.REMOVE})
+    private List<Photo> photos = new ArrayList<>();
+
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(
             name = "photographer_specialization",
@@ -50,10 +54,10 @@ public class Photographer {
     private Long score;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer")
+    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Availability> availability;
 
-    @OneToOne(mappedBy = "photographer")
+    @OneToOne(mappedBy = "photographer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Profile profile;
 
     @ToString.Exclude
