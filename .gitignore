@@ -166,3 +166,5 @@ $RECYCLE.BIN/
 .idea/discord.xml
 
 ssbd02.iml
+
+*.iml

@@ -17,6 +17,15 @@ section.login-wrapper {
          margin: 0.5rem;
       }
 
+      .message {
+         color: $red-200;
+         font-weight: bold;
+         margin-left: 0.5rem;
+         &.hidden {
+            display: none;
+         }
+      }
+
       .button-wrapper {
          margin-top: calc($scale-1 * 1rem);
          align-self: flex-end;

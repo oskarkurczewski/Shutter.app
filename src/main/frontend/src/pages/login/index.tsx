@@ -13,26 +13,21 @@ interface LoginProps {
 const LoginPage = ({ setToken }: LoginProps) => {
    const [login, setLogin] = useState<string>("");
    const [password, setPassword] = useState<string>("");
+   const [showMesage, setShowMessage] = useState<boolean>(false);
    const navigate = useNavigate();
 
    const onSubmit = async (
       e: React.MouseEvent<HTMLDivElement, MouseEvent> &
          React.KeyboardEvent<HTMLDivElement>
    ) => {
-      // console.log(e);
-
-      // console.log("login:", login);
-      // console.log("password:", password);
-
       try {
          const token = await getToken(login, password);
+         setShowMessage(false);
          setToken(token);
          navigate("/dashboard");
       } catch (err) {
-         console.error("zjebałeś");
+         setShowMessage(true);
       }
-
-      // console.log(token);
    };
 
    return (
@@ -52,6 +47,7 @@ const LoginPage = ({ setToken }: LoginProps) => {
                value={password}
                onChange={(e) => setPassword(e.target.value)}
             />
+            <p className={`message ${showMesage ? "" : "hidden"}`}>Zły login lub hasło</p>
             <Button icon="send" onClick={onSubmit}>
                Zaloguj się
             </Button>
