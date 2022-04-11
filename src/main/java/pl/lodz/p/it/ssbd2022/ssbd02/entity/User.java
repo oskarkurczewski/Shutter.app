@@ -14,6 +14,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca bazowe konto użytkownika
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,10 +34,16 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    /**
+     * Flaga wskazująca czy użytkownik potwierdził rejestrację
+     */
     @NotNull
     @Column(name = "registered", nullable = false)
     private Boolean registered;
 
+    /**
+     * Flaga wskazująca czy dane konto nie zostało zablokowane
+     */
     @NotNull
     @Column(name = "active", nullable = false)
     private Boolean active;
@@ -61,6 +70,9 @@ public class User {
     @ToString.Exclude
     private String password;
 
+    /**
+     * Lista reprezentująca poziomy dostępu danego konta
+     */
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private List<AccessLevelAssignment> accessLevelAssignmentList = new LinkedList<>();
@@ -73,12 +85,18 @@ public class User {
     @ManyToMany(mappedBy = "likes")
     private List<Photo> likedPhotos = new ArrayList<>();
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "reported")
-    private List<UserReport> reportedUsers = new ArrayList<>();
-
+    /**
+     * Użytkownicy zgłoszeni z konta
+     */
     @ToString.Exclude
     @OneToMany(mappedBy = "reportee")
+    private List<UserReport> reportedUsers = new ArrayList<>();
+
+    /**
+     * Zgłoszenia dotyczące konta
+     */
+    @ToString.Exclude
+    @OneToMany(mappedBy = "reported")
     private List<UserReport> ownReports = new ArrayList<>();
 
     @ToString.Exclude

@@ -9,10 +9,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca zgłoszenie recenzji fotografa
+ */
+
 @Getter
 @Setter
 @ToString
-
 @Entity
 @Table(name = "review_report")
 public class ReviewReport {
@@ -31,6 +34,9 @@ public class ReviewReport {
     private Review review;
 
 
+    /**
+     * Flaga wskazująca, czy moderator rozpatrzył zgłoszenie
+     */
     @NotNull
     @Column(name = "reviewed", nullable = false)
     private Boolean reviewed;

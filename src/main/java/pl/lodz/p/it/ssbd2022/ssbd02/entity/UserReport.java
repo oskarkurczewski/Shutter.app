@@ -10,11 +10,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca zgłoszenia kont użytkowników
+ */
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-
 @Entity
 @Table(name = "account_report")
 public class UserReport {

@@ -9,6 +9,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca powód zgłoszenia fotografa
+ */
+
 @Getter
 @Setter
 @ToString

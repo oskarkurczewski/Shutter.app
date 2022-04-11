@@ -10,10 +10,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca zgłoszenia fotografa
+ * Zgłoszenie jest tworzone przez innych użytkowników -
+ * klientów danego fotografa, gdy są niezadowoleni z usług
+ */
+
 @Getter
 @Setter
 @ToString
-
 @Entity
 @NoArgsConstructor
 @Table(name = "photographer_report")
@@ -27,15 +32,26 @@ public class PhotographerReport {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
+    /**
+     * Pole wskazujące, czy moderator
+     * zbadał już zgłoszoną nieprawidłowość
+     */
     @NotNull
     @Column(name = "reviewed")
     private Boolean reviewed;
 
+    /**
+     * Użytkownik zgłaszający
+     */
     @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
+    /**
+     * Zgłaszany fotograf
+     */
     @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)

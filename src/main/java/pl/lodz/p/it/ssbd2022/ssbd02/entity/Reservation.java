@@ -11,11 +11,15 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca rezerwację usługi fotografa
+ * przez użytkownika, wskazująca okres trwania rezerwacji
+ */
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-
 @Entity
 @Table(name = "reservation")
 public class Reservation {

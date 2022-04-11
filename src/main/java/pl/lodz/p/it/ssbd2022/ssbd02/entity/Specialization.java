@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca dostępne specjalizacje fotografów
+ */
 @Getter
 @Setter
 @ToString
@@ -29,6 +32,9 @@ public class Specialization {
     @Column(unique = true, nullable = false)
     private String name;
 
+    /**
+     * Lista fotografów specjalizujących się w danej specjalizacji
+     */
     @ToString.Exclude
     @ManyToMany(mappedBy = "specializationList")
     private List<Photographer> photographers = new ArrayList<>();
