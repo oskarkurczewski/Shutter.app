@@ -10,10 +10,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca powiązaniee
+ * konta użytkownika z poziomem dostępu
+ */
+
+
 @Getter
 @Setter
 @ToString
-
 @NoArgsConstructor
 @Entity
 @Table(name = "access_level_assignment")
@@ -37,6 +42,11 @@ public class AccessLevelAssignment {
     @NotNull
     private AccessLevelValue level;
 
+    /**
+     * Flaga wskazująca, czy dany poziom dostępu dla danego użytkownika jest aktywny
+     * Gdy wskazuje na false, użytkownik nie ma uprawnień do korzystania z danego
+     * poziomu dostępu
+     */
     @NotNull
     @Column(name = "active", nullable = false)
     private Boolean active;

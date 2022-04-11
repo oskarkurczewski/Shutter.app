@@ -8,6 +8,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca możliwe powody zgłoszenia recenzji
+ */
+
 @Getter
 @Setter
 @Entity

@@ -8,6 +8,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+
+/**
+ * Klasa reprezentująca poziomy dostępu
+ * dostępne w tabeli bazy danych
+ */
 @Getter
 @Setter
 @Entity

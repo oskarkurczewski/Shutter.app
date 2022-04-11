@@ -10,6 +10,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca profil fotografa,
+ * zawierający opis jego działalności
+ */
+
 @Getter
 @Setter
 @ToString

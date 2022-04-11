@@ -11,11 +11,15 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca godziny dostępności
+ * wybranego fotografa w danym dniu tygodnia
+ */
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-
 @Entity
 @Table(name = "availability")
 public class Availability {

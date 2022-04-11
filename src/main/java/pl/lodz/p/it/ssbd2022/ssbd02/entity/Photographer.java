@@ -8,13 +8,19 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+/**
+ * Klasa reprezentująca fotografa
+ * Fotograf musi być powiązany z kontem użytkownika
+ */
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-
 @Entity
 @Table(name = "photographer")
 public class Photographer {

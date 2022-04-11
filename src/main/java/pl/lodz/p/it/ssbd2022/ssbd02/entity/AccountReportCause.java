@@ -9,6 +9,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca możliwe powody
+ * zgłoszenia użytkownika
+ */
+
 @Getter
 @Setter
 @ToString
@@ -20,6 +25,9 @@ public class AccountReportCause {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    /**
+     * Powód zgłoszenia użytkownika
+     */
     @NotNull
     @Column(name = "cause", nullable = false)
     private String cause;

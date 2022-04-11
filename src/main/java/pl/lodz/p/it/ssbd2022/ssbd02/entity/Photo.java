@@ -12,10 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca zdjęcie z portfolio fotografa
+ * Każde zdjęcie powinno zawierać tytuł oraz opcjonalnie opis
+ */
+
 @Getter
 @Setter
 @ToString
-
 @NoArgsConstructor
 @Entity
 @Table(name = "photo")

@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca ocenę usługi danego fotografa przez użytkownika
+ */
+
 @Getter
 @Setter
 @ToString
@@ -29,6 +33,12 @@ public class Review {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    /**
+     * W przypadku gdy opinia zawiera nieprawidłowości,
+     * takie jak oszczerstwa lub wulgarne słownictwo,
+     * moderator poprzez ustawienie flagi na False jest w stanie
+     * ukryć ją przed innymi użytkownikami
+     */
     @Column(name = "active", nullable = false)
     @NotNull
     private Boolean active = true;
@@ -43,6 +53,9 @@ public class Review {
     @JoinColumn(name = "account_id", nullable = false)
     private User user;
 
+    /**
+     * Ocena przydatności recenzji wystawiona przez innych użytkowników
+     */
     @NotNull
     @Column(name = "score", nullable = false)
     private Long score;

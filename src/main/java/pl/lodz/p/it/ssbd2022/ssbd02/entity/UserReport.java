@@ -10,11 +10,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca zgłoszenia kont użytkowników
+ */
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-
 @Entity
 @Table(name = "account_report")
 public class UserReport {
@@ -42,6 +44,9 @@ public class UserReport {
     @NotNull
     private AccountReportCause cause;
 
+    /**
+     * Flaga wskazująca czy moderator rozpatrzył zgłoszenie
+     */
     @NotNull
     @Column(name = "reviewed", nullable = false)
     private Boolean reviewed;
