@@ -34,8 +34,7 @@ public class PhotographerReport {
 
 
     /**
-     * Pole wskazujące, czy moderator
-     * zbadał już zgłoszoną nieprawidłowość
+     * Flaga wskazująca czy moderator rozpatrzył zgłoszenie
      */
     @NotNull
     @Column(name = "reviewed")

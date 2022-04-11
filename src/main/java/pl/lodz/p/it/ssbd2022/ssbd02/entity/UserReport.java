@@ -44,6 +44,9 @@ public class UserReport {
     @NotNull
     private AccountReportCause cause;
 
+    /**
+     * Flaga wskazująca czy moderator rozpatrzył zgłoszenie
+     */
     @NotNull
     @Column(name = "reviewed", nullable = false)
     private Boolean reviewed;
