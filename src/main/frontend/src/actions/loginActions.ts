@@ -1,5 +1,4 @@
 export const getToken = async (login: string, password: string): Promise<string> => {
-   //TODO: change url to studapp when it will start working
    const url = "http://studapp.it.p.lodz.pl:8002/ssbd02-0.0.1/api/auth/login";
    const loginData = {
       login,
