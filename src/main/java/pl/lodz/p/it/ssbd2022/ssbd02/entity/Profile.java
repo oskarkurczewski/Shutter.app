@@ -27,6 +27,7 @@ public class Profile {
 
     @Id
     @Column(name = "photographer_id")
+    @NotNull
     private Long id;
 
     @OneToOne(optional = false)
@@ -34,7 +35,7 @@ public class Profile {
     @JoinColumn(name = "photographer_id", nullable = false)
     private Photographer photographer;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 4096)
     private String description;
 
     @Override

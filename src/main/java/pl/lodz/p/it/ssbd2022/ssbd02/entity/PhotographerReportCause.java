@@ -23,6 +23,7 @@ public class PhotographerReportCause {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @NotNull
     private Long id;
 
     @Setter(value = AccessLevel.NONE)
@@ -31,7 +32,7 @@ public class PhotographerReportCause {
     private Long version;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, length = 128)
     private String cause;
 
     @Override

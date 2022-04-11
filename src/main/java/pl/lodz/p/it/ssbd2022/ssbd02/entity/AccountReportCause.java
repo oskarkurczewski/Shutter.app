@@ -23,6 +23,7 @@ import java.util.Objects;
 public class AccountReportCause {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -30,7 +31,7 @@ public class AccountReportCause {
      * Powód zgłoszenia użytkownika
      */
     @NotNull
-    @Column(name = "cause", nullable = false)
+    @Column(name = "cause", nullable = false, length = 128)
     private String cause;
 
     @Setter(value = AccessLevel.NONE)

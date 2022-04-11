@@ -30,6 +30,7 @@ public class Photographer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
+    @NotNull
     private Long id;
 
     @OneToOne
@@ -51,6 +52,7 @@ public class Photographer {
     private List<Specialization> specializationList = new ArrayList<>();
 
     @Column(name = "score")
+    @NotNull
     private Long score;
 
     @ToString.Exclude
@@ -62,11 +64,11 @@ public class Photographer {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "photographer")
-    private List<PhotographerReport> reports = new ArrayList<>();
+    private List<PhotographerReport> reportsList = new ArrayList<>();
 
     @ToString.Exclude
     @OneToMany(mappedBy = "photographer")
-    private List<Reservation> reservations = new ArrayList<>();
+    private List<Reservation> reservationsList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

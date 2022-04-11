@@ -34,6 +34,7 @@ public class Photo {
 
     @Id
     @Column(name = "id", nullable = false)
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -41,11 +42,11 @@ public class Photo {
     @NotNull
     private byte[] data;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 64)
     @NotNull
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1024)
     private String description;
 
     @NotNull
@@ -57,9 +58,9 @@ public class Photo {
     @JoinTable(
             name = "photo_like",
             joinColumns = {@JoinColumn(name = "photo_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+            inverseJoinColumns = {@JoinColumn(name = "account_id")}
     )
-    private List<User> likes = new ArrayList<>();
+    private List<User> likesList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
