@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,6 +21,8 @@ import java.util.Objects;
 @Table(name = "review_report")
 public class ReviewReport {
 
+    @Setter(value = AccessLevel.NONE)
+    @Version
     @Column(name = "version")
     private Long version;
 

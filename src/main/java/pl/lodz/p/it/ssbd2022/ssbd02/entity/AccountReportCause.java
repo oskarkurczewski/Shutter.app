@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -32,6 +33,8 @@ public class AccountReportCause {
     @Column(name = "cause", nullable = false)
     private String cause;
 
+    @Setter(value = AccessLevel.NONE)
+    @Version
     @Column(name = "version")
     private Long version;
 
