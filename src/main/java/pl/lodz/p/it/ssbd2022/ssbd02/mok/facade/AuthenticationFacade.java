@@ -1,8 +1,9 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.mok;
+package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
