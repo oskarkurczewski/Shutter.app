@@ -10,6 +10,7 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
     </properties>
   </persistence-unit>
 
@@ -20,6 +21,8 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+      <property name="hibernate.cache.use_second_level_cache" value="false"/>
     </properties>
   </persistence-unit>
 
@@ -28,6 +31,10 @@
     <jta-data-source>java:app/jdbc/ssbd02auth</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+      <property name="hibernate.cache.use_second_level_cache" value="false"/>
+    </properties>
   </persistence-unit>
 
   <persistence-unit name="ssbd02morPU" transaction-type="JTA">
@@ -35,6 +42,10 @@
     <jta-data-source>java:app/jdbc/ssbd02mor</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+      <property name="hibernate.cache.use_second_level_cache" value="false"/>
+    </properties>
   </persistence-unit>
 
   <persistence-unit name="ssbd02mowPU" transaction-type="JTA">
@@ -42,5 +53,9 @@
     <jta-data-source>java:app/jdbc/ssbd02mow</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+      <property name="hibernate.cache.use_second_level_cache" value="false"/>
+    </properties>
   </persistence-unit>
 </persistence>

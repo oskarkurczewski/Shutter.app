@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.mow;
+package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReport;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
