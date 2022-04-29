@@ -1,6 +1,6 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.mow;
+package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 
 import javax.ejb.Stateless;
@@ -8,12 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
+public class ReviewFacade extends FacadeTemplate<Review> {
     @PersistenceContext(unitName = "ssbd02mowPU")
     private EntityManager em;
 
-    public ReviewReportFacade() {
-        super(ReviewReport.class);
+    public ReviewFacade() {
+        super(Review.class);
     }
 
     @Override
