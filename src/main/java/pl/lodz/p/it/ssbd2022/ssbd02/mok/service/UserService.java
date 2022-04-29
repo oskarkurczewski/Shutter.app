@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
-import pl.lodz.p.it.ssbd2022.ssbd02.exception.WrongNewPasswordException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongNewPasswordException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
@@ -30,7 +30,7 @@ public class UserService {
     public void changeUserPasswordAsAdmin(UserUpdatePasswordDto data) {
         User target = userFacade.find(data.getId());
         String newPassword = data.getPassword();
-        if (newPassword == null || newPassword.trim().length() < 9) {
+        if (newPassword.trim().length() < 9) {
             throw new WrongNewPasswordException("New password cannot be applied");
         }
         String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());

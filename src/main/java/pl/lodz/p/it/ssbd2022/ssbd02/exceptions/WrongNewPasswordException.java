@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.exception;
+package pl.lodz.p.it.ssbd2022.ssbd02.exceptions;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

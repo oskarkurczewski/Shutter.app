@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserStatusChangeDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.UserEndpoint;
 
 import javax.inject.Inject;
@@ -26,5 +27,12 @@ public class UserController {
             @NotNull @Valid UserStatusChangeDto userStatusChangeDto
     ) {
         userEndpoint.blockUser(login, userStatusChangeDto.getActive());
+    }
+
+    @PUT
+    @Path("/admin/change-password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void changeUserPasswordAsAdmin(@Valid UserUpdatePasswordDto user) {
+        userEndpoint.updatePasswordAsAdmin(user);
     }
 }
