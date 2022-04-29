@@ -1,16 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserStatusChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.UserEndpoint;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/account")
 public class UserController {
@@ -25,6 +24,11 @@ public class UserController {
             @NotNull @PathParam("login") String login,
             @NotNull @Valid UserStatusChangeDto userStatusChangeDto
     ) {
-        userEndpoint.blockUser(login, userStatusChangeDto.getActive());
+        try {
+            userEndpoint.blockUser(login, userStatusChangeDto.getActive());
+        } catch (NoAuthenticatedUser e) {
+            // to bedzie trzeba kiedys bardziej uporzadkowac
+            throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
     }
 }
