@@ -4,9 +4,12 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.UserService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 @Stateful
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class UserEndpoint {
 
     @Inject
