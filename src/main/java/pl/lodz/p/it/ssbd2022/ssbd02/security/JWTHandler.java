@@ -46,20 +46,21 @@ public class JWTHandler {
     }
 
     /**
-     * Metoda weryfikująca sygnaturę żetonu JWT oraz czy dalej jest ważny
+     * Metoda dekodująca żeton JWT z ciągu znaków, weryfikująca jego sygnaturę
+     * oraz czy dalej jest ważny.
      *
      * @param token żeton JWT przesłany przez użytkownika
-     * @return Zwraca czy żeton jest prawidłowy i ważny
+     * @return Zwraca zdekodowany żeton, jeżeli żeton jest błędny lub nieważny,
+     * metoda zwraca null
      */
-    public static Boolean validateJWT(String token) {
+    public static JWT decodeJwt(String token) {
         try {
             Verifier verifier = HMACVerifier.newVerifier(SECRET);
             JWT jwt = JWT.getDecoder().decode(token, verifier);
-            return jwt.isExpired();
+            if (jwt.isExpired()) return null;
+            return jwt;
         } catch (InvalidJWTException invalidJWTException) {
-            return false;
+            return null;
         }
     }
-
-
 }
