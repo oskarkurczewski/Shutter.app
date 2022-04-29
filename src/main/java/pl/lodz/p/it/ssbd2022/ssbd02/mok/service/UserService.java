@@ -1,10 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.exception.WrongNewPasswordException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.security.PasswordHashImpl;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -18,9 +18,6 @@ public class UserService {
 
     @Inject
     private AuthenticationFacade userFacade;
-
-    @Inject
-    private PasswordHashImpl hash;
 
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
     public void changeAccountStatus(String login, Boolean active) {
@@ -36,7 +33,7 @@ public class UserService {
         if (newPassword == null || newPassword.trim().length() < 9) {
             throw new WrongNewPasswordException("New password cannot be applied");
         }
-        String hashed = hash.generate(newPassword.toCharArray());
+        String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
         target.setPassword(hashed);
         userFacade.update(target);
     }
