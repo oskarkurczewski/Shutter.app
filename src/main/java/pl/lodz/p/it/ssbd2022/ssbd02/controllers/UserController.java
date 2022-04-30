@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditUserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserStatusChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.UserEndpoint;
 
@@ -28,6 +29,19 @@ public class UserController {
             userEndpoint.blockUser(login, userStatusChangeDto.getActive());
         } catch (NoAuthenticatedUser e) {
             // to bedzie trzeba kiedys bardziej uporzadkowac
+            throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
+    }
+
+    @PUT
+    @Path("/editUserInfo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void editUserInfo(
+            @NotNull @Valid EditUserInfoDto editUserInfoDto
+    ) {
+        try {
+            userEndpoint.editUserInfo(editUserInfoDto);
+        } catch (NoAuthenticatedUser e) {
             throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
     }

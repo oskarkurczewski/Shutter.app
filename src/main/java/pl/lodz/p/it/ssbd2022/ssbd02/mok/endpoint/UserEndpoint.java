@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditUserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.UserService;
 
 import javax.annotation.security.RolesAllowed;
@@ -19,5 +20,10 @@ public class UserEndpoint {
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
     public void blockUser(String login, Boolean active) throws NoAuthenticatedUser {
         userService.changeAccountStatus(login, active);
+    }
+
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public void editUserInfo(EditUserInfoDto editUserInfoDto) throws NoAuthenticatedUser {
+        userService.editUserInfo(editUserInfoDto);
     }
 }
