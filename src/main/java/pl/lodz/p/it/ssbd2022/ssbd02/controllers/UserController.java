@@ -30,9 +30,11 @@ public class UserController {
     }
 
     @PUT
-    @Path("/admin/change-password")
+    @Path("/{userId}/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeUserPasswordAsAdmin(@Valid UserUpdatePasswordDto user) {
-        userEndpoint.updatePasswordAsAdmin(user);
+    public void changeUserPasswordAsAdmin(
+            @NotNull @PathParam("userId") Long userId,
+            @NotNull @Valid UserUpdatePasswordDto password) {
+        userEndpoint.updatePasswordAsAdmin(userId, password);
     }
 }

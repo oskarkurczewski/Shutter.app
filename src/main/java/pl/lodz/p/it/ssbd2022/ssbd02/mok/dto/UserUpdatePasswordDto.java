@@ -14,8 +14,6 @@ import javax.validation.constraints.Size;
 @Setter
 public class UserUpdatePasswordDto {
     @NotNull
-    private Long id;
-    @NotNull
     @Size(min = 8, max = 64)
     private String password;
 }

@@ -27,10 +27,10 @@ public class UserService {
     }
 
     @RolesAllowed({"ADMINISTRATOR"})
-    public void changeUserPasswordAsAdmin(UserUpdatePasswordDto data) {
-        User target = userFacade.find(data.getId());
+    public void changeUserPasswordAsAdmin(Long userId, UserUpdatePasswordDto data) {
+        User target = userFacade.find(userId);
         String newPassword = data.getPassword();
-        if (newPassword.trim().length() < 9) {
+        if (newPassword.trim().length() < 8) {
             throw new WrongNewPasswordException("New password cannot be applied");
         }
         String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());

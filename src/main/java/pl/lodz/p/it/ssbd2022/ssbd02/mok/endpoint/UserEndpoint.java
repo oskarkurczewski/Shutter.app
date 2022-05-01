@@ -22,7 +22,7 @@ public class UserEndpoint {
     }
 
     @RolesAllowed({"ADMINISTRATOR"})
-    public void updatePasswordAsAdmin(UserUpdatePasswordDto user) {
-        userService.changeUserPasswordAsAdmin(user);
+    public void updatePasswordAsAdmin(Long id, UserUpdatePasswordDto password) {
+        userService.changeUserPasswordAsAdmin(id, password);
     }
 }
