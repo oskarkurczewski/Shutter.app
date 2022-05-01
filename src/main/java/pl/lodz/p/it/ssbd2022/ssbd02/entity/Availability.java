@@ -34,7 +34,7 @@ public class Availability {
     @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
-    private Photographer photographer;
+    private PhotographerInfo photographer;
 
     @Column(name = "weekday")
     @NotNull

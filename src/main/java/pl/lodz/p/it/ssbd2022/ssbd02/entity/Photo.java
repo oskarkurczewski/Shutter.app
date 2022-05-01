@@ -30,7 +30,7 @@ public class Photo {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
-    private Photographer photographer;
+    private PhotographerInfo photographer;
 
     @Id
     @Column(name = "id", nullable = false)
