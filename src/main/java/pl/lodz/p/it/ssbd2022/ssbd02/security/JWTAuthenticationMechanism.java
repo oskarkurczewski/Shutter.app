@@ -24,7 +24,6 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
     public final static String BEARER = "Bearer";
 
 
-
     /**
      * Pobiera żeton JWT z nagłówka "Authorization" żądania. Jeżeli żeton
      * JWT jest prawidłowy, to przekazuje kontenerowi login użytkownika oraz
@@ -32,9 +31,9 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
      * metoda jest chroniona, jeżeli nie, to nie sprawdza tokenu, jeżeli tak,
      * to operacja nie powodzi się
      *
-     * @param httpServletRequest żądanie
+     * @param httpServletRequest  żądanie
      * @param httpServletResponse odpowiedź
-     * @param httpMessageContext kontekst
+     * @param httpMessageContext  kontekst
      * @return status operacji uwierzytelniania
      * @throws AuthenticationException gdy uwierzytelnianie nie powiedzie się
      */
