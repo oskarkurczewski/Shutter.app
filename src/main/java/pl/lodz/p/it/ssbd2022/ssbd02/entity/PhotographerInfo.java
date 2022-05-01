@@ -20,6 +20,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "photographer_info")
+@NamedQuery(
+        name = "photographer_info.findByLogin", 
+        query = "SELECT p FROM PhotographerInfo p JOIN User u ON p.id=u.id WHERE u.login = :login"
+)
 public class PhotographerInfo {
 
     @Setter(value = AccessLevel.NONE)

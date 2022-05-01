@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 
@@ -27,6 +28,12 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
 
     public User findByLogin(String login) {
         TypedQuery<User> query = getEm().createNamedQuery("user.findByLogin", User.class);
+        query.setParameter("login", login);
+        return query.getSingleResult();
+    }
+    
+    public PhotographerInfo findPhotographerByLogin(String login) {
+        TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);
         return query.getSingleResult();
     }
