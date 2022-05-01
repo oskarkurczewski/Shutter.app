@@ -41,7 +41,7 @@ public class Specialization {
      */
     @ToString.Exclude
     @ManyToMany(mappedBy = "specializationList")
-    private List<Photographer> photographersList = new ArrayList<>();
+    private List<PhotographerInfo> photographersList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

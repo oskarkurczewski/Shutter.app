@@ -19,8 +19,8 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "photographer")
-public class Photographer {
+@Table(name = "photographer_info")
+public class PhotographerInfo {
 
     @Setter(value = AccessLevel.NONE)
     @Version
@@ -39,7 +39,7 @@ public class Photographer {
     private User user;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "photographer_info", cascade = {CascadeType.REMOVE})
     private List<Photo> photos = new ArrayList<>();
 
     @ToString.Exclude
@@ -55,26 +55,36 @@ public class Photographer {
     @NotNull
     private Long score;
 
+    @Column(name = "review_count")
+    @NotNull
+    private Long reviewCount;
+
+    @Column(name = "description", length = 4096)
+    private String description;
+
+    @Column(name = "lat")
+    private Double latitude;
+
+    @Column(name = "long")
+    private Double longitude;
+
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "photographer_info", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Availability> availability;
 
-    @OneToOne(mappedBy = "photographer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Profile profile;
-
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer")
+    @OneToMany(mappedBy = "photographer_info")
     private List<PhotographerReport> reportsList = new ArrayList<>();
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer")
+    @OneToMany(mappedBy = "photographer_info")
     private List<Reservation> reservationsList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Photographer that = (Photographer) o;
+        PhotographerInfo that = (PhotographerInfo) o;
         if (user == null || that.user == null) return false;
         return user.getId() != null && Objects.equals(user.getId(), that.user.getId());
     }
