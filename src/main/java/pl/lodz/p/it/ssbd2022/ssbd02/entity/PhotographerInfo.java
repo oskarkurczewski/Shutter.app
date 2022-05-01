@@ -39,7 +39,7 @@ public class PhotographerInfo {
     private User user;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer_info", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.REMOVE})
     private List<Photo> photos = new ArrayList<>();
 
     @ToString.Exclude
@@ -69,15 +69,15 @@ public class PhotographerInfo {
     private Double longitude;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer_info", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Availability> availability;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer_info")
+    @OneToMany(mappedBy = "photographer")
     private List<PhotographerReport> reportsList = new ArrayList<>();
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer_info")
+    @OneToMany(mappedBy = "photographer")
     private List<Reservation> reservationsList = new ArrayList<>();
 
     @Override
