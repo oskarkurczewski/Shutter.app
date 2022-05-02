@@ -1,11 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.REGEXP;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.lang.annotation.*;
 
 @Constraint(validatedBy = {})
@@ -14,9 +12,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 
 @ReportAsSingleViolation
-@Pattern(regexp = REGEXP.LOGIN_PATTERN)
-public @interface Login {
-    String message() default "validator.incorrect.login.regexp";
+@Size(min = 1, max = 64)
+public @interface Name {
+    String message() default "validator.incorrect.name.length";
 
     Class<?>[] groups() default {};
 

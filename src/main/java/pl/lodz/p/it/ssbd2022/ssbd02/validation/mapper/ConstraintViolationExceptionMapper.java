@@ -5,6 +5,7 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.util.Objects;
 
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
@@ -19,10 +20,10 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
         StringBuilder builder = new StringBuilder();
         for (ConstraintViolation<?> constraintViolation :
                 exception.getConstraintViolations()) {
-            builder.append(constraintViolation.getInvalidValue())
+            builder.append(constraintViolation.getMessage())
                     .append(':')
-                    .append(constraintViolation.getMessage())
-                    .append(",");
+                    .append(Objects.toString(constraintViolation.getInvalidValue(), ""))
+                    .append(',');
         }
         return builder.toString();
     }

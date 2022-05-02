@@ -1,27 +1,30 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Password;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 public class UserRegisterDto {
 
-    @NotNull
+    @NotNull(message = "validator.incorrect.login.null")
     @Login
     private String login;
 
-    @NotNull
+    @NotNull(message = "validator.incorrect.password.null")
     @Password
     private String password;
 
-    @NotNull
+    @NotNull(message = "validator.incorrect.email.null")
+    @Email
     private String email;
 
-    @NotNull
+    @NotNull(message = "validator.incorrect.name.null")
+    @Name
     private String name;
 
-    @NotNull
+    @NotNull(message = "validator.incorrect.surname.null")
+    @Surname
     private String surname;
 
     public String getLogin() {
