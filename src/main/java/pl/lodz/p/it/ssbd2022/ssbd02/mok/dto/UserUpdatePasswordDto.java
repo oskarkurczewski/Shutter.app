@@ -16,4 +16,6 @@ public class UserUpdatePasswordDto {
     @NotNull
     @Size(min = 8, max = 64)
     private String password;
+    @Size(min = 8, max = 64)
+    private String oldPassword;
 }

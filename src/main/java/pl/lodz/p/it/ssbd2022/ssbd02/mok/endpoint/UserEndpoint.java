@@ -32,4 +32,9 @@ public class UserEndpoint {
     public void updatePasswordAsAdmin(Long id, UserUpdatePasswordDto password) {
         userService.changeUserPasswordAsAdmin(id, password);
     }
+
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public void updateOwnPassword(UserUpdatePasswordDto data) throws NoAuthenticatedUser {
+        userService.updateOwnPassword(data);
+    }
 }

@@ -44,6 +44,17 @@ public class UserController {
     }
 
     @PUT
+    @Path("/change-password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateOwnPassword(@NotNull @Valid UserUpdatePasswordDto data) {
+        try {
+            userEndpoint.updateOwnPassword(data);
+        } catch (NoAuthenticatedUser e) {
+            throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
+    }
+
+    @PUT
     @Path("/editUserInfo")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editUserInfo(
