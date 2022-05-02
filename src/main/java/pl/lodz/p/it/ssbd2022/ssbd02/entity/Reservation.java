@@ -35,7 +35,7 @@ public class Reservation {
     @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
-    private Photographer photographer;
+    private PhotographerInfo photographer;
 
     @ManyToOne(optional = false)
     @NotNull
