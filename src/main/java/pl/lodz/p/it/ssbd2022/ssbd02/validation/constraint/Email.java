@@ -6,6 +6,11 @@ import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Size;
 import java.lang.annotation.*;
 
+/**
+ * Adnotacja służąca ograniczeniu pola przedstawiajacego adres email użytkownika.
+ * Minimalna długość to 6, a maksymalna to 64.
+ * Adres email musi pasować do wyrażenia regularnego.
+ */
 @Constraint(validatedBy = {})
 @Documented
 @Target({ElementType.FIELD, ElementType.PARAMETER})

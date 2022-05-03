@@ -29,6 +29,15 @@ public class UserService {
         userFacade.getEm().merge(user); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
     }
 
+    /**
+     * Rejestruje konto użytkownika z danych podanych w obiekcie klasy użytkownika
+     * oraz przypisuje do niego poziom dostępu klienta.
+     * W celu aktywowania konta należy jeszcze zmienić pole 'registered' na wartość 'true'
+     *
+     * @param user Obiekt klasy User reprezentującej dane użytkownika
+     * @throws BaseApplicationException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
+     * @see User
+     */
     @PermitAll
     public void registerUser(User user) throws BaseApplicationException {
 

@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.validation.mapper;
+package pl.lodz.p.it.ssbd2022.ssbd02.mappers;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -7,6 +7,12 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.Objects;
 
+/**
+ * Klasa mapująca wyjątek naruszenia ograniczeń, pozwalająca na modyfikację
+ * zachowania w przypadku jego wystąpienia.
+ *
+ * @see ConstraintViolationException
+ */
 @Provider
 public class ConstraintViolationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
 

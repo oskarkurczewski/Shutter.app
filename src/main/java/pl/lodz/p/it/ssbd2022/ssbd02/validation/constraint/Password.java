@@ -8,6 +8,10 @@ import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Pattern;
 import java.lang.annotation.*;
 
+/**
+ * Adnotacja służąca ograniczeniu pola przedstawiajacego hasło użytkownika.
+ * Hasło musi pasować do wyrażenia regularnego.
+ */
 @Constraint(validatedBy = {})
 @Documented
 @Target({ElementType.FIELD, ElementType.PARAMETER})

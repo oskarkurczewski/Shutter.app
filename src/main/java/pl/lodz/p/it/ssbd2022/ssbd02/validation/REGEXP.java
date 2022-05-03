@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.validation;
 
+/**
+ * Klasa zawierająca wyrażenia regularne ograniczeń pól.
+ */
 public final class REGEXP {
 
     public static final String PASSWORD_PATTERN

@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import javax.ws.rs.core.Response;
 
+/**
+ * Bazowa klasa wyjatków aplikacji
+ */
 public class BaseApplicationException extends Exception {
 
     @Getter

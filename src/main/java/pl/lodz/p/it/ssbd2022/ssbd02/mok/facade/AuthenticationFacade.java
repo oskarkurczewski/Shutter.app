@@ -47,6 +47,13 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
         return query.getSingleResult();
     }
 
+    /**
+     * Tworzy konto użytkownika w bazie danych,
+     * w przypadku naruszenia unikatowości loginu lub adresu email otrzymujemy wyjątek
+     *
+     * @param user obiekt encji użytkownika
+     * @throws BaseApplicationException W przypadku, gdy login lub adres email już się znajduje w bazie danych
+     */
     public void registerUser(User user) throws BaseApplicationException {
         try {
             persist(user);

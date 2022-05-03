@@ -29,6 +29,12 @@ public class UserEndpoint {
         userService.changeAccountStatus(login, active);
     }
 
+    /**
+     * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji
+     *
+     * @param userRegisterDto Obiekt zawierający dane użytkownika
+     * @throws BaseApplicationException Występuje w przypadku gdy rejestracja się nie powiedzie
+     */
     @PermitAll
     public void registerUser(UserRegisterDto userRegisterDto) throws BaseApplicationException {
 

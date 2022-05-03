@@ -3,12 +3,16 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+
+/**
+ * Klasa reprezentująca obiekt tranferu danych reprezentujący wymagane dane użytkownika
+ * służące do utworzenia konta użytkownika.
+ * Na pola klasy nałożone zostały ograniczenia.
+ */
 @NoArgsConstructor
 @Getter
 @Setter
