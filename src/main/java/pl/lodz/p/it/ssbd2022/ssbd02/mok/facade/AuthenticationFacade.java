@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
@@ -40,6 +41,12 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
         return query.getSingleResult();
     }
 
+    public AccessLevelValue getAccessLevelValue(String accessLevel) {
+        TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("user.getAccessLevelValue", AccessLevelValue.class);
+        query.setParameter("access_level", accessLevel);
+        return query.getSingleResult();
+    }
+
     public void registerUser(User user) throws BaseApplicationException {
         try {
             persist(user);
@@ -53,6 +60,7 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
                         throw new IdenticalFieldException("exception.email.identical");
                 }
             }
+            //  TODO jakaś wiadomość do wyjątku?
             throw new DatabaseException(ex.getMessage());
         }
     }

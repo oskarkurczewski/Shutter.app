@@ -38,15 +38,6 @@ public class UserEndpoint {
         user.setEmail(userRegisterDto.getEmail());
         user.setName(userRegisterDto.getName());
         user.setSurname(userRegisterDto.getSurname());
-
-//        AccessLevelAssignment accessLevelAssignment = new AccessLevelAssignment();
-//        AccessLevelValue accessLevelValue = new AccessLevelValue();
-//        accessLevelValue.setName("CLIENT");
-//        accessLevelAssignment.setLevel(accessLevelValue);
-
-//        user.setAccessLevelAssignmentList(List.of(accessLevelAssignment));
-
         userService.registerUser(user);
-
     }
 }

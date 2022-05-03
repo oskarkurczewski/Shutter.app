@@ -18,9 +18,14 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @ToString
+
 @Entity
 @Table(name = "account")
-@NamedQuery(name = "user.findByLogin", query = "SELECT u from User u WHERE u.login = :login")
+
+@NamedQueries({
+        @NamedQuery(name = "user.findByLogin", query = "SELECT u from User u WHERE u.login = :login"),
+        @NamedQuery(name = "user.getAccessLevelValue", query = "SELECT level FROM AccessLevelValue AS level WHERE level.name = :access_level")
+})
 public class User {
 
     @Setter(value = AccessLevel.NONE)

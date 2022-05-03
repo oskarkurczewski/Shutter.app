@@ -31,9 +31,9 @@ public class UserController {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void registerUser(@NotNull @Valid UserRegisterDto userRegisterDto) throws BaseApplicationException {
-
+    public Response registerUser(@NotNull @Valid UserRegisterDto userRegisterDto) throws BaseApplicationException {
             userEndpoint.registerUser(userRegisterDto);
+            return Response.status(Response.Status.CREATED).build();
     }
 
 }
