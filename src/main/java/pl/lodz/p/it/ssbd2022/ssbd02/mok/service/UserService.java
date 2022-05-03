@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.PasswordHashImpl;
 
@@ -27,11 +28,11 @@ public class UserService {
     }
 
     @PermitAll
-    public void registerUser(User user) {
+    public void registerUser(User user) throws BaseApplicationException {
 
         user.setPassword(BCrypt.withDefaults().hashToString(6, user.getPassword().toCharArray()));
         user.setActive(false);
         user.setRegistered(false);
-        userFacade.persist(user);
+        userFacade.registerUser(user);
     }
 }

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserRegisterDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserStatusChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.UserEndpoint;
@@ -30,8 +31,9 @@ public class UserController {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void registerUser(@NotNull @Valid UserRegisterDto userRegisterDto) {
-        userEndpoint.registerUser(userRegisterDto);
+    public void registerUser(@NotNull @Valid UserRegisterDto userRegisterDto) throws BaseApplicationException {
+
+            userEndpoint.registerUser(userRegisterDto);
     }
 
 }
