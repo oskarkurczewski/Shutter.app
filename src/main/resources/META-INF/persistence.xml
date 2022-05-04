@@ -20,6 +20,16 @@
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <property name="javax.persistence.schema-generation.create-source" value="script"/>
+      <property name="javax.persistence.schema-generation.create-script-source" value="ssbd02-db-init.sql"/>
+      <property name="javax.persistence.sql-load-script-source" value="ssbd02-db-load.sql"/>
+      <property name="hibernate.hbm2ddl.auto" value="create"/>
+
+
+      <property name="hibernate.connection.charSet" value="UTF-8"/>
+      <property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" />
+
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
       <property name="hibernate.cache.use_second_level_cache" value="false"/>
