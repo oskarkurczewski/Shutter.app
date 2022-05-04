@@ -22,8 +22,16 @@ public class UserEndpoint {
         userService.changeAccountStatus(login, active);
     }
 
+
+    /**
+     * Wywołuję funkcję do edycji danych użytkownika
+     *
+     * @param editUserInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @throws NoAuthenticatedUser
+     */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
     public void editUserInfo(EditUserInfoDto editUserInfoDto) throws NoAuthenticatedUser {
+        // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
         userService.editUserInfo(editUserInfoDto);
     }
 }

@@ -29,6 +29,13 @@ public class UserService {
         userFacade.getEm().merge(user); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
     }
 
+    /**
+     * Funckja do edycji użytkownika. Zmienia tylko proste informacje a nie role dostępu itp
+     *
+     * @param editUserInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @return obiekt użytkownika po aktualizacji
+     * @throws NoAuthenticatedUser
+     */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
     public User editUserInfo(EditUserInfoDto editUserInfoDto) throws NoAuthenticatedUser {
         User user = null;

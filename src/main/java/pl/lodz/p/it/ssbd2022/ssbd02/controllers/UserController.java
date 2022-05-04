@@ -33,6 +33,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Pozwala zmienić informację aktualnie zalogowanego użytkownika w opraciu o aktualnie zalogowanego użytkownika.
+     *
+     * @param editUserInfoDto klasa zawierająca zmienione dane danego użytkownika
+     */
     @PUT
     @Path("/editUserInfo")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -40,6 +45,7 @@ public class UserController {
             @NotNull @Valid EditUserInfoDto editUserInfoDto
     ) {
         try {
+            // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
             userEndpoint.editUserInfo(editUserInfoDto);
         } catch (NoAuthenticatedUser e) {
             throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
