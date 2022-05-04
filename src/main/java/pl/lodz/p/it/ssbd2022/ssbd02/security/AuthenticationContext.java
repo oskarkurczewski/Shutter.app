@@ -2,7 +2,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CustomApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
 import javax.inject.Inject;
@@ -20,11 +21,15 @@ public class AuthenticationContext {
     @Inject
     AuthenticationFacade authenticationFacade;
 
-    public User getCurrentUser() throws NoAuthenticatedUser {
+    public User getCurrentUser() throws NoAuthenticatedUserFound {
         if (securityContext.getCallerPrincipal() != null) {
-            return authenticationFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+            try {
+                return authenticationFacade.findByLogin(securityContext.getCallerPrincipal().getName());
+            } catch (NoUserFound e) {
+                throw CustomApplicationException.NoAuthenticatedUserFound();
+            }
         } else {
-            throw CustomApplicationException.NoAuthenticatedUser();
+            throw CustomApplicationException.NoAuthenticatedUserFound();
         }
     }
 }

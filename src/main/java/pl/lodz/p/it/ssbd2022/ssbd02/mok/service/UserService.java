@@ -1,7 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditUserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -23,7 +24,7 @@ public class UserService {
     private AuthenticationContext authenticationContext;
 
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedUser {
+    public void changeAccountStatus(String login, Boolean active) throws NoUserFound {
         User user = userFacade.findByLogin(login);
         user.setActive(active);
         userFacade.getEm().merge(user); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
@@ -34,10 +35,10 @@ public class UserService {
      *
      * @param editUserInfoDto klasa zawierająca zmienione dane danego użytkownika
      * @return obiekt użytkownika po aktualizacji
-     * @throws NoAuthenticatedUser
+     * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
-    public User editUserInfo(EditUserInfoDto editUserInfoDto) throws NoAuthenticatedUser {
+    public User editUserInfo(EditUserInfoDto editUserInfoDto) throws NoAuthenticatedUserFound {
         User user = null;
         user = authenticationContext.getCurrentUser();
         user.setEmail(editUserInfoDto.getEmail());
