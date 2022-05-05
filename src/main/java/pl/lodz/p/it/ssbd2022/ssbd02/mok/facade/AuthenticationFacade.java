@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CustomApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
@@ -39,13 +40,13 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
         return em;
     }
 
-    public User findByLogin(String login) throws NoAuthenticatedUser {
+    public User findByLogin(String login) throws NoUserFound {
         TypedQuery<User> query = getEm().createNamedQuery("user.findByLogin", User.class);
         query.setParameter("login", login);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw CustomApplicationException.NoAuthenticatedUser();
+            throw CustomApplicationException.NoUserFound();
         }
     }
 
