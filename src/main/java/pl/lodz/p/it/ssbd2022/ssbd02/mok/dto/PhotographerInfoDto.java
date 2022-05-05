@@ -13,19 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class PhotographerInfoDto{
-
-    @NotNull
-    private final String login;
-
-    @NotNull
-    private final String email;
-
-    @NotNull
-    private final String name;
-
-    @NotNull
-    private final String surname;
+public class PhotographerInfoDto  extends UserInfoDto{
 
     @NotNull
     private final long score;
@@ -48,12 +36,8 @@ public class PhotographerInfoDto{
      *
      * @param photographerInfo encja informacji o fotografie
      */
-    public PhotographerInfoDto(PhotographerInfo photographerInfo) {
-        User user = photographerInfo.getUser();
-        login = user.getLogin();
-        email = user.getEmail();
-        name = user.getName();
-        surname = user.getSurname();
+    public PhotographerInfoDto(PhotographerInfo photographerInfo){
+        super(photographerInfo.getUser());
         score = photographerInfo.getScore();
         reviewCount = photographerInfo.getReviewCount();
         description = photographerInfo.getDescription();

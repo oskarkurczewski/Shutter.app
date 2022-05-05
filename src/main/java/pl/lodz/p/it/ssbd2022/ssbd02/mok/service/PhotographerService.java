@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
@@ -19,7 +20,7 @@ public class PhotographerService {
     private AuthenticationFacade userFacade;
 
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
-    public PhotographerInfoDto getPhotographerInfo(String login){
+    public PhotographerInfoDto getPhotographerInfo(String login) throws DataNotFoundException {
         PhotographerInfo photographerInfo = userFacade.findPhotographerByLogin(login);
         return new PhotographerInfoDto(photographerInfo);
     }

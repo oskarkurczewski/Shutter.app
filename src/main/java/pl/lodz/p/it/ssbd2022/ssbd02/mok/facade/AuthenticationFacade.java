@@ -5,12 +5,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CustomApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoUserFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 
 import javax.ejb.Stateless;
@@ -56,10 +51,14 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
         return query.getSingleResult();
     }
     
-    public PhotographerInfo findPhotographerByLogin(String login) {
+    public PhotographerInfo findPhotographerByLogin(String login) throws DataNotFoundException {
         TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e){
+            throw new DataNotFoundException("exception.photographer.notfound");
+        }
     }
 
     /**

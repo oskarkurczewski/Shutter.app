@@ -1,9 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditUserInfoDto;
@@ -87,7 +87,7 @@ public class UserController {
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public UserInfoDto getUserInfo(@NotNull @PathParam("login") String login) {
-        return userEndpoint.getUserInfo(login);
+    public UserInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws DataNotFoundException {
+            return userEndpoint.getUserInfo(login);
     }
 }

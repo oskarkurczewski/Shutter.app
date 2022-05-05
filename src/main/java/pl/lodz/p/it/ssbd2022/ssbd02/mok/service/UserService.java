@@ -3,16 +3,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoUserFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditUserInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongNewPasswordException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -60,8 +54,13 @@ public class UserService {
     }
     
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
-    public UserInfoDto getUserInfo(String login){
-        User user = userFacade.findByLogin(login);
+    public UserInfoDto getUserInfo(String login) throws DataNotFoundException {
+        User user = null; 
+        try {
+            user = userFacade.findByLogin(login);
+        } catch (NoUserFound e) {
+            throw new DataNotFoundException("exception.account.notfound");
+        }
         return new UserInfoDto(user);
     }
     

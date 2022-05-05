@@ -1,16 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditUserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.UserService;
 
@@ -20,9 +17,6 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -73,7 +67,7 @@ public class UserEndpoint {
     }
     
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
-    public UserInfoDto getUserInfo(String login){
+    public UserInfoDto getUserInfo(String login) throws DataNotFoundException {
         return userService.getUserInfo(login);
     }
     

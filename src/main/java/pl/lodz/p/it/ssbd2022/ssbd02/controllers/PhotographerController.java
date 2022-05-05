@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.PhotographerEndpoint;
@@ -21,7 +22,7 @@ public class PhotographerController {
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) {
+    public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws DataNotFoundException {
         return photographerEndpoint.getPhotographerInfo(login);
     }
 }
