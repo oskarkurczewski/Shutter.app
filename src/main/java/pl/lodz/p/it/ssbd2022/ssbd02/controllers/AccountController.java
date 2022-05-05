@@ -1,11 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserStatusChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.UserEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountStatusChangeDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -15,54 +15,54 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
-public class UserController {
+public class AccountController {
 
     @Inject
-    UserEndpoint userEndpoint;
+    AccountEndpoint accountEndpoint;
 
     /**
      * Zmienia status użytkownika o danym loginie na podany
      *
      * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
-     * @param userStatusChangeDto obiekt dto przechowujący status który ma zostać ustawiony
+     * @param accountStatusChangeDto obiekt dto przechowujący status który ma zostać ustawiony
      */
     @PUT
     @Path("/{login}/status")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountStatus (
             @NotNull @PathParam("login") String login,
-            @NotNull @Valid UserStatusChangeDto userStatusChangeDto
+            @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
     ) {
         try {
-            userEndpoint.changeAccountStatus(login, userStatusChangeDto.getActive());
-        } catch (NoAuthenticatedUser e) {
+            accountEndpoint.changeAccountStatus(login, accountStatusChangeDto.getActive());
+        } catch (NoAuthenticatedAccount e) {
             // to bedzie trzeba kiedys bardziej uporzadkowac
             throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
 
     @PUT
-    @Path("/{userId}/change-password")
+    @Path("/{accountId}/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeUserPasswordAsAdmin(
-            @NotNull @PathParam("userId") Long userId,
-            @NotNull @Valid UserUpdatePasswordDto password) {
-        userEndpoint.updatePasswordAsAdmin(userId, password);
+    public void changeAccountPasswordAsAdmin(
+            @NotNull @PathParam("accountId") Long accountId,
+            @NotNull @Valid AccountUpdatePasswordDto password) {
+        accountEndpoint.updatePasswordAsAdmin(accountId, password);
     }
 
     /**
      * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta.
      * W przypadku powodzenia konto musi jeszcze zostać aktywowane w polu 'registered'.
      *
-     * @param userRegisterDto Obiekt przedstawiające dane użytkownika do rejestracji
+     * @param accountRegisterDto Obiekt przedstawiające dane użytkownika do rejestracji
      * @return Odpowiedź HTTP
      * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia rejestracji użytkownika
      */
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(@NotNull @Valid UserRegisterDto userRegisterDto) throws BaseApplicationException {
-        userEndpoint.registerUser(userRegisterDto);
+    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+        accountEndpoint.registerAccount(accountRegisterDto);
         return Response.status(Response.Status.CREATED).build();
     }
 

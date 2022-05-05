@@ -48,7 +48,7 @@ public class ReviewReport {
     @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    private Account account;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "cause_id", nullable = false)
