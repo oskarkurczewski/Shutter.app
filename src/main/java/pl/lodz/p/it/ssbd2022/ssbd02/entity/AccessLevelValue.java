@@ -21,7 +21,6 @@ import java.util.Objects;
 public class AccessLevelValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
 

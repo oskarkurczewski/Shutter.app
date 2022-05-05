@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserRegisterDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserStatusChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
@@ -41,4 +43,21 @@ public class UserController {
             @NotNull @Valid UserUpdatePasswordDto password) {
         userEndpoint.updatePasswordAsAdmin(userId, password);
     }
+
+    /**
+     * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta.
+     * W przypadku powodzenia konto musi jeszcze zostać aktywowane w polu 'registered'.
+     *
+     * @param userRegisterDto Obiekt przedstawiające dane użytkownika do rejestracji
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia rejestracji użytkownika
+     */
+    @POST
+    @Path("/register")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerUser(@NotNull @Valid UserRegisterDto userRegisterDto) throws BaseApplicationException {
+        userEndpoint.registerUser(userRegisterDto);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
 }
