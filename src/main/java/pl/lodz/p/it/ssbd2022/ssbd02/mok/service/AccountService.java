@@ -3,10 +3,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongNewPasswordException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
@@ -20,28 +20,36 @@ import java.util.List;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class UserService {
+public class AccountService {
 
     @Inject
-    private AuthenticationFacade userFacade;
+    private AuthenticationFacade accountFacade;
 
+    /**
+     * Zmienie status użytkownika o danym loginie na podany
+     *
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param active status który ma zostać ustawiony
+     * @throws NoAuthenticatedAccount kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     * w bazie danych
+     */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedUser {
-        User user = userFacade.findByLogin(login);
-        user.setActive(active);
-        userFacade.getEm().merge(user); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
+    public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedAccount {
+        Account account = accountFacade.findByLogin(login);
+        account.setActive(active);
+        accountFacade.getEm().merge(account); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
     }
 
     @RolesAllowed({"ADMINISTRATOR"})
-    public void changeUserPasswordAsAdmin(Long userId, UserUpdatePasswordDto data) {
-        User target = userFacade.find(userId);
+    public void changeAccountPasswordAsAdmin(Long accountId, AccountUpdatePasswordDto data) {
+        Account target = accountFacade.find(accountId);
         String newPassword = data.getPassword();
         if (newPassword.trim().length() < 8) {
             throw new WrongNewPasswordException("New password cannot be applied");
         }
         String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
         target.setPassword(hashed);
-        userFacade.update(target);
+        accountFacade.update(target);
     }
 
     /**
@@ -49,29 +57,29 @@ public class UserService {
      * oraz przypisuje do niego poziom dostępu klienta.
      * W celu aktywowania konta należy jeszcze zmienić pole 'registered' na wartość 'true'
      *
-     * @param user Obiekt klasy User reprezentującej dane użytkownika
+     * @param account Obiekt klasy Account reprezentującej dane użytkownika
      * @throws BaseApplicationException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
-     * @see User
+     * @see Account
      */
     @PermitAll
-    public void registerUser(User user) throws BaseApplicationException {
+    public void registerAccount(Account account) throws BaseApplicationException {
 
-        user.setPassword(BCrypt.withDefaults().hashToString(6, user.getPassword().toCharArray()));
-        user.setActive(true);
-        user.setRegistered(false);
+        account.setPassword(BCrypt.withDefaults().hashToString(6, account.getPassword().toCharArray()));
+        account.setActive(true);
+        account.setRegistered(false);
 
-        AccessLevelValue levelValue = userFacade.getAccessLevelValue("CLIENT");
+        AccessLevelValue levelValue = accountFacade.getAccessLevelValue("CLIENT");
 
         AccessLevelAssignment assignment = new AccessLevelAssignment();
         assignment.setLevel(levelValue);
-        assignment.setUser(user);
+        assignment.setAccount(account);
         assignment.setActive(true);
 
-        List<AccessLevelAssignment> list = user.getAccessLevelAssignmentList();
+        List<AccessLevelAssignment> list = account.getAccessLevelAssignmentList();
         list.add(assignment);
 
-        user.setAccessLevelAssignmentList(list);
+        account.setAccessLevelAssignmentList(list);
 
-        userFacade.registerUser(user);
+        accountFacade.registerAccount(account);
     }
 }

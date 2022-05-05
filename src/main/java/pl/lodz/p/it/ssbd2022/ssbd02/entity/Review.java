@@ -51,7 +51,7 @@ public class Review {
     @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    private Account account;
 
     /**
      * Ocena przydatności recenzji wystawiona przez innych użytkowników
@@ -74,7 +74,7 @@ public class Review {
             joinColumns = {@JoinColumn(name = "account_id")},
             inverseJoinColumns = {@JoinColumn(name = "review_id")}
     )
-    private List<User> likedList = new ArrayList<>();
+    private List<Account> likedList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

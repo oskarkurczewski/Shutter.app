@@ -1,11 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CustomApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
@@ -25,12 +24,12 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_LOGIN;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class AuthenticationFacade extends FacadeTemplate<User> {
+public class AuthenticationFacade extends FacadeTemplate<Account> {
     @PersistenceContext(unitName = "ssbd02mokPU")
     private EntityManager em;
 
     public AuthenticationFacade() {
-        super(User.class);
+        super(Account.class);
     }
 
     @Override
@@ -38,18 +37,18 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
         return em;
     }
 
-    public User findByLogin(String login) throws NoAuthenticatedUser {
-        TypedQuery<User> query = getEm().createNamedQuery("user.findByLogin", User.class);
+    public Account findByLogin(String login) throws NoAuthenticatedAccount {
+        TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
         query.setParameter("login", login);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw CustomApplicationException.NoAuthenticatedUser();
+            throw CustomApplicationException.NoAuthenticatedAccount();
         }
     }
 
     public AccessLevelValue getAccessLevelValue(String accessLevel) {
-        TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("user.getAccessLevelValue", AccessLevelValue.class);
+        TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
         query.setParameter("access_level", accessLevel);
         return query.getSingleResult();
     }
@@ -58,12 +57,12 @@ public class AuthenticationFacade extends FacadeTemplate<User> {
      * Tworzy konto użytkownika w bazie danych,
      * w przypadku naruszenia unikatowości loginu lub adresu email otrzymujemy wyjątek
      *
-     * @param user obiekt encji użytkownika
+     * @param account obiekt encji użytkownika
      * @throws BaseApplicationException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    public void registerUser(User user) throws BaseApplicationException {
+    public void registerAccount(Account account) throws BaseApplicationException {
         try {
-            persist(user);
+            persist(account);
         } catch (PersistenceException ex) {
             if (ex.getCause() instanceof ConstraintViolationException) {
                 String name = ((ConstraintViolationException) ex.getCause()).getConstraintName();

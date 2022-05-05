@@ -60,7 +60,7 @@ public class Photo {
             joinColumns = {@JoinColumn(name = "photo_id")},
             inverseJoinColumns = {@JoinColumn(name = "account_id")}
     )
-    private List<User> likesList = new ArrayList<>();
+    private List<Account> likesList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
