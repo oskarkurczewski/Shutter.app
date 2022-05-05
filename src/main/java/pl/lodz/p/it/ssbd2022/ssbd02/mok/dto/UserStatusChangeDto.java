@@ -9,7 +9,8 @@ public class UserStatusChangeDto {
     @NotNull
     private Boolean active;
 
-    public UserStatusChangeDto() { }
+    public UserStatusChangeDto() {
+    }
 
     public UserStatusChangeDto(User user) {
         this.active = user.getActive();
