@@ -20,15 +20,21 @@ public class UserController {
     @Inject
     UserEndpoint userEndpoint;
 
+    /**
+     * Zmienia status użytkownika o danym loginie na podany
+     *
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param userStatusChangeDto obiekt dto przechowujący status który ma zostać ustawiony
+     */
     @PUT
     @Path("/{login}/status")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeUserStatus(
+    public void changeAccountStatus (
             @NotNull @PathParam("login") String login,
             @NotNull @Valid UserStatusChangeDto userStatusChangeDto
     ) {
         try {
-            userEndpoint.blockUser(login, userStatusChangeDto.getActive());
+            userEndpoint.changeAccountStatus(login, userStatusChangeDto.getActive());
         } catch (NoAuthenticatedUser e) {
             // to bedzie trzeba kiedys bardziej uporzadkowac
             throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);

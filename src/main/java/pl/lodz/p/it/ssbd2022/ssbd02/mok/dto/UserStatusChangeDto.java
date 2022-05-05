@@ -4,6 +4,10 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 
 import javax.validation.constraints.NotNull;
 
+
+/**
+ * Klasa reprezentująca zmianę statusu użytkownika w systemie
+ */
 public class UserStatusChangeDto {
 
     @NotNull

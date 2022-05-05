@@ -25,6 +25,14 @@ public class UserService {
     @Inject
     private AuthenticationFacade userFacade;
 
+    /**
+     * Zmienie status użytkownika o danym loginie na podany
+     *
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param active status który ma zostać ustawiony
+     * @throws NoAuthenticatedUser kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     * w bazie danych
+     */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
     public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedUser {
         User user = userFacade.findByLogin(login);

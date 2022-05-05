@@ -2,8 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUser;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.UserRegisterDto;
@@ -15,9 +13,6 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -26,8 +21,16 @@ public class UserEndpoint {
     @Inject
     private UserService userService;
 
+    /**
+     * Ustawia status użytkownika o danym loginie na podany
+     *
+     * @param login login użytkownika dla którego chcemy zmienić status
+     * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
+     * @throws NoAuthenticatedUser kiedy użytkonwik o danym loginie nie zostanie odnaleziony
+     * w bazie danych
+     */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public void blockUser(String login, Boolean active) throws NoAuthenticatedUser {
+    public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedUser {
         userService.changeAccountStatus(login, active);
     }
 
