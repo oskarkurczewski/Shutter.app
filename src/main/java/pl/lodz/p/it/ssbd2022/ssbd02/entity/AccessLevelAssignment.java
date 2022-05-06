@@ -34,7 +34,7 @@ public class AccessLevelAssignment {
     @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    private Account account;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "access_level_id", nullable = false)
