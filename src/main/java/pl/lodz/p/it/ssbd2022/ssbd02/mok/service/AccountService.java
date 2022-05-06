@@ -4,9 +4,9 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongNewPasswordException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
@@ -30,11 +30,11 @@ public class AccountService {
      *
      * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param active status który ma zostać ustawiony
-     * @throws NoAuthenticatedAccount kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      * w bazie danych
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedAccount {
+    public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
         Account account = accountFacade.findByLogin(login);
         account.setActive(active);
         accountFacade.getEm().merge(account); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady

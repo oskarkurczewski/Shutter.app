@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountStatusChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
@@ -35,9 +35,9 @@ public class AccountController {
     ) {
         try {
             accountEndpoint.changeAccountStatus(login, accountStatusChangeDto.getActive());
-        } catch (NoAuthenticatedAccount e) {
+        } catch (NoAccountFound e) {
             // to bedzie trzeba kiedys bardziej uporzadkowac
-            throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
+            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
         }
     }
 

@@ -4,10 +4,10 @@ import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CustomApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 
 import javax.ejb.Stateless;
@@ -37,13 +37,13 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return em;
     }
 
-    public Account findByLogin(String login) throws NoAuthenticatedAccount {
+    public Account findByLogin(String login) throws NoAccountFound {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
         query.setParameter("login", login);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw CustomApplicationException.NoAuthenticatedAccount();
+            throw CustomApplicationException.noAccountFound();
         }
     }
 
