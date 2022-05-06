@@ -1,10 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountStatusChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
 import javax.inject.Inject;
@@ -64,6 +64,27 @@ public class AccountController {
     public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
         accountEndpoint.registerAccount(accountRegisterDto);
         return Response.status(Response.Status.CREATED).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
+     *
+     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
+     * @return Odpowiedź HTTP
+     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
+     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
+     * nigdy nie posiadał
+     */
+    @POST
+    @Path("/{accountId}/accessLevel")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response assignAccountAccessLevel(
+            @NotNull @PathParam("accountId") Long accountId,
+            @NotNull @Valid AccountAccessLevelChangeDto data
+    ) throws CannotChangeException, DataNotFoundException {
+        accountEndpoint.changeAccountAccessLevel(accountId, data);
+        return Response.status(Response.Status.OK).build();
     }
 
 }

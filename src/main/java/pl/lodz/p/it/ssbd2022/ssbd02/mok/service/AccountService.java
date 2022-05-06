@@ -4,10 +4,9 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongNewPasswordException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
 import javax.annotation.security.PermitAll;
@@ -16,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Stateless
@@ -49,6 +49,51 @@ public class AccountService {
         }
         String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
         target.setPassword(hashed);
+        accountFacade.update(target);
+    }
+
+    /**
+     * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
+     *
+     * @param accountId Identyfikator konta użytkownika
+     * @param accessLevel Łańcuch znaków zawierający nazwę poziomu dostępu
+     * @param active status poziomu dostępu, który ma być ustawiony
+     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
+     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
+     * nigdy nie posiadał
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void changeAccountAccessLevel(Long accountId, String accessLevel, Boolean active)
+            throws DataNotFoundException, CannotChangeException {
+
+        Account target = accountFacade.find(accountId);
+        List<AccessLevelAssignment> accountAccessLevels = target.getAccessLevelAssignmentList();
+        AccessLevelAssignment accessLevelFound = accountFacade.getAccessLevelAssignmentForAccount(accountId, accessLevel);
+
+        if(accessLevelFound != null) {
+            if (accessLevelFound.getActive() == active) {
+                throw new CannotChangeException("exception.access_level.already_set");
+            }
+
+            accessLevelFound.setActive(active);
+        } else {
+            AccessLevelValue accessLevelValue = accountFacade.getAccessLevelValue(accessLevel);
+            AccessLevelAssignment assignment = new AccessLevelAssignment();
+
+            if (!active) {
+                throw new CannotChangeException("exception.access_level.already_false");
+            }
+
+            assignment.setLevel(accessLevelValue);
+            assignment.setAccount(target);
+            assignment.setActive(active);
+            accountAccessLevels.add(assignment);
+
+            target.setAccessLevelAssignmentList(accountAccessLevels);
+        }
+
         accountFacade.update(target);
     }
 

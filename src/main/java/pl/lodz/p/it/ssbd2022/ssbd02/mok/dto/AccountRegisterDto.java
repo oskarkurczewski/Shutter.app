@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 
 /**
- * Klasa reprezentująca obiekt tranferu danych reprezentujący wymagane dane użytkownika
+ * Klasa reprezentująca obiekt transferu danych reprezentujący wymagane dane użytkownika
  * służące do utworzenia konta użytkownika.
  * Na pola klasy nałożone zostały ograniczenia.
  */
