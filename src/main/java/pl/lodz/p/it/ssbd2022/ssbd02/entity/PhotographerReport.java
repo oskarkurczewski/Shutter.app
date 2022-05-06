@@ -46,7 +46,7 @@ public class PhotographerReport {
     @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    private Account account;
 
     /**
      * Zgłaszany fotograf

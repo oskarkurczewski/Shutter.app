@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class EditUserInfoDto {
+public class EditAccountInfoDto {
 
     @NotNull
     private String email;
@@ -21,9 +21,9 @@ public class EditUserInfoDto {
     private String surname;
 
 
-    public EditUserInfoDto(User user) {
-        email = user.getEmail();
-        name = user.getName();
-        surname = user.getSurname();
+    public EditAccountInfoDto(Account account) {
+        email = account.getEmail();
+        name = account.getName();
+        surname = account.getSurname();
     }
 }

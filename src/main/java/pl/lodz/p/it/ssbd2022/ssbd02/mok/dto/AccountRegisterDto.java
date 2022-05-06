@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserRegisterDto {
+public class AccountRegisterDto {
 
     @NotNull(message = "validator.incorrect.login.null")
     @Login

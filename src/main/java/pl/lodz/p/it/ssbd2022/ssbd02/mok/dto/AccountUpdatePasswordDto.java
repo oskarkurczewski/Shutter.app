@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
  */
 @Getter
 @Setter
-public class UserUpdatePasswordDto {
+public class AccountUpdatePasswordDto {
     @NotNull
     @Size(min = 8, max = 64)
     private String password;

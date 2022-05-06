@@ -40,7 +40,7 @@ public class Reservation {
     @ManyToOne(optional = false)
     @NotNull
     @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    private Account account;
 
     @NotNull
     @Column(name = "from", nullable = false)

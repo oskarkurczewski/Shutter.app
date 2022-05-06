@@ -40,7 +40,7 @@ public class PhotographerInfo {
     @OneToOne
     @NotNull
     @JoinColumn(name = "account_id", nullable = false)
-    private User user;
+    private Account account;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "photographer", cascade = {CascadeType.REMOVE})
@@ -89,12 +89,12 @@ public class PhotographerInfo {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         PhotographerInfo that = (PhotographerInfo) o;
-        if (user == null || that.user == null) return false;
-        return user.getId() != null && Objects.equals(user.getId(), that.user.getId());
+        if (account == null || that.account == null) return false;
+        return account.getId() != null && Objects.equals(account.getId(), that.account.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(user.getId());
+        return Objects.hashCode(account.getId());
     }
 }
