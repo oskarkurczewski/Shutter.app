@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
 import javax.validation.constraints.NotNull;
 
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class UserInfoDto {
+public class AccountInfoDto {
     
     @NotNull
     private String login;
@@ -25,17 +25,25 @@ public class UserInfoDto {
     
     @NotNull
     private String surname;
+    
+    @NotNull
+    private Boolean active;
+    
+    @NotNull
+    private Boolean registered;
 
     /**
      * Konstruktor obiektu DTO użytkownika
      *
-     * @param user encja użytkownika
+     * @param account encja użytkownika
      */
-    public UserInfoDto(User user) {
-        login = user.getLogin();
-        email = user.getEmail();
-        name = user.getName();
-        surname = user.getSurname();
+    public AccountInfoDto(Account account) {
+        login = account.getLogin();
+        email = account.getEmail();
+        name = account.getName();
+        surname = account.getSurname();
+        active = account.getActive();
+        registered = account.getRegistered();
     }
 
 }

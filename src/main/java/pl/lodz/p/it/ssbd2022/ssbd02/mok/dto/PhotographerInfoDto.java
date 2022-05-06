@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,13 +12,13 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class PhotographerInfoDto  extends UserInfoDto{
+public class PhotographerInfoDto  extends AccountInfoDto {
 
     @NotNull
-    private final long score;
+    private final Long score;
     
     @NotNull
-    private final long reviewCount;
+    private final Long reviewCount;
     
     @NotNull
     private final String description;
@@ -29,6 +28,9 @@ public class PhotographerInfoDto  extends UserInfoDto{
 
     @NotNull
     private final Double longitude;
+    
+    @NotNull
+    private final Boolean visible;
 
 
     /**
@@ -37,11 +39,12 @@ public class PhotographerInfoDto  extends UserInfoDto{
      * @param photographerInfo encja informacji o fotografie
      */
     public PhotographerInfoDto(PhotographerInfo photographerInfo){
-        super(photographerInfo.getUser());
+        super(photographerInfo.getAccount());
         score = photographerInfo.getScore();
         reviewCount = photographerInfo.getReviewCount();
         description = photographerInfo.getDescription();
         latitude = photographerInfo.getLatitude();
         longitude = photographerInfo.getLongitude();
+        visible = photographerInfo.getVisible();
     }
 }

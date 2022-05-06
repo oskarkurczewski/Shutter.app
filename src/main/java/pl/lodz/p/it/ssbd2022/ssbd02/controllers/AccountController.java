@@ -1,5 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
@@ -66,4 +69,21 @@ public class AccountController {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     * Punkt końcowy szukający użytkownika
+     *
+     * @param login nazwa użytkownika
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik 
+     * niebędący ani administratorem ani moderatorem
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
+    @GET
+    @Path("/{login}/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws DataNotFoundException, UnauthenticatedException {
+            return accountEndpoint.getAccountInfo(login);
+    }
 }
