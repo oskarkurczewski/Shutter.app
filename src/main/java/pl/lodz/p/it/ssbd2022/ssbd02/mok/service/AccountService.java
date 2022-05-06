@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongNewPasswordException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongPasswordException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
@@ -45,7 +45,7 @@ public class AccountService {
         Account target = accountFacade.find(accountId);
         String newPassword = data.getPassword();
         if (newPassword.trim().length() < 8) {
-            throw new WrongNewPasswordException("New password cannot be applied");
+            throw new WrongPasswordException("New password cannot be applied");
         }
         String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
         target.setPassword(hashed);
