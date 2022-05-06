@@ -8,7 +8,11 @@ public abstract class CustomApplicationException extends Exception {
         super(message);
     }
 
-    public static NoAuthenticatedAccount NoAuthenticatedAccount() {
-        return new NoAuthenticatedAccount("No authenticated account");
+    public static NoAuthenticatedUserFound NoAuthenticatedUserFound() {
+        return new NoAuthenticatedUserFound("No authenticated user found");
+    }
+
+    public static NoAccountFound NoUserFound() {
+        return new NoAccountFound("No user found");
     }
 }

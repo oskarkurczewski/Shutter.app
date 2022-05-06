@@ -4,11 +4,11 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongNewPasswordException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -25,16 +25,19 @@ public class AccountService {
     @Inject
     private AuthenticationFacade accountFacade;
 
+    @Inject
+    private AuthenticationContext authenticationContext;
+
     /**
      * Zmienie status użytkownika o danym loginie na podany
      *
      * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param active status który ma zostać ustawiony
-     * @throws NoAuthenticatedAccount kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      * w bazie danych
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedAccount {
+    public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
         Account account = accountFacade.findByLogin(login);
         account.setActive(active);
         accountFacade.getEm().merge(account); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
@@ -81,5 +84,21 @@ public class AccountService {
         account.setAccessLevelAssignmentList(list);
 
         accountFacade.registerAccount(account);
+    }
+
+    /**
+     * Funckja do edycji danych użytkownika. Zmienia tylko proste informacje a nie role dostępu itp
+     *
+     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @return obiekt użytkownika po aktualizacji
+     * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public Account editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
+        Account account = authenticationContext.getCurrentUser();
+        account.setEmail(editAccountInfoDto.getEmail());
+        account.setName(editAccountInfoDto.getName());
+        account.setSurname(editAccountInfoDto.getSurname());
+        return accountFacade.update(account);
     }
 }
