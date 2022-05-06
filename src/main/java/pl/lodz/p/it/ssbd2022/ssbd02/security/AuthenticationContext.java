@@ -21,15 +21,15 @@ public class AuthenticationContext {
     @Inject
     AuthenticationFacade authenticationFacade;
 
-    public Account getCurrentUser() throws NoAuthenticatedUserFound {
+    public Account getCurrentUsersAccount() throws NoAuthenticatedUserFound {
         if (securityContext.getCallerPrincipal() != null) {
             try {
                 return authenticationFacade.findByLogin(securityContext.getCallerPrincipal().getName());
             } catch (NoAccountFound e) {
-                throw CustomApplicationException.NoAuthenticatedUserFound();
+                throw CustomApplicationException.noAuthenticatedUserFound();
             }
         } else {
-            throw CustomApplicationException.NoAuthenticatedUserFound();
+            throw CustomApplicationException.noAuthenticatedUserFound();
         }
     }
 }

@@ -52,6 +52,17 @@ public class AccountController {
         accountEndpoint.updatePasswordAsAdmin(accountId, password);
     }
 
+    @PUT
+    @Path("/change-password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) {
+        try {
+            accountEndpoint.updateOwnPassword(data);
+        } catch (NoAuthenticatedUserFound e) {
+            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
+        }
+    }
+
     /**
      * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta.
      * W przypadku powodzenia konto musi jeszcze zostać aktywowane w polu 'registered'.
@@ -83,7 +94,7 @@ public class AccountController {
             // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
             accountEndpoint.editAccountInfo(editAccountInfoDto);
         } catch (NoAuthenticatedUserFound e) {
-            throw new WebApplicationException(e.getMessage(), Response.Status.BAD_REQUEST);
+            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
         }
     }
 

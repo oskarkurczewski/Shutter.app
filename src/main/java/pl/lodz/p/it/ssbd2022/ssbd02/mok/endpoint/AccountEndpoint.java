@@ -71,4 +71,9 @@ public class AccountEndpoint {
     public void updatePasswordAsAdmin(Long id, AccountUpdatePasswordDto password) {
         accountService.changeAccountPasswordAsAdmin(id, password);
     }
+
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
+        accountService.updateOwnPassword(data);
+    }
 }

@@ -43,7 +43,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw CustomApplicationException.NoUserFound();
+            throw CustomApplicationException.noAccountFound();
         }
     }
 
