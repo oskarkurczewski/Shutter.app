@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 
@@ -105,10 +106,41 @@ public class AccountService {
     }
 
 
+    /**
+     * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
+     * @param accountId ID użytkownika, którego hasło administrator chce zmienić
+     * @param data obiekt zawierający nowe hasło dla wskazanego użytkownika
+     */
     @RolesAllowed({"ADMINISTRATOR"})
     public void changeAccountPasswordAsAdmin(Long accountId, AccountUpdatePasswordDto data) {
         Account target = accountFacade.find(accountId);
-        String newPassword = data.getPassword();
+        changePassword(target, data.getPassword());
+    }
+
+    /**
+     * Metoda pozwalająca zmienić własne hasło
+     * @param data obiekt zawierający stare hasło (w celu werfyikacji) oraz nowe mające być ustawione dla użytkownika
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
+        if (data.getOldPassword() == null) {
+            throw new WrongPasswordException("Old password cannot be null");
+        }
+        Account current = authenticationContext.getCurrentUsersAccount();
+        String oldHash = BCrypt.withDefaults().hashToString(6, data.getOldPassword().toCharArray());
+        if (!oldHash.equals(current.getPassword())) {
+            throw new PasswordMismatchException();
+        }
+        changePassword(current, data.getPassword());
+    }
+
+    /**
+     * Pomocnicza metoda utworzone w celu uniknięcia powtarzania kodu.
+     * Zmienia hasło wskazanego użytkownika
+     * @param target ID użytkownika, którego modyfikujemy
+     * @param newPassword nowe hasło dla użytkownika
+     */
+    private void changePassword(Account target, String newPassword) {
         if (newPassword.trim().length() < 8) {
             throw new WrongPasswordException("New password cannot be applied");
         }
@@ -146,5 +178,21 @@ public class AccountService {
         account.setAccessLevelAssignmentList(list);
 
         accountFacade.registerAccount(account);
+    }
+
+    /**
+     * Funckja do edycji danych użytkownika. Zmienia tylko proste informacje a nie role dostępu itp
+     *
+     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @return obiekt użytkownika po aktualizacji
+     * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public Account editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        account.setEmail(editAccountInfoDto.getEmail());
+        account.setName(editAccountInfoDto.getName());
+        account.setSurname(editAccountInfoDto.getSurname());
+        return accountFacade.update(account);
     }
 }
