@@ -1,7 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
@@ -26,7 +29,7 @@ public class AccountEndpoint {
      *
      * @param login login użytkownika dla którego chcemy zmienić status
      * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
-     * @throws NoAuthenticatedAccount kiedy użytkonwik o danym loginie nie zostanie odnaleziony
+     * @throws NoAuthenticatedAccount kiedy użytkownik o danym loginie nie zostanie odnaleziony
      * w bazie danych
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
@@ -50,6 +53,23 @@ public class AccountEndpoint {
         account.setName(accountRegisterDto.getName());
         account.setSurname(accountRegisterDto.getSurname());
         accountService.registerAccount(account);
+    }
+
+    /**
+     * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
+     *
+     * @param accountId Identyfikator konta użytkownika
+     * @param data Obiekt zawierający informacje o zmienianym poziomie dostępu
+     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
+     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
+     * nigdy nie posiadał
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void changeAccountAccessLevel(Long accountId, AccountAccessLevelChangeDto data)
+            throws CannotChangeException, DataNotFoundException {
+        accountService.changeAccountAccessLevel(accountId, data.getAccessLevel(), data.getActive());
     }
 
     @RolesAllowed({"ADMINISTRATOR"})
