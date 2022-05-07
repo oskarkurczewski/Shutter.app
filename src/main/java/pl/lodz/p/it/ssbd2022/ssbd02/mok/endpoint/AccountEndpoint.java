@@ -4,10 +4,13 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 
 import javax.annotation.security.PermitAll;
@@ -29,11 +32,11 @@ public class AccountEndpoint {
      *
      * @param login login użytkownika dla którego chcemy zmienić status
      * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
-     * @throws NoAuthenticatedAccount kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      * w bazie danych
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public void changeAccountStatus(String login, Boolean active) throws NoAuthenticatedAccount {
+    public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
         accountService.changeAccountStatus(login, active);
     }
 
@@ -72,8 +75,25 @@ public class AccountEndpoint {
         accountService.changeAccountAccessLevel(accountId, data.getAccessLevel(), data.getActive());
     }
 
+    /**
+     * Wywołuję funkcję do edycji danych użytkownika
+     *
+     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @throws NoAuthenticatedUserFound
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
+        // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
+        accountService.editAccountInfo(editAccountInfoDto);
+    }
+
     @RolesAllowed({"ADMINISTRATOR"})
     public void updatePasswordAsAdmin(Long id, AccountUpdatePasswordDto password) {
         accountService.changeAccountPasswordAsAdmin(id, password);
+    }
+
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
+        accountService.updateOwnPassword(data);
     }
 }
