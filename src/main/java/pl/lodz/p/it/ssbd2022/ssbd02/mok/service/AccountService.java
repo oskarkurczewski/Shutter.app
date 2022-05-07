@@ -31,10 +31,10 @@ public class AccountService {
     /**
      * Zmienie status użytkownika o danym loginie na podany
      *
-     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param active status który ma zostać ustawiony
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
-     * w bazie danych
+     *                        w bazie danych
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
     public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
@@ -45,8 +45,9 @@ public class AccountService {
 
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
+     *
      * @param accountId ID użytkownika, którego hasło administrator chce zmienić
-     * @param data obiekt zawierający nowe hasło dla wskazanego użytkownika
+     * @param data      obiekt zawierający nowe hasło dla wskazanego użytkownika
      */
     @RolesAllowed({"ADMINISTRATOR"})
     public void changeAccountPasswordAsAdmin(Long accountId, AccountUpdatePasswordDto data) {
@@ -56,6 +57,7 @@ public class AccountService {
 
     /**
      * Metoda pozwalająca zmienić własne hasło
+     *
      * @param data obiekt zawierający stare hasło (w celu werfyikacji) oraz nowe mające być ustawione dla użytkownika
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
@@ -74,7 +76,8 @@ public class AccountService {
     /**
      * Pomocnicza metoda utworzone w celu uniknięcia powtarzania kodu.
      * Zmienia hasło wskazanego użytkownika
-     * @param target ID użytkownika, którego modyfikujemy
+     *
+     * @param target      ID użytkownika, którego modyfikujemy
      * @param newPassword nowe hasło dla użytkownika
      */
     private void changePassword(Account target, String newPassword) {
@@ -127,6 +130,22 @@ public class AccountService {
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
     public Account editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
         Account account = authenticationContext.getCurrentUsersAccount();
+        account.setEmail(editAccountInfoDto.getEmail());
+        account.setName(editAccountInfoDto.getName());
+        account.setSurname(editAccountInfoDto.getSurname());
+        return accountFacade.update(account);
+    }
+
+    /**
+     * Funckja do edycji danych innego użytkownika przez Administratora. Zmienia tylko proste informacje a nie role dostępu itp
+     *
+     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @return obiekt użytkownika po aktualizacji
+     * @throws NoAccountFound W przypadku gdy nie znaleziono użytkownika o danym loginie
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public Account editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws NoAccountFound {
+        Account account = accountFacade.findByLogin(login);
         account.setEmail(editAccountInfoDto.getEmail());
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
