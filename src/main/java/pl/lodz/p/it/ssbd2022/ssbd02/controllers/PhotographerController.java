@@ -35,4 +35,18 @@ public class PhotographerController {
     public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws DataNotFoundException, UnauthenticatedException {
         return photographerEndpoint.getPhotographerInfo(login);
     }
+
+    /**
+     * Punkt końcowy zwracający informacje o zalogowanym fotografie
+     *
+     * @throws DataNotFoundException W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see PhotographerInfoDto
+     */
+    @GET
+    @Path("/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public PhotographerInfoDto getUserInfo() throws DataNotFoundException, UnauthenticatedException {
+        return photographerEndpoint.getYourPhotographerInfo();
+    }
 }

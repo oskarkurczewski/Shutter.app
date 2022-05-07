@@ -75,6 +75,18 @@ public class AccountEndpoint {
     public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
         return accountService.getAccountInfo(login);
     }
+
+    /**
+     * Zwraca informacje o zalogowanym użytkowniku
+     *
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
+        return accountService.getYourAccountInfo();
+    }
     
     
 }

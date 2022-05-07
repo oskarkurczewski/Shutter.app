@@ -87,6 +87,23 @@ public class AccountService {
         }
     }
 
+    /**
+     * Zwraca informacje o zalogowanym użytkowniku
+     *
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
+        try {
+            Account account = authenticationContext.getCurrentUsersAccount();
+            return new AccountInfoDto(account);
+        } catch (NoAuthenticatedUserFound e) {
+            throw new UnauthenticatedException("exception.account.unauthenticated");
+        }
+    }
+
 
     @RolesAllowed({"ADMINISTRATOR"})
     public void changeAccountPasswordAsAdmin(Long accountId, AccountUpdatePasswordDto data) {

@@ -86,4 +86,18 @@ public class AccountController {
     public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws DataNotFoundException, UnauthenticatedException {
             return accountEndpoint.getAccountInfo(login);
     }
+
+    /**
+     * Punkt końcowy zwracający dane o zalogowanym użytkowniku
+     *
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
+    @GET
+    @Path("/info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public AccountInfoDto getUserInfo() throws UnauthenticatedException {
+            return accountEndpoint.getYourAccountInfo();
+    }
 }

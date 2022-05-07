@@ -32,4 +32,16 @@ public class PhotographerEndpoint {
     public PhotographerInfoDto getPhotographerInfo(String login) throws DataNotFoundException, UnauthenticatedException {
         return photographerService.getPhotographerInfo(login);
     }
+
+    /**
+     * Zwraca informacje o zalogowanym fotografie
+     *
+     * @throws DataNotFoundException W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see PhotographerInfoDto
+     */
+    @RolesAllowed({"PHOTOGRAPHER"})
+    public PhotographerInfoDto getYourPhotographerInfo() throws DataNotFoundException, UnauthenticatedException {
+        return photographerService.getYourPhotographerInfo();
+    }
 }

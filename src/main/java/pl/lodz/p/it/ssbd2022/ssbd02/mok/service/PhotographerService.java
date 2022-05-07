@@ -71,4 +71,24 @@ public class PhotographerService {
             throw new UnauthenticatedException("exception.account.unauthenticated");
         }
     }
+
+    /**
+     * Zwraca informacje o zalogowanym fotografie
+     *
+     * @throws DataNotFoundException W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see PhotographerInfoDto
+     */
+    @RolesAllowed({"PHOTOGRAPHER"})
+    public PhotographerInfoDto getYourPhotographerInfo() throws UnauthenticatedException, DataNotFoundException {
+        try {
+            return new PhotographerInfoDto(
+                    accountFacade.findPhotographerByLogin(
+                            authenticationContext.getCurrentUsersAccount().getLogin()
+                    )
+            );
+        } catch (NoAuthenticatedUserFound e) {
+            throw new UnauthenticatedException("exception.account.unauthenticated");
+        }
+    }
 }
