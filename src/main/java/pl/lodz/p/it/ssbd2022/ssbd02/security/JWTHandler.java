@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
 import io.fusionauth.jwt.InvalidJWTException;
+import io.fusionauth.jwt.JWTExpiredException;
 import io.fusionauth.jwt.Signer;
 import io.fusionauth.jwt.Verifier;
 import io.fusionauth.jwt.domain.JWT;
@@ -59,7 +60,7 @@ public class JWTHandler {
             JWT jwt = JWT.getDecoder().decode(token, verifier);
             if (jwt.isExpired()) return null;
             return jwt;
-        } catch (InvalidJWTException invalidJWTException) {
+        } catch (InvalidJWTException | JWTExpiredException exception) {
             return null;
         }
     }

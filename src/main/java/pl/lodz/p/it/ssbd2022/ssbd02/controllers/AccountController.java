@@ -1,12 +1,16 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccount;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountStatusChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
+import javax.ejb.AccessLocalException;
+import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -63,6 +67,21 @@ public class AccountController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
         accountEndpoint.registerAccount(accountRegisterDto);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta, przez administratora.
+     *
+     * @param accountRegisterAsAdminDto Rozszerzony obiekt przedstawiające dane użytkownika do rejestracji
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia rejestracji użytkownika
+     */
+    @POST
+    @Path("/register-as-admin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws BaseApplicationException {
+        accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto);
         return Response.status(Response.Status.CREATED).build();
     }
 
