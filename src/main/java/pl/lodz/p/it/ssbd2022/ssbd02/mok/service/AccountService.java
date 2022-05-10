@@ -18,6 +18,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.List;
 
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountService {
@@ -36,7 +38,7 @@ public class AccountService {
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      * w bazie danych
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
         Account account = accountFacade.findByLogin(login);
         account.setActive(active);
@@ -48,7 +50,7 @@ public class AccountService {
      * @param accountId ID użytkownika, którego hasło administrator chce zmienić
      * @param data obiekt zawierający nowe hasło dla wskazanego użytkownika
      */
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed(changeSomeonesPassword)
     public void changeAccountPasswordAsAdmin(Long accountId, AccountUpdatePasswordDto data) {
         Account target = accountFacade.find(accountId);
         changePassword(target, data.getPassword());
@@ -58,7 +60,7 @@ public class AccountService {
      * Metoda pozwalająca zmienić własne hasło
      * @param data obiekt zawierający stare hasło (w celu werfyikacji) oraz nowe mające być ustawione dla użytkownika
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    @RolesAllowed(changeOwnPassword)
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
         if (data.getOldPassword() == null) {
             throw new WrongPasswordException("Old password cannot be null");
@@ -124,7 +126,7 @@ public class AccountService {
      * @return obiekt użytkownika po aktualizacji
      * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    @RolesAllowed(editOwnAccountData)
     public Account editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
         Account account = authenticationContext.getCurrentUsersAccount();
         account.setEmail(editAccountInfoDto.getEmail());
