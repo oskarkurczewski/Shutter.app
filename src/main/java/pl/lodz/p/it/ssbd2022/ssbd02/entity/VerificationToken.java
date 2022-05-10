@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "token")
 @NamedQueries({
-        @NamedQuery(name = "VerificationToken.findByExpirationIsBefore", query = "select v from VerificationToken v where v.expiration < :expiration")
+        @NamedQuery(name = "VerificationToken.findByTokenEquals", query = "select v from VerificationToken v where v.token = :token")
 })
 public class VerificationToken {
 
@@ -26,9 +26,12 @@ public class VerificationToken {
     private Long version;
 
     @Id
-    @NotNull
     @Column(updatable = false)
-    private String id;
+    private Long id;
+
+    @NotNull
+    @Column(updatable = false, unique = true, nullable = false)
+    private String token;
 
     /**
      * Data ważności tokenu
@@ -61,7 +64,7 @@ public class VerificationToken {
     }
 
     public VerificationToken(LocalDateTime expiration, Account targetUser, TokenType type) {
-        this.id = UUID.randomUUID().toString();
+        this.token = UUID.randomUUID().toString();
         this.tokenType = type;
         this.expiration = expiration;
         this.targetUser = targetUser;

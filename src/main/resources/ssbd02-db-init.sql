@@ -216,11 +216,14 @@ ALTER TABLE public.specialization OWNER TO ssbd02admin;
 
 CREATE TABLE public.token (
     version bigint,
-    id character varying(64),
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    token character varying(64),
     "expiration" timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
     token_type character varying(32)
 );
+
+ALTER TABLE ONLY public.token ADD CONSTRAINT token_key UNIQUE (token);
 
 ALTER TABLE ONLY public.token OWNER TO ssbd02admin;
 
