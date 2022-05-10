@@ -39,6 +39,7 @@ public class VerificationToken {
 
     /**
      * Użytkownik, którego dotyczy token
+     *
      * @see Account
      */
     @NotNull
@@ -48,19 +49,20 @@ public class VerificationToken {
 
     /**
      * Typ danego tokenu
+     *
      * @see TokenType
      */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, updatable = false)
-    private TokenType type;
+    @Column(name = "token_type", nullable = false, updatable = false)
+    private TokenType tokenType;
 
     public VerificationToken() {
     }
 
     public VerificationToken(LocalDateTime expiration, Account targetUser, TokenType type) {
         this.id = UUID.randomUUID().toString();
-        this.type = type;
+        this.tokenType = type;
         this.expiration = expiration;
         this.targetUser = targetUser;
     }
