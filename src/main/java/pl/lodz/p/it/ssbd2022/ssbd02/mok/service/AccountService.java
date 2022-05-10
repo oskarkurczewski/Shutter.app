@@ -137,7 +137,7 @@ public class AccountService {
     }
 
     /**
-     * Funckja do edycji danych innego użytkownika przez Administratora. Zmienia tylko proste informacje a nie role dostępu itp
+     * Funckja do edycji danych innego użytkownika przez Administratora. Pozwala zmienić jedynie email, imię oraz nazwisko
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      * @return obiekt użytkownika po aktualizacji
