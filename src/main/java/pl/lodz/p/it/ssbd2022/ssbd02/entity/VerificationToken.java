@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.util.UUID;
  * żądania zmiany hasła lub potwierdzenia rejestracji konta
  */
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "token")
 @NamedQueries({
@@ -59,9 +61,6 @@ public class VerificationToken {
     @Enumerated(EnumType.STRING)
     @Column(name = "token_type", nullable = false, updatable = false)
     private TokenType tokenType;
-
-    public VerificationToken() {
-    }
 
     public VerificationToken(LocalDateTime expiration, Account targetUser, TokenType type) {
         this.token = UUID.randomUUID().toString();
