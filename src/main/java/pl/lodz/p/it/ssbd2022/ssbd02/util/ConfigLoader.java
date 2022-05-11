@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- *
+ * Klasa służąca do wczytywania plików konfiguracyjnych
  */
 @Stateless
 public class ConfigLoader {
