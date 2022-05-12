@@ -16,6 +16,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class AccountEndpoint {
@@ -31,7 +33,7 @@ public class AccountEndpoint {
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      * w bazie danych
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
         accountService.changeAccountStatus(login, active);
     }
@@ -60,18 +62,18 @@ public class AccountEndpoint {
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      * @throws NoAuthenticatedUserFound
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    @RolesAllowed(editOwnAccountData)
     public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
         accountService.editAccountInfo(editAccountInfoDto);
     }
 
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed(changeSomeonesPassword)
     public void updatePasswordAsAdmin(Long id, AccountUpdatePasswordDto password) {
         accountService.changeAccountPasswordAsAdmin(id, password);
     }
 
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
+    @RolesAllowed(changeOwnPassword)
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
         accountService.updateOwnPassword(data);
     }
