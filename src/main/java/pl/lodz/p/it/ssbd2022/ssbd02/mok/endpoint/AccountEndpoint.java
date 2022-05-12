@@ -28,10 +28,10 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na podany
      *
-     * @param login login użytkownika dla którego chcemy zmienić status
+     * @param login  login użytkownika dla którego chcemy zmienić status
      * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
-     * w bazie danych
+     *                        w bazie danych
      */
     @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
@@ -60,7 +60,7 @@ public class AccountEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @throws NoAuthenticatedUserFound
+     * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
      */
     @RolesAllowed(editOwnAccountData)
     public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
@@ -68,7 +68,19 @@ public class AccountEndpoint {
         accountService.editAccountInfo(editAccountInfoDto);
     }
 
-    @RolesAllowed(changeSomeonesPassword)
+    /**
+     * Wywołuję funkcję do edycji danych użytkownika przez administratora
+     *
+     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @throws NoAccountFound W przypadku gdy nie znaleziono użytkownika o danym loginie
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws NoAccountFound {
+        // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
+        accountService.editAccountInfoAsAdmin(login, editAccountInfoDto);
+    }
+
+    @RolesAllowed({"ADMINISTRATOR"})
     public void updatePasswordAsAdmin(Long id, AccountUpdatePasswordDto password) {
         accountService.changeAccountPasswordAsAdmin(id, password);
     }

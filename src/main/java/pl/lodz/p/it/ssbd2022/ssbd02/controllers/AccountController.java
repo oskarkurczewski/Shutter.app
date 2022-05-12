@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountStatusChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
@@ -25,13 +25,13 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na podany
      *
-     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param accountStatusChangeDto obiekt dto przechowujący status który ma zostać ustawiony
      */
     @PUT
     @Path("/{login}/status")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountStatus (
+    public void changeAccountStatus(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
     ) {
@@ -94,6 +94,26 @@ public class AccountController {
             // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
             accountEndpoint.editAccountInfo(editAccountInfoDto);
         } catch (NoAuthenticatedUserFound e) {
+            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Pozwala zmienić informację użytkownika przez administratora przez podany login
+     *
+     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     */
+    @PUT
+    @Path("/{login}/editAccountInfo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void editAccountInfo(
+            @NotNull @PathParam("login") String login,
+            @NotNull @Valid EditAccountInfoDto editAccountInfoDto
+    ) {
+        try {
+            // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
+            accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto);
+        } catch (NoAccountFound e) {
             throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
         }
     }
