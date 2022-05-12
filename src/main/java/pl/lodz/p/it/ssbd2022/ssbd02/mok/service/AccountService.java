@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.ListDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 
@@ -51,9 +52,9 @@ public class AccountService {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik 
-     * niebędący ani administratorem ani moderatorem
+     * @throws DataNotFoundException    W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                                  gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik
+     *                                  niebędący ani administratorem ani moderatorem
      * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
@@ -108,8 +109,9 @@ public class AccountService {
 
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
+     *
      * @param accountId ID użytkownika, którego hasło administrator chce zmienić
-     * @param data obiekt zawierający nowe hasło dla wskazanego użytkownika
+     * @param data      obiekt zawierający nowe hasło dla wskazanego użytkownika
      */
     @RolesAllowed({"ADMINISTRATOR"})
     public void changeAccountPasswordAsAdmin(Long accountId, AccountUpdatePasswordDto data) {
@@ -119,6 +121,7 @@ public class AccountService {
 
     /**
      * Metoda pozwalająca zmienić własne hasło
+     *
      * @param data obiekt zawierający stare hasło (w celu werfyikacji) oraz nowe mające być ustawione dla użytkownika
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
@@ -137,7 +140,8 @@ public class AccountService {
     /**
      * Pomocnicza metoda utworzone w celu uniknięcia powtarzania kodu.
      * Zmienia hasło wskazanego użytkownika
-     * @param target ID użytkownika, którego modyfikujemy
+     *
+     * @param target      ID użytkownika, którego modyfikujemy
      * @param newPassword nowe hasło dla użytkownika
      */
     private void changePassword(Account target, String newPassword) {
@@ -194,5 +198,22 @@ public class AccountService {
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
         return accountFacade.update(account);
+    }
+
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    public ListDto<String> getAccountList(int page, int recordsPerPage, String orderBy, String order) {
+
+        int allRecords = accountFacade.getAccountTableSize();
+        return new ListDto<>(
+                page,
+                (int) Math.ceil(allRecords / recordsPerPage), 
+                recordsPerPage,
+                allRecords,
+                accountFacade
+                        .getAccountList(page, recordsPerPage, orderBy, order)
+                        .stream()
+                        .map(Account::getLogin)
+                        .collect(Collectors.toList())
+        );
     }
 }

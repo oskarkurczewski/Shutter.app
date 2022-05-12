@@ -10,5 +10,7 @@ public final class REGEXP {
 
     public static final String LOGIN_PATTERN
             = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){1,13}[a-zA-Z0-9]$";
-
+    
+    public static final String ORDER_PATTERN
+            = "^asc|desc$";
 }

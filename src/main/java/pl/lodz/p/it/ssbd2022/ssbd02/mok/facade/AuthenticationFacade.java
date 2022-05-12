@@ -17,6 +17,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_LOGIN;
 
@@ -64,7 +67,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         query.setParameter("login", login);
         try {
             return query.getSingleResult();
-        } catch (NoResultException e){
+        } catch (NoResultException e) {
             throw new DataNotFoundException("exception.photographer.notfound");
         }
     }
@@ -92,5 +95,36 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
             //  TODO jakaś wiadomość do wyjątku?
             throw new DatabaseException(ex.getMessage());
         }
+    }
+
+    public List<Account> getAccountList(int page, int recordsPerPage, String orderBy, String order) {
+        List<Account> accountList = new ArrayList<>();
+        switch (order) {
+            case "asc": {
+                accountList = getEm()
+                        .createNamedQuery("account.getAccountListAsc", Account.class)
+                        .setParameter("column", orderBy)
+                        .setFirstResult(recordsPerPage * (page - 1))
+                        .setMaxResults(recordsPerPage)
+                        .getResultList();
+                break;
+            }
+            case "desc": {
+                accountList = getEm()
+                        .createNamedQuery("account.getAccountListDesc", Account.class)
+                        .setParameter("column", orderBy)
+                        .setFirstResult(recordsPerPage * (page - 1))
+                        .setMaxResults(recordsPerPage)
+                        .getResultList();
+                break;
+            }
+        }
+        return accountList;
+    }
+    
+    public int getAccountTableSize() {
+        return getEm()
+                .createNamedQuery("account.getTableSize", Account.class)
+                .getFirstResult();
     }
 }

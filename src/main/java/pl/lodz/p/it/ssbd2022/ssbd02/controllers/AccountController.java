@@ -2,14 +2,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountStatusChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
 import javax.inject.Inject;
@@ -130,6 +126,24 @@ public class AccountController {
         } catch (NoAuthenticatedUserFound e) {
             throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
         }
+    }
+    
+    @GET
+    @Path("list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListDto getAccountList (
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("columnName") @NotNull String columnName,
+            @QueryParam("order") @DefaultValue("asc") String order
+    ){
+        return accountEndpoint.getAccountList(
+                pageNo,
+                recordsPerPage,
+                columnName,
+                order
+        );
     }
 
 }
