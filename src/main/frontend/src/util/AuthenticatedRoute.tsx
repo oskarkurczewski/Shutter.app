@@ -4,10 +4,10 @@ import { JsxAttributeLike } from "typescript";
 
 interface AuthenticatedRouteProps {
    children: JSX.Element;
-   token: string;
 }
 
-const AuthenticatedRoute = ({ children, token }: AuthenticatedRouteProps) => {
+const AuthenticatedRoute = ({ children }: AuthenticatedRouteProps) => {
+   const token = localStorage.getItem("token");
    const location = useLocation();
    if (token == "") {
       return <Navigate to="/login" state={{ from: location }} replace />;

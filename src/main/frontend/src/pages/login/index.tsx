@@ -5,26 +5,26 @@ import TextInput from "components/shared/TextInput";
 import Button from "components/shared/Button";
 import { getToken } from "actions/loginActions";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "redux/hooks";
+import { getLoginPayload } from "util/loginUtil";
+import { login } from "redux/slices/authSlice";
 
-interface LoginProps {
-   setToken: (token: string) => void;
-}
-
-const LoginPage = ({ setToken }: LoginProps) => {
-   const [login, setLogin] = useState<string>("");
+const LoginPage = () => {
+   const [username, setUsername] = useState<string>("");
    const [password, setPassword] = useState<string>("");
    const [showMesage, setShowMessage] = useState<boolean>(false);
    const navigate = useNavigate();
+   const dispatch = useAppDispatch();
 
    const onSubmit = async (
       e: React.MouseEvent<HTMLDivElement, MouseEvent> &
          React.KeyboardEvent<HTMLDivElement>
    ) => {
       try {
-         const token = await getToken(login, password);
+         await getToken(username, password);
          setShowMessage(false);
-         setToken(token);
          navigate("/dashboard");
+         dispatch(login(getLoginPayload()));
       } catch (err) {
          setShowMessage(true);
       }
@@ -37,8 +37,8 @@ const LoginPage = ({ setToken }: LoginProps) => {
             <TextInput
                icon="person"
                placeholder="Login"
-               value={login}
-               onChange={(e) => setLogin(e.target.value)}
+               value={username}
+               onChange={(e) => setUsername(e.target.value)}
             />
             <TextInput
                icon="lock"

@@ -1,22 +1,17 @@
 import React from "react";
 import "./style.scss";
 import Card from "components/shared/Card";
-import jwtDecode from "jwt-decode";
 import Button from "components/shared/Button";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
-interface DashboardProps {
-   token: string;
-   setToken: (token: string) => void;
-}
-
-const DashboardPage = ({ token, setToken }: DashboardProps) => {
-   const decoded = jwtDecode(token);
-   const decodedJson = JSON.parse(JSON.stringify(decoded));
-   const roles = decodedJson.roles.split(",");
-   const name = decodedJson.sub;
+const DashboardPage = () => {
+   const dispatch = useAppDispatch();
+   const name = useAppSelector((state) => state.auth.username);
+   const roles = useAppSelector((state) => state.auth.accessLevel);
 
    const handleClick = () => {
-      setToken("");
+      //TODO wylogowanie
+      console.log("wylogowanie");
    };
 
    return (

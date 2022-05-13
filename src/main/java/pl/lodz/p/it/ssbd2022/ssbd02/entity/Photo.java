@@ -30,7 +30,7 @@ public class Photo {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "photographer_id", nullable = false)
-    private Photographer photographer;
+    private PhotographerInfo photographer;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -60,7 +60,7 @@ public class Photo {
             joinColumns = {@JoinColumn(name = "photo_id")},
             inverseJoinColumns = {@JoinColumn(name = "account_id")}
     )
-    private List<User> likesList = new ArrayList<>();
+    private List<Account> likesList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

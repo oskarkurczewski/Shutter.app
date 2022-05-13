@@ -18,10 +18,15 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @ToString
+
 @Entity
 @Table(name = "account")
-@NamedQuery(name = "user.findByLogin", query = "SELECT u from User u WHERE u.login = :login")
-public class User {
+
+@NamedQueries({
+        @NamedQuery(name = "account.findByLogin", query = "SELECT u from Account u WHERE u.login = :login"),
+        @NamedQuery(name = "account.getAccessLevelValue", query = "SELECT level FROM AccessLevelValue AS level WHERE level.name = :access_level")
+})
+public class Account {
 
     @Setter(value = AccessLevel.NONE)
     @Version
@@ -30,8 +35,7 @@ public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @NotNull
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     /**
@@ -73,7 +77,7 @@ public class User {
     /**
      * Lista reprezentująca poziomy dostępu danego konta
      */
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     private List<AccessLevelAssignment> accessLevelAssignmentList = new LinkedList<>();
 
@@ -90,29 +94,29 @@ public class User {
      */
     @ToString.Exclude
     @OneToMany(mappedBy = "reportee")
-    private List<UserReport> userReportsList = new ArrayList<>();
+    private List<AccountReport> accountReportsList = new ArrayList<>();
 
     /**
      * Zgłoszenia dotyczące konta
      */
     @ToString.Exclude
     @OneToMany(mappedBy = "reported")
-    private List<UserReport> ownReportsList = new ArrayList<>();
+    private List<AccountReport> ownReportsList = new ArrayList<>();
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "account")
     private List<PhotographerReport> photographerReportsList = new ArrayList<>();
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "account")
     private List<Reservation> reservationsList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        Account account = (Account) o;
+        return id != null && Objects.equals(id, account.id);
     }
 
     @Override

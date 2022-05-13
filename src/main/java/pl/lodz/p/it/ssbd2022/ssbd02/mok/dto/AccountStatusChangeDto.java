@@ -1,19 +1,23 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.User;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
 import javax.validation.constraints.NotNull;
 
-public class UserStatusChangeDto {
+
+/**
+ * Klasa reprezentująca zmianę statusu użytkownika w systemie
+ */
+public class AccountStatusChangeDto {
 
     @NotNull
     private Boolean active;
 
-    public UserStatusChangeDto() {
+    public AccountStatusChangeDto() {
     }
 
-    public UserStatusChangeDto(User user) {
-        this.active = user.getActive();
+    public AccountStatusChangeDto(Account account) {
+        this.active = account.getActive();
     }
 
     public Boolean getActive() {
@@ -26,7 +30,7 @@ public class UserStatusChangeDto {
 
     @Override
     public String toString() {
-        return "UserStatusChangeDto{" +
+        return "AccountStatusChangeDto{" +
                 "active=" + active +
                 '}';
     }
