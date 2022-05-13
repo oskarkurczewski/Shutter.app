@@ -33,7 +33,7 @@ public class AccountService {
     /**
      * Zmienie status użytkownika o danym loginie na podany
      *
-     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param active status który ma zostać ustawiony
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
@@ -94,7 +94,7 @@ public class AccountService {
     /**
      * Rejestruje konto użytkownika z danych podanych w obiekcie klasy użytkownika
      * oraz przypisuje do niego poziom dostępu klienta.
-     * W celu aktywowania konta należy jeszcze zmienić pole 'registered' na wartość 'true'
+     * W celu aktywowania konta należy jeszcze zmienić pole 'registered' na wartość 'true'.
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
      * @throws BaseApplicationException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
@@ -102,14 +102,44 @@ public class AccountService {
      */
     @PermitAll
     public void registerAccount(Account account) throws BaseApplicationException {
-
         account.setPassword(BCrypt.withDefaults().hashToString(6, account.getPassword().toCharArray()));
         account.setActive(true);
         account.setRegistered(false);
 
-        AccessLevelValue levelValue = accountFacade.getAccessLevelValue("CLIENT");
+        List<AccessLevelAssignment> list = addClientAccessLevel(account);
+        account.setAccessLevelAssignmentList(list);
 
+        accountFacade.registerAccount(account);
+    }
+
+    /**
+     * Rejestruje konto użytkownika z danych podanych w obiekcie klasy użytkownika (wraz z polami registered i active)
+     * oraz przypisuje do niego poziom dostępu klienta.
+     *
+     * @param account Obiekt klasy Account reprezentującej dane użytkownika
+     * @throws BaseApplicationException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
+     * @see Account
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void registerAccountByAdmin(Account account) throws BaseApplicationException {
+        account.setPassword(BCrypt.withDefaults().hashToString(6, account.getPassword().toCharArray()));
+
+        List<AccessLevelAssignment> list = addClientAccessLevel(account);
+        account.setAccessLevelAssignmentList(list);
+
+        accountFacade.registerAccount(account);
+    }
+
+    /**
+     * Metoda pomocnicza tworząca wpis o poziomie dostępu klient dla danego użytkownika.
+     *
+     * @param account Obiekt klasy Account reprezentującej dane użytkownika
+     * @return Lista poziomów dostępu użytkownika
+     */
+    private List<AccessLevelAssignment> addClientAccessLevel(Account account) {
+        AccessLevelValue levelValue = accountFacade.getAccessLevelValue("CLIENT");
         AccessLevelAssignment assignment = new AccessLevelAssignment();
+
         assignment.setLevel(levelValue);
         assignment.setAccount(account);
         assignment.setActive(true);
@@ -117,9 +147,7 @@ public class AccountService {
         List<AccessLevelAssignment> list = account.getAccessLevelAssignmentList();
         list.add(assignment);
 
-        account.setAccessLevelAssignmentList(list);
-
-        accountFacade.registerAccount(account);
+        return list;
     }
 
     /**

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
@@ -39,14 +40,43 @@ public class AccountEndpoint {
     }
 
     /**
-     * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji
+     * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji.
      *
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
      * @throws BaseApplicationException Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+        Account account = accountRegisterDtoToAccount(accountRegisterDto);
+        accountService.registerAccount(account);
+    }
 
+    /**
+     * Konwertuje obiekt transferu danych użytkownika (z dodatkowymi polami registered oraz active) obiekt klasy encji.
+     *
+     * @param accountRegisterAsAdminDto Obiekt zawierający dane użytkownika (z dodatkowymi polami registered oraz active)
+     * @throws BaseApplicationException Występuje w przypadku gdy rejestracja się nie powiedzie
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws BaseApplicationException {
+        Account account = accountRegisterDtoToAccount(accountRegisterAsAdminDto);
+        account.setActive(accountRegisterAsAdminDto.getActive());
+        account.setRegistered(accountRegisterAsAdminDto.getRegistered());
+        accountService.registerAccountByAdmin(account);
+    }
+
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void updatePasswordAsAdmin(Long id, AccountUpdatePasswordDto password) {
+        accountService.changeAccountPasswordAsAdmin(id, password);
+    }
+
+    /**
+     * Metoda pomocnicza konwertująca obiekt transferu danych na obiekt encji użytkownika
+     *
+     * @param accountRegisterDto Obiekt zawierający dane użytkownika
+     * @return Obiekt klasy encji użytkownika
+     */
+    private Account accountRegisterDtoToAccount(AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
         Account account = new Account();
         account.setLogin(accountRegisterDto.getLogin());
         account.setPassword(accountRegisterDto.getPassword());
@@ -54,6 +84,7 @@ public class AccountEndpoint {
         account.setName(accountRegisterDto.getName());
         account.setSurname(accountRegisterDto.getSurname());
         accountService.registerAccount(account);
+        return account;
     }
 
     /**
@@ -78,11 +109,6 @@ public class AccountEndpoint {
     public void editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws NoAccountFound {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
         accountService.editAccountInfoAsAdmin(login, editAccountInfoDto);
-    }
-
-    @RolesAllowed({"ADMINISTRATOR"})
-    public void updatePasswordAsAdmin(Long id, AccountUpdatePasswordDto password) {
-        accountService.changeAccountPasswordAsAdmin(id, password);
     }
 
     @RolesAllowed(changeOwnPassword)

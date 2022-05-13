@@ -3,12 +3,11 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountStatusChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
+import javax.ejb.AccessLocalException;
+import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -25,13 +24,13 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na podany
      *
-     * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param accountStatusChangeDto obiekt dto przechowujący status który ma zostać ustawiony
      */
     @PUT
     @Path("/{login}/status")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountStatus(
+    public void changeAccountStatus (
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
     ) {
@@ -76,6 +75,21 @@ public class AccountController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
         accountEndpoint.registerAccount(accountRegisterDto);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta, przez administratora.
+     *
+     * @param accountRegisterAsAdminDto Rozszerzony obiekt przedstawiające dane użytkownika do rejestracji
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia rejestracji użytkownika
+     */
+    @POST
+    @Path("/register-as-admin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws BaseApplicationException {
+        accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto);
         return Response.status(Response.Status.CREATED).build();
     }
 
