@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
@@ -17,6 +18,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -33,7 +35,7 @@ public class AccountService {
     /**
      * Zmienie status użytkownika o danym loginie na podany
      *
-     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param active status który ma zostać ustawiony
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
@@ -44,6 +46,67 @@ public class AccountService {
         account.setActive(active);
         accountFacade.getEm().merge(account); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
     }
+
+
+    /**
+     * Szuka użytkownika
+     *
+     * @param login nazwa użytkownika
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik 
+     * niebędący ani administratorem ani moderatorem
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
+        try {
+            Account authenticatedAccount = authenticationContext.getCurrentUsersAccount();
+            List<String> accesLevelList = authenticatedAccount
+                    .getAccessLevelAssignmentList()
+                    .stream()
+                    .filter(AccessLevelAssignment::getActive)
+                    .map(a -> a.getLevel().getName())
+                    .collect(Collectors.toList());
+            try {
+                Account account = accountFacade.findByLogin(login);
+                if (Boolean.TRUE.equals(!account.getActive()) || Boolean.TRUE.equals(!account.getRegistered())) {
+                    if (accesLevelList.contains("ADMINISTRATOR") || accesLevelList.contains("MODERATOR")) {
+                        return new AccountInfoDto(account);
+                    } else {
+                        throw new DataNotFoundException("exception.account.notfound");
+                    }
+                } else {
+                    return new AccountInfoDto(account);
+                }
+
+
+            } catch (NoAccountFound e) {
+                throw new DataNotFoundException("exception.account.notfound");
+            }
+        } catch (NoAuthenticatedUserFound e) {
+            throw new UnauthenticatedException("exception.account.unauthenticated");
+        }
+    }
+
+    /**
+     * Zwraca informacje o zalogowanym użytkowniku
+     *
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
+        try {
+            Account account = authenticationContext.getCurrentUsersAccount();
+            return new AccountInfoDto(account);
+        } catch (NoAuthenticatedUserFound e) {
+            throw new UnauthenticatedException("exception.account.unauthenticated");
+        }
+    }
+
 
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika

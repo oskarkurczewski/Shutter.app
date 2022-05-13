@@ -1,13 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CustomApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 
 import javax.ejb.Stateless;
@@ -51,6 +49,24 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
         query.setParameter("access_level", accessLevel);
         return query.getSingleResult();
+    }
+
+
+    /**
+     * Szuka profilu fotografa
+     *
+     * @param login nazwa użytkownika fotografa
+     * @throws DataNotFoundException W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
+     * @see PhotographerInfo
+     */
+    public PhotographerInfo findPhotographerByLogin(String login) throws DataNotFoundException {
+        TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
+        query.setParameter("login", login);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e){
+            throw new DataNotFoundException("exception.photographer.notfound");
+        }
     }
 
     /**

@@ -1,9 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
@@ -29,7 +32,7 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na podany
      *
-     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @param login login użytkownika dla którego chcemy zmienić status
      * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
@@ -111,7 +114,37 @@ public class AccountEndpoint {
         accountService.editAccountInfoAsAdmin(login, editAccountInfoDto);
     }
 
+    /**
+     * Szuka użytkownika
+     *
+     * @param login nazwa użytkownika
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik
+     * niebędący ani administratorem ani moderatorem
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
+        return accountService.getAccountInfo(login);
+    }
+
+    /**
+     * Zwraca informacje o zalogowanym użytkowniku
+     *
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see AccountInfoDto
+     */
     @RolesAllowed(changeOwnPassword)
+    public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
+        return accountService.getYourAccountInfo();
+    }
+
+
+
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
         accountService.updateOwnPassword(data);
     }

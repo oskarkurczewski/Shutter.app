@@ -119,7 +119,8 @@ CREATE TABLE public.photographer_info (
     review_count bigint DEFAULT 0 NOT NULL,
     description character varying(4096)[],
     lat real,
-    long real
+    long real,
+    visible boolean DEFAULT TRUE
 );
 
 ALTER TABLE public.photographer_info OWNER TO ssbd02admin;
