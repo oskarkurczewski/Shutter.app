@@ -15,9 +15,12 @@ export const authSlice = createSlice({
          state.username = action.payload.username;
          state.accessLevel = action.payload.accessLevel;
       },
+      logout: (state) => {
+         return initialState;
+      },
    },
 });
 
-export const { login } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;

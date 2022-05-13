@@ -5,8 +5,17 @@ import "./style.scss";
 import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
 import AuthenticatedRoute from "util/AuthenticatedRoute";
+import { useAppDispatch } from "redux/hooks";
+import { getLoginPayload } from "util/loginUtil";
+import { login } from "redux/slices/authSlice";
 
 function App() {
+   const dispatch = useAppDispatch();
+   if (localStorage.getItem("token")) {
+      const payload = getLoginPayload();
+      dispatch(login(payload));
+   }
+
    return (
       <BrowserRouter>
          <Routes>
