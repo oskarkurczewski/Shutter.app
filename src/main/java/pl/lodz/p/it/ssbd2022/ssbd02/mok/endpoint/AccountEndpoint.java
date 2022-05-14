@@ -1,7 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
@@ -40,10 +41,11 @@ public class AccountEndpoint {
      * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji.
      *
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
-     * @throws BaseApplicationException Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @PermitAll
-    public void registerAccount(AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+    public void registerAccount(AccountRegisterDto accountRegisterDto) throws IdenticalFieldException, DatabaseException {
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
         accountService.registerAccount(account);
     }
@@ -52,10 +54,11 @@ public class AccountEndpoint {
      * Konwertuje obiekt transferu danych użytkownika (z dodatkowymi polami registered oraz active) obiekt klasy encji.
      *
      * @param accountRegisterAsAdminDto Obiekt zawierający dane użytkownika (z dodatkowymi polami registered oraz active)
-     * @throws BaseApplicationException Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @RolesAllowed({"ADMINISTRATOR"})
-    public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws BaseApplicationException {
+    public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws IdenticalFieldException, DatabaseException {
         Account account = accountRegisterDtoToAccount(accountRegisterAsAdminDto);
         account.setActive(accountRegisterAsAdminDto.getActive());
         account.setRegistered(accountRegisterAsAdminDto.getRegistered());
@@ -73,7 +76,7 @@ public class AccountEndpoint {
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
      * @return Obiekt klasy encji użytkownika
      */
-    private Account accountRegisterDtoToAccount(AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+    private Account accountRegisterDtoToAccount(AccountRegisterDto accountRegisterDto) throws IdenticalFieldException, DatabaseException {
         Account account = new Account();
         account.setLogin(accountRegisterDto.getLogin());
         account.setPassword(accountRegisterDto.getPassword());
@@ -104,7 +107,7 @@ public class AccountEndpoint {
      */
     @RolesAllowed({"ADMINISTRATOR"})
     public void editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws NoAccountFound {
-        // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
+        // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakować go w dto
         accountService.editAccountInfoAsAdmin(login, editAccountInfoDto);
     }
 

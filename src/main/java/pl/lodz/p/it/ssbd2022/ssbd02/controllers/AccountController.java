@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
@@ -57,12 +58,13 @@ public class AccountController {
      *
      * @param accountRegisterDto Obiekt przedstawiające dane użytkownika do rejestracji
      * @return Odpowiedź HTTP
-     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia rejestracji użytkownika
+     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws IdenticalFieldException, DatabaseException {
         accountEndpoint.registerAccount(accountRegisterDto);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -72,12 +74,13 @@ public class AccountController {
      *
      * @param accountRegisterAsAdminDto Rozszerzony obiekt przedstawiające dane użytkownika do rejestracji
      * @return Odpowiedź HTTP
-     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia rejestracji użytkownika
+     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @POST
     @Path("/register-as-admin")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws BaseApplicationException {
+    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws IdenticalFieldException, DatabaseException {
         accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto);
         return Response.status(Response.Status.CREATED).build();
     }

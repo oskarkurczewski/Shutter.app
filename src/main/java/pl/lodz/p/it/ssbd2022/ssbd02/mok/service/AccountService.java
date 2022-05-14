@@ -4,10 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
@@ -150,11 +147,11 @@ public class AccountService {
      * W celu aktywowania konta należy jeszcze zmienić pole 'registered' na wartość 'true'.
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
-     * @throws BaseApplicationException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
+     * @throws IdenticalFieldException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
      * @see Account
      */
     @PermitAll
-    public void registerAccount(Account account) throws BaseApplicationException {
+    public void registerAccount(Account account) throws IdenticalFieldException, DatabaseException {
         account.setPassword(BCrypt.withDefaults().hashToString(6, account.getPassword().toCharArray()));
         account.setActive(true);
         account.setRegistered(false);
@@ -170,11 +167,11 @@ public class AccountService {
      * oraz przypisuje do niego poziom dostępu klienta.
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
-     * @throws BaseApplicationException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
+     * @throws IdenticalFieldException Wyjątek otrzymywany w przypadku niepowodzenia rejestracji (login lub adres email już istnieje)
      * @see Account
      */
     @RolesAllowed({"ADMINISTRATOR"})
-    public void registerAccountByAdmin(Account account) throws BaseApplicationException {
+    public void registerAccountByAdmin(Account account) throws IdenticalFieldException, DatabaseException {
         account.setPassword(BCrypt.withDefaults().hashToString(6, account.getPassword().toCharArray()));
 
         List<AccessLevelAssignment> list = addClientAccessLevel(account);
