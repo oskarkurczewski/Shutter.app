@@ -1,16 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
-import javax.ejb.AccessLocalException;
-import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,22 +22,17 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na podany
      *
-     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
-     * @param accountStatusChangeDto obiekt dto przechowujący status który ma zostać ustawiony
+     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     * @param accountStatusChangeDto obiekt dto przechowujący status, który ma zostać ustawiony
      */
     @PUT
     @Path("/{login}/status")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountStatus (
+    public void changeAccountStatus(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
-    ) {
-        try {
-            accountEndpoint.changeAccountStatus(login, accountStatusChangeDto.getActive());
-        } catch (NoAccountFound e) {
-            // to bedzie trzeba kiedys bardziej uporzadkowac
-            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
-        }
+    ) throws NoAccountFound {
+        accountEndpoint.changeAccountStatus(login, accountStatusChangeDto.getActive());
     }
 
     @PUT
@@ -57,12 +47,8 @@ public class AccountController {
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) {
-        try {
-            accountEndpoint.updateOwnPassword(data);
-        } catch (NoAuthenticatedUserFound e) {
-            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
-        }
+    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound {
+        accountEndpoint.updateOwnPassword(data);
     }
 
     /**
@@ -101,34 +87,35 @@ public class AccountController {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik
-     * niebędący ani administratorem ani moderatorem
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws DataNotFoundException, UnauthenticatedException {
-            return accountEndpoint.getAccountInfo(login);
+    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws NoAuthenticatedAccountFound, NoAccountFound {
+        return accountEndpoint.getAccountInfo(login);
     }
 
     /**
      * Punkt końcowy zwracający dane o zalogowanym użytkowniku
      *
      * @return obiekt DTO informacji o użytkowniku
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo() throws UnauthenticatedException {
-            return accountEndpoint.getYourAccountInfo();
+    public AccountInfoDto getUserInfo() throws NoAuthenticatedAccountFound {
+        return accountEndpoint.getYourAccountInfo();
     }
+
     /**
-     * Pozwala zmienić informację aktualnie zalogowanego użytkownika w opraciu o aktualnie zalogowanego użytkownika.
+     * Pozwala zmienić informację aktualnie zalogowanego użytkownika na podstawie aktualnie zalogowanego użytkownika.
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      */
@@ -137,13 +124,9 @@ public class AccountController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void editAccountInfo(
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
-    ) {
-        try {
-            // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-            accountEndpoint.editAccountInfo(editAccountInfoDto);
-        } catch (NoAuthenticatedUserFound e) {
-            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
-        }
+    ) throws NoAuthenticatedAccountFound {
+        // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
+        accountEndpoint.editAccountInfo(editAccountInfoDto);
     }
 
     /**
@@ -157,13 +140,9 @@ public class AccountController {
     public void editAccountInfo(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
-    ) {
-        try {
-            // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-            accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto);
-        } catch (NoAccountFound e) {
-            throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
-        }
+    ) throws NoAccountFound {
+        // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
+        accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto);
     }
 
 }

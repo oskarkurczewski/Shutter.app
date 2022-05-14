@@ -1,16 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 
 import javax.annotation.security.PermitAll;
@@ -32,10 +26,10 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na podany
      *
-     * @param login login użytkownika dla którego chcemy zmienić status
-     * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
-     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
+     * @param login  login użytkownika, dla którego chcemy zmienić status
+     * @param active status, który chcemy ustawić dla konta tego użytkownika
+     * @throws NoAccountFound, kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     *                         w bazie danych
      */
     @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
@@ -94,10 +88,10 @@ public class AccountEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
+     * @throws NoAuthenticatedAccountFound W przypadku gdy nie znaleziono aktualnego użytkownika
      */
     @RolesAllowed(editOwnAccountData)
-    public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
+    public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedAccountFound {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
         accountService.editAccountInfo(editAccountInfoDto);
     }
@@ -119,14 +113,14 @@ public class AccountEndpoint {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik
-     * niebędący ani administratorem ani moderatorem
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
-    public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
+    public AccountInfoDto getAccountInfo(String login) throws NoAuthenticatedAccountFound, NoAccountFound {
         return accountService.getAccountInfo(login);
     }
 
@@ -134,18 +128,17 @@ public class AccountEndpoint {
      * Zwraca informacje o zalogowanym użytkowniku
      *
      * @return obiekt DTO informacji o użytkowniku
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @RolesAllowed(changeOwnPassword)
-    public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
+    public AccountInfoDto getYourAccountInfo() throws NoAuthenticatedAccountFound {
         return accountService.getYourAccountInfo();
     }
 
 
-
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
-    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
+    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound {
         accountService.updateOwnPassword(data);
     }
 }

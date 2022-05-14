@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.EmailException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 import sendinblue.ApiClient;
 import sendinblue.ApiException;
@@ -95,9 +96,8 @@ public class EmailService {
 
         try {
             CreateSmtpEmail response = api.sendTransacEmail(sendSmtpEmail);
-            System.out.println(response.toString());
         } catch (ApiException e) {
-            throw new EmailException();
+            throw ExceptionFactory.emailException(e.getMessage());
         }
     }
 }

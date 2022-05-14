@@ -4,7 +4,10 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
@@ -33,12 +36,12 @@ public class AccountService {
     private AuthenticationContext authenticationContext;
 
     /**
-     * Zmienie status użytkownika o danym loginie na podany
+     * Zmienia status użytkownika o danym loginie na podany
      *
-     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
-     * @param active status który ma zostać ustawiony
-     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
+     * @param login  login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     * @param active status, który ma zostać ustawiony
+     * @throws NoAccountFound, kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     *                         w bazie danych
      */
     @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
@@ -53,40 +56,31 @@ public class AccountService {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik 
-     * niebędący ani administratorem ani moderatorem
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
-    public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
-        try {
-            Account authenticatedAccount = authenticationContext.getCurrentUsersAccount();
-            List<String> accesLevelList = authenticatedAccount
-                    .getAccessLevelAssignmentList()
-                    .stream()
-                    .filter(AccessLevelAssignment::getActive)
-                    .map(a -> a.getLevel().getName())
-                    .collect(Collectors.toList());
-            try {
-                Account account = accountFacade.findByLogin(login);
-                if (Boolean.TRUE.equals(!account.getActive()) || Boolean.TRUE.equals(!account.getRegistered())) {
-                    if (accesLevelList.contains("ADMINISTRATOR") || accesLevelList.contains("MODERATOR")) {
-                        return new AccountInfoDto(account);
-                    } else {
-                        throw new DataNotFoundException("exception.account.notfound");
-                    }
-                } else {
-                    return new AccountInfoDto(account);
-                }
+    public AccountInfoDto getAccountInfo(String login) throws NoAccountFound, NoAuthenticatedAccountFound {
+        Account authenticatedAccount = authenticationContext.getCurrentUsersAccount();
+        List<String> accesLevelList = authenticatedAccount
+                .getAccessLevelAssignmentList()
+                .stream()
+                .filter(AccessLevelAssignment::getActive)
+                .map(a -> a.getLevel().getName())
+                .collect(Collectors.toList());
 
-
-            } catch (NoAccountFound e) {
-                throw new DataNotFoundException("exception.account.notfound");
+        Account account = accountFacade.findByLogin(login);
+        if (Boolean.TRUE.equals(!account.getActive()) || Boolean.TRUE.equals(!account.getRegistered())) {
+            if (accesLevelList.contains("ADMINISTRATOR") || accesLevelList.contains("MODERATOR")) {
+                return new AccountInfoDto(account);
+            } else {
+                throw ExceptionFactory.noAccountFound();
             }
-        } catch (NoAuthenticatedUserFound e) {
-            throw new UnauthenticatedException("exception.account.unauthenticated");
+        } else {
+            return new AccountInfoDto(account);
         }
     }
 
@@ -94,17 +88,13 @@ public class AccountService {
      * Zwraca informacje o zalogowanym użytkowniku
      *
      * @return obiekt DTO informacji o użytkowniku
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
-    public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
-        try {
-            Account account = authenticationContext.getCurrentUsersAccount();
-            return new AccountInfoDto(account);
-        } catch (NoAuthenticatedUserFound e) {
-            throw new UnauthenticatedException("exception.account.unauthenticated");
-        }
+    public AccountInfoDto getYourAccountInfo() throws NoAuthenticatedAccountFound {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        return new AccountInfoDto(account);
     }
 
 
@@ -123,17 +113,17 @@ public class AccountService {
     /**
      * Metoda pozwalająca zmienić własne hasło
      *
-     * @param data obiekt zawierający stare hasło (w celu werfyikacji) oraz nowe mające być ustawione dla użytkownika
+     * @param data obiekt zawierający stare hasło (w celu weryfikacji) oraz nowe mające być ustawione dla użytkownika
      */
     @RolesAllowed(changeOwnPassword)
-    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
+    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound {
         if (data.getOldPassword() == null) {
-            throw new WrongPasswordException("Old password cannot be null");
+            throw ExceptionFactory.wrongPasswordException();
         }
         Account current = authenticationContext.getCurrentUsersAccount();
         String oldHash = BCrypt.withDefaults().hashToString(6, data.getOldPassword().toCharArray());
         if (!oldHash.equals(current.getPassword())) {
-            throw new PasswordMismatchException();
+            throw ExceptionFactory.passwordMismatchException();
         }
         changePassword(current, data.getPassword());
     }
@@ -147,7 +137,7 @@ public class AccountService {
      */
     private void changePassword(Account target, String newPassword) {
         if (newPassword.trim().length() < 8) {
-            throw new WrongPasswordException("New password cannot be applied");
+            throw ExceptionFactory.wrongPasswordException();
         }
         String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
         target.setPassword(hashed);
@@ -214,14 +204,14 @@ public class AccountService {
     }
 
     /**
-     * Funckja do edycji danych użytkownika. Zmienia tylko proste informacje a nie role dostępu itp
+     * Funkcja do edycji danych użytkownika. Zmienia tylko proste informacje, a nie role dostępu itp
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      * @return obiekt użytkownika po aktualizacji
-     * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
+     * @throws NoAuthenticatedAccountFound W przypadku gdy nie znaleziono aktualnego użytkownika
      */
     @RolesAllowed(editOwnAccountData)
-    public Account editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
+    public Account editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
         account.setEmail(editAccountInfoDto.getEmail());
         account.setName(editAccountInfoDto.getName());
@@ -230,7 +220,7 @@ public class AccountService {
     }
 
     /**
-     * Funckja do edycji danych innego użytkownika przez Administratora. Pozwala zmienić jedynie email, imię oraz nazwisko
+     * Funkcja do edycji danych innego użytkownika przez Administratora. Pozwala zmienić jedynie email, imię oraz nazwisko
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      * @return obiekt użytkownika po aktualizacji

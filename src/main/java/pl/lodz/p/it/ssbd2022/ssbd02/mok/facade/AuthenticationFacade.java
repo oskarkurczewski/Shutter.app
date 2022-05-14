@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
@@ -11,11 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_LOGIN;
@@ -41,7 +36,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw CustomApplicationException.noAccountFound();
+            throw ExceptionFactory.noAccountFound();
         }
     }
 
@@ -56,16 +51,16 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * Szuka profilu fotografa
      *
      * @param login nazwa użytkownika fotografa
-     * @throws DataNotFoundException W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
+     * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
      * @see PhotographerInfo
      */
-    public PhotographerInfo findPhotographerByLogin(String login) throws DataNotFoundException {
+    public PhotographerInfo findPhotographerByLogin(String login) throws NoPhotographerFound {
         TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);
         try {
             return query.getSingleResult();
-        } catch (NoResultException e){
-            throw new DataNotFoundException("exception.photographer.notfound");
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noPhotographerFound();
         }
     }
 
@@ -74,9 +69,9 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * w przypadku naruszenia unikatowości loginu lub adresu email otrzymujemy wyjątek
      *
      * @param account obiekt encji użytkownika
-     * @throws BaseApplicationException W przypadku, gdy login lub adres email już się znajduje w bazie danych
+     * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    public void registerAccount(Account account) throws BaseApplicationException {
+    public void registerAccount(Account account) throws DatabaseException, IdenticalFieldException {
         try {
             persist(account);
         } catch (PersistenceException ex) {
@@ -84,13 +79,12 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
                 String name = ((ConstraintViolationException) ex.getCause()).getConstraintName();
                 switch (name) {
                     case IDENTICAL_LOGIN:
-                        throw new IdenticalFieldException("exception.login.identical");
+                        throw ExceptionFactory.identicalFieldException("exception.login.identical");
                     case IDENTICAL_EMAIL:
-                        throw new IdenticalFieldException("exception.email.identical");
+                        throw ExceptionFactory.identicalFieldException("exception.email.identical");
                 }
             }
-            //  TODO jakaś wiadomość do wyjątku?
-            throw new DatabaseException(ex.getMessage());
+            throw ExceptionFactory.databaseException();
         }
     }
 }

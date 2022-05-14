@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.PhotographerEndpoint;
 
@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/photographer")
 public class PhotographerController {
-    
+
     @Inject
     PhotographerEndpoint photographerEndpoint;
 
@@ -23,30 +23,30 @@ public class PhotographerController {
      * Punkt końcowy szukający fotografa
      *
      * @param login nazwa użytkownika fotografa
-     * @throws DataNotFoundException W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje, 
-     * gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje prubuje uzyskać uzytkownik 
-     * niebędący ani administratorem ani moderatorem
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
+     *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see PhotographerInfoDto
      */
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws DataNotFoundException, UnauthenticatedException {
+    public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerEndpoint.getPhotographerInfo(login);
     }
 
     /**
      * Punkt końcowy zwracający informacje o zalogowanym fotografie
      *
-     * @throws DataNotFoundException W przypadku gdy profil fotografa dla użytkownika nie istnieje
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see PhotographerInfoDto
      */
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public PhotographerInfoDto getUserInfo() throws DataNotFoundException, UnauthenticatedException {
+    public PhotographerInfoDto getUserInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerEndpoint.getYourPhotographerInfo();
     }
 }
