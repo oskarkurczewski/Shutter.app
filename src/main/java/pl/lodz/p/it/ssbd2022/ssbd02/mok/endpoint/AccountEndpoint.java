@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
@@ -9,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
@@ -91,6 +93,23 @@ public class AccountEndpoint {
     }
 
     /**
+     * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
+     *
+     * @param accountId Identyfikator konta użytkownika
+     * @param data Obiekt zawierający informacje o zmienianym poziomie dostępu
+     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
+     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
+     * nigdy nie posiadał
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void changeAccountAccessLevel(Long accountId, AccountAccessLevelChangeDto data)
+            throws CannotChangeException, DataNotFoundException {
+        accountService.changeAccountAccessLevel(accountId, data.getAccessLevel(), data.getActive());
+    }
+
+    /**
      * Wywołuję funkcję do edycji danych użytkownika
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
@@ -125,7 +144,7 @@ public class AccountEndpoint {
      * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "CLIENT", "PHOTOGRAPHER"})
     public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
         return accountService.getAccountInfo(login);
     }
@@ -141,8 +160,6 @@ public class AccountEndpoint {
     public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
         return accountService.getYourAccountInfo();
     }
-
-
 
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {

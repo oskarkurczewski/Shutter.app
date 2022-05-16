@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
@@ -45,10 +45,40 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         }
     }
 
-    public AccessLevelValue getAccessLevelValue(String accessLevel) {
+    /**
+     * Pobiera przypisanie poziomu dostępu z bazy danych na podstawie przekazanego łańcucha znaków
+     * dla wskazanego użytkownika.
+     *
+     * @param accountID identyfikator użytkownika
+     * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
+     * @return AccessLevelAssignment
+     * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
+     */
+    public AccessLevelAssignment getAccessLevelAssignmentForAccount(Long accountID, String accessLevel) {
+        Account target = this.find(accountID);
+        return target.getAccessLevelAssignmentList().stream()
+                .filter(a -> a.getLevel().getName().equals(accessLevel))
+                .findAny()
+                .orElse(null);
+    }
+
+    /**
+     * Pobiera poziom dostępu z bazy danych na podstawie przekazanego łańcucha znaków,
+     * w przypadku nieznalezienia pasującego wyniku otrzymujemy wyjątek
+     *
+     * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
+     * @throws DataNotFoundException W przypadku, gdy funkcja nie znajdzie rekordu
+     * ze wskazaną nazwą
+     */
+    public AccessLevelValue getAccessLevelValue(String accessLevel) throws DataNotFoundException {
         TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
         query.setParameter("access_level", accessLevel);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new DataNotFoundException("exception.access_level.not_found");
+        }
+
     }
 
 

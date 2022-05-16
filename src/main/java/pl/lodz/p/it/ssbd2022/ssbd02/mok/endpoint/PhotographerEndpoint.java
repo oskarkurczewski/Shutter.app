@@ -28,7 +28,7 @@ public class PhotographerEndpoint {
      * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see PhotographerInfoDto
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "CLIENT", "PHOTOGRAPHER"})
     public PhotographerInfoDto getPhotographerInfo(String login) throws DataNotFoundException, UnauthenticatedException {
         return photographerService.getPhotographerInfo(login);
     }

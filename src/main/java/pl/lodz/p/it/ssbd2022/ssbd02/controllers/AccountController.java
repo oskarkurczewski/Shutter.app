@@ -4,13 +4,12 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
-import javax.ejb.AccessLocalException;
-import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -164,6 +163,27 @@ public class AccountController {
         } catch (NoAccountFound e) {
             throw new WebApplicationException(e.getMessage(), Response.Status.NOT_FOUND);
         }
+    }
+
+    /**
+     * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
+     *
+     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
+     * @return Odpowiedź HTTP
+     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
+     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
+     * nigdy nie posiadał
+     */
+    @POST
+    @Path("/{accountId}/accessLevel")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response assignAccountAccessLevel(
+            @NotNull @PathParam("accountId") Long accountId,
+            @NotNull @Valid AccountAccessLevelChangeDto data
+    ) throws CannotChangeException, DataNotFoundException {
+        accountEndpoint.changeAccountAccessLevel(accountId, data);
+        return Response.status(Response.Status.OK).build();
     }
 
 }

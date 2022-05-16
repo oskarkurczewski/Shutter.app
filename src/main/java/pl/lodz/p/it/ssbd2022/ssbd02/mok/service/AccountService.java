@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
@@ -35,7 +36,7 @@ public class AccountService {
     /**
      * Zmienie status użytkownika o danym loginie na podany
      *
-     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @param active status który ma zostać ustawiony
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
@@ -47,19 +48,18 @@ public class AccountService {
         accountFacade.getEm().merge(account); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
     }
 
-
     /**
      * Szuka użytkownika
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
      * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik 
+     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik
      * niebędący ani administratorem ani moderatorem
      * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "CLIENT", "PHOTOGRAPHER"})
     public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
         try {
             Account authenticatedAccount = authenticationContext.getCurrentUsersAccount();
@@ -97,7 +97,7 @@ public class AccountService {
      * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "USER", "PHOTOGRAPHER"})
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "CLIENT", "PHOTOGRAPHER"})
     public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
         try {
             Account account = authenticationContext.getCurrentUsersAccount();
@@ -107,12 +107,11 @@ public class AccountService {
         }
     }
 
-
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
      *
      * @param accountId ID użytkownika, którego hasło administrator chce zmienić
-     * @param data      obiekt zawierający nowe hasło dla wskazanego użytkownika
+     * @param data obiekt zawierający nowe hasło dla wskazanego użytkownika
      */
     @RolesAllowed(changeSomeonesPassword)
     public void changeAccountPasswordAsAdmin(Long accountId, AccountUpdatePasswordDto data) {
@@ -142,7 +141,7 @@ public class AccountService {
      * Pomocnicza metoda utworzone w celu uniknięcia powtarzania kodu.
      * Zmienia hasło wskazanego użytkownika
      *
-     * @param target      ID użytkownika, którego modyfikujemy
+     * @param target ID użytkownika, którego modyfikujemy
      * @param newPassword nowe hasło dla użytkownika
      */
     private void changePassword(Account target, String newPassword) {
@@ -151,6 +150,51 @@ public class AccountService {
         }
         String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
         target.setPassword(hashed);
+        accountFacade.update(target);
+    }
+
+    /**
+     * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
+     *
+     * @param accountId Identyfikator konta użytkownika
+     * @param accessLevel Łańcuch znaków zawierający nazwę poziomu dostępu
+     * @param active status poziomu dostępu, który ma być ustawiony
+     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
+     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
+     * nigdy nie posiadał
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void changeAccountAccessLevel(Long accountId, String accessLevel, Boolean active)
+            throws DataNotFoundException, CannotChangeException {
+
+        Account target = accountFacade.find(accountId);
+        List<AccessLevelAssignment> accountAccessLevels = target.getAccessLevelAssignmentList();
+        AccessLevelAssignment accessLevelFound = accountFacade.getAccessLevelAssignmentForAccount(accountId, accessLevel);
+
+        if(accessLevelFound != null) {
+            if (accessLevelFound.getActive() == active) {
+                throw new CannotChangeException("exception.access_level.already_set");
+            }
+
+            accessLevelFound.setActive(active);
+        } else {
+            AccessLevelValue accessLevelValue = accountFacade.getAccessLevelValue(accessLevel);
+            AccessLevelAssignment assignment = new AccessLevelAssignment();
+
+            if (!active) {
+                throw new CannotChangeException("exception.access_level.already_false");
+            }
+
+            assignment.setLevel(accessLevelValue);
+            assignment.setAccount(target);
+            assignment.setActive(active);
+            accountAccessLevels.add(assignment);
+
+            target.setAccessLevelAssignmentList(accountAccessLevels);
+        }
+
         accountFacade.update(target);
     }
 
@@ -199,7 +243,7 @@ public class AccountService {
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
      * @return Lista poziomów dostępu użytkownika
      */
-    private List<AccessLevelAssignment> addClientAccessLevel(Account account) {
+    private List<AccessLevelAssignment> addClientAccessLevel(Account account) throws DataNotFoundException {
         AccessLevelValue levelValue = accountFacade.getAccessLevelValue("CLIENT");
         AccessLevelAssignment assignment = new AccessLevelAssignment();
 
