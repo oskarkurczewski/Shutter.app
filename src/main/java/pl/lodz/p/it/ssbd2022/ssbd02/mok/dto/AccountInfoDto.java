@@ -13,22 +13,22 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class AccountInfoDto {
-    
+
     @NotNull
     private String login;
-    
+
     @NotNull
     private String email;
-    
+
     @NotNull
     private String name;
-    
+
     @NotNull
     private String surname;
-    
+
     @NotNull
     private Boolean active;
-    
+
     @NotNull
     private Boolean registered;
 

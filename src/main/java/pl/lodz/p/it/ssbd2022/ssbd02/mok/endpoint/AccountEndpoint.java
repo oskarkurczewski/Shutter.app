@@ -1,15 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
@@ -34,10 +29,10 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na podany
      *
-     * @param login login użytkownika dla którego chcemy zmienić status
-     * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
-     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
+     * @param login  login użytkownika, dla którego chcemy zmienić status
+     * @param active status, który chcemy ustawić dla konta tego użytkownika
+     * @throws NoAccountFound, kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     *                         w bazie danych
      */
     @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
@@ -48,10 +43,11 @@ public class AccountEndpoint {
      * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji.
      *
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
-     * @throws BaseApplicationException Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @PermitAll
-    public void registerAccount(AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+    public void registerAccount(AccountRegisterDto accountRegisterDto) throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
         accountService.registerAccount(account);
     }
@@ -60,10 +56,11 @@ public class AccountEndpoint {
      * Konwertuje obiekt transferu danych użytkownika (z dodatkowymi polami registered oraz active) obiekt klasy encji.
      *
      * @param accountRegisterAsAdminDto Obiekt zawierający dane użytkownika (z dodatkowymi polami registered oraz active)
-     * @throws BaseApplicationException Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @RolesAllowed({"ADMINISTRATOR"})
-    public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws BaseApplicationException {
+    public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         Account account = accountRegisterDtoToAccount(accountRegisterAsAdminDto);
         account.setActive(accountRegisterAsAdminDto.getActive());
         account.setRegistered(accountRegisterAsAdminDto.getRegistered());
@@ -81,7 +78,7 @@ public class AccountEndpoint {
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
      * @return Obiekt klasy encji użytkownika
      */
-    private Account accountRegisterDtoToAccount(AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+    private Account accountRegisterDtoToAccount(AccountRegisterDto accountRegisterDto) throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         Account account = new Account();
         account.setLogin(accountRegisterDto.getLogin());
         account.setPassword(accountRegisterDto.getPassword());
@@ -113,10 +110,10 @@ public class AccountEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @throws NoAuthenticatedUserFound W przypadku gdy nie znaleziono aktualnego użytkownika
+     * @throws NoAuthenticatedAccountFound W przypadku gdy nie znaleziono aktualnego użytkownika
      */
     @RolesAllowed(editOwnAccountData)
-    public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedUserFound {
+    public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedAccountFound {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
         accountService.editAccountInfo(editAccountInfoDto);
     }
@@ -129,7 +126,7 @@ public class AccountEndpoint {
      */
     @RolesAllowed({"ADMINISTRATOR"})
     public void editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws NoAccountFound {
-        // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
+        // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakować go w dto
         accountService.editAccountInfoAsAdmin(login, editAccountInfoDto);
     }
 
@@ -138,14 +135,14 @@ public class AccountEndpoint {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws DataNotFoundException W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     * gdy konto szukanego użytkownika jest nieaktywne lub niepotwierdzone i informacje prubuje uzyskać uzytkownik
-     * niebędący ani administratorem ani moderatorem
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "CLIENT", "PHOTOGRAPHER"})
-    public AccountInfoDto getAccountInfo(String login) throws DataNotFoundException, UnauthenticatedException {
+    public AccountInfoDto getAccountInfo(String login) throws NoAccountFound, NoAuthenticatedAccountFound {
         return accountService.getAccountInfo(login);
     }
 
@@ -153,16 +150,16 @@ public class AccountEndpoint {
      * Zwraca informacje o zalogowanym użytkowniku
      *
      * @return obiekt DTO informacji o użytkowniku
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @RolesAllowed(changeOwnPassword)
-    public AccountInfoDto getYourAccountInfo() throws UnauthenticatedException {
+    public AccountInfoDto getYourAccountInfo() throws NoAuthenticatedAccountFound {
         return accountService.getYourAccountInfo();
     }
 
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "PHOTOGRAPHER", "CLIENT"})
-    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedUserFound {
+    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound {
         accountService.updateOwnPassword(data);
     }
 }

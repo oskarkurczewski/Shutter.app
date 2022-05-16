@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 
@@ -14,7 +14,7 @@ import javax.inject.Inject;
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class PhotographerEndpoint {
-    
+
     @Inject
     private PhotographerService photographerService;
 
@@ -22,26 +22,26 @@ public class PhotographerEndpoint {
      * Szuka fotografa
      *
      * @param login nazwa użytkownika fotografa
-     * @throws DataNotFoundException W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje, 
-     * gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje prubuje uzyskać uzytkownik 
-     * niebędący ani administratorem ani moderatorem
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
+     *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see PhotographerInfoDto
      */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR", "CLIENT", "PHOTOGRAPHER"})
-    public PhotographerInfoDto getPhotographerInfo(String login) throws DataNotFoundException, UnauthenticatedException {
+    public PhotographerInfoDto getPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerService.getPhotographerInfo(login);
     }
 
     /**
      * Zwraca informacje o zalogowanym fotografie
      *
-     * @throws DataNotFoundException W przypadku gdy profil fotografa dla użytkownika nie istnieje
-     * @throws UnauthenticatedException W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see PhotographerInfoDto
      */
     @RolesAllowed({"PHOTOGRAPHER"})
-    public PhotographerInfoDto getYourPhotographerInfo() throws DataNotFoundException, UnauthenticatedException {
+    public PhotographerInfoDto getYourPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerService.getYourPhotographerInfo();
     }
 }

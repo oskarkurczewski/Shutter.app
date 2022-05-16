@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 
 import javax.ejb.Stateless;
@@ -23,7 +24,7 @@ public class ConfigLoader {
             if (inputStream != null) {
                 properties.load(inputStream);
             } else {
-                throw new NoConfigFileFound("Config file not found " + fileName);
+                throw ExceptionFactory.noConfigFileFound();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

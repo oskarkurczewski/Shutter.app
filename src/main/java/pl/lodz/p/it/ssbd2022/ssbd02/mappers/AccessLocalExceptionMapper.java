@@ -6,7 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 /**
- * Klasa mapująca wyjątek występujący,gdy użytkownik nie ma dostępu do zasobu, pozwalająca na modyfikację
+ * Klasa mapująca wyjątek występujący, gdy użytkownik nie ma dostępu do zasobu, pozwalająca na modyfikację
  * zachowania w przypadku jego wystąpienia.
  */
 @Provider

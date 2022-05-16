@@ -1,11 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.exceptions;
 
-public class NoConfigFileFound extends CustomApplicationException {
-    public NoConfigFileFound() {
-        super();
-    }
+import javax.ws.rs.core.Response;
 
-    public NoConfigFileFound(String message) {
-        super(message);
+/**
+ * Klasa wyjątku reprezentująca nieznalezienie pliku konfiguracyjnego
+ */
+public class NoConfigFileFound extends BaseApplicationException {
+    public NoConfigFileFound() {
+        super(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
     }
 }

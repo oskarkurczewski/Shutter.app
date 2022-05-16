@@ -11,7 +11,7 @@ import java.util.UUID;
 
 /**
  * Encja reprezentująca token weryfikujący
- * Zależnie od typu tokenu, może on służyć np. do potwierdzenia
+ * Zależnie od typu tokenu może on służyć np. do potwierdzenia
  * żądania zmiany hasła lub potwierdzenia rejestracji konta
  */
 @Getter

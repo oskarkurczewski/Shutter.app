@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * Klasa reprezentująca powiązaniee
+ * Klasa reprezentująca powiązanie
  * konta użytkownika z poziomem dostępu
  */
 
@@ -42,7 +42,7 @@ public class AccessLevelAssignment {
     private AccessLevelValue level;
 
     /**
-     * Flaga wskazująca, czy dany poziom dostępu dla danego użytkownika jest aktywny
+     * Flaga wskazująca, czy dany poziom dostępu dla danego użytkownika jest aktywny,
      * Gdy wskazuje na false, użytkownik nie ma uprawnień do korzystania z danego
      * poziomu dostępu
      */
