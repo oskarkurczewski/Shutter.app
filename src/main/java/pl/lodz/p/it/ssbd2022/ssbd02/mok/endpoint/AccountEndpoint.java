@@ -39,6 +39,30 @@ public class AccountEndpoint {
     }
 
     /**
+     * Ustawia status użytkownika o danym loginie na zablokowany
+     *
+     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
+     *                        w bazie danych
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void blockAccount(String login) throws NoAccountFound {
+        changeAccountStatus(login, false);
+    }
+
+    /**
+     * Ustawia status użytkownika o danym loginie na odblokowany
+     *
+     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
+     *                        w bazie danych
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    public void unblockAccount(String login) throws NoAccountFound {
+        changeAccountStatus(login, true);
+    }
+
+    /**
      * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji
      *
      * @param accountRegisterDto Obiekt zawierający dane użytkownika

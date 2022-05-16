@@ -46,6 +46,35 @@ public class AccountService {
     }
 
     /**
+     * Zmienie status użytkownika o danym loginie na zablokowoany
+     *
+     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     *                        w bazie danych
+     */
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void blockAccount(String login) throws NoAccountFound {
+        Account account = accountFacade.findByLogin(login);
+        account.setActive(false);
+        accountFacade.getEm().merge(account);
+    }
+
+    /**
+     * Zmienie status użytkownika o danym loginie na odblokowany
+     *
+     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
+     *                        w bazie danych
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    public void unblockAccount(String login) throws NoAccountFound {
+        Account account = accountFacade.findByLogin(login);
+        account.setActive(true);
+        accountFacade.getEm().merge(account);
+    }
+
+
+    /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
      *
      * @param accountId ID użytkownika, którego hasło administrator chce zmienić
