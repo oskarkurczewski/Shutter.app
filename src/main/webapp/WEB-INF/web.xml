@@ -105,6 +105,9 @@
         <role-name>listAllReports</role-name>
     </security-role>
     <security-role>
+        <role-name>resolveReport</role-name>
+    </security-role>
+    <security-role>
         <role-name>changeAvailabilityHours</role-name>
     </security-role>
     <security-role>
