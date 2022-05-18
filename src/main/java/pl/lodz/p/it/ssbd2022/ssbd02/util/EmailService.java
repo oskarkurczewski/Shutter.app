@@ -16,6 +16,7 @@ import sibModel.SendSmtpEmailTo;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.Collections;
 import java.util.Properties;
 
@@ -23,6 +24,7 @@ import java.util.Properties;
  * Klasa służąca do wysyłania maili
  */
 @Stateless
+@Interceptors(LoggingInterceptor.class)
 public class EmailService {
 
     private static final String CONFIG_FILE_NAME = "config.email.properties";
