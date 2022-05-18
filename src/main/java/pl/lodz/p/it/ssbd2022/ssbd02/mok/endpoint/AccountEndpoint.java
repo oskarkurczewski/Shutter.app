@@ -26,28 +26,15 @@ public class AccountEndpoint {
     private AccountService accountService;
 
     /**
-     * Ustawia status użytkownika o danym loginie na podany
-     *
-     * @param login  login użytkownika dla którego chcemy zmienić status
-     * @param active status który chcemy chcemy ustawić dla konta tego użytkownika
-     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
-     */
-    @RolesAllowed({blockAccount, unblockAccount})
-    public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
-        accountService.changeAccountStatus(login, active);
-    }
-
-    /**
      * Ustawia status użytkownika o danym loginie na zablokowany
      *
      * @param login  login użytkownika dla którego chcemy zmienić status
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({blockAccount})
     public void blockAccount(String login) throws NoAccountFound {
-        changeAccountStatus(login, false);
+        accountService.blockAccount(login);
     }
 
     /**
@@ -57,9 +44,9 @@ public class AccountEndpoint {
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    @RolesAllowed({unblockAccount})
     public void unblockAccount(String login) throws NoAccountFound {
-        changeAccountStatus(login, true);
+        accountService.unblockAccount(login);
     }
 
     /**

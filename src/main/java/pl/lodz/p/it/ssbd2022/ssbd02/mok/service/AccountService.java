@@ -31,32 +31,17 @@ public class AccountService {
     private AuthenticationContext authenticationContext;
 
     /**
-     * Zmienie status użytkownika o danym loginie na podany
-     *
-     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
-     * @param active status który ma zostać ustawiony
-     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
-     */
-    @RolesAllowed({blockAccount, unblockAccount})
-    public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
-        Account account = accountFacade.findByLogin(login);
-        account.setActive(active);
-        accountFacade.getEm().merge(account); // TODO Po implementacji transakcyjności zmineić na wywołanie metody update fasady
-    }
-
-    /**
      * Zmienie status użytkownika o danym loginie na zablokowoany
      *
      * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({blockAccount})
     public void blockAccount(String login) throws NoAccountFound {
         Account account = accountFacade.findByLogin(login);
         account.setActive(false);
-        accountFacade.getEm().merge(account);
+        accountFacade.update(account);
     }
 
     /**
@@ -66,13 +51,12 @@ public class AccountService {
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    @RolesAllowed({unblockAccount})
     public void unblockAccount(String login) throws NoAccountFound {
         Account account = accountFacade.findByLogin(login);
         account.setActive(true);
-        accountFacade.getEm().merge(account);
+        accountFacade.update(account);
     }
-
 
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
