@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { AuthState } from "redux/types/stateTypes";
 import { AccessLevel } from "types/AccessLevel";
 
@@ -11,7 +11,7 @@ export const authSlice = createSlice({
    name: "auth",
    initialState,
    reducers: {
-      login: (state: AuthState, action: PayloadAction<AuthState>) => {
+      login: (state: AuthState, action: any) => {
          state.username = action.payload.username;
          state.accessLevel = action.payload.accessLevel;
       },
