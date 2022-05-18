@@ -26,10 +26,10 @@
     <!--    Zostawione dla kompatybilności wstecznej, ale z czasem nalezy pozbyć się ich z kodu-->
 
     <security-role>
-        <role-name>registerAccount</role-name>
+        <role-name>createAccount</role-name>
     </security-role>
     <security-role>
-        <role-name>createAccount</role-name>
+        <role-name>refreshToken</role-name>
     </security-role>
     <security-role>
         <role-name>blockAccount</role-name>
