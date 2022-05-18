@@ -1,3 +1,5 @@
+import jwtDecode from "jwt-decode";
+
 export const getToken = async (login: string, password: string): Promise<string> => {
    const url = "/api/auth/login";
    const loginData = {
@@ -15,8 +17,10 @@ export const getToken = async (login: string, password: string): Promise<string>
    };
    let token = "";
    const response = await fetch(url, request);
+
    if (response.ok) {
       token = await response.text();
+      localStorage.setItem("token", token);
    } else {
       throw new Error("Wrong login or password!");
    }
