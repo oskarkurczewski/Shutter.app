@@ -5,6 +5,12 @@
          version="4.0">
 
     <!--    Zostawione dla kompatybilności wstecznej, ale z czasem nalezy pozbyć się ich z kodu-->
+    <error-page>
+        <location>/index.html</location>
+    </error-page>
+
+    <default-context-path>/</default-context-path>
+
     <security-role>
         <role-name>ADMINISTRATOR</role-name>
     </security-role>

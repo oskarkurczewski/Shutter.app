@@ -168,3 +168,6 @@ $RECYCLE.BIN/
 ssbd02.iml
 
 *.iml
+
+webapp/
+!webapp/WEB-INF
