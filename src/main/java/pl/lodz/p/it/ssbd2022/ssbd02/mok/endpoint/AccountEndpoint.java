@@ -170,7 +170,7 @@ public class AccountEndpoint {
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
-    @RolesAllowed({CLIENT, PHOTOGRAPHER})
+    @RolesAllowed({ADMINISTRATOR, PHOTOGRAPHER, CLIENT, PHOTOGRAPHER})
     public AccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
         return new AccountInfoDto(account);
