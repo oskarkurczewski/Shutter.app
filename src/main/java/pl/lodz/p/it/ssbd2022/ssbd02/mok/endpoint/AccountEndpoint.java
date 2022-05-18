@@ -34,7 +34,7 @@ public class AccountEndpoint {
      */
     @RolesAllowed({blockAccount})
     public void blockAccount(String login) throws NoAccountFound {
-        accountService.blockAccount(login);
+        accountService.changeAccountStatus(login, false);
     }
 
     /**
@@ -46,7 +46,7 @@ public class AccountEndpoint {
      */
     @RolesAllowed({unblockAccount})
     public void unblockAccount(String login) throws NoAccountFound {
-        accountService.unblockAccount(login);
+        accountService.changeAccountStatus(login, true);
     }
 
     /**

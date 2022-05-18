@@ -31,30 +31,17 @@ public class AccountService {
     private AuthenticationContext authenticationContext;
 
     /**
-     * Zmienie status użytkownika o danym loginie na zablokowoany
+     * Zmienia status użytkownika o danym loginie na podany
      *
      * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param active status który ma zostać ustawiony
      * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
-    @RolesAllowed({blockAccount})
-    public void blockAccount(String login) throws NoAccountFound {
+    @RolesAllowed({blockAccount, unblockAccount})
+    public void changeAccountStatus(String login, Boolean active) throws NoAccountFound {
         Account account = accountFacade.findByLogin(login);
-        account.setActive(false);
-        accountFacade.update(account);
-    }
-
-    /**
-     * Zmienie status użytkownika o danym loginie na odblokowany
-     *
-     * @param login  login użytkownika dla którego ma zostać dokonana zmiana statusu
-     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
-     */
-    @RolesAllowed({unblockAccount})
-    public void unblockAccount(String login) throws NoAccountFound {
-        Account account = accountFacade.findByLogin(login);
-        account.setActive(true);
+        account.setActive(active);
         accountFacade.update(account);
     }
 
