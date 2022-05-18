@@ -38,7 +38,6 @@ public class LoggingInterceptor {
         } catch (Exception ex) {
             result = "An exception occured: " + ex.getClass().toGenericString() + ", caused by: " + ex.getCause();
             if(ex instanceof EJBAccessException) {
-                System.out.println("\n\n\n\nAAAA\n\n\n");
                 throw new UnauthorizedException();
             }
             throw ex;
