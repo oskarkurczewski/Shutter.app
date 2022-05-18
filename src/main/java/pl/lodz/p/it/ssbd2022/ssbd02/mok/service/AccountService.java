@@ -143,11 +143,10 @@ public class AccountService {
     /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
-     * @param account Konto użytkownika, dla którego ma nastąpić zmiana poziomu dostępu
-     * @param accessLevelValue Poziom dostępu który ma zostać zmieniony dla użytkownika
-     * @param active status poziomu dostępu, który ma być ustawiony
-     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
-     * nigdy nie posiadał
+     * @param account                   Konto użytkownika, dla którego ma nastąpić zmiana poziomu dostępu
+     * @param accessLevelValue          Poziom dostępu który ma zostać zmieniony dla użytkownika
+     * @param active                    Status poziomu dostępu, który ma być ustawiony
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({ADMINISTRATOR})
