@@ -9,13 +9,18 @@ import io.fusionauth.jwt.hmac.HMACSigner;
 import io.fusionauth.jwt.hmac.HMACVerifier;
 
 import javax.security.enterprise.identitystore.CredentialValidationResult;
+import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * Klasa służąca tworzeniu żetonów JWT oraz ich walidacji
  */
 public class JWTHandler {
+
+    public final static String AUTH_HEADER = "Authorization";
+    public final static String BEARER = "Bearer";
 
     private static final String SECRET = "90FAB1385C02FE80158890349649253C7F39121342FC09388427E8F49C4E7BF8";
     private static final int TIMEOUT = 10;
@@ -29,7 +34,6 @@ public class JWTHandler {
      * @return String przedstawiający utworzony żeton JWT
      */
     public static String generateJWT(CredentialValidationResult validationResult) {
-
         String subject = validationResult.getCallerPrincipal().getName();
         Set<String> roles = validationResult.getCallerGroups();
 
@@ -41,9 +45,29 @@ public class JWTHandler {
                 .addClaim("roles", String.join(",", roles))
                 .setExpiration(ZonedDateTime.now().plusMinutes(TIMEOUT));
 
-        String encodedJWT = JWT.getEncoder().encode(jwt, signer);
+        return JWT.getEncoder().encode(jwt, signer);
+    }
 
-        return encodedJWT;
+    /**
+     * Uzyskuje żeton JWT z żądania
+     *
+     * @param request Obiekt żądania
+     * @return żeton JWT uzyskany z obiektu żądania
+     */
+    public static JWT getJwtFromRequest(HttpServletRequest request) {
+        String authHeader = request.getHeader(AUTH_HEADER);
+        return getJwtFromAuthHeader(authHeader);
+    }
+
+    /**
+     * Uzyskuje żeton z nagłówka "Authorization"
+     *
+     * @param authHeader Nagłówek "Authorization"
+     * @return żeton JWT uzyskany z nagłówka
+     */
+    public static JWT getJwtFromAuthHeader(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith(BEARER + " ")) return null;
+        return JWTHandler.decodeJwt(authHeader.substring(BEARER.length() + 1));
     }
 
     /**
@@ -64,4 +88,22 @@ public class JWTHandler {
             return null;
         }
     }
+
+    /**
+     * Odświeża podany żeton JWT
+     * @param oldToken Żeton który ma zostać odświeżony
+     * @return Odświeżony żeton JWT
+     */
+    public static String refresh(JWT oldToken) {
+        Signer signer = HMACSigner.newSHA512Signer(SECRET);
+
+        JWT refreshed = new JWT().setIssuer(ISSUER)
+                .setIssuedAt(ZonedDateTime.now())
+                .setSubject(oldToken.subject)
+                .addClaim("roles", oldToken.getString("roles"))
+                .setExpiration(ZonedDateTime.now().plusMinutes(TIMEOUT));
+
+        return JWT.getEncoder().encode(refreshed, signer);
+    }
+
 }

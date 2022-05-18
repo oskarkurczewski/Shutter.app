@@ -13,6 +13,13 @@
         <group-name>ADMINISTRATOR</group-name>
     </security-role-mapping>
     <security-role-mapping>
+        <role-name>refreshToken</role-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>PHOTOGRAPHER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
         <role-name>blockAccount</role-name>
         <group-name>ADMINISTRATOR</group-name>
         <group-name>MODERATOR</group-name>

@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.getJwtFromRequest;
+
 /**
  * Klasa posiadająca odpowiedzialność uwierzytelniania oraz autoryzowania
  * użytkownika na podstawie żetonu JWT przesłanego w żądaniu.
@@ -19,8 +21,6 @@ import java.util.Set;
 @RequestScoped
 public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
 
-    public final static String AUTH_HEADER = "Authorization";
-    public final static String BEARER = "Bearer";
 
 
     /**
@@ -55,10 +55,4 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
     }
 
 
-    private JWT getJwtFromRequest(HttpServletRequest request) {
-        String authHeader = request.getHeader(AUTH_HEADER);
-        if (authHeader == null || !authHeader.startsWith(BEARER + " ")) return null;
-
-        return JWTHandler.decodeJwt(authHeader.substring(BEARER.length() + 1));
-    }
 }
