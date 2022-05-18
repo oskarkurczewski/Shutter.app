@@ -1,9 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthorizedException;
+
+import javax.ejb.EJBAccessException;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 import javax.security.enterprise.SecurityContext;
+import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -24,7 +28,8 @@ public class LoggingInterceptor {
         String result = null;
         Object returned;
         try {
-            caller = securityContext.getCallerPrincipal().getName();
+            Principal callerPrincipal = securityContext.getCallerPrincipal();
+            caller = callerPrincipal == null ? "Not authorized" : callerPrincipal.getName();
             methodName = ctx.getMethod().toGenericString();
             parameters = Arrays.toString(ctx.getParameters());
             returned = ctx.proceed();
@@ -32,6 +37,10 @@ public class LoggingInterceptor {
             return returned;
         } catch (Exception ex) {
             result = "An exception occured: " + ex.getClass().toGenericString() + ", caused by: " + ex.getCause();
+            if(ex instanceof EJBAccessException) {
+                System.out.println("\n\n\n\nAAAA\n\n\n");
+                throw new UnauthorizedException();
+            }
             throw ex;
         } finally {
             String message = MessageFormat.format("Caller: {0}, called method: {1}, parameters: {2}, with result: {3}",

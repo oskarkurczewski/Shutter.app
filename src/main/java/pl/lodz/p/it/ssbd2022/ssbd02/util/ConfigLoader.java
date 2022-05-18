@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -12,6 +13,7 @@ import java.util.Properties;
  * Klasa służąca do wczytywania plików konfiguracyjnych
  */
 @Stateless
+@Interceptors(LoggingInterceptor.class)
 public class ConfigLoader {
 
     public ConfigLoader() {
