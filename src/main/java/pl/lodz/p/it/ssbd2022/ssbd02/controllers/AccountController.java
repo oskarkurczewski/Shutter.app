@@ -126,9 +126,9 @@ public class AccountController {
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      */
     @PUT
-    @Path("/editAccountInfo")
+    @Path("/editOwnAccountInfo")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void editAccountInfo(
+    public void editOwnAccountInfo(
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
     ) throws NoAuthenticatedAccountFound {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint

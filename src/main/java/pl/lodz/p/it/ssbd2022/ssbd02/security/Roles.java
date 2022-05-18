@@ -42,4 +42,5 @@ public class Roles {
     public static final String discardReservation = "discardReservation";
     public static final String showReservations = "showReservations";
     public static final String showJobs = "showJobs";
+    public static final String resolveReport = "resolveReport";
 }
