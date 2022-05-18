@@ -45,15 +45,13 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * Pobiera przypisanie poziomu dostępu z bazy danych na podstawie przekazanego łańcucha znaków
      * dla wskazanego użytkownika.
      *
-     * @param accountID identyfikator użytkownika
-     * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
-     * @return AccessLevelAssignment
+     * @param account Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
+     * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
      * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
      */
-    public AccessLevelAssignment getAccessLevelAssignmentForAccount(Long accountID, String accessLevel) {
-        Account target = this.find(accountID);
-        return target.getAccessLevelAssignmentList().stream()
-                .filter(a -> a.getLevel().getName().equals(accessLevel))
+    public AccessLevelAssignment getAccessLevelAssignmentForAccount(Account account, AccessLevelValue accessLevelValue) {
+        return account.getAccessLevelAssignmentList().stream()
+                .filter(a -> a.getLevel().getName().equals(accessLevelValue.getName()))
                 .findAny()
                 .orElse(null);
     }

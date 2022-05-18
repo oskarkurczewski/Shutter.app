@@ -40,12 +40,12 @@ public class AccountController {
     }
 
     @PUT
-    @Path("/{accountId}/change-password")
+    @Path("/{login}/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountPasswordAsAdmin(
-            @NotNull @PathParam("accountId") Long accountId,
-            @NotNull @Valid AccountUpdatePasswordDto password) {
-        accountEndpoint.updatePasswordAsAdmin(accountId, password);
+            @NotNull @PathParam("login") String login,
+            @NotNull @Valid AccountUpdatePasswordDto password) throws NoAccountFound {
+        accountEndpoint.updatePasswordAsAdmin(login, password);
     }
 
     @PUT
@@ -67,7 +67,8 @@ public class AccountController {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws IdenticalFieldException, DatabaseException, DataNotFoundException {
+    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto)
+            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         accountEndpoint.registerAccount(accountRegisterDto);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -83,7 +84,8 @@ public class AccountController {
     @POST
     @Path("/register-as-admin")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws IdenticalFieldException, DatabaseException, DataNotFoundException {
+    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto)
+            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -94,15 +96,17 @@ public class AccountController {
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
      * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i informacje próbuje uzyskać użytkownik
-     *                                     niebędący ani administratorem, ani moderatorem
+     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     *                                     i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
+     *                                     ani moderatorem
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws NoAuthenticatedAccountFound, NoAccountFound {
+    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login)
+            throws NoAuthenticatedAccountFound, NoAccountFound {
         return accountEndpoint.getAccountInfo(login);
     }
 
@@ -117,7 +121,7 @@ public class AccountController {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public AccountInfoDto getUserInfo() throws NoAuthenticatedAccountFound {
-        return accountEndpoint.getYourAccountInfo();
+        return accountEndpoint.getOwnAccountInfo();
     }
 
     /**
@@ -162,13 +166,13 @@ public class AccountController {
      * nigdy nie posiadał
      */
     @POST
-    @Path("/{accountId}/accessLevel")
+    @Path("/{login}/accessLevel")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response assignAccountAccessLevel(
-            @NotNull @PathParam("accountId") Long accountId,
+            @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountAccessLevelChangeDto data
-    ) throws CannotChangeException, DataNotFoundException {
-        accountEndpoint.changeAccountAccessLevel(accountId, data);
+    ) throws CannotChangeException, DataNotFoundException, NoAccountFound {
+        accountEndpoint.changeAccountAccessLevel(login, data);
         return Response.status(Response.Status.OK).build();
     }
 
