@@ -20,7 +20,7 @@ import java.util.Set;
 public class JWTHandler {
 
     public final static String AUTH_HEADER = "Authorization";
-    public final static String BEARER = "Bearer";
+    public final static String BEARER = "Bearer ";
 
     private static final String SECRET = "90FAB1385C02FE80158890349649253C7F39121342FC09388427E8F49C4E7BF8";
     private static final int TIMEOUT = 10;
@@ -66,8 +66,8 @@ public class JWTHandler {
      * @return żeton JWT uzyskany z nagłówka
      */
     public static JWT getJwtFromAuthHeader(String authHeader) {
-        if (authHeader == null || !authHeader.startsWith(BEARER + " ")) return null;
-        return JWTHandler.decodeJwt(authHeader.substring(BEARER.length() + 1));
+        if (authHeader == null || !authHeader.startsWith(BEARER)) return null;
+        return JWTHandler.decodeJwt(authHeader.substring(BEARER.length()));
     }
 
     /**
@@ -91,7 +91,7 @@ public class JWTHandler {
 
     /**
      * Odświeża podany żeton JWT
-     * @param oldToken Żeton który ma zostać odświeżony
+     * @param oldToken Żeton, który ma zostać odświeżony
      * @return Odświeżony żeton JWT
      */
     public static String refresh(JWT oldToken) {
