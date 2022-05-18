@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("availability")
@@ -24,21 +25,21 @@ public class AvailabilityController {
     @POST
     @Path("/{login}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addAvailability(@NotNull @Valid CreateAvailabilityDto createAvailabilityDto)
+    public Response addAvailability(@NotNull @Valid CreateAvailabilityDto createAvailabilityDto)
             throws AvailabilityOverlapException {
         throw new UnsupportedOperationException();
     }
 
     @DELETE
     @Path("/{id}")
-    public void removeAvailability(@PathParam("id") Long availabilityId) throws NoAvailabilityFoundException {
+    public Response removeAvailability(@PathParam("id") Long availabilityId) throws NoAvailabilityFoundException {
         throw new UnsupportedOperationException();
     }
 
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public void editAvailability(
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editAvailability(
             @PathParam("id") Long availabilityId,
             @NotNull @Valid EditAvailabilityDto availabilityEdit
     ) throws NoAvailabilityFoundException {
@@ -47,6 +48,7 @@ public class AvailabilityController {
 
     @GET
     @Path("/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<AvailabilityDto> listAvailabilities(
             @PathParam("login") String photographerLogin
     ) throws NoPhotographerFoundException {

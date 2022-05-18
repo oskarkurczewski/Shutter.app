@@ -48,18 +48,21 @@ public class ReservationController {
 
     @GET
     @Path("/reservations")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationListEntryDto> listReservations() {
         throw new UnsupportedOperationException();
     }
 
     @GET
     @Path("/jobs")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationListEntryDto> listJobs() {
         throw new UnsupportedOperationException();
     }
 
     @GET
     @Path("/photographers")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<PhotographerListEntryDto> listPhotographers() {
         throw new UnsupportedOperationException();
     }
@@ -67,6 +70,7 @@ public class ReservationController {
     @GET
     @Path("/photographers/find/byAvailability")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public List<PhotographerListEntryDto> findPhotographerByAvailability(@NotNull @Valid TimePeriodDto timePeriod) {
         throw new UnsupportedOperationException();
     }
@@ -74,6 +78,7 @@ public class ReservationController {
     @GET
     @Path("/photographers/find/byName")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public List<PhotographerListEntryDto> findPhotographerByName(@NotNull @Valid String name) {
         throw new UnsupportedOperationException();
     }
@@ -81,6 +86,7 @@ public class ReservationController {
     @GET
     @Path("/photographers/find/bySpecialization")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public List<PhotographerListEntryDto> findPhotographerBySpeciality(@NotNull @Valid String specialization) {
         throw new UnsupportedOperationException();
     }
