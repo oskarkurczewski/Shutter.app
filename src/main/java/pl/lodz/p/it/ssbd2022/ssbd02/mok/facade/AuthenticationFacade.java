@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
@@ -11,11 +11,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +40,42 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw CustomApplicationException.noAccountFound();
+            throw ExceptionFactory.noAccountFound();
         }
     }
 
-    public AccessLevelValue getAccessLevelValue(String accessLevel) {
+    /**
+     * Pobiera przypisanie poziomu dostępu z bazy danych na podstawie przekazanego łańcucha znaków
+     * dla wskazanego użytkownika.
+     *
+     * @param account Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
+     * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
+     * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
+     */
+    public AccessLevelAssignment getAccessLevelAssignmentForAccount(Account account, AccessLevelValue accessLevelValue) {
+        return account.getAccessLevelAssignmentList().stream()
+                .filter(a -> a.getLevel().getName().equals(accessLevelValue.getName()))
+                .findAny()
+                .orElse(null);
+    }
+
+    /**
+     * Pobiera poziom dostępu z bazy danych na podstawie przekazanego łańcucha znaków,
+     * w przypadku nieznalezienia pasującego wyniku otrzymujemy wyjątek
+     *
+     * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
+     * @throws DataNotFoundException W przypadku, gdy funkcja nie znajdzie rekordu
+     * ze wskazaną nazwą
+     */
+    public AccessLevelValue getAccessLevelValue(String accessLevel) throws DataNotFoundException {
         TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
         query.setParameter("access_level", accessLevel);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new DataNotFoundException("exception.access_level.not_found");
+        }
+
     }
 
 
@@ -59,16 +83,16 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * Szuka profilu fotografa
      *
      * @param login nazwa użytkownika fotografa
-     * @throws DataNotFoundException W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
+     * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
      * @see PhotographerInfo
      */
-    public PhotographerInfo findPhotographerByLogin(String login) throws DataNotFoundException {
+    public PhotographerInfo findPhotographerByLogin(String login) throws NoPhotographerFound {
         TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            throw new DataNotFoundException("exception.photographer.notfound");
+            throw ExceptionFactory.noPhotographerFound();
         }
     }
 
@@ -77,9 +101,9 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * w przypadku naruszenia unikatowości loginu lub adresu email otrzymujemy wyjątek
      *
      * @param account obiekt encji użytkownika
-     * @throws BaseApplicationException W przypadku, gdy login lub adres email już się znajduje w bazie danych
+     * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    public void registerAccount(Account account) throws BaseApplicationException {
+    public void registerAccount(Account account) throws DatabaseException, IdenticalFieldException {
         try {
             persist(account);
         } catch (PersistenceException ex) {
@@ -87,13 +111,12 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
                 String name = ((ConstraintViolationException) ex.getCause()).getConstraintName();
                 switch (name) {
                     case IDENTICAL_LOGIN:
-                        throw new IdenticalFieldException("exception.login.identical");
+                        throw ExceptionFactory.identicalFieldException("exception.login.identical");
                     case IDENTICAL_EMAIL:
-                        throw new IdenticalFieldException("exception.email.identical");
+                        throw ExceptionFactory.identicalFieldException("exception.email.identical");
                 }
             }
-            //  TODO jakaś wiadomość do wyjątku?
-            throw new DatabaseException(ex.getMessage());
+            throw ExceptionFactory.databaseException();
         }
     }
 

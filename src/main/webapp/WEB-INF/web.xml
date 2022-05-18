@@ -4,6 +4,13 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--    Zostawione dla kompatybilności wstecznej, ale z czasem nalezy pozbyć się ich z kodu-->
+    <error-page>
+        <location>/index.html</location>
+    </error-page>
+
+    <default-context-path>/</default-context-path>
+
     <security-role>
         <role-name>ADMINISTRATOR</role-name>
     </security-role>
@@ -15,6 +22,114 @@
     </security-role>
     <security-role>
         <role-name>PHOTOGRAPHER</role-name>
+    </security-role>
+    <!--    Zostawione dla kompatybilności wstecznej, ale z czasem nalezy pozbyć się ich z kodu-->
+
+    <security-role>
+        <role-name>registerAccount</role-name>
+    </security-role>
+    <security-role>
+        <role-name>createAccount</role-name>
+    </security-role>
+    <security-role>
+        <role-name>blockAccount</role-name>
+    </security-role>
+    <security-role>
+        <role-name>unblockAccount</role-name>
+    </security-role>
+    <security-role>
+        <role-name>grantAccessLevel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>revokeAccessLevel</role-name>
+    </security-role>
+    <security-role>
+        <role-name>changeOwnPassword</role-name>
+    </security-role>
+    <security-role>
+        <role-name>changeSomeonesPassword</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editOwnAccountData</role-name>
+    </security-role>
+    <security-role>
+        <role-name>editSomeonesAccountData</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getAccountInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>listAllAccounts</role-name>
+    </security-role>
+    <security-role>
+        <role-name>becomePhotographer</role-name>
+    </security-role>
+    <security-role>
+        <role-name>stopBeingPhotographer</role-name>
+    </security-role>
+    <security-role>
+        <role-name>changePhotographerDescription</role-name>
+    </security-role>
+    <security-role>
+        <role-name>reviewPhotographer</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteOwnPhotographerReview</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deleteSomeonesPhotographerReview</role-name>
+    </security-role>
+    <security-role>
+        <role-name>reportPhotographer</role-name>
+    </security-role>
+    <security-role>
+        <role-name>reportClient</role-name>
+    </security-role>
+    <security-role>
+        <role-name>reportReview</role-name>
+    </security-role>
+    <security-role>
+        <role-name>likeReview</role-name>
+    </security-role>
+    <security-role>
+        <role-name>unlikeReview</role-name>
+    </security-role>
+    <security-role>
+        <role-name>addPhotoToGallery</role-name>
+    </security-role>
+    <security-role>
+        <role-name>deletePhotoFromGallery</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>likePhoto</role-name>
+    </security-role>
+    <security-role>
+        <role-name>unlikePhoto</role-name>
+    </security-role>
+    <security-role>
+        <role-name>listAllReports</role-name>
+    </security-role>
+    <security-role>
+        <role-name>resolveReport</role-name>
+    </security-role>
+    <security-role>
+        <role-name>changeAvailabilityHours</role-name>
+    </security-role>
+    <security-role>
+        <role-name>reservePhotographer</role-name>
+    </security-role>
+    <security-role>
+        <role-name>cancelReservation</role-name>
+    </security-role>
+    <security-role>
+        <role-name>discardReservation</role-name>
+    </security-role>
+    <security-role>
+        <role-name>showReservations</role-name>
+    </security-role>
+    <security-role>
+        <role-name>showJobs</role-name>
     </security-role>
 
 </web-app>

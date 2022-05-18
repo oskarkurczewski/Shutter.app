@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BadJWTTokenException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
 
@@ -37,7 +39,7 @@ public class AuthController {
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(@NotNull LoginData data) {
+    public Response login(@NotNull LoginData data) throws BadJWTTokenException {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
 
         if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
@@ -45,8 +47,7 @@ public class AuthController {
 
             return Response.ok().entity(token).build();
         }
-        //TODO: Wyciągnąć do wyjątku / internacjonalizacja
-        return Response.status(Response.Status.UNAUTHORIZED).build();
+        throw ExceptionFactory.badJWTTokenException();
     }
 
 }

@@ -5,12 +5,13 @@ import lombok.Getter;
 import javax.ws.rs.core.Response;
 
 /**
- * Bazowa klasa wyjatków aplikacji
+ * Bazowa klasa wyjątków aplikacji, nie powinna być łapana przez obsługę wyjątków,
+ * powinny być łapane klasy rozszerzające tę metodę.
  */
-public class BaseApplicationException extends Exception {
+public abstract class BaseApplicationException extends Exception {
 
     @Getter
-    private Response response;
+    private final Response response;
 
     public BaseApplicationException(Response response) {
         super();

@@ -12,14 +12,14 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class PhotographerInfoDto  extends AccountInfoDto {
+public class PhotographerInfoDto extends AccountInfoDto {
 
     @NotNull
     private final Long score;
-    
+
     @NotNull
     private final Long reviewCount;
-    
+
     @NotNull
     private final String description;
 
@@ -28,7 +28,7 @@ public class PhotographerInfoDto  extends AccountInfoDto {
 
     @NotNull
     private final Double longitude;
-    
+
     @NotNull
     private final Boolean visible;
 
@@ -38,7 +38,7 @@ public class PhotographerInfoDto  extends AccountInfoDto {
      *
      * @param photographerInfo encja informacji o fotografie
      */
-    public PhotographerInfoDto(PhotographerInfo photographerInfo){
+    public PhotographerInfoDto(PhotographerInfo photographerInfo) {
         super(photographerInfo.getAccount());
         score = photographerInfo.getScore();
         reviewCount = photographerInfo.getReviewCount();

@@ -17,9 +17,9 @@ public abstract class FacadeTemplate<T> {
     public abstract EntityManager getEm();
 
     public T persist(T entity) {
-            getEm().persist(entity);
-            getEm().flush();
-            return entity;
+        getEm().persist(entity);
+        getEm().flush();
+        return entity;
     }
 
     public void remove(T entity) {

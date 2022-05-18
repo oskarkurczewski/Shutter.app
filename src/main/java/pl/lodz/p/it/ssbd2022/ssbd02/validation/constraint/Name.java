@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import java.lang.annotation.*;
 
 /**
- * Adnotacja służąca ograniczeniu pola przedstawiajacego imię użytkownika.
+ * Adnotacja służąca ograniczeniu pola przedstawiającego imię użytkownika.
  * Minimalna długość to 1, a maksymalna to 64.
  */
 @Constraint(validatedBy = {})

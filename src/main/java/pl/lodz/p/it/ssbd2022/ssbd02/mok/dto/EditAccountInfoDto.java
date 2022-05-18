@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class EditAccountInfoDto {
 
     @NotNull

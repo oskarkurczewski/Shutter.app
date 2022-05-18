@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import java.lang.annotation.*;
 
 /**
- * Adnotacja służąca ograniczeniu pola przedstawiajacego login użytkownika.
+ * Adnotacja służąca ograniczeniu pola przedstawiającego login użytkownika.
  * Login musi pasować do wyrażenia regularnego.
  */
 @Constraint(validatedBy = {})
