@@ -10,4 +10,8 @@ public class CreateReviewDto {
     private final String photographerLogin;
     @NotNull
     private final String clientLogin;
+    @NotNull
+    private final Long score;
+    @NotNull
+    private final String content;
 }
