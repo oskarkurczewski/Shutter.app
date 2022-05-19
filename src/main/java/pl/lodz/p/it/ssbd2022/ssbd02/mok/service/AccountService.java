@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
@@ -10,7 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -113,14 +112,14 @@ public class AccountService {
      * @param data obiekt zawierający stare hasło (w celu weryfikacji) oraz nowe mające być ustawione dla użytkownika
      */
     @RolesAllowed(changeOwnPassword)
-    public void updateOwnPassword(Account account, AccountUpdatePasswordDto data) {
+    public void updateOwnPassword(Account account, AccountUpdatePasswordDto data) throws PasswordMismatchException {
         if (data.getOldPassword() == null) {
             throw ExceptionFactory.wrongPasswordException();
         }
-        String oldHash = BCrypt.withDefaults().hashToString(6, data.getOldPassword().toCharArray());
-        if (!oldHash.equals(account.getPassword())) {
+        if (!BCryptUtils.verify(data.getOldPassword().toCharArray(), account.getPassword())) {
             throw ExceptionFactory.passwordMismatchException();
         }
+
         changePassword(account, data.getPassword());
     }
 
@@ -135,7 +134,7 @@ public class AccountService {
         if (newPassword.trim().length() < 8) {
             throw ExceptionFactory.wrongPasswordException();
         }
-        String hashed = BCrypt.withDefaults().hashToString(6, newPassword.toCharArray());
+        String hashed = BCryptUtils.generate(newPassword.toCharArray());
         target.setPassword(hashed);
         accountFacade.update(target);
     }
@@ -197,7 +196,7 @@ public class AccountService {
     @PermitAll
     public void registerAccount(Account account)
             throws IdenticalFieldException, DataNotFoundException, DatabaseException {
-        account.setPassword(BCrypt.withDefaults().hashToString(6, account.getPassword().toCharArray()));
+        account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setActive(true);
         account.setRegistered(false);
 
@@ -219,7 +218,7 @@ public class AccountService {
     @RolesAllowed({ADMINISTRATOR})
     public void registerAccountByAdmin(Account account)
             throws IdenticalFieldException, DatabaseException, DataNotFoundException {
-        account.setPassword(BCrypt.withDefaults().hashToString(6, account.getPassword().toCharArray()));
+        account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
 
         List<AccessLevelAssignment> list = addClientAccessLevel(account);
         account.setAccessLevelAssignmentList(list);
