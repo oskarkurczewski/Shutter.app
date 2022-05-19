@@ -41,7 +41,7 @@ public class ExceptionFactory {
     }
 
     public static PasswordMismatchException passwordMismatchException() {
-        return new PasswordMismatchException();
+        return new PasswordMismatchException("exception.password.mismatch");
     }
 
     public static WrongPasswordException wrongPasswordException() {
