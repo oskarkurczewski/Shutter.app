@@ -25,7 +25,7 @@ import javax.interceptor.Interceptors;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
-@Interceptors(LoggingInterceptor.class)
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class AccountEndpoint {
 
@@ -75,7 +75,7 @@ public class AccountEndpoint {
     public void registerAccount(AccountRegisterDto accountRegisterDto)
             throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
-        accountService.registerAccount(account);
+        accountService.registerOwnAccount(account);
     }
 
     /**
@@ -106,8 +106,7 @@ public class AccountEndpoint {
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
      * @return Obiekt klasy encji użytkownika
      */
-    private Account accountRegisterDtoToAccount(AccountRegisterDto accountRegisterDto)
-            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
+    private Account accountRegisterDtoToAccount(AccountRegisterDto accountRegisterDto) {
         Account account = new Account();
         account.setLogin(accountRegisterDto.getLogin());
         account.setPassword(accountRegisterDto.getPassword());

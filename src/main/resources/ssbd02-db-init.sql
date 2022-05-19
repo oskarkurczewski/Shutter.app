@@ -13,6 +13,24 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
+CREATE TABLE public.account (
+    version bigint,
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    login character varying(64) NOT NULL,
+    email character varying(64) NOT NULL,
+    password character varying(60) NOT NULL,
+    name character varying(64) NOT NULL,
+    surname character varying(64) NOT NULL,
+    registered boolean DEFAULT false NOT NULL,
+    active boolean DEFAULT true NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
+);
+
+ALTER TABLE public.account OWNER TO ssbd02admin;
+
 CREATE TABLE public.access_level (
     version bigint,
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
@@ -26,42 +44,38 @@ CREATE TABLE public.access_level_assignment (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     account_id bigint NOT NULL,
     access_level_id bigint NOT NULL,
-    active boolean DEFAULT true NOT NULL
+    active boolean DEFAULT true NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE public.access_level_assignment OWNER TO ssbd02admin;
-
-CREATE TABLE public.account (
-    version bigint,
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    login character varying(64) NOT NULL,
-    email character varying(64) NOT NULL,
-    password character varying(60) NOT NULL,
-    name character varying(64) NOT NULL,
-    surname character varying(64) NOT NULL,
-    registered boolean DEFAULT false NOT NULL,
-    active boolean DEFAULT true NOT NULL
-);
-
-ALTER TABLE public.account OWNER TO ssbd02admin;
 
 CREATE TABLE public.account_report (
     version bigint, id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     reportee_id bigint NOT NULL,
     reported_id bigint NOT NULL,
     cause_id integer NOT NULL,
-    reviewed boolean DEFAULT false NOT NULL
+    reviewed boolean DEFAULT false NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
-
 
 ALTER TABLE public.account_report OWNER TO ssbd02admin;
 
 CREATE TABLE public.account_report_cause (
     version bigint,
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY,
-    cause character varying(128) NOT NULL
+    cause character varying(128) NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
-
 
 ALTER TABLE public.account_report_cause OWNER TO ssbd02admin;
 
@@ -72,8 +86,7 @@ CREATE VIEW public.authorization_view AS
    FROM ((public.account
      JOIN public.access_level_assignment ON ((account.id = access_level_assignment.account_id)))
      JOIN public.access_level ON ((access_level.id = access_level_assignment.access_level_id)))
-  WHERE ((account.active = true) AND (access_level_assignment.active = true) AND (account.registered = true));
-
+ WHERE ((account.active = true) AND (access_level_assignment.active = true) AND (account.registered = true));
 
 ALTER TABLE public.authorization_view OWNER TO ssbd02admin;
 
@@ -84,9 +97,12 @@ CREATE TABLE public.availability (
     weekday smallint NOT NULL,
     "from" time without time zone NOT NULL,
     "to" time without time zone NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp,
     CONSTRAINT weekday_check CHECK (((weekday >= 0) AND (weekday <= 6)))
 );
-
 
 ALTER TABLE public.availability OWNER TO ssbd02admin;
 
@@ -97,9 +113,12 @@ CREATE TABLE public.photo (
     data bytea NOT NULL,
     title character varying(64),
     description character varying(1024),
-    like_count bigint DEFAULT 0 NOT NULL
+    like_count bigint DEFAULT 0 NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
-
 
 ALTER TABLE public.photo OWNER TO ssbd02admin;
 
@@ -107,7 +126,11 @@ CREATE TABLE public.photo_like (
     version bigint,
     photo_id bigint NOT NULL,
     account_id bigint NOT NULL,
-    test_field bigint NOT NULL
+    test_field bigint NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE public.photo_like OWNER TO ssbd02admin;
@@ -120,7 +143,11 @@ CREATE TABLE public.photographer_info (
     description character varying(4096)[],
     lat real,
     long real,
-    visible boolean DEFAULT TRUE
+    visible boolean DEFAULT TRUE,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE public.photographer_info OWNER TO ssbd02admin;
@@ -131,7 +158,11 @@ CREATE TABLE public.photographer_report (
     cause_id bigint NOT NULL,
     reviewed boolean DEFAULT false NOT NULL,
     account_id bigint NOT NULL,
-    photographer_id bigint NOT NULL
+    photographer_id bigint NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE public.photographer_report OWNER TO ssbd02admin;
@@ -147,9 +178,12 @@ ALTER TABLE public.photographer_report_cause OWNER TO ssbd02admin;
 CREATE TABLE public.photographer_specialization (
     version bigint,
     photographer_id bigint NOT NULL,
-    specialization_id integer NOT NULL
+    specialization_id integer NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
-
 
 ALTER TABLE public.photographer_specialization OWNER TO ssbd02admin;
 
@@ -159,7 +193,11 @@ CREATE TABLE public.reservation (
     photographer_id bigint NOT NULL,
     account_id bigint NOT NULL,
     "from" timestamp without time zone NOT NULL,
-    "to" timestamp without time zone NOT NULL
+    "to" timestamp without time zone NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE public.reservation OWNER TO ssbd02admin;
@@ -173,6 +211,10 @@ CREATE TABLE public.review (
     like_count bigint DEFAULT 0 NOT NULL,
     content character varying(4096),
     active boolean DEFAULT true NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp,
     CONSTRAINT score_check CHECK (((score >= 0) AND (score <= 10)))
 );
 
@@ -181,7 +223,11 @@ ALTER TABLE public.review OWNER TO ssbd02admin;
 CREATE TABLE public.review_like (
     version bigint,
     account_id bigint NOT NULL,
-    review_id bigint NOT NULL
+    review_id bigint NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE public.review_like OWNER TO ssbd02admin;
@@ -192,9 +238,12 @@ CREATE TABLE public.review_report (
     review_id bigint NOT NULL,
     account_id bigint NOT NULL,
     cause_id integer NOT NULL,
-    reviewed boolean DEFAULT false NOT NULL
+    reviewed boolean DEFAULT false NOT NULL,
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
-
 
 ALTER TABLE public.review_report OWNER TO ssbd02admin;
 
@@ -221,14 +270,16 @@ CREATE TABLE public.token (
     token character varying(64),
     "expiration" timestamp without time zone NOT NULL,
     account_id bigint NOT NULL,
-    token_type character varying(32)
+    token_type character varying(32),
+    created_by bigint,
+    created_at timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE ONLY public.token ADD CONSTRAINT token_key UNIQUE (token);
 
 ALTER TABLE ONLY public.token OWNER TO ssbd02admin;
-
-ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
 
 ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT access_level_assignment_account_id_access_level_id_key UNIQUE (account_id, access_level_id);
 
@@ -281,6 +332,8 @@ ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT user_report_cause_ca
 ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT user_report_cause_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.account_report ADD CONSTRAINT user_report_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
 
 CREATE INDEX access_level_assignment_access_level_id_idx ON public.access_level_assignment USING btree (access_level_id);
 
@@ -377,6 +430,66 @@ ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_user_report.reported_i
 ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_user_report.reportee_Id" FOREIGN KEY (reportee_id) REFERENCES public.account(id);
 
 ALTER TABLE ONLY public.photographer_info ADD CONSTRAINT account_id FOREIGN KEY (account_id) REFERENCES public.account(id) NOT VALID;
+
+ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_account_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_account_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT "FK_account_report_cause.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT "FK_account_report_cause.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.availability ADD CONSTRAINT "FK_availability.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.availability ADD CONSTRAINT "FK_availability.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photo ADD CONSTRAINT "FK_photo.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photo ADD CONSTRAINT "FK_photo.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photo_like ADD CONSTRAINT "FK_photo_like.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photo_like ADD CONSTRAINT "FK_photo_like.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photographer_info ADD CONSTRAINT "FK_photographer_info.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photographer_info ADD CONSTRAINT "FK_photographer_info.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT "FK_photographer_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT "FK_photographer_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photographer_specialization ADD CONSTRAINT "FK_photographer_specialization.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.photographer_specialization ADD CONSTRAINT "FK_photographer_specialization.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.reservation ADD CONSTRAINT "FK_reservation.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.reservation ADD CONSTRAINT "FK_reservation.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.review ADD CONSTRAINT "FK_review.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.review ADD CONSTRAINT "FK_review.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.review_like ADD CONSTRAINT "FK_review_like.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.review_like ADD CONSTRAINT "FK_review_like.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.review_report ADD CONSTRAINT "FK_review_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.review_report ADD CONSTRAINT "FK_review_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
 
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.access_level TO ssbd02mok;
 
