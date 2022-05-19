@@ -116,12 +116,11 @@ public class AccountEndpoint {
     /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
-     * @param login Login użytkownika
-     * @param data Obiekt zawierający informacje o zmienianym poziomie dostępu
-     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
-     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
-     * nigdy nie posiadał
+     * @param login                     Login użytkownika
+     * @param data                      Obiekt zawierający informacje o zmienianym poziomie dostępu
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({ADMINISTRATOR})
