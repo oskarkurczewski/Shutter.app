@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
@@ -19,10 +20,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
+import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_LOGIN;
 
 @Stateless
 @Interceptors(LoggingInterceptor.class)
@@ -196,7 +200,7 @@ public class AccountService {
      * @see Account
      */
     @PermitAll
-    public void registerAccount(Account account)
+    public void registerOwnAccount(Account account)
             throws IdenticalFieldException, DataNotFoundException, DatabaseException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setActive(true);
@@ -205,7 +209,7 @@ public class AccountService {
         List<AccessLevelAssignment> list = addClientAccessLevel(account);
         account.setAccessLevelAssignmentList(list);
 
-        accountFacade.registerAccount(account);
+        registerAccountHelper(account);
         verificationTokenService.sendRegistrationToken(account);
     }
 
@@ -226,9 +230,33 @@ public class AccountService {
         List<AccessLevelAssignment> list = addClientAccessLevel(account);
         account.setAccessLevelAssignmentList(list);
 
-        accountFacade.registerAccount(account);
+        registerAccountHelper(account);
         if (!account.getRegistered()) {
             verificationTokenService.sendRegistrationToken(account);
+        }
+    }
+
+    /**
+     * Tworzy konto użytkownika w bazie danych,
+     * w przypadku naruszenia unikatowości loginu lub adresu email otrzymujemy wyjątek
+     *
+     * @param account obiekt encji użytkownika
+     * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
+     */
+    private void registerAccountHelper(Account account) throws IdenticalFieldException, DatabaseException {
+        try {
+            accountFacade.persist(account);
+        } catch (PersistenceException ex) {
+            if (ex.getCause() instanceof ConstraintViolationException) {
+                String name = ((ConstraintViolationException) ex.getCause()).getConstraintName();
+                switch (name) {
+                    case IDENTICAL_LOGIN:
+                        throw ExceptionFactory.identicalFieldException("exception.login.identical");
+                    case IDENTICAL_EMAIL:
+                        throw ExceptionFactory.identicalFieldException("exception.email.identical");
+                }
+            }
+            throw ExceptionFactory.databaseException();
         }
     }
 
@@ -269,14 +297,13 @@ public class AccountService {
      * Funkcja do edycji danych użytkownika. Zmienia tylko proste informacje, a nie role dostępu itp
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @return obiekt użytkownika po aktualizacji
      */
     @RolesAllowed(editOwnAccountData)
-    public Account editAccountInfo(Account account, EditAccountInfoDto editAccountInfoDto) {
+    public void editAccountInfo(Account account, EditAccountInfoDto editAccountInfoDto) {
         account.setEmail(editAccountInfoDto.getEmail());
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
-        return accountFacade.update(account);
+        accountFacade.update(account);
     }
 
     /**
@@ -284,13 +311,12 @@ public class AccountService {
      * imię oraz nazwisko
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @return obiekt użytkownika po aktualizacji
      */
     @RolesAllowed({ADMINISTRATOR})
-    public Account editAccountInfoAsAdmin(Account account, EditAccountInfoDto editAccountInfoDto) {
+    public void editAccountInfoAsAdmin(Account account, EditAccountInfoDto editAccountInfoDto) {
         account.setEmail(editAccountInfoDto.getEmail());
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
-        return accountFacade.update(account);
+        accountFacade.update(account);
     }
 }

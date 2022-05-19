@@ -6,7 +6,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public abstract class FacadeTemplate<T> {
+public abstract class FacadeTemplate<T extends ManagedEntity> {
 
     private final Class<T> type;
 

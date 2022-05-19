@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "review_report")
-public class ReviewReport {
+public class ReviewReport extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)
     @Version

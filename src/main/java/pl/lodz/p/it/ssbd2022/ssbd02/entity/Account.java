@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,7 +27,7 @@ import java.util.Objects;
         @NamedQuery(name = "account.findByLogin", query = "SELECT u from Account u WHERE u.login = :login"),
         @NamedQuery(name = "account.getAccessLevelValue", query = "SELECT level FROM AccessLevelValue AS level WHERE level.name = :access_level")
 })
-public class Account {
+public class Account extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)
     @Version

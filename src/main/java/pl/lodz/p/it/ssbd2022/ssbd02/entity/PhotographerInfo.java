@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,7 +25,7 @@ import java.util.Objects;
         name = "photographer_info.findByLogin",
         query = "SELECT p FROM PhotographerInfo p JOIN Account a ON p.id=a.id WHERE a.login = :login"
 )
-public class PhotographerInfo {
+public class PhotographerInfo extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)
     @Version
