@@ -21,13 +21,21 @@ public class OneTimeCodeUtils {
     private byte[] secret;
     private TOTP totpGenerator;
 
+    public void setConfigLoader(ConfigLoader configLoader) {
+        this.configLoader = configLoader;
+    }
+
     @PostConstruct
-    private void test() {
+    public void init() {
+        String period = "600";
         try {
             this.secret = configLoader
                     .loadProperties("config.2fa.properties")
                     .getProperty("2fa.secret")
                     .getBytes(StandardCharsets.UTF_8);
+            period = configLoader
+                    .loadProperties("config.2fa.properties")
+                    .getProperty("2fa.period");
         } catch (NoConfigFileFound e) {
             throw new RuntimeException(e);
         }
@@ -35,7 +43,7 @@ public class OneTimeCodeUtils {
         this.totpGenerator = builder
                 .withPasswordLength(6)
                 .withAlgorithm(HMACAlgorithm.SHA512)
-                .withPeriod(Duration.ofMinutes(10))
+                .withPeriod(Duration.ofSeconds(Integer.parseInt(period)))
                 .build();
     }
 
