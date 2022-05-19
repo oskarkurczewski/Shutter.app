@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.PhotographerInfoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -31,6 +32,9 @@ public class PhotographerService {
     @Inject
     private AuthenticationFacade accountFacade;
 
+    @Inject
+    private PhotographerInfoFacade photographerInfoFacade;
+
 
     /**
      * Odnajduje informacje o fotografie na podstawie jego loginu
@@ -39,9 +43,8 @@ public class PhotographerService {
      * @throws NoPhotographerFound W przypadku kiedy fotograf o danym loginie nie istnieje
      */
     public PhotographerInfo findByLogin(String login) throws NoPhotographerFound {
-        return accountFacade.findPhotographerByLogin(login);
+        return photographerInfoFacade.findPhotographerByLogin(login);
     }
-
 
     /**
      * Szuka fotografa
