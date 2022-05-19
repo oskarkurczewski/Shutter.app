@@ -27,14 +27,12 @@ public class AccountController {
      * Zmienia status użytkownika o danym loginie na zablokowany
      *
      * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
-     * @param accountStatusChangeDto obiekt dto przechowujący status który ma zostać ustawiony
      */
     @PUT
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
     public void blockAccount(
-            @NotNull @PathParam("login") String login,
-            @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
+            @NotNull @PathParam("login") String login
     ) throws NoAccountFound {
         accountEndpoint.blockAccount(login);
     }
@@ -43,14 +41,12 @@ public class AccountController {
      * Zmienia status użytkownika o danym loginie na odblokowany
      *
      * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
-     * @param accountStatusChangeDto obiekt dto przechowujący status, który ma zostać ustawiony
      */
     @PUT
     @Path("/{login}/unblock")
     @Consumes(MediaType.APPLICATION_JSON)
     public void unblockAccount(
-            @NotNull @PathParam("login") String login,
-            @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
+            @NotNull @PathParam("login") String login
     ) throws NoAccountFound {
         accountEndpoint.unblockAccount(login);
     }
