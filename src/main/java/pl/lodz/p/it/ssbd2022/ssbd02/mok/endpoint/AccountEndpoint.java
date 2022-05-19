@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -33,6 +34,9 @@ public class AccountEndpoint {
 
     @Inject
     private AccountService accountService;
+
+    @Inject
+    private VerificationTokenService verificationTokenService;
 
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
@@ -129,6 +133,17 @@ public class AccountEndpoint {
         Account account = accountService.findByLogin(login);
         AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName(data.getAccessLevel());
         accountService.changeAccountAccessLevel(account, accessLevelValue, data.getActive());
+    }
+
+    /**
+     * Dokonuje potwierdzenia konta używając tokenu weryfikacyjnego wysłanego na adres email.
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @throws BaseApplicationException Występuje w przypadku gdy potwierdzenie rejestracji się nie powiedzie
+     */
+    @PermitAll
+    public void confirmAccountRegistration(String token) throws BaseApplicationException {
+        accountService.confirmAccountRegistration(token);
     }
 
     /**

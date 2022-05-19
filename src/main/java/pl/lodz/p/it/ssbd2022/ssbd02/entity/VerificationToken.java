@@ -27,6 +27,7 @@ public class VerificationToken {
     @Column(name = "version")
     private Long version;
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(updatable = false)
     private Long id;

@@ -81,6 +81,21 @@ public class AccountController {
     }
 
     /**
+     * Punkt końcowy pozwalający na potwierdzenie rejestracji konta.
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia potwierdzenia rejestracji
+     */
+    @POST
+    @Path("/confirm/{token}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerAccount(@NotNull @Valid @PathParam("token") String token) throws BaseApplicationException {
+        accountEndpoint.confirmAccountRegistration(token);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    /**
      * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta, przez administratora.
      *
      * @param accountRegisterAsAdminDto Rozszerzony obiekt przedstawiające dane użytkownika do rejestracji

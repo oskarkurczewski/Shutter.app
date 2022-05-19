@@ -32,6 +32,9 @@ public class AccountService {
     @Inject
     private AuthenticationFacade accountFacade;
 
+    @Inject
+    private VerificationTokenService verificationTokenService;
+
     /**
      * Odnajduje konto użytkownika o podanym loginie
      *
@@ -203,6 +206,7 @@ public class AccountService {
         account.setAccessLevelAssignmentList(list);
 
         accountFacade.registerAccount(account);
+        verificationTokenService.sendRegistrationToken(account);
     }
 
     /**
@@ -223,6 +227,9 @@ public class AccountService {
         account.setAccessLevelAssignmentList(list);
 
         accountFacade.registerAccount(account);
+        if (!account.getRegistered()) {
+            verificationTokenService.sendRegistrationToken(account);
+        }
     }
 
     /**
@@ -243,6 +250,19 @@ public class AccountService {
         list.add(assignment);
 
         return list;
+    }
+
+    /**
+     * Potwierdza rejestracje konta ustawiając pole 'registered' na wartość 'true'
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @throws BaseApplicationException Występuje w przypadku gdy potwierdzenie rejestracji się nie powiedzie
+     */
+    @PermitAll
+    public void confirmAccountRegistration(String token) throws BaseApplicationException {
+        Account account = verificationTokenService.confirmRegistration(token);
+        account.setRegistered(true);
+        accountFacade.update(account);
     }
 
     /**
