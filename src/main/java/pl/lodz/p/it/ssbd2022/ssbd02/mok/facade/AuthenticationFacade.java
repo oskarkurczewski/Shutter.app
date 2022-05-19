@@ -7,16 +7,19 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_LOGIN;
 
 @Stateless
+@Interceptors(LoggingInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AuthenticationFacade extends FacadeTemplate<Account> {
     @PersistenceContext(unitName = "ssbd02mokPU")
@@ -45,15 +48,13 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * Pobiera przypisanie poziomu dostępu z bazy danych na podstawie przekazanego łańcucha znaków
      * dla wskazanego użytkownika.
      *
-     * @param accountID identyfikator użytkownika
-     * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
-     * @return AccessLevelAssignment
+     * @param account Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
+     * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
      * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
      */
-    public AccessLevelAssignment getAccessLevelAssignmentForAccount(Long accountID, String accessLevel) {
-        Account target = this.find(accountID);
-        return target.getAccessLevelAssignmentList().stream()
-                .filter(a -> a.getLevel().getName().equals(accessLevel))
+    public AccessLevelAssignment getAccessLevelAssignmentForAccount(Account account, AccessLevelValue accessLevelValue) {
+        return account.getAccessLevelAssignmentList().stream()
+                .filter(a -> a.getLevel().getName().equals(accessLevelValue.getName()))
                 .findAny()
                 .orElse(null);
     }

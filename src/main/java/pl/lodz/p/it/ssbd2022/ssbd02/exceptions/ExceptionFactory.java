@@ -41,7 +41,7 @@ public class ExceptionFactory {
     }
 
     public static PasswordMismatchException passwordMismatchException() {
-        return new PasswordMismatchException();
+        return new PasswordMismatchException("exception.password.mismatch");
     }
 
     public static WrongPasswordException wrongPasswordException() {
@@ -52,5 +52,43 @@ public class ExceptionFactory {
         return new UnexpectedFailException("exception.unexpected");
     }
 
+    public static AvailabilityOverlapException availabilityOverlapException() {
+        return new AvailabilityOverlapException("exception.availability.overlap");
+    }
 
+    public static NoAvailabilityFoundException noAvailabilityFoundException() {
+        return new NoAvailabilityFoundException("exception.availability.not_found");
+    }
+
+    public static InvalidReservationTimeExcpetion invalidReservationTimeException() {
+        return new InvalidReservationTimeExcpetion("exception.reservation.invalid_time");
+    }
+
+    public static NoReservationFoundException noReservationFoundException() {
+        return new NoReservationFoundException("exception.reservation.not_found");
+    }
+
+    public static NoPhotographerFoundException noPhotographerFoundException() {
+        return new NoPhotographerFoundException("exception.photographer.not_found");
+    }
+
+    public static NoReviewFoundException noReviewFoundException() {
+        return new NoReviewFoundException("exception.review.not_found");
+    }
+
+    public static NoPhotoFoundException noPhotoFoundException() {
+        return new NoPhotoFoundException("exception.photo.not_found");
+    }
+
+    public static NoAccountReportFoundException noAccountReportFoundException() {
+        return new NoAccountReportFoundException("exception.account_report.not_found");
+    }
+
+    public static NoPhotographerReportFoundException noPhotographerReportFoundException() {
+        return new NoPhotographerReportFoundException("exception.photographer_report.not_found");
+    }
+
+    public static NoReviewReportFoundException noReviewReportFoundException() {
+        return new NoReviewReportFoundException("exception.review_report.not_found");
+    }
 }
