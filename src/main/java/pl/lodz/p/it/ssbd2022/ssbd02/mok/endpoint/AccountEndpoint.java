@@ -110,7 +110,6 @@ public class AccountEndpoint {
         account.setEmail(accountRegisterDto.getEmail());
         account.setName(accountRegisterDto.getName());
         account.setSurname(accountRegisterDto.getSurname());
-        accountService.registerAccount(account);
         return account;
     }
 
