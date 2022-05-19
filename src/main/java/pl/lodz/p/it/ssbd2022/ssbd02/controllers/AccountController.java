@@ -1,12 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
@@ -18,41 +13,54 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
-public class AccountController {
+public class AccountController extends AbstractContoller {
 
     @Inject
     AccountEndpoint accountEndpoint;
 
     /**
-     * Zmienia status użytkownika o danym loginie na podany
+     * Zmienia status użytkownika o danym loginie na zablokowany
      *
-     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
-     * @param accountStatusChangeDto obiekt dto przechowujący status, który ma zostać ustawiony
+     * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
-    @Path("/{login}/status")
+    @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountStatus(
-            @NotNull @PathParam("login") String login,
-            @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
-    ) throws NoAccountFound {
-        accountEndpoint.changeAccountStatus(login, accountStatusChangeDto.getActive());
+    public void blockAccount(
+            @NotNull @PathParam("login") String login
+    ) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.blockAccount(login), accountEndpoint);
+    }
+
+    /**
+     * Zmienia status użytkownika o danym loginie na odblokowany
+     *
+     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     */
+    @PUT
+    @Path("/{login}/unblock")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void unblockAccount(
+            @NotNull @PathParam("login") String login
+    ) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.unblockAccount(login), accountEndpoint);
+
     }
 
     @PUT
-    @Path("/{accountId}/change-password")
+    @Path("/{login}/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountPasswordAsAdmin(
-            @NotNull @PathParam("accountId") Long accountId,
-            @NotNull @Valid AccountUpdatePasswordDto password) {
-        accountEndpoint.updatePasswordAsAdmin(accountId, password);
+            @NotNull @PathParam("login") String login,
+            @NotNull @Valid AccountUpdatePasswordDto password) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
     }
 
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound {
-        accountEndpoint.updateOwnPassword(data);
+    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.updateOwnPassword(data), accountEndpoint);
     }
 
     /**
@@ -67,9 +75,24 @@ public class AccountController {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws IdenticalFieldException, DatabaseException, DataNotFoundException {
-        accountEndpoint.registerAccount(accountRegisterDto);
+    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
         return Response.status(Response.Status.CREATED).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na potwierdzenie rejestracji konta.
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia potwierdzenia rejestracji
+     */
+    @POST
+    @Path("/confirm/{token}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerAccount(@NotNull @Valid @PathParam("token") String token) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     /**
@@ -83,8 +106,10 @@ public class AccountController {
     @POST
     @Path("/register-as-admin")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto) throws IdenticalFieldException, DatabaseException, DataNotFoundException {
-        accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto);
+    public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto)
+            throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
+
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -94,16 +119,18 @@ public class AccountController {
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
      * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i informacje próbuje uzyskać użytkownik
-     *                                     niebędący ani administratorem, ani moderatorem
+     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     *                                     i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
+     *                                     ani moderatorem
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see AccountInfoDto
      */
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws NoAuthenticatedAccountFound, NoAccountFound {
-        return accountEndpoint.getAccountInfo(login);
+    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login)
+            throws BaseApplicationException {
+        return repeat(() ->  accountEndpoint.getAccountInfo(login), accountEndpoint);
     }
 
     /**
@@ -116,8 +143,8 @@ public class AccountController {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo() throws NoAuthenticatedAccountFound {
-        return accountEndpoint.getYourAccountInfo();
+    public AccountInfoDto getUserInfo() throws BaseApplicationException {
+        return repeat(() ->  accountEndpoint.getOwnAccountInfo(), accountEndpoint);
     }
 
     /**
@@ -126,13 +153,13 @@ public class AccountController {
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      */
     @PUT
-    @Path("/editAccountInfo")
+    @Path("/editOwnAccountInfo")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void editAccountInfo(
+    public void editOwnAccountInfo(
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
-    ) throws NoAuthenticatedAccountFound {
+    ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        accountEndpoint.editAccountInfo(editAccountInfoDto);
+        repeat(() ->  accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
     }
 
     /**
@@ -146,29 +173,28 @@ public class AccountController {
     public void editAccountInfo(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
-    ) throws NoAccountFound {
+    ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto);
+        repeat(() ->  accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto), accountEndpoint);
     }
 
     /**
      * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
      *
-     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
+     * @param data                      Obiekt przedstawiające dane zawierające poziom dostępu
      * @return Odpowiedź HTTP
-     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
-     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
-     * nigdy nie posiadał
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      */
     @POST
-    @Path("/{accountId}/accessLevel")
+    @Path("/{login}/accessLevel")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response assignAccountAccessLevel(
-            @NotNull @PathParam("accountId") Long accountId,
+            @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountAccessLevelChangeDto data
-    ) throws CannotChangeException, DataNotFoundException {
-        accountEndpoint.changeAccountAccessLevel(accountId, data);
+    ) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 

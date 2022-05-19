@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
@@ -14,7 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/photographer")
-public class PhotographerController {
+public class PhotographerController extends AbstractContoller {
 
     @Inject
     PhotographerEndpoint photographerEndpoint;
@@ -32,8 +33,8 @@ public class PhotographerController {
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
-        return photographerEndpoint.getPhotographerInfo(login);
+    public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
+        return repeat(() ->  photographerEndpoint.getPhotographerInfo(login), photographerEndpoint);
     }
 
     /**
@@ -46,7 +47,7 @@ public class PhotographerController {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public PhotographerInfoDto getUserInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
-        return photographerEndpoint.getYourPhotographerInfo();
+    public PhotographerInfoDto getUserInfo() throws BaseApplicationException {
+        return repeat(() ->  photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
     }
 }
