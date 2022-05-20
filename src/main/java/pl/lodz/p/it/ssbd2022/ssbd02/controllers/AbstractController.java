@@ -2,15 +2,39 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnexpectedFailException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.TransactionClass;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJBTransactionRolledbackException;
+import javax.inject.Inject;
+
+import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory.unexpectedFailException;
 
 public abstract class AbstractController {
-    int transactionRepetitionLimit = 5;
+    private int transactionRepetitionLimit;
+
+    @Inject
+    private ConfigLoader configLoader;
+
+    private Properties properties;
+
+    private static final String CONFIG_FILE_NAME = "config.transaction.properties";
+
+
+    @PostConstruct
+    public void init() {
+        try {
+            configLoader = new ConfigLoader();
+            properties = configLoader.loadProperties(CONFIG_FILE_NAME);
+        } catch (NoConfigFileFound e) {
+            throw new RuntimeException(e);
+        }
+        transactionRepetitionLimit = Integer.parseInt(properties.getProperty("transaction.repetition.limit"));
+    }
 
     /**
      * Zmienia status użytkownika o danym loginie na podany
