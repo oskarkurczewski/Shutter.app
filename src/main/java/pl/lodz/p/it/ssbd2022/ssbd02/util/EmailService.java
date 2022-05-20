@@ -82,6 +82,27 @@ public class EmailService {
     }
 
     /**
+     * Funkcja wysyłająca do wskazanego użytkownika maila z przypomnieniem o konieczności potwierdzenia rejestracji
+     *
+     * @param to adresat wiadomości email
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     */
+    public void sendRegistrationConfirmationReminder(String to, VerificationToken token) {
+        String subject = "PRZYPOMNIENIE: Weryfikacja konta Shutter.app";
+        String body = "Przypominamy o konieczności potwierdzenia konta w Shutter.app. " +
+                "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
+                "%s/confirm/%s",
+                BASE_URL,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła
      *
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
