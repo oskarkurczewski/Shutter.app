@@ -30,7 +30,7 @@ import java.util.Properties;
 public class EmailService {
 
     private static final String CONFIG_FILE_NAME = "config.email.properties";
-    private static final String REGISTER_CONFIRMATION_URL = "http://studapp.it.p.lodz.pl:8002/confirm";
+    private static final String BASE_URL = "http://studapp.it.p.lodz.pl:8002";
 
     private TransactionalEmailsApi api;
     private SendSmtpEmailSender sender;
@@ -69,9 +69,34 @@ public class EmailService {
      */
     public void sendRegistrationEmail(String to, VerificationToken token) {
         String subject = "Weryfikacja konta Shutter.app";
-        String body = "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format("%s/%s", REGISTER_CONFIRMATION_URL, token.getToken());
+        String body = "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
+                "%s/confirm/%s",
+                BASE_URL,
+                token.getToken()
+        );
         try {
           sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła
+     *
+     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param token Żeton, który ma zostać wysłany
+     */
+    public void sendPasswordResetEmail(String to, String login, VerificationToken token) {
+        String subject = "Resetowanie hasła Shutter.app";
+        String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
+                "%s/%s/password-reset/%s",
+                BASE_URL,
+                login,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
         } catch (EmailException e) {
             throw new RuntimeException(e);
         }

@@ -5,10 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
@@ -148,6 +145,21 @@ public class AccountService {
         String hashed = BCryptUtils.generate(newPassword.toCharArray());
         target.setPassword(hashed);
         accountFacade.update(target);
+    }
+
+    /**
+     * Resetuje hasło użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
+     *
+     * @param account          Konto, dla którego hasła ma zostać zresetowane
+     * @param resetPasswordDto Dto przechowujące informacje wymagane do resetu hasła
+     * @throws InvalidTokenException    Kiedy żeton jest nieprawidłowy
+     * @throws NoVerificationTokenFound Kiedy nie udało się odnaleźć danego żetonu w systemie
+     * @throws ExpiredTokenException    Kiedy żeton wygasł
+     */
+    @PermitAll
+    public void resetPassword(Account account, ResetPasswordDto resetPasswordDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        verificationTokenService.confirmPasswordReset(resetPasswordDto.getToken());
+        changePassword(account, resetPasswordDto.getNewPassword());
     }
 
     /**
