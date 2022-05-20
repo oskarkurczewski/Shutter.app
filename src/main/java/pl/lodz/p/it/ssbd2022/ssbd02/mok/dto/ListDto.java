@@ -22,7 +22,7 @@ public class ListDto<T> {
     Integer recordsPerPage;
 
     @NotNull
-    Integer allRecords;
+    Long allRecords;
 
     @NotNull
     List<T> list;

@@ -3,10 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
@@ -190,13 +187,16 @@ public class AccountController {
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
-            @QueryParam("order") @DefaultValue("asc") String order
+            @QueryParam("order") @DefaultValue("asc") String order,
+            @QueryParam("login") String login,
+            @QueryParam("email") String email,
+            @QueryParam("name") String name,
+            @QueryParam("surname") String surname,
+            @QueryParam("registered") Boolean registered,
+            @QueryParam("active") Boolean active
     ){
         return accountEndpoint.getAccountList(
-                pageNo,
-                recordsPerPage,
-                columnName,
-                order
+                pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
         );
     }
 

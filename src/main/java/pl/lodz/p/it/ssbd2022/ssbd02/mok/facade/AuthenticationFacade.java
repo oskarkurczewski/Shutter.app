@@ -14,9 +14,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_LOGIN;
@@ -51,7 +55,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * Pobiera przypisanie poziomu dostępu z bazy danych na podstawie przekazanego łańcucha znaków
      * dla wskazanego użytkownika.
      *
-     * @param account Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
+     * @param account          Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
      * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
      * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
      */
@@ -68,7 +72,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      *
      * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
      * @throws DataNotFoundException W przypadku, gdy funkcja nie znajdzie rekordu
-     * ze wskazaną nazwą
+     *                               ze wskazaną nazwą
      */
     public AccessLevelValue getAccessLevelValue(String accessLevel) throws DataNotFoundException {
         TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
@@ -98,4 +102,81 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
             throw ExceptionFactory.noPhotographerFound();
         }
     }
+
+    public List<String> getAccountList(
+            int page, 
+            int recordsPerPage, 
+            String orderBy, 
+            String order, 
+            String login, 
+            String email,
+            String name,
+            String surname,
+            Boolean registered,
+            Boolean active
+    ) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Account> query = criteriaBuilder.createQuery(Account.class);
+        Root<Account> table = query.from(Account.class);
+        query.select(table);
+
+        switch (order) {
+            case "asc": {
+                query.orderBy(criteriaBuilder.asc(table.get(orderBy)));
+                break;
+
+            }
+            case "desc": {
+                query.orderBy(criteriaBuilder.desc(table.get(orderBy)));
+                break;
+
+            }
+        }
+        
+        if (login != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("login")), addPercent(login.toLowerCase())));
+        if (email != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("email")), addPercent( email.toLowerCase())));
+        if (name != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("name")), addPercent( name.toLowerCase())));
+        if (surname != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("surname")), addPercent( surname.toLowerCase())));
+        if (registered != null) query.where(criteriaBuilder.equal(table.get("registered"),  registered));
+        if (active != null) query.where(criteriaBuilder.equal(table.get("active"),  active));
+        
+
+
+
+        return em
+                .createQuery(query)
+                .setFirstResult(recordsPerPage * (page - 1))
+                .setMaxResults(recordsPerPage)
+                .getResultStream().map(Account::getLogin).collect(Collectors.toList());
+    }
+    
+    private String addPercent(String s){
+        return "%" + s + "%";
+    }
+    
+    public Long getAccountListSize(
+            String login,
+            String email,
+            String name,
+            String surname,
+            Boolean registered,
+            Boolean active
+    ){
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Account> table = query.from(Account.class);
+        query.select(criteriaBuilder.count(table));
+
+        if (login != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("login")), addPercent(login.toLowerCase())));
+        if (email != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("email")), addPercent( email.toLowerCase())));
+        if (name != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("name")), addPercent( name.toLowerCase())));
+        if (surname != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("surname")), addPercent( surname.toLowerCase())));
+        if (registered != null) query.where(criteriaBuilder.equal(table.get("registered"),  registered));
+        if (active != null) query.where(criteriaBuilder.equal(table.get("active"),  active));
+        
+        return em.createQuery(query).getSingleResult();
+    }
+    
+
+    
 }

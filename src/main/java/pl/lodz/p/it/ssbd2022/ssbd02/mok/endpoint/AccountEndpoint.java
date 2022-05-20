@@ -3,9 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedUserFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
@@ -47,7 +45,7 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
      *
-     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @param login login użytkownika dla którego chcemy zmienić status
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
@@ -60,7 +58,7 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na odblokowany
      *
-     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @param login login użytkownika dla którego chcemy zmienić status
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
@@ -125,11 +123,11 @@ public class AccountEndpoint {
     /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
-     * @param login                     Login użytkownika
-     * @param data                      Obiekt zawierający informacje o zmienianym poziomie dostępu
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @param login Login użytkownika
+     * @param data  Obiekt zawierający informacje o zmienianym poziomie dostępu
+     * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                               lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({ADMINISTRATOR})
@@ -216,7 +214,17 @@ public class AccountEndpoint {
     }
 
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public ListDto<String> getAccountList(int page, int recordsPerPage, String orderBy, String order) {
-        return accountService.getAccountList(page, recordsPerPage, orderBy, order);
+    public ListDto<String> getAccountList(
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            String order,
+            String login,
+            String email,
+            String name,
+            String surname,
+            Boolean registered,
+            Boolean active) {
+        return accountService.getAccountList(page, recordsPerPage, orderBy, order, login, email, name, surname, registered, active);
     }
 }
