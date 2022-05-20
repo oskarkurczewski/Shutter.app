@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
@@ -103,8 +104,9 @@ public class AccountController {
     @POST
     @Path("request-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void requestEmailUpdate(@NotNull @Valid RequestEmailUpdateDto email) throws NoAccountFound, NoAuthenticatedAccountFound {
+    public Response requestEmailUpdate(@NotNull @Valid RequestEmailUpdateDto email) throws NoAccountFound, NoAuthenticatedAccountFound {
         accountEndpoint.requestEmailUpdate(email);
+        return Response.status(Response.Status.OK).build();
     }
 
     /**
@@ -120,8 +122,9 @@ public class AccountController {
     @POST
     @Path("{login}/verify-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
+    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
         accountEndpoint.updateEmail(login, emailUpdateDto);
+        return Response.status(Response.Status.OK).build();
     }
 
 
