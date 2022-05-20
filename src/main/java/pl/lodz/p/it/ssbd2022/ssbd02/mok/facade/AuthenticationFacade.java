@@ -103,57 +103,101 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         }
     }
 
+    /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param page           numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return lista wynikowa zapytania do bazy danych
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
     public List<String> getAccountList(
-            int page, 
-            int recordsPerPage, 
-            String orderBy, 
-            String order, 
-            String login, 
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            String order,
+            String login,
             String email,
             String name,
             String surname,
             Boolean registered,
             Boolean active
-    ) {
+    ) throws WrongParameterException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<Account> query = criteriaBuilder.createQuery(Account.class);
+        CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
         Root<Account> table = query.from(Account.class);
-        query.select(table);
+        query.select(table.get("login"));
 
-        switch (order) {
-            case "asc": {
-                query.orderBy(criteriaBuilder.asc(table.get(orderBy)));
-                break;
+        try {
+            switch (order) {
+                case "asc": {
+                    query.orderBy(criteriaBuilder.asc(table.get(orderBy)));
+                    break;
 
+                }
+                case "desc": {
+                    query.orderBy(criteriaBuilder.desc(table.get(orderBy)));
+                    break;
+
+                }
+                default: {
+                    throw ExceptionFactory.wrongParameterException();
+                }
             }
-            case "desc": {
-                query.orderBy(criteriaBuilder.desc(table.get(orderBy)));
-                break;
-
-            }
+        } catch (IllegalArgumentException e) {
+            throw ExceptionFactory.wrongParameterException();
         }
-        
-        if (login != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("login")), addPercent(login.toLowerCase())));
-        if (email != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("email")), addPercent( email.toLowerCase())));
-        if (name != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("name")), addPercent( name.toLowerCase())));
-        if (surname != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("surname")), addPercent( surname.toLowerCase())));
-        if (registered != null) query.where(criteriaBuilder.equal(table.get("registered"),  registered));
-        if (active != null) query.where(criteriaBuilder.equal(table.get("active"),  active));
-        
 
+
+        if (login != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("login")), addPercent(login.toLowerCase())));
+        if (email != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("email")), addPercent(email.toLowerCase())));
+        if (name != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("name")), addPercent(name.toLowerCase())));
+        if (surname != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("surname")), addPercent(surname.toLowerCase())));
+        if (registered != null) query.where(criteriaBuilder.equal(table.get("registered"), registered));
+        if (active != null) query.where(criteriaBuilder.equal(table.get("active"), active));
 
 
         return em
                 .createQuery(query)
                 .setFirstResult(recordsPerPage * (page - 1))
                 .setMaxResults(recordsPerPage)
-                .getResultStream().map(Account::getLogin).collect(Collectors.toList());
+                .getResultList();
     }
-    
-    private String addPercent(String s){
+
+
+    /**
+     * dodaje znak '%' na początku i na końcu struny
+     *
+     * @param s struna
+     * @return struna wynikowa
+     */
+    private String addPercent(String s) {
         return "%" + s + "%";
     }
-    
+
+    /**
+     * Zwraca ilość rekordów po przefiltrowaniu
+     *
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return ilość rekordów
+     */
     public Long getAccountListSize(
             String login,
             String email,
@@ -161,22 +205,25 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
             String surname,
             Boolean registered,
             Boolean active
-    ){
+    ) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Account> table = query.from(Account.class);
         query.select(criteriaBuilder.count(table));
 
-        if (login != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("login")), addPercent(login.toLowerCase())));
-        if (email != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("email")), addPercent( email.toLowerCase())));
-        if (name != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("name")), addPercent( name.toLowerCase())));
-        if (surname != null) query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("surname")), addPercent( surname.toLowerCase())));
-        if (registered != null) query.where(criteriaBuilder.equal(table.get("registered"),  registered));
-        if (active != null) query.where(criteriaBuilder.equal(table.get("active"),  active));
-        
+        if (login != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("login")), addPercent(login.toLowerCase())));
+        if (email != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("email")), addPercent(email.toLowerCase())));
+        if (name != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("name")), addPercent(name.toLowerCase())));
+        if (surname != null)
+            query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("surname")), addPercent(surname.toLowerCase())));
+        if (registered != null) query.where(criteriaBuilder.equal(table.get("registered"), registered));
+        if (active != null) query.where(criteriaBuilder.equal(table.get("active"), active));
+
         return em.createQuery(query).getSingleResult();
     }
-    
 
-    
+
 }

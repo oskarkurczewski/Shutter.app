@@ -321,6 +321,22 @@ public class AccountService {
         accountFacade.update(account);
     }
 
+    /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param page           numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
     @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
     public ListDto<String> getAccountList(
             int page,
@@ -332,13 +348,13 @@ public class AccountService {
             String name,
             String surname,
             Boolean registered,
-            Boolean active) {
+            Boolean active) throws WrongParameterException {
         List<String> list = accountFacade.getAccountList(page, recordsPerPage, orderBy, order, login, email, name, surname, registered, active);
         Long allRecords = accountFacade.getAccountListSize(login, email, name, surname, registered, active);
 
         return new ListDto<>(
                 page,
-                (int) Math.ceil(allRecords / recordsPerPage),
+                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
                 recordsPerPage,
                 allRecords,
                 list

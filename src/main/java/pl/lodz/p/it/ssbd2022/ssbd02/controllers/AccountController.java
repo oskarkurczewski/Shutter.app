@@ -23,7 +23,7 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
      *
-     * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/block")
@@ -37,7 +37,7 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na odblokowany
      *
-     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/unblock")
@@ -178,12 +178,29 @@ public class AccountController {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto);
     }
-    
+
+    /**
+     * Punkt końcowy zwracający listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param pageNo         numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param columnName     nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     * @see ListDto
+     */
     @GET
     @Path("list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ListDto getAccountList (
+    public ListDto<String> getAccountList(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
@@ -194,7 +211,7 @@ public class AccountController {
             @QueryParam("surname") String surname,
             @QueryParam("registered") Boolean registered,
             @QueryParam("active") Boolean active
-    ){
+    ) throws WrongParameterException {
         return accountEndpoint.getAccountList(
                 pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
         );
@@ -203,11 +220,11 @@ public class AccountController {
     /**
      * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
      *
-     * @param data                      Obiekt przedstawiające dane zawierające poziom dostępu
+     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
      * @return Odpowiedź HTTP
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                               lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      */
     @POST
     @Path("/{login}/accessLevel")
