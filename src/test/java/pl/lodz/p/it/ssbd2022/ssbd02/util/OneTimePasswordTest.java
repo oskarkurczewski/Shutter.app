@@ -17,7 +17,7 @@ public class OneTimePasswordTest {
         assertEquals(6, code.length());
         Boolean valid = otp.verifyCode(code);
         assertEquals(valid, Boolean.TRUE);
-//         Change period in properties to 1 second befor running it
+//         Change period in properties to 1 second before running it
 //        Thread.sleep(1500);
 //        Boolean validOther = otp.verifyCode(code);
 //        assertEquals(validOther, Boolean.FALSE);
