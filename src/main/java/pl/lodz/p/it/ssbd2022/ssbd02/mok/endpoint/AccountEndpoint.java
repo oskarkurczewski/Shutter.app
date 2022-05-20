@@ -231,4 +231,19 @@ public class AccountEndpoint {
         Account account = accountService.findByLogin(login);
         verificationTokenService.sendPasswordResetToken(account);
     }
+
+
+    /**
+     * Rejestruje nieudane logowanie na konto użytkownika poprzez inkrementację licznika nieudanych
+     * logowań jego konta. Jeżeli liczba nieudanych logowań będzie równa lub większa od 3, to konto zostaje
+     * automatycznie zablokowane, a użytkownik zostaje powiadomiony o tym drogą mailową.
+     *
+     * @param login Login użytkownika, dla którego konta należy zarejestrować nieudaną operację logowania
+     * @throws NoAccountFound W przypadku gdy kotno, dla którego ma zostać zarejestrowane nieudane
+     *                        logowanie nie istnieje
+     */
+    public void registerFailedLogInAttempt(String login) throws NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        accountService.registerFailedLogInAttempt(account);
+    }
 }

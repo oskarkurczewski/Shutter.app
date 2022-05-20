@@ -103,6 +103,22 @@ public class EmailService {
     }
 
     /**
+     * Wysyła email powiadamiający użytkownika o zablokowaniu jego konta z powodu zbyt wielu nieudanych
+     * prób logowania
+     * @param to Adres e-mail, na który należy wysłać wiadomość
+     */
+    public void sendAccountBlockedDueToToManyLogInAttemptsEmail(String to) {
+        String subject = "Zbyt wiele nieudanych logowań - Shutter.app";
+        String body = "Użytkowniku, twoje konto zostało automatycznie zablokowane z powodu zbyt wielu " +
+                "nieudanych prób logowania. Aby je odblokować skontaktuj się z administratorem.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Funkcja służąca do wysyłania emaili
      *
      * @param toEmail  adres email odbiorcy

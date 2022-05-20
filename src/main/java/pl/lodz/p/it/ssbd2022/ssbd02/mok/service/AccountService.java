@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -39,6 +40,9 @@ public class AccountService {
 
     @Inject
     private VerificationTokenService verificationTokenService;
+
+    @Inject
+    private EmailService emailService;
 
     /**
      * Odnajduje konto użytkownika o podanym loginie
@@ -219,6 +223,7 @@ public class AccountService {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setActive(true);
         account.setRegistered(false);
+        account.setFailedLogInAttempts(0);
 
         addNewAccount(account);
 
@@ -240,6 +245,7 @@ public class AccountService {
     public void registerAccountByAdmin(Account account)
             throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
+        account.setFailedLogInAttempts(0);
 
         addNewAccount(account);
 
@@ -329,5 +335,27 @@ public class AccountService {
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
         accountFacade.update(account);
+    }
+
+    /**
+     * Rejestruje nieudane logowanie na konto użytkownika poprzez inkrementację licznika nieudanych
+     * logowań jego konta. Jeżeli liczba nieudanych logowań będzie równa lub większa od 3, to konto zostaje
+     * automatycznie zablokowane, a użytkownik zostaje powiadomiony o tym drogą mailową.
+     *
+     * @param account Konto, dla którego należy zarejestrować nieudaną operację logowania
+     */
+    @PermitAll
+    public void registerFailedLogInAttempt(Account account) {
+        if (!account.getActive() || !account.getRegistered()) return;
+
+        Integer failedAttempts = account.getFailedLogInAttempts();
+        failedAttempts++;
+        account.setFailedLogInAttempts(failedAttempts);
+
+        if (failedAttempts >= 3) {
+            account.setActive(false);
+            account.setFailedLogInAttempts(0);
+            emailService.sendAccountBlockedDueToToManyLogInAttemptsEmail(account.getEmail());
+        }
     }
 }
