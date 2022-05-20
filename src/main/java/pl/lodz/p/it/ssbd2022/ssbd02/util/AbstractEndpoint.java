@@ -27,7 +27,7 @@ public abstract class AbstractEndpoint implements TransactionClass {
      * @param comitted wartość typu boolean zawierająca informację o pomyślności transakcji
      */
     @AfterCompletion
-    public void generateTransaction(boolean comitted) {
+    public void completeTransaction(boolean comitted) {
         lastTransactionRollback = !comitted;
     }
 }
