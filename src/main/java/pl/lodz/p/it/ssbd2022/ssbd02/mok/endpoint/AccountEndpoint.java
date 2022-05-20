@@ -2,6 +2,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
@@ -41,7 +45,7 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
      *
-     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @param login login użytkownika dla którego chcemy zmienić status
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
@@ -54,7 +58,7 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na odblokowany
      *
-     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @param login login użytkownika dla którego chcemy zmienić status
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
@@ -119,11 +123,11 @@ public class AccountEndpoint {
     /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
-     * @param login                     Login użytkownika
-     * @param data                      Obiekt zawierający informacje o zmienianym poziomie dostępu
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @param login Login użytkownika
+     * @param data  Obiekt zawierający informacje o zmienianym poziomie dostępu
+     * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                               lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({ADMINISTRATOR})
@@ -207,5 +211,36 @@ public class AccountEndpoint {
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound, PasswordMismatchException {
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.updateOwnPassword(account, data);
+    }
+
+    /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param page           numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    public ListDto<String> getAccountList(
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            String order,
+            String login,
+            String email,
+            String name,
+            String surname,
+            Boolean registered,
+            Boolean active) throws WrongParameterException {
+        return accountService.getAccountList(page, recordsPerPage, orderBy, order, login, email, name, surname, registered, active);
     }
 }

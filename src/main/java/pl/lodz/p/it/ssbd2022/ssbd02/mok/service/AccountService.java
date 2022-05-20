@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.ListDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -46,7 +47,7 @@ public class AccountService {
      * @throws NoAccountFound W przypadku nieznalezienia konta
      */
     @PermitAll
-    public Account findByLogin(String login) throws  NoAccountFound {
+    public Account findByLogin(String login) throws NoAccountFound {
         return accountFacade.findByLogin(login);
     }
 
@@ -77,12 +78,12 @@ public class AccountService {
      * Szuka użytkownika
      *
      * @param requester konto użytkownika, który chce uzyskać informacje o danym koncie
-     * @param account konto użytkownika, którego dane mają zostać pozyskane
+     * @param account   konto użytkownika, którego dane mają zostać pozyskane
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
-     *                                     i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                                     ani moderatorem
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     *                        i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
+     *                        ani moderatorem
      * @see AccountInfoDto
      */
     @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
@@ -105,8 +106,8 @@ public class AccountService {
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
      *
-     * @param account   Użytkownik, którego hasło administrator chce zmienić
-     * @param password  Nowe hasło dla wskazanego użytkownika
+     * @param account  Użytkownik, którego hasło administrator chce zmienić
+     * @param password Nowe hasło dla wskazanego użytkownika
      */
     @RolesAllowed(changeSomeonesPassword)
     public void changeAccountPasswordAsAdmin(Account account, String password) {
@@ -149,10 +150,10 @@ public class AccountService {
     /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
-     * @param account                   Konto użytkownika, dla którego ma nastąpić zmiana poziomu dostępu
-     * @param accessLevelValue          Poziom dostępu który ma zostać zmieniony dla użytkownika
-     * @param active                    Status poziomu dostępu, który ma być ustawiony
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @param account          Konto użytkownika, dla którego ma nastąpić zmiana poziomu dostępu
+     * @param accessLevelValue Poziom dostępu który ma zostać zmieniony dla użytkownika
+     * @param active           Status poziomu dostępu, który ma być ustawiony
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({ADMINISTRATOR})
@@ -165,7 +166,7 @@ public class AccountService {
                 accessLevelValue
         );
 
-        if(accessLevelFound != null) {
+        if (accessLevelFound != null) {
             if (accessLevelFound.getActive() == active) {
                 throw new CannotChangeException("exception.access_level.already_set");
             }
@@ -318,5 +319,45 @@ public class AccountService {
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
         accountFacade.update(account);
+    }
+
+    /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param page           numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
+    public ListDto<String> getAccountList(
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            String order,
+            String login,
+            String email,
+            String name,
+            String surname,
+            Boolean registered,
+            Boolean active) throws WrongParameterException {
+        List<String> list = accountFacade.getAccountList(page, recordsPerPage, orderBy, order, login, email, name, surname, registered, active);
+        Long allRecords = accountFacade.getAccountListSize(login, email, name, surname, registered, active);
+
+        return new ListDto<>(
+                page,
+                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                allRecords,
+                list
+        );
     }
 }

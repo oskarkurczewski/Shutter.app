@@ -87,4 +87,8 @@ public class ExceptionFactory {
     public static NoReviewReportFoundException noReviewReportFoundException() {
         return new NoReviewReportFoundException("exception.review_report.not_found");
     }
+    
+    public static WrongParameterException wrongParameterException() {
+        return new WrongParameterException("exception.wrong_parameter");
+    }
 }

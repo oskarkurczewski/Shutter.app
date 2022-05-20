@@ -3,6 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
 import javax.inject.Inject;
@@ -21,7 +23,7 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
      *
-     * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/block")
@@ -35,7 +37,7 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na odblokowany
      *
-     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/unblock")
@@ -178,13 +180,51 @@ public class AccountController {
     }
 
     /**
+     * Punkt końcowy zwracający listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param pageNo         numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param columnName     nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     * @see ListDto
+     */
+    @GET
+    @Path("list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListDto<String> getAccountList(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("columnName") @NotNull String columnName,
+            @QueryParam("order") @DefaultValue("asc") String order,
+            @QueryParam("login") String login,
+            @QueryParam("email") String email,
+            @QueryParam("name") String name,
+            @QueryParam("surname") String surname,
+            @QueryParam("registered") Boolean registered,
+            @QueryParam("active") Boolean active
+    ) throws WrongParameterException {
+        return accountEndpoint.getAccountList(
+                pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
+        );
+    }
+
+    /**
      * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
      *
-     * @param data                      Obiekt przedstawiające dane zawierające poziom dostępu
+     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
      * @return Odpowiedź HTTP
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                               lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      */
     @POST
     @Path("/{login}/accessLevel")
