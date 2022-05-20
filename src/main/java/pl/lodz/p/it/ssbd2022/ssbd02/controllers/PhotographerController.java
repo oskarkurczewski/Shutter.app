@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/photographer")
-public class PhotographerController extends AbstractContoller {
+public class PhotographerController extends AbstractController {
 
     @Inject
     PhotographerEndpoint photographerEndpoint;

@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("availability")
-public class AvailabilityController extends AbstractContoller {
+public class AvailabilityController extends AbstractController {
 
     @Inject
     private AvailabilityEndpoint availabilityEndpoint;

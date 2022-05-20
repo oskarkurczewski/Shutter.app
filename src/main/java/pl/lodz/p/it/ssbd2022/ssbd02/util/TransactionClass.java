@@ -17,7 +17,7 @@ public interface TransactionClass {
      * Zwraca wartość typu boolean, informującą o powodzeniu lub odwołaniu
      * danej transakcji aplikacyjnej.
      *
-     * @return true - powodzenie transakcji, false - odwołanie transakcji
+     * @return true - odwołanie transakcji, false - powodzenie transakcji
      */
     boolean isLastTransactionRollback();
 }

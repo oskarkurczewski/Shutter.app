@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
-public class AccountController extends AbstractContoller {
+public class AccountController extends AbstractController {
 
     @Inject
     AccountEndpoint accountEndpoint;

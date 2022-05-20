@@ -9,7 +9,7 @@ import javax.ejb.EJBTransactionRolledbackException;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory.unexpectedFailException;
 
-public abstract class AbstractContoller {
+public abstract class AbstractController {
     int transactionRepetitionLimit = 5;
 
     /**
