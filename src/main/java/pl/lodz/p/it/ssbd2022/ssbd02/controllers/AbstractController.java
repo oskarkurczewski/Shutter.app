@@ -30,7 +30,7 @@ public abstract class AbstractController {
                 isRollback = true;
             }
             if (repetitionCounter > 0) {
-                System.out.println("Transaction" + transactionClass.getTransactionId() + " is being repeated for:" + repetitionCounter + " time");
+                //TODO rejestracja w dzienniku zdarzeń informacji o powtórzeniu transakcji
             }
             repetitionCounter ++;
         } while (isRollback && repetitionCounter <= transactionRepetitionLimit);
@@ -60,7 +60,7 @@ public abstract class AbstractController {
                 isRollback = true;
             }
             if (repetitionCounter > 0) {
-                System.out.println("Transaction" + transactionClass.getTransactionId() + " is being repeated for:" + repetitionCounter + " time");
+                //TODO rejestracja w dzienniku zdarzeń informacji o powtórzeniu transakcji
             }
             repetitionCounter ++;
         } while (isRollback && repetitionCounter <= transactionRepetitionLimit);
