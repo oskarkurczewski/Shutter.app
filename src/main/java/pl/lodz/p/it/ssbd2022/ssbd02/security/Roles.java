@@ -44,4 +44,5 @@ public class Roles {
     public static final String showReservations = "showReservations";
     public static final String showJobs = "showJobs";
     public static final String resolveReport = "resolveReport";
+    public static final String updateEmail = "updateEmail";
 }

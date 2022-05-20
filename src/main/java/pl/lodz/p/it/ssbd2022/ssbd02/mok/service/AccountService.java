@@ -175,7 +175,7 @@ public class AccountService {
      * @throws NoVerificationTokenFound Żie udało się odnaleźć danego żetonu w systemie
      * @throws ExpiredTokenException    Żeton wygasł
      */
-    @PermitAll
+    @RolesAllowed((updateEmail))
     public void updateEmail(Account account, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
         verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
         account.setEmail(emailUpdateDto.getEmail());

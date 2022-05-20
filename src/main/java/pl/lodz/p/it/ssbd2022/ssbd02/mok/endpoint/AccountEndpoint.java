@@ -264,7 +264,7 @@ public class AccountEndpoint {
      * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
-    @PermitAll
+    @RolesAllowed((updateEmail))
     public void requestEmailUpdate(RequestEmailUpdateDto requestEmailUpdateDto) throws NoAccountFound, NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
         verificationTokenService.sendEmailUpdateToken(account, requestEmailUpdateDto.getEmail());
@@ -281,7 +281,7 @@ public class AccountEndpoint {
      * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
      * @throws ExpiredTokenException    Żeton wygasł
      */
-    @PermitAll
+    @RolesAllowed((updateEmail))
     public void updateEmail(String login, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
         Account account = accountService.findByLogin(login);
         accountService.updateEmail(account, emailUpdateDto);
