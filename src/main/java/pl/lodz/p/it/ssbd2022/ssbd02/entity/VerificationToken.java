@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,12 +22,13 @@ import java.util.UUID;
 @NamedQueries({
         @NamedQuery(name = "VerificationToken.findByTokenEquals", query = "select v from VerificationToken v where v.token = :token")
 })
-public class VerificationToken {
+public class VerificationToken extends ManagedEntity {
 
     @Version
     @Column(name = "version")
     private Long version;
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(updatable = false)
     private Long id;

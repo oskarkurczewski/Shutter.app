@@ -2,10 +2,13 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -14,6 +17,7 @@ import javax.persistence.TypedQuery;
  * Fasada obsługująca tokeny weryfikujące
  */
 @Stateless
+@Interceptors({LoggingInterceptor.class, FacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class TokenFacade extends FacadeTemplate<VerificationToken> {
 
@@ -35,3 +39,4 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         return query.getSingleResult();
     }
 }
+

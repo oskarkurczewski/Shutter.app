@@ -28,9 +28,9 @@ INSERT INTO public.access_level (version, name) VALUES
 (0, 'PHOTOGRAPHER'),
 (0, 'CLIENT');
 
-INSERT INTO public.account (version, login, email, name, surname, active, password, registered) OVERRIDING SYSTEM VALUE VALUES
-(0, 'aurelian', 'aurelian@rzym.it' ,'Lucjusz', 'Aurelian', true, '$2a$06$MxBtT02QBhHL9G5OuWwau.wG.2XpcXDiXmYyjQ/.H/xrTpv5sb7Pi', true)
+INSERT INTO public.account (version, login, email, name, surname, active, password, registered, created_at) OVERRIDING SYSTEM VALUE VALUES
+(0, 'aurelian', 'aurelian@rzym.it' ,'Lucjusz', 'Aurelian', true, '$2a$06$MxBtT02QBhHL9G5OuWwau.wG.2XpcXDiXmYyjQ/.H/xrTpv5sb7Pi', true, current_timestamp)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.access_level_assignment (version, account_id, access_level_id, active) VALUES
-(0, 1, 1, true);
+INSERT INTO public.access_level_assignment (version, account_id, access_level_id, active, created_at) VALUES
+(0, 1, 1, true, current_timestamp);

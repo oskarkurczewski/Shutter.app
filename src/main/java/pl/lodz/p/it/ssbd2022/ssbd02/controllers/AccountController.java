@@ -1,12 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.IdenticalFieldException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.UnauthenticatedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
@@ -29,19 +24,31 @@ public class AccountController {
     AccountEndpoint accountEndpoint;
 
     /**
-     * Zmienia status użytkownika o danym loginie na podany
+     * Zmienia status użytkownika o danym loginie na zablokowany
      *
-     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
-     * @param accountStatusChangeDto obiekt dto przechowujący status, który ma zostać ustawiony
+     * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
-    @Path("/{login}/status")
+    @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void changeAccountStatus(
-            @NotNull @PathParam("login") String login,
-            @NotNull @Valid AccountStatusChangeDto accountStatusChangeDto
+    public void blockAccount(
+            @NotNull @PathParam("login") String login
     ) throws NoAccountFound {
-        accountEndpoint.changeAccountStatus(login, accountStatusChangeDto.getActive());
+        accountEndpoint.blockAccount(login);
+    }
+
+    /**
+     * Zmienia status użytkownika o danym loginie na odblokowany
+     *
+     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     */
+    @PUT
+    @Path("/{login}/unblock")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void unblockAccount(
+            @NotNull @PathParam("login") String login
+    ) throws NoAccountFound {
+        accountEndpoint.unblockAccount(login);
     }
 
     @PUT
@@ -56,7 +63,7 @@ public class AccountController {
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound {
+    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound, PasswordMismatchException {
         accountEndpoint.updateOwnPassword(data);
     }
 
@@ -76,6 +83,21 @@ public class AccountController {
             throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         accountEndpoint.registerAccount(accountRegisterDto);
         return Response.status(Response.Status.CREATED).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na potwierdzenie rejestracji konta.
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException Wyjątek aplikacyjny w przypadku niepowodzenia potwierdzenia rejestracji
+     */
+    @POST
+    @Path("/confirm/{token}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerAccount(@NotNull @Valid @PathParam("token") String token) throws BaseApplicationException {
+        accountEndpoint.confirmAccountRegistration(token);
+        return Response.status(Response.Status.OK).build();
     }
 
     /**
@@ -181,12 +203,11 @@ public class AccountController {
     /**
      * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
      *
-     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
+     * @param data                      Obiekt przedstawiające dane zawierające poziom dostępu
      * @return Odpowiedź HTTP
-     * @throws DataNotFoundException Wyjątek otrzymywany w przypadku próby dokonania operacji na niepoprawnej
-     * nazwie poziomu dostępu lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException Wyjątek otrzymywany w przypadku próby odebrania poziomu dostępu, którego użytkownik
-     * nigdy nie posiadał
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      */
     @POST
     @Path("/{login}/accessLevel")

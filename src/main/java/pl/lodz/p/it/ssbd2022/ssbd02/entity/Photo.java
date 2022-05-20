@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "photo")
-public class Photo {
+public class Photo extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)
     @Version

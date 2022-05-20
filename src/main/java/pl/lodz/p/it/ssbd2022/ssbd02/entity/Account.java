@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -45,7 +46,7 @@ import java.util.Objects;
                 query = "SELECT count(account) FROM account"
         )
 })
-public class Account {
+public class Account extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)
     @Version

@@ -9,6 +9,6 @@ class EmailServiceTest {
     void createEmail() throws EmailException {
         EmailService emailService = new EmailService();
         emailService.init();
-        emailService.sendEmail("229983@edu.p.lodz.pl", "Example subject", "example body text");
+        emailService.sendEmail("229858@edu.p.lodz.pl", "Example subject", "example body text");
     }
 }

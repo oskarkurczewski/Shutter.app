@@ -8,6 +8,7 @@ public class Roles {
     public static final String MODERATOR = "MODERATOR";
     public static final String CLIENT = "CLIENT";
     public static final String PHOTOGRAPHER = "PHOTOGRAPHER";
+    public static final String refreshToken = "refreshToken";
     public static final String registerAccount = "registerAccount";
     public static final String createAccount = "createAccount";
     public static final String blockAccount = "blockAccount";
