@@ -61,8 +61,10 @@ public class AuthController {
         if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
             String token = JWTHandler.generateJWT(validationResult);
 
+            accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
             return Response.ok().entity(token).build();
         }
+
         accountEndpoint.registerFailedLogInAttempt(data.getLogin());
         throw ExceptionFactory.badJWTTokenException();
     }

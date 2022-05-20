@@ -358,4 +358,15 @@ public class AccountService {
             emailService.sendAccountBlockedDueToToManyLogInAttemptsEmail(account.getEmail());
         }
     }
+
+    /**
+     * Rejestruje udane logowanie na konto użytkownika poprzez wyzerowanie licznika nieudanych zalogowań.
+     *
+     * @param account Konto, dla którego należy wyzerować licznik nieudanych logowań
+     */
+    @PermitAll
+    public void registerSuccessfulLogInAttempt(Account account) {
+        if (!account.getActive() || !account.getRegistered()) return;
+        account.setFailedLogInAttempts(0);
+    }
 }
