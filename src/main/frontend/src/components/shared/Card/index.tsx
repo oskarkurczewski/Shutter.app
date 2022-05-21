@@ -1,12 +1,12 @@
 import React from "react";
 import "./style.scss";
 
-interface CardProps {
-   children: JSX.Element | JSX.Element[];
+interface Props {
    className?: string;
+   children: JSX.Element | JSX.Element[];
 }
 
-const Card = ({ children, className }: CardProps) => {
+const Card: React.FC<Props> = ({ children, className }) => {
    return <div className={`card-wrapper ${className ? className : ""}`}>{children}</div>;
 };
 

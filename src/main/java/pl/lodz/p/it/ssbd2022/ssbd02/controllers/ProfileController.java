@@ -7,7 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotoEndpoint;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReviewEndpoint;
 
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ public class ProfileController extends AbstractController {
     PhotoEndpoint photoEndpoint;
 
     @Inject
-    PhotographerEndpoint photographerEndpoint;
+    ProfileEndpoint photographerEndpoint;
 
     @Inject
     ReviewEndpoint reviewEndpoint;

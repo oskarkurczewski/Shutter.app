@@ -1,29 +1,36 @@
 @import "variables.scss";
 
 div.text-input-wrapper {
-   display: flex;
-   border-radius: $border-radius;
-   overflow: hidden;
-   border-bottom: $shadow-bottom;
-   height: 43px;
-
-   span,
-   input {
-      padding: 0.5rem;
-      font-size: $scale-1;
-   }
-
-   span {
-      background-color: $blue-gray-200;
-   }
-
-   input {
-      background-color: $blue-gray-100;
-      border: none;
-      outline: none;
-      padding-left: 1rem;
-      font-weight: bold;
+   p.label {
+      margin-bottom: 10px;
       color: $gray-300;
-      flex-grow: 1;
+   }
+
+   div {
+      display: flex;
+      border-radius: 10px;
+      overflow: hidden;
+      border-bottom: $shadow-elevated;
+      height: 43px;
+
+      span,
+      input {
+         padding: 0.5rem;
+         font-size: $scale-1;
+      }
+
+      span {
+         background-color: $blue-gray-200;
+      }
+
+      input {
+         background-color: $blue-gray-100;
+         border: none;
+         outline: none;
+         padding-left: 1rem;
+         font-weight: bold;
+         color: $gray-300;
+         flex-grow: 1;
+      }
    }
 }

@@ -12,10 +12,8 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class AccountInfoDto {
+public class BaseAccountInfoDto {
 
-    @NotNull
-    private String login;
 
     @NotNull
     private String email;
@@ -26,24 +24,17 @@ public class AccountInfoDto {
     @NotNull
     private String surname;
 
-    @NotNull
-    private Boolean active;
 
-    @NotNull
-    private Boolean registered;
 
     /**
      * Konstruktor obiektu DTO użytkownika
      *
      * @param account encja użytkownika
      */
-    public AccountInfoDto(Account account) {
-        login = account.getLogin();
+    public BaseAccountInfoDto(Account account) {
         email = account.getEmail();
         name = account.getName();
         surname = account.getSurname();
-        active = account.getActive();
-        registered = account.getRegistered();
     }
 
 }

@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
@@ -57,9 +56,28 @@ public class AccountService {
         assignment.setLevel(levelValue);
         assignment.setAccount(account);
         assignment.setActive(true);
-
-        accessLevelFacade.persist(assignment);
+               accessLevelFacade.persist(assignment);
     }
+
+    /**
+     * Szuka użytkownika
+     *
+     * @param account konto użytkownika, którego dane mają zostać pozyskane
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @see Account
+     */
+    @RolesAllowed(getAccountInfo)
+    public Account getAccountInfo(Account account) throws NoAccountFound {
+        if (Boolean.TRUE.equals(account.getActive()) && Boolean.TRUE.equals(account.getRegistered())) {
+            return account;
+        } else {
+            throw ExceptionFactory.noAccountFound();
+        }
+ 
+    }
+
 
     /**
      * Tworzy konto użytkownika w bazie danych,

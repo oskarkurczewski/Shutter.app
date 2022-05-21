@@ -9,7 +9,7 @@ import javax.ejb.Stateful;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
-public class PhotographerEndpoint extends AbstractEndpoint {
+public class ProfileEndpoint extends AbstractEndpoint {
 
     @RolesAllowed(changePhotographerDescription)
     public void changeDescription(String newDescription) throws NoAuthenticatedAccountFound {
