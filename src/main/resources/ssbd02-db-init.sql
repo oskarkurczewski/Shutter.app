@@ -496,7 +496,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.access_level TO ssbd02mok;
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.access_level_assignment TO ssbd02mok;
 
-GRANT SELECT,INSERT,UPDATE ON TABLE public.account TO ssbd02mok;
+GRANT SELECT,INSERT,UPDATE, DELETE ON TABLE public.account TO ssbd02mok;
 
 GRANT SELECT, INSERT ,DELETE ON public.token TO ssbd02mok;
 

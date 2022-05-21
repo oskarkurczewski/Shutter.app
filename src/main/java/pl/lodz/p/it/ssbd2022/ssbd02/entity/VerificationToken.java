@@ -22,10 +22,16 @@ import java.util.UUID;
 @NamedQueries({
         @NamedQuery(
                 name = "VerificationToken.findByTokenEquals",
-                query = "select v from VerificationToken v where v.token = :token"),
+                query = "select v from VerificationToken v where v.token = :token"
+        ),
         @NamedQuery(
                 name = "VerificationToken.findByAccountIdAndType",
-                query = "select v from VerificationToken v where v.targetUser = :account and v.tokenType = :type")
+                query = "select v from VerificationToken v where v.targetUser = :account and v.tokenType = :type"
+        ),
+        @NamedQuery(
+                name = "VerificationToken.findExpiredAfterOfType",
+                query = "select v from VerificationToken v where v.tokenType = :type and v.expiration < :time"
+        )
 })
 public class VerificationToken extends ManagedEntity {
 

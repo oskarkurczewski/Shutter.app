@@ -219,15 +219,13 @@ public class AccountService {
      */
     @PermitAll
     public void registerOwnAccount(Account account)
-            throws IdenticalFieldException, DataNotFoundException, DatabaseException {
+            throws IdenticalFieldException, DatabaseException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setActive(true);
         account.setRegistered(false);
         account.setFailedLogInAttempts(0);
 
         addNewAccount(account);
-
-        addClientAccessLevel(account);
 
         verificationTokenService.sendRegistrationToken(account);
     }
@@ -249,10 +247,10 @@ public class AccountService {
 
         addNewAccount(account);
 
-        addClientAccessLevel(account);
-
         if (!account.getRegistered()) {
             verificationTokenService.sendRegistrationToken(account);
+        } else {
+            addClientAccessLevel(account);
         }
     }
 
@@ -307,6 +305,7 @@ public class AccountService {
     public void confirmAccountRegistration(String token) throws BaseApplicationException {
         Account account = verificationTokenService.confirmRegistration(token);
         account.setRegistered(true);
+        addClientAccessLevel(account);
         accountFacade.update(account);
     }
 

@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -55,6 +56,15 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
                 VerificationToken.class);
         query.setParameter("account", account);
         query.setParameter("type", type);
+        return query.getResultList();
+    }
+
+    public List<VerificationToken> findExpiredAfterOfType(TokenType type, LocalDateTime expiresAfter) {
+        TypedQuery<VerificationToken> query = getEm().createNamedQuery(
+                "VerificationToken.findExpiredAfterOfType",
+                VerificationToken.class);
+        query.setParameter("type", type);
+        query.setParameter("time", expiresAfter);
         return query.getResultList();
     }
 }
