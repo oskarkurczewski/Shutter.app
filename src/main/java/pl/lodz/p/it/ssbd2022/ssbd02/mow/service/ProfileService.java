@@ -10,10 +10,10 @@ import javax.ejb.Stateless;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
-public class PhotographerService {
+public class ProfileService {
 
     @PermitAll
-    public PhotographerInfo findPhotographerInfo(String login) throws NoPhotographerFoundException {
+    public PhotographerInfo findPhotographerInfo(String login) {
         throw new UnsupportedOperationException();
     }
 

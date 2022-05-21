@@ -39,9 +39,14 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO public.access_level_assignment (version, account_id, access_level_id, active, created_at) VALUES
 (0, 1, 1, true, current_timestamp),
-(1, 1, 1, true, current_timestamp),
-(1, 1, 2, true, current_timestamp),
-(1, 2, 3, true, current_timestamp),
-(1, 2, 4, true, current_timestamp),
-(1, 3, 4, true, current_timestamp)
+(1, 2, 1, true, current_timestamp),
+(1, 2, 2, true, current_timestamp),
+(1, 3, 3, true, current_timestamp),
+(1, 3, 4, true, current_timestamp),
+(1, 4, 4, true, current_timestamp)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible)
+VALUES (1, 3, 5, 2137, 'Zucchini can be seasoned with shredded strawberries, also try soaking the stew with tea.', 10,
+        20, true)
 ON CONFLICT DO NOTHING;

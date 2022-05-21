@@ -175,18 +175,28 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i
-     *                                     informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                                     ani moderatorem
-     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see AccountInfoDto
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje
+     * @see BaseAccountInfoDto
      */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR})
-    public AccountInfoDto getAccountInfo(String login) throws NoAccountFound, NoAuthenticatedAccountFound {
-        Account requester = authenticationContext.getCurrentUsersAccount();
+    @RolesAllowed(getEnhancedAccountInfo)
+    public DetailedAccountInfoDto getEnhancedAccountInfo(String login) throws NoAccountFound {
         Account account = accountService.findByLogin(login);
-        return new AccountInfoDto(accountService.getAccountInfo(requester, account));
+        return new DetailedAccountInfoDto(account);
+    }
+
+    /**
+     * Zwraca informacje o dowolnym użytkowniku
+     *
+     * @param login nazwa użytkownika
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @see BaseAccountInfoDto
+     */
+    @RolesAllowed(getAccountInfo)
+    public BaseAccountInfoDto getAccountInfo(String login) throws NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        return new BaseAccountInfoDto(accountService.getAccountInfo(account));
     }
 
     /**
@@ -194,12 +204,12 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @return obiekt DTO informacji o użytkowniku
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see AccountInfoDto
+     * @see BaseAccountInfoDto
      */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, CLIENT, PHOTOGRAPHER})
-    public AccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
+    @RolesAllowed(getOwnAccountInfo)
+    public DetailedAccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
-        return new AccountInfoDto(account);
+        return new DetailedAccountInfoDto(account);
     }
 
     @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
