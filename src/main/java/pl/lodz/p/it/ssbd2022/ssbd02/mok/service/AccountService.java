@@ -167,6 +167,9 @@ public class AccountService {
     @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(Account account, Boolean active) {
         account.setActive(active);
+        if (!active) {
+            emailService.sendAccountUnblockedEmail(account.getEmail());
+        }
         accountFacade.update(account);
     }
 
