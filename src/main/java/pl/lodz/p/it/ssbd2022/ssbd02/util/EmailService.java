@@ -140,6 +140,23 @@ public class EmailService {
     }
 
     /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
+     * odblokowane w systemie.
+     *
+     * @param to adresat wiadomości email
+     */
+    public void sendAccountUnblockedEmail(String to) {
+        String subject = "Konto odblokowane - Shutter.app";
+        String body = "Twoje konto w aplikacji Shutter.app zostało odblokowane. Życzymy miłego dalszego " +
+                "korzystania z usługi.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Funkcja służąca do wysyłania emaili
      *
      * @param toEmail  adres email odbiorcy
