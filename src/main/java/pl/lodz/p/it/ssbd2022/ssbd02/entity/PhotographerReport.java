@@ -9,8 +9,7 @@ import java.util.Objects;
 
 /**
  * Klasa reprezentująca zgłoszenia fotografa
- * Zgłoszenie jest tworzone przez innych użytkowników -
- * klientów danego fotografa, gdy są niezadowoleni z usług
+ * Zgłoszenie jest tworzone przez innych użytkowników-klientów danego fotografa, gdy są niezadowoleni z usług
  */
 
 @Getter

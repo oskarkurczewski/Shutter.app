@@ -20,6 +20,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "photographer_info")
+@NamedQuery(
+        name = "photographer_info.findByLogin",
+        query = "SELECT p FROM PhotographerInfo p JOIN Account a ON p.id=a.id WHERE a.login = :login"
+)
 public class PhotographerInfo {
 
     @Setter(value = AccessLevel.NONE)
@@ -67,6 +71,9 @@ public class PhotographerInfo {
 
     @Column(name = "long")
     private Double longitude;
+
+    @Column(name = "visible")
+    private Boolean visible;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "photographer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

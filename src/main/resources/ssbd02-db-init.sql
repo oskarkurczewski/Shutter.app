@@ -119,7 +119,8 @@ CREATE TABLE public.photographer_info (
     review_count bigint DEFAULT 0 NOT NULL,
     description character varying(4096)[],
     lat real,
-    long real
+    long real,
+    visible boolean DEFAULT TRUE
 );
 
 ALTER TABLE public.photographer_info OWNER TO ssbd02admin;
@@ -213,6 +214,21 @@ CREATE TABLE public.specialization (
 );
 
 ALTER TABLE public.specialization OWNER TO ssbd02admin;
+
+CREATE TABLE public.token (
+    version bigint,
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    token character varying(64),
+    "expiration" timestamp without time zone NOT NULL,
+    account_id bigint NOT NULL,
+    token_type character varying(32)
+);
+
+ALTER TABLE ONLY public.token ADD CONSTRAINT token_key UNIQUE (token);
+
+ALTER TABLE ONLY public.token OWNER TO ssbd02admin;
+
+ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
 
 ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT access_level_assignment_account_id_access_level_id_key UNIQUE (account_id, access_level_id);
 
@@ -367,6 +383,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.access_level TO ssbd02mok;
 GRANT SELECT,INSERT,UPDATE ON TABLE public.access_level_assignment TO ssbd02mok;
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.account TO ssbd02mok;
+
+GRANT SELECT, INSERT ,DELETE ON public.token TO ssbd02mok;
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.account_report TO ssbd02mow;
 

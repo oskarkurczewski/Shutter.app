@@ -8,11 +8,11 @@ import java.nio.charset.StandardCharsets;
 public class PasswordHashImpl implements PasswordHash {
     @Override
     public String generate(char[] chars) {
-        return BCrypt.withDefaults().hashToString(6, chars);
+        return BCryptUtils.generate(chars);
     }
 
     @Override
     public boolean verify(char[] chars, String s) {
-        return BCrypt.verifyer().verify(chars, s.getBytes(StandardCharsets.UTF_8)).verified;
+        return BCryptUtils.verify(chars, s);
     }
 }
