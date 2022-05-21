@@ -8,12 +8,12 @@ interface Props {
    selectedAccessLevel: AccessLevel;
 }
 
-const AuthCard: FC<Props> = ({ username, accessLevelList, selectedAccessLevel }) => {
+const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
    return (
       <div className="auth-card-wrapper">
          <img src="/images/auth-image.png" alt="user sidebar" />
          <div className="auth-card-data-wrapper">
-            <img src="/images/gruz.png" alt="user" className="auth-card-photo" />
+            <img src="/images/avatar.png" alt="user" className="auth-card-photo" />
             <div className="auth-label-wrapper">
                <p className="label">{selectedAccessLevel}</p>
                <p className="label-bold">{username ? username : "Niezalogowany"}</p>

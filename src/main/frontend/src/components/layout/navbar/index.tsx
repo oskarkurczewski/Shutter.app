@@ -64,6 +64,7 @@ const Navbar = () => {
                      icon={<RiLoginBoxLine />}
                      text="Zaloguj się"
                      expanded={expanded}
+                     active={path === "/login"}
                   />
                ) : (
                   <BarButton
@@ -71,6 +72,7 @@ const Navbar = () => {
                      icon={<RiLogoutBoxRLine />}
                      text="Wyloguj się"
                      expanded={expanded}
+                     active={path === "/dashboard"}
                   />
                )}
             </div>

@@ -25,10 +25,11 @@
       }
 
       .auth-card-photo {
-         height: 84px;
-         width: 84px;
-         border-radius: 22px;
+         height: 85px;
+         width: 85px;
+         border-radius: 30px;
          border: 7px solid white;
+         object-fit: cover;
       }
    }
 }

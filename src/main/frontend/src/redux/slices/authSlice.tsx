@@ -29,6 +29,7 @@ export const authSlice = createSlice({
          state.username = initialState.username;
          state.accessLevel = initialState.accessLevel;
          localStorage.setItem("accessLevel", AccessLevel.GUEST);
+         localStorage.removeItem("token");
       },
    },
 });
