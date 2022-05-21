@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.AvailabilityDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.CreateAvailabilityDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.EditAvailabilityDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AvailabilityService;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -18,7 +19,7 @@ import java.util.List;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeAvailabilityHours;
 
 @Stateful
-public class AvailabilityEndpoint {
+public class AvailabilityEndpoint extends AbstractEndpoint {
 
     @Inject
     private AvailabilityService availabilityService;

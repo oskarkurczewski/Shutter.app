@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
@@ -22,7 +23,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @Stateful
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class AccountEndpoint {
+public class AccountEndpoint extends AbstractEndpoint {
 
     @Inject
     private AuthenticationContext authenticationContext;
@@ -36,7 +37,7 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
      *
-     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @param login login użytkownika dla którego chcemy zmienić status
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
@@ -49,7 +50,7 @@ public class AccountEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na odblokowany
      *
-     * @param login  login użytkownika dla którego chcemy zmienić status
+     * @param login login użytkownika dla którego chcemy zmienić status
      * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
@@ -114,11 +115,11 @@ public class AccountEndpoint {
     /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
-     * @param login                     Login użytkownika
-     * @param data                      Obiekt zawierający informacje o zmienianym poziomie dostępu
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @param login Login użytkownika
+     * @param data  Obiekt zawierający informacje o zmienianym poziomie dostępu
+     * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                               lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({ADMINISTRATOR})
@@ -234,6 +235,7 @@ public class AccountEndpoint {
 
     /**
      * Rejestruje udane logowanie na konto użytkownika.
+     *
      * @param login Login użytkownika, dla którego konta należy zarejestrować udaną operację logowania
      * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane udane
      *                        logowanie nie istnieje
@@ -256,4 +258,35 @@ public class AccountEndpoint {
         Account account = accountService.findByLogin(login);
         accountService.registerFailedLogInAttempt(account);
     }
+
+    /*
+     * Wysyła link zawierający żeton zmiany adresu email
+     *
+     * @param requestEmailUpdateDto E-mail użytkownika, na którego e-mail ma zostać wysłany link
+     * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     */
+    @RolesAllowed((updateEmail))
+    public void requestEmailUpdate(RequestEmailUpdateDto requestEmailUpdateDto) throws NoAccountFound, NoAuthenticatedAccountFound {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        verificationTokenService.sendEmailUpdateToken(account, requestEmailUpdateDto.getNewEmail());
+    }
+
+
+    /**
+     * Aktualizuje email danego użytkownika
+     *
+     * @param login          Login użytkownika, dla którego być zmieniony email
+     * @param emailUpdateDto Informacje do zmiany emaila użytkownika
+     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
+     * @throws InvalidTokenException    Żeton jest nieprawidłowy
+     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @throws ExpiredTokenException    Żeton wygasł
+     */
+    @RolesAllowed((updateEmail))
+    public void updateEmail(String login, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        accountService.updateEmail(account, emailUpdateDto);
+    }
+
 }

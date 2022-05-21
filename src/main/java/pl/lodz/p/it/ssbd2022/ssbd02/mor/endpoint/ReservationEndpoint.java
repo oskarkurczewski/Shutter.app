@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AvailabilityService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -15,7 +16,7 @@ import java.util.List;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
-public class ReservationEndpoint {
+public class ReservationEndpoint extends AbstractEndpoint {
 
     @Inject
     private ReservationService reservationService;

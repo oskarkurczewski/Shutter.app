@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -11,7 +12,7 @@ import javax.ejb.Stateless;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
-public class ReviewEndpoint {
+public class ReviewEndpoint extends AbstractEndpoint {
 
     @RolesAllowed(reviewPhotographer)
     public void reviewPhotographer(CreateReviewDto review)

@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.EmailException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
 import sendinblue.ApiClient;
 import sendinblue.ApiException;
 import sendinblue.Configuration;
@@ -37,7 +36,6 @@ public class EmailService {
     @Inject
     private ConfigLoader configLoader;
     private Properties properties;
-    @Inject TokenFacade tokenFacade;
 
 
     @PostConstruct
@@ -64,7 +62,7 @@ public class EmailService {
     /**
      * Przykładowa funkcja korzystająca z funkcji sendMail
      *
-     * @param to adresat wiadomości email
+     * @param to    adresat wiadomości email
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
      */
     public void sendRegistrationEmail(String to, VerificationToken token) {
@@ -75,7 +73,28 @@ public class EmailService {
                 token.getToken()
         );
         try {
-          sendEmail(to, subject, body);
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca do wskazanego użytkownika maila z przypomnieniem o konieczności potwierdzenia rejestracji
+     *
+     * @param to    adresat wiadomości email
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     */
+    public void sendRegistrationConfirmationReminder(String to, VerificationToken token) {
+        String subject = "PRZYPOMNIENIE: Weryfikacja konta Shutter.app";
+        String body = "Przypominamy o konieczności potwierdzenia konta w Shutter.app. " +
+                "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
+                "%s/confirm/%s",
+                BASE_URL,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
         } catch (EmailException e) {
             throw new RuntimeException(e);
         }
@@ -105,12 +124,51 @@ public class EmailService {
     /**
      * Wysyła email powiadamiający użytkownika o zablokowaniu jego konta z powodu zbyt wielu nieudanych
      * prób logowania
+     *
      * @param to Adres e-mail, na który należy wysłać wiadomość
      */
     public void sendAccountBlockedDueToToManyLogInAttemptsEmail(String to) {
         String subject = "Zbyt wiele nieudanych logowań - Shutter.app";
         String body = "Użytkowniku, twoje konto zostało automatycznie zablokowane z powodu zbyt wielu " +
                 "nieudanych prób logowania. Aby je odblokować skontaktuj się z administratorem.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+     * Wysyła na adres email podany jako parametr żeton weryfikacyjny do aktualizacji adresu email
+     *
+     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param token Żeton, który ma zostać wysłany
+     */
+    public void sendEmailUpdateEmail(String to, String login, VerificationToken token) {
+        String subject = "Resetowanie hasła Shutter.app";
+        String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
+                "%s/%s/email-update/%s",
+                BASE_URL,
+                login,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
+     * odblokowane w systemie.
+     *
+     * @param to adresat wiadomości email
+     */
+    public void sendAccountUnblockedEmail(String to) {
+        String subject = "Konto odblokowane - Shutter.app";
+        String body = "Twoje konto w aplikacji Shutter.app zostało odblokowane. Życzymy miłego dalszego " +
+                "korzystania z usługi.";
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {

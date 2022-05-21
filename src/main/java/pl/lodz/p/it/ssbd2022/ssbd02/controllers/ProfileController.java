@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 
 
 @Path("profile")
-public class ProfileController {
+public class ProfileController extends AbstractController {
 
     @Inject
     PhotoEndpoint photoEndpoint;
