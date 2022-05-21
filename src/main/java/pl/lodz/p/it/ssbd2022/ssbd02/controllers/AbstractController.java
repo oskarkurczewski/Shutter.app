@@ -8,13 +8,8 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.TransactionClass;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBTransactionRolledbackException;
-import javax.ejb.NoSuchObjectLocalException;
-import javax.ejb.TransactionRolledbackLocalException;
 import javax.inject.Inject;
-import javax.persistence.OptimisticLockException;
-import java.text.MessageFormat;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory.unexpectedFailException;
 
@@ -25,7 +20,6 @@ public abstract class AbstractController {
     private ConfigLoader configLoader;
     private Properties properties;
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractController.class.getName());
 
     @PostConstruct
     public void init() {
@@ -54,7 +48,6 @@ public abstract class AbstractController {
                 isRollback = transactionClass.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException | DatabaseException e) {
                 isRollback = true;
-                logEndedTransaction(transactionClass.getTransactionId());
             }
             repetitionCounter++;
         } while (isRollback && repetitionCounter <= transactionRepetitionLimit);
@@ -63,15 +56,7 @@ public abstract class AbstractController {
             throw unexpectedFailException();
         }
     }
-    private void logEndedTransaction(String transactionId) {
-        Long timestamp = System.currentTimeMillis();
-        String result = "Rollback";
-        LOGGER.info(MessageFormat
-                .format("Transaction: {0} was ended at timestamp: {1}, with result: {2}",
-                        transactionId,
-                        timestamp,
-                        result));
-    }
+
     /**
      * Metoda powtarzająca transakcję w przypadku niepowodzenia
      *
@@ -90,7 +75,6 @@ public abstract class AbstractController {
                 isRollback = transactionClass.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException | DatabaseException e) {
                 isRollback = true;
-                logEndedTransaction(transactionClass.getTransactionId());
             }
             repetitionCounter++;
         } while (isRollback && repetitionCounter <= transactionRepetitionLimit);
