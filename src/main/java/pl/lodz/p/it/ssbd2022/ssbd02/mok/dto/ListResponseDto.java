@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ListDto<T> {
+public class ListResponseDto<T> {
 
     @NotNull
     Integer pageNo;

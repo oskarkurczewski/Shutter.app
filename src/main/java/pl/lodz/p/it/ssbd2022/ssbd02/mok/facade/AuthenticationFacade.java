@@ -18,12 +18,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
-import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_LOGIN;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, FacadeAccessInterceptor.class})
@@ -117,7 +113,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param registered     czy użytkownik zarejestrowany
      * @param active         czy konto aktywne
      * @return lista wynikowa zapytania do bazy danych
-     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny
      */
     public List<String> getAccountList(
             int page,
@@ -148,9 +144,6 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
                     break;
 
                 }
-                default: {
-                    throw ExceptionFactory.wrongParameterException();
-                }
             }
         } catch (IllegalArgumentException e) {
             throw ExceptionFactory.wrongParameterException();
@@ -177,15 +170,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
 
-    /**
-     * dodaje znak '%' na początku i na końcu struny
-     *
-     * @param s struna
-     * @return struna wynikowa
-     */
-    private String addPercent(String s) {
-        return "%" + s + "%";
-    }
+
 
     /**
      * Zwraca ilość rekordów po przefiltrowaniu
@@ -224,6 +209,17 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
 
         return em.createQuery(query).getSingleResult();
     }
+
+    /**
+     * dodaje znak '%' na początku i na końcu struny
+     *
+     * @param s struna
+     * @return struna wynikowa
+     */
+    private String addPercent(String s) {
+        return "%" + s + "%";
+    }
+    
 
 
 }

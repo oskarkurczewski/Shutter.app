@@ -5,11 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.ListDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -337,25 +333,33 @@ public class AccountService {
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public ListDto<String> getAccountList(
-            int page,
-            int recordsPerPage,
-            String orderBy,
-            String order,
-            String login,
-            String email,
-            String name,
-            String surname,
-            Boolean registered,
-            Boolean active) throws WrongParameterException {
-        List<String> list = accountFacade.getAccountList(page, recordsPerPage, orderBy, order, login, email, name, surname, registered, active);
-        Long allRecords = accountFacade.getAccountListSize(login, email, name, surname, registered, active);
+    @RolesAllowed(listAllAccounts)
+    public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+        List<String> list = accountFacade.getAccountList(
+                requestDto.getPage(), 
+                requestDto.getRecordsPerPage(),
+                requestDto.getOrderBy(),
+                requestDto.getOrder(), 
+                requestDto.getLogin(),
+                requestDto.getEmail(),
+                requestDto.getName(),
+                requestDto.getSurname(), 
+                requestDto.getRegistered(),
+                requestDto.getActive()
+        );
+        Long allRecords = accountFacade.getAccountListSize(
+                requestDto.getLogin(),
+                requestDto.getEmail(),
+                requestDto.getName(),
+                requestDto.getSurname(),
+                requestDto.getRegistered(),
+                requestDto.getActive()
+        );
 
-        return new ListDto<>(
-                page,
-                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
-                recordsPerPage,
+        return new ListResponseDto<>(
+                requestDto.getPage(), 
+                (int) Math.ceil(allRecords.doubleValue() / requestDto.getRecordsPerPage()),
+                requestDto.getRecordsPerPage(), 
                 allRecords,
                 list
         );

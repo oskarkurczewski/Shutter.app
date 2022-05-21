@@ -229,18 +229,8 @@ public class AccountEndpoint {
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
-    @RolesAllowed({"ADMINISTRATOR", "MODERATOR"})
-    public ListDto<String> getAccountList(
-            int page,
-            int recordsPerPage,
-            String orderBy,
-            String order,
-            String login,
-            String email,
-            String name,
-            String surname,
-            Boolean registered,
-            Boolean active) throws WrongParameterException {
-        return accountService.getAccountList(page, recordsPerPage, orderBy, order, login, email, name, surname, registered, active);
+    @RolesAllowed(listAllAccounts)
+    public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+        return accountService.getAccountList(requestDto);
     }
 }
