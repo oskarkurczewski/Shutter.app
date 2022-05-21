@@ -38,10 +38,10 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Ustawia status użytkownika o danym loginie na zablokowany
      *
      * @param login login użytkownika dla którego chcemy zmienić status
-     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
+     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
-    @RolesAllowed({blockAccount})
+    @RolesAllowed(blockAccount)
     public void blockAccount(String login) throws NoAccountFound {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountStatus(account, false);
@@ -51,10 +51,10 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Ustawia status użytkownika o danym loginie na odblokowany
      *
      * @param login login użytkownika dla którego chcemy zmienić status
-     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
+     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
      *                        w bazie danych
      */
-    @RolesAllowed({unblockAccount})
+    @RolesAllowed(unblockAccount)
     public void unblockAccount(String login) throws NoAccountFound {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountStatus(account, true);
