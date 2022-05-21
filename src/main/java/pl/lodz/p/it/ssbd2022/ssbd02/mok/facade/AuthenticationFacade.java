@@ -41,20 +41,4 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         }
     }
 
-    /**
-     * Szuka profilu fotografa
-     *
-     * @param login nazwa użytkownika fotografa
-     * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
-     * @see PhotographerInfo
-     */
-    public PhotographerInfo findPhotographerByLogin(String login) throws NoPhotographerFound {
-        TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
-        query.setParameter("login", login);
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            throw ExceptionFactory.noPhotographerFound();
-        }
-    }
 }
