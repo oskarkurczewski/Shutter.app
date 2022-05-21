@@ -6,6 +6,12 @@ import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
 import AuthenticatedRoute from "util/AuthenticatedRoute";
 import Confirm from "components/client/Confirm";
+import PageLayout from "pages/layout";
+import Homepage from "pages/homepage";
+import NotFound404 from "pages/not-found";
+import { useAppDispatch } from "redux/hooks";
+import { getLoginPayload } from "util/loginUtil";
+import { login } from "redux/slices/authSlice";
 import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
@@ -13,23 +19,28 @@ import { login } from "redux/slices/authSlice";
 function App() {
    const dispatch = useAppDispatch();
    if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
-      const payload = getLoginPayload();
-      dispatch(login(payload));
+       dispatch(login(getLoginPayload()));
+   } else {
+       localStorage.setItem("accessLevel", "GUEST");
    }
 
    return (
       <BrowserRouter>
          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/confirm/:registerationToken" element={<Confirm />} />
-            <Route
-               path="/dashboard"
-               element={
-                  <AuthenticatedRoute>
-                     <DashboardPage />
-                  </AuthenticatedRoute>
-               }
-            />
+            <Route path="*" element={<NotFound404 />} />
+            <Route element={<PageLayout />}>
+               <Route path="/" element={<Homepage />} />
+               <Route path="/login" element={<LoginPage />} />
+               <Route
+                  path="/dashboard"
+                  element={
+                     <AuthenticatedRoute>
+                        <DashboardPage />
+                     </AuthenticatedRoute>
+                  }
+               />
+               <Route path="/confirm/:registerationToken" element={<Confirm />} />
+            </Route>
          </Routes>
       </BrowserRouter>
    );

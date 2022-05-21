@@ -16,15 +16,12 @@ const LoginPage = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
 
-   const onSubmit = async (
-      e: React.MouseEvent<HTMLDivElement, MouseEvent> &
-         React.KeyboardEvent<HTMLDivElement>
-   ) => {
+   const onSubmit = async () => {
       try {
          await getToken(username, password);
          setShowMessage(false);
-         navigate("/dashboard");
          dispatch(login(getLoginPayload()));
+         navigate("/", { replace: true });
       } catch (err) {
          setShowMessage(true);
       }
