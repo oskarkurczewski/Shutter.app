@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Data;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Password;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,9 +12,9 @@ import javax.validation.constraints.Size;
  */
 @Data
 public class ResetPasswordDto {
-    @NotNull
+    @NotNull(message = "validator.incorrect.token.null")
     private String token;
-    @NotNull
-    @Size(min = 8, max = 64)
+    @NotNull(message = "validator.incorrect.password.null")
+    @Password
     private String newPassword;
 }

@@ -21,7 +21,7 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
      *
-     * @param login                  login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/block")
@@ -35,7 +35,7 @@ public class AccountController {
     /**
      * Zmienia status użytkownika o danym loginie na odblokowany
      *
-     * @param login                  login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     * @param login login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/unblock")
@@ -88,7 +88,7 @@ public class AccountController {
     @POST
     @Path("{login}/password-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void resetPassword(@PathParam("login") String login, ResetPasswordDto resetPasswordDto)
+    public void resetPassword(@PathParam("login") String login, @NotNull @Valid ResetPasswordDto resetPasswordDto)
             throws InvalidTokenException, NoAccountFound, NoVerificationTokenFound, ExpiredTokenException {
         accountEndpoint.resetPassword(login, resetPasswordDto);
     }
