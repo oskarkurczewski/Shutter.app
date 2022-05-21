@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
@@ -81,31 +80,21 @@ public class AccountService {
     /**
      * Szuka użytkownika
      *
-     * @param requester konto użytkownika, który chce uzyskać informacje o danym koncie
-     * @param account   konto użytkownika, którego dane mają zostać pozyskane
+     * @param account konto użytkownika, którego dane mają zostać pozyskane
      * @return obiekt DTO informacji o użytkowniku
      * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
      *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
-     *                        i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                        ani moderatorem
-     * @see AccountInfoDto
+     * @see Account
      */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
-    public Account getAccountInfo(Account requester, Account account) throws NoAccountFound {
-        List<String> accessLevelList = requester
-                .getAccessLevelAssignmentList()
-                .stream()
-                .filter(AccessLevelAssignment::getActive)
-                .map(a -> a.getLevel().getName())
-                .collect(Collectors.toList());
+    @RolesAllowed(getAccountInfo)
+    public Account getAccountInfo(Account account) throws NoAccountFound {
         if (Boolean.TRUE.equals(account.getActive()) && Boolean.TRUE.equals(account.getRegistered())) {
             return account;
+        } else {
+            throw ExceptionFactory.noAccountFound();
         }
-        if (accessLevelList.contains(ADMINISTRATOR) || accessLevelList.contains(MODERATOR)) {
-            return account;
-        }
-        throw ExceptionFactory.noAccountFound();
     }
+
 
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
@@ -374,6 +363,45 @@ public class AccountService {
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
         accountFacade.update(account);
+    }
+
+    /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @RolesAllowed(listAllAccounts)
+    public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+        List<String> list = accountFacade.getAccountList(
+                requestDto.getPage(),
+                requestDto.getRecordsPerPage(),
+                requestDto.getOrderBy(),
+                requestDto.getOrder(),
+                requestDto.getLogin(),
+                requestDto.getEmail(),
+                requestDto.getName(),
+                requestDto.getSurname(),
+                requestDto.getRegistered(),
+                requestDto.getActive()
+        );
+        Long allRecords = accountFacade.getAccountListSize(
+                requestDto.getLogin(),
+                requestDto.getEmail(),
+                requestDto.getName(),
+                requestDto.getSurname(),
+                requestDto.getRegistered(),
+                requestDto.getActive()
+        );
+
+        return new ListResponseDto<>(
+                requestDto.getPage(),
+                (int) Math.ceil(allRecords.doubleValue() / requestDto.getRecordsPerPage()),
+                requestDto.getRecordsPerPage(),
+                allRecords,
+                list
+        );
     }
 
     /**

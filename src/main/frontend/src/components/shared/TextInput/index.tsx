@@ -4,6 +4,7 @@ import "./style.scss";
 interface TextInputProps {
    icon?: string;
    type?: React.HTMLInputTypeAttribute;
+   label?: string;
    className?: string;
    placeholder?: string;
    value: string;
@@ -13,6 +14,7 @@ interface TextInputProps {
 const TextInput = ({
    icon,
    type,
+   label,
    className,
    placeholder,
    value,
@@ -20,13 +22,16 @@ const TextInput = ({
 }: TextInputProps) => {
    return (
       <div className={`text-input-wrapper ${className ? className : ""}`}>
-         {icon ? <span className="material-icons">{icon}</span> : null}
-         <input
-            type={type ? type : "text"}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-         />
+         {label && <p className="label">{label}</p>}
+         <div>
+            {icon && <span className="material-icons">{icon}</span>}
+            <input
+               type={type ? type : "text"}
+               value={value}
+               onChange={onChange}
+               placeholder={placeholder}
+            />
+         </div>
       </div>
    );
 };

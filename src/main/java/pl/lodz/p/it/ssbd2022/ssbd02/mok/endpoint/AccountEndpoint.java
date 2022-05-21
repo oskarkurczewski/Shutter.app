@@ -2,8 +2,11 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -172,18 +175,28 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone i
-     *                                     informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                                     ani moderatorem
-     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see AccountInfoDto
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje
+     * @see BaseAccountInfoDto
      */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR})
-    public AccountInfoDto getAccountInfo(String login) throws BaseApplicationException {
-        Account requester = authenticationContext.getCurrentUsersAccount();
+    @RolesAllowed(getEnhancedAccountInfo)
+    public DetailedAccountInfoDto getEnhancedAccountInfo(String login) throws NoAccountFound {
         Account account = accountService.findByLogin(login);
-        return new AccountInfoDto(accountService.getAccountInfo(requester, account));
+        return new DetailedAccountInfoDto(account);
+    }
+
+    /**
+     * Zwraca informacje o dowolnym użytkowniku
+     *
+     * @param login nazwa użytkownika
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @see BaseAccountInfoDto
+     */
+    @RolesAllowed(getAccountInfo)
+    public BaseAccountInfoDto getAccountInfo(String login) throws NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        return new BaseAccountInfoDto(accountService.getAccountInfo(account));
     }
 
     /**
@@ -191,18 +204,30 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @return obiekt DTO informacji o użytkowniku
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see AccountInfoDto
+     * @see BaseAccountInfoDto
      */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, CLIENT, PHOTOGRAPHER})
-    public AccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
+    @RolesAllowed(getOwnAccountInfo)
+    public DetailedAccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
-        return new AccountInfoDto(account);
+        return new DetailedAccountInfoDto(account);
     }
 
     @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws BaseApplicationException {
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.updateOwnPassword(account, data);
+    }
+
+    /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @RolesAllowed(listAllAccounts)
+    public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+        return accountService.getAccountList(requestDto);
     }
 
     /**

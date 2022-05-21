@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.scss";
 
-interface ButtonProps {
+interface Props {
    children: string;
    className?: string;
    icon?: string;
@@ -9,7 +9,7 @@ interface ButtonProps {
       React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-const Button = ({ children, className, icon, onClick }: ButtonProps) => {
+const Button: React.FC<Props> = ({ children, className, icon, onClick }) => {
    return (
       <div
          className={`button-wrapper ${className ? className : ""}`}
