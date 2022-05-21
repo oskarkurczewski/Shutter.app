@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
@@ -25,7 +26,7 @@ public class AuthenticationContext {
         if (securityContext.getCallerPrincipal() != null) {
             try {
                 return authenticationFacade.findByLogin(securityContext.getCallerPrincipal().getName());
-            } catch (NoAccountFound e) {
+            } catch (BaseApplicationException e) {
                 throw ExceptionFactory.noAuthenticatedAccountFound();
             }
         } else {

@@ -3,7 +3,9 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -12,10 +14,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Fasada obsługująca tokeny weryfikujące
@@ -33,6 +33,45 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
     }
 
     @Override
+    public AccessLevelAssignment persist(AccessLevelAssignment entity) throws BaseApplicationException {
+        try {
+            return super.persist(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    public void remove(AccessLevelAssignment entity) throws BaseApplicationException {
+        try {
+            super.remove(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    public AccessLevelAssignment update(AccessLevelAssignment entity) throws BaseApplicationException {
+        try {
+            return super.update(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
     public EntityManager getEm() {
         return em;
     }
@@ -43,7 +82,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
      *
      * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
      * @throws DataNotFoundException W przypadku, gdy funkcja nie znajdzie rekordu
-     * ze wskazaną nazwą
+     *                               ze wskazaną nazwą
      */
     public AccessLevelValue getAccessLevelValue(String accessLevel) throws DataNotFoundException {
         TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
@@ -60,7 +99,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
      * Pobiera przypisanie poziomu dostępu z bazy danych na podstawie przekazanego łańcucha znaków
      * dla wskazanego użytkownika.
      *
-     * @param account Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
+     * @param account          Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
      * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
      * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
      */

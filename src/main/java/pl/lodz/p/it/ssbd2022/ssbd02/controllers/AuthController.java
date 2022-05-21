@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import io.fusionauth.jwt.domain.JWT;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BadJWTTokenException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
@@ -68,7 +69,7 @@ public class AuthController {
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(@NotNull LoginData data) throws BadJWTTokenException, NoAccountFound {
+    public Response login(@NotNull LoginData data) throws BaseApplicationException {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
 
         if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {

@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
@@ -33,7 +32,7 @@ public class AccountController extends AbstractController {
     public void blockAccount(
             @NotNull @PathParam("login") String login
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.blockAccount(login), accountEndpoint);
+        repeat(() -> accountEndpoint.blockAccount(login), accountEndpoint);
     }
 
     /**
@@ -47,7 +46,7 @@ public class AccountController extends AbstractController {
     public void unblockAccount(
             @NotNull @PathParam("login") String login
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.unblockAccount(login), accountEndpoint);
+        repeat(() -> accountEndpoint.unblockAccount(login), accountEndpoint);
 
     }
 
@@ -57,14 +56,14 @@ public class AccountController extends AbstractController {
     public void changeAccountPasswordAsAdmin(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountUpdatePasswordDto password) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
+        repeat(() -> accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
     }
 
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.updateOwnPassword(data), accountEndpoint);
+        repeat(() -> accountEndpoint.updateOwnPassword(data), accountEndpoint);
     }
 
     /**
@@ -76,7 +75,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("{login}/request-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void requestPasswordReset(@PathParam("login") String login) throws NoAccountFound {
+    public void requestPasswordReset(@PathParam("login") String login) throws BaseApplicationException {
         accountEndpoint.requestPasswordReset(login);
     }
 
@@ -94,8 +93,8 @@ public class AccountController extends AbstractController {
     @Path("{login}/password-reset")
     @Consumes(MediaType.APPLICATION_JSON)
     public void resetPassword(@PathParam("login") String login, @NotNull @Valid ResetPasswordDto resetPasswordDto)
-            throws InvalidTokenException, NoAccountFound, NoVerificationTokenFound, ExpiredTokenException {
-        accountEndpoint.resetPassword(login, resetPasswordDto);
+            throws BaseApplicationException {
+        repeat(() -> accountEndpoint.resetPassword(login, resetPasswordDto), accountEndpoint);
     }
 
 
@@ -109,8 +108,8 @@ public class AccountController extends AbstractController {
     @POST
     @Path("request-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response requestEmailUpdate(@NotNull @Valid RequestEmailUpdateDto email) throws NoAccountFound, NoAuthenticatedAccountFound {
-        accountEndpoint.requestEmailUpdate(email);
+    public Response requestEmailUpdate(@NotNull @Valid RequestEmailUpdateDto email) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.requestEmailUpdate(email), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -127,8 +126,8 @@ public class AccountController extends AbstractController {
     @POST
     @Path("{login}/verify-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
-        accountEndpoint.updateEmail(login, emailUpdateDto);
+    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.updateEmail(login, emailUpdateDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -146,7 +145,7 @@ public class AccountController extends AbstractController {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
+        repeat(() -> accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -161,7 +160,7 @@ public class AccountController extends AbstractController {
     @Path("/confirm/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid @PathParam("token") String token) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
+        repeat(() -> accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -178,7 +177,7 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto)
             throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
+        repeat(() -> accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
 
         return Response.status(Response.Status.CREATED).build();
     }
@@ -195,7 +194,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
     public DetailedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
-            throws NoAccountFound {
+            throws BaseApplicationException {
         return accountEndpoint.getEnhancedAccountInfo(login);
     }
 
@@ -242,7 +241,7 @@ public class AccountController extends AbstractController {
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        repeat(() ->  accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
+        repeat(() -> accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
     }
 
     /**
@@ -258,7 +257,7 @@ public class AccountController extends AbstractController {
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        repeat(() ->  accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto), accountEndpoint);
+        repeat(() -> accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto), accountEndpoint);
     }
 
     /**
@@ -316,7 +315,7 @@ public class AccountController extends AbstractController {
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountAccessLevelChangeDto data
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
+        repeat(() -> accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 

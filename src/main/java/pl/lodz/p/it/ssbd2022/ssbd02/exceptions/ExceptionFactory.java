@@ -108,6 +108,9 @@ public class ExceptionFactory {
         return new InvalidTokenException("exception.token.invalid");
     }
 
+    public static BaseApplicationException OptLockException() {
+        return new OptLockException();
+    }
     public static WrongParameterException wrongParameterException() {
         return new WrongParameterException("exception.wrong_parameter");
     }
