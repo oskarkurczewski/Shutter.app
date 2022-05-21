@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 @ReportAsSingleViolation
 @Pattern(regexp = REGEXP.ORDER_PATTERN)
 public @interface Order {
-    String message() default "validator.incorrect.login.regexp";
+    String message() default "validator.incorrect.order.regexp";
 
     Class<?>[] groups() default {};
 

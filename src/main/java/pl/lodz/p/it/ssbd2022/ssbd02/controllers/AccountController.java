@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -194,17 +195,17 @@ public class AccountController {
      * @param active         czy konto aktywne
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
-     * @see ListDto
+     * @see ListResponseDto
      */
     @GET
     @Path("list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ListDto<String> getAccountList(
+    public ListResponseDto<String> getAccountList(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
-            @QueryParam("order") @DefaultValue("asc") String order,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
             @QueryParam("login") String login,
             @QueryParam("email") String email,
             @QueryParam("name") String name,
@@ -212,8 +213,9 @@ public class AccountController {
             @QueryParam("registered") Boolean registered,
             @QueryParam("active") Boolean active
     ) throws WrongParameterException {
-        return accountEndpoint.getAccountList(
-                pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
+        return accountEndpoint.getAccountList(new AccountListRequestDto(
+                        pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
+                )
         );
     }
 
