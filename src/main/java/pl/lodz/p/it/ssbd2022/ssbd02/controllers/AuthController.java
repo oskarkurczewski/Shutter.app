@@ -4,6 +4,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import io.fusionauth.jwt.domain.JWT;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BadJWTTokenException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
 
@@ -34,26 +36,36 @@ public class AuthController {
     @Inject
     private IdentityStoreHandler storeHandler;
 
+    @Inject
+    private AccountEndpoint accountEndpoint;
+
     /**
      * Pozwala na uwierzytelnienie użytkownika weryfikując podane przez niego poświadczenia.
-     * W przypadku powodzenia zwracany jest żeton JWT, w przeciwnym wypadku zwracany jest stosowny komunikat.
+     * W przypadku powodzenia zwracany jest żeton JWT, w przeciwnym wypadku zwracany jest stosowny komunikat
+     * oraz rejestrowana jest nieudana próba logowania dla danego użytkownika.
      * Ścieżka zasobu to /api/auth/login.
      *
      * @param data Obiekt klasy LoginData reprezentujący przesłany przez użytkownika login oraz hasło
      * @return Obiekt klasy Response zawierający JWT lub komunikat tekstowy
+     * @throws BadJWTTokenException Kiedy dostarczony żeton JWT jest nieprawidłowy
+     * @throws NoAccountFound       Kiedy konto, dla którego ma zostać zarejestrowana nieudana próba
+     *                              logowania nie istnieje
      * @see LoginData
      */
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(@NotNull LoginData data) throws BadJWTTokenException {
+    public Response login(@NotNull LoginData data) throws BadJWTTokenException, NoAccountFound {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
 
         if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
             String token = JWTHandler.generateJWT(validationResult);
 
+            accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
             return Response.ok().entity(token).build();
         }
+
+        accountEndpoint.registerFailedLogInAttempt(data.getLogin());
         throw ExceptionFactory.badJWTTokenException();
     }
 

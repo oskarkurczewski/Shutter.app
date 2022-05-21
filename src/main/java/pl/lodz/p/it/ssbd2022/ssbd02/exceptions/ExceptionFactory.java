@@ -87,4 +87,21 @@ public class ExceptionFactory {
     public static NoReviewReportFoundException noReviewReportFoundException() {
         return new NoReviewReportFoundException("exception.review_report.not_found");
     }
+
+    public static AccountConfirmedException accountConfirmedException() {
+        return new AccountConfirmedException("exception.account.already_confirmed");
+    }
+
+    public static NoVerificationTokenFound noVerificationTokenFound() {
+        return new NoVerificationTokenFound("exception.token.not_found");
+    }
+
+    public static ExpiredTokenException expiredTokenException() {
+        return new ExpiredTokenException("exception.token.expired");
+    }
+
+    public static InvalidTokenException invalidTokenException() {
+        return new InvalidTokenException("exception.token.invalid");
+    }
+
 }

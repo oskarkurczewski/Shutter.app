@@ -20,7 +20,12 @@ import java.util.UUID;
 @Entity
 @Table(name = "token")
 @NamedQueries({
-        @NamedQuery(name = "VerificationToken.findByTokenEquals", query = "select v from VerificationToken v where v.token = :token")
+        @NamedQuery(
+                name = "VerificationToken.findByTokenEquals",
+                query = "select v from VerificationToken v where v.token = :token"),
+        @NamedQuery(
+                name = "VerificationToken.findByAccountIdAndType",
+                query = "select v from VerificationToken v where v.targetUser = :account and v.tokenType = :type")
 })
 public class VerificationToken extends ManagedEntity {
 

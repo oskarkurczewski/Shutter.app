@@ -75,6 +75,11 @@ public class Account extends ManagedEntity {
     @ToString.Exclude
     private String password;
 
+    @NotNull
+    @Column(name = "failed_logins", nullable = false)
+    @ToString.Exclude
+    private Integer failedLogInAttempts;
+
     /**
      * Lista reprezentująca poziomy dostępu danego konta
      */

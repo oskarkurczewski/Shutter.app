@@ -5,13 +5,11 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -42,6 +40,9 @@ public class AccountService {
 
     @Inject
     private VerificationTokenService verificationTokenService;
+
+    @Inject
+    private EmailService emailService;
 
     /**
      * Odnajduje konto użytkownika o podanym loginie
@@ -151,6 +152,21 @@ public class AccountService {
     }
 
     /**
+     * Resetuje hasło użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
+     *
+     * @param account          Konto, dla którego hasła ma zostać zresetowane
+     * @param resetPasswordDto Dto przechowujące informacje wymagane do resetu hasła
+     * @throws InvalidTokenException    Kiedy żeton jest nieprawidłowy
+     * @throws NoVerificationTokenFound Kiedy nie udało się odnaleźć danego żetonu w systemie
+     * @throws ExpiredTokenException    Kiedy żeton wygasł
+     */
+    @PermitAll
+    public void resetPassword(Account account, ResetPasswordDto resetPasswordDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        verificationTokenService.confirmPasswordReset(resetPasswordDto.getToken());
+        changePassword(account, resetPasswordDto.getNewPassword());
+    }
+
+    /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
      * @param account                   Konto użytkownika, dla którego ma nastąpić zmiana poziomu dostępu
@@ -207,6 +223,7 @@ public class AccountService {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setActive(true);
         account.setRegistered(false);
+        account.setFailedLogInAttempts(0);
 
         addNewAccount(account);
 
@@ -228,6 +245,7 @@ public class AccountService {
     public void registerAccountByAdmin(Account account)
             throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
+        account.setFailedLogInAttempts(0);
 
         addNewAccount(account);
 
@@ -317,5 +335,38 @@ public class AccountService {
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
         accountFacade.update(account);
+    }
+
+    /**
+     * Rejestruje nieudane logowanie na konto użytkownika poprzez inkrementację licznika nieudanych
+     * logowań jego konta. Jeżeli liczba nieudanych logowań będzie równa lub większa od 3, to konto zostaje
+     * automatycznie zablokowane, a użytkownik zostaje powiadomiony o tym drogą mailową.
+     *
+     * @param account Konto, dla którego należy zarejestrować nieudaną operację logowania
+     */
+    @PermitAll
+    public void registerFailedLogInAttempt(Account account) {
+        if (!account.getActive() || !account.getRegistered()) return;
+
+        Integer failedAttempts = account.getFailedLogInAttempts();
+        failedAttempts++;
+        account.setFailedLogInAttempts(failedAttempts);
+
+        if (failedAttempts >= 3) {
+            account.setActive(false);
+            account.setFailedLogInAttempts(0);
+            emailService.sendAccountBlockedDueToToManyLogInAttemptsEmail(account.getEmail());
+        }
+    }
+
+    /**
+     * Rejestruje udane logowanie na konto użytkownika poprzez wyzerowanie licznika nieudanych zalogowań.
+     *
+     * @param account Konto, dla którego należy wyzerować licznik nieudanych logowań
+     */
+    @PermitAll
+    public void registerSuccessfulLogInAttempt(Account account) {
+        if (!account.getActive() || !account.getRegistered()) return;
+        account.setFailedLogInAttempts(0);
     }
 }

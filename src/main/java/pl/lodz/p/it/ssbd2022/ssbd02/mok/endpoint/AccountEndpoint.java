@@ -3,12 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterAsAdminDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountRegisterDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -207,5 +202,58 @@ public class AccountEndpoint {
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound, PasswordMismatchException {
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.updateOwnPassword(account, data);
+    }
+
+    /**
+     * Resetuje hasło dla użytkownika o podanym loginie
+     *
+     * @param login            Login użytkownika, dla którego ma zostać zresetowane hasło
+     * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
+     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
+     * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
+     * @throws ExpiredTokenException    W przypadku gdy żeton wygasł
+     * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
+     */
+    @PermitAll
+    public void resetPassword(String login, ResetPasswordDto resetPasswordDto) throws NoAccountFound, InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        Account account = accountService.findByLogin(login);
+        accountService.resetPassword(account, resetPasswordDto);
+    }
+
+    /**
+     * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
+     *
+     * @param login Login użytkownika, na którego email ma zostać wysłany link
+     * @throws NoAccountFound Jeżeli konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     */
+    @PermitAll
+    public void requestPasswordReset(String login) throws NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        verificationTokenService.sendPasswordResetToken(account);
+    }
+
+    /**
+     * Rejestruje udane logowanie na konto użytkownika.
+     * @param login Login użytkownika, dla którego konta należy zarejestrować udaną operację logowania
+     * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane udane
+     *                        logowanie nie istnieje
+     */
+    @PermitAll
+    public void registerSuccessfulLogInAttempt(String login) throws NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        accountService.registerSuccessfulLogInAttempt(account);
+    }
+
+    /**
+     * Rejestruje nieudane logowanie na konto użytkownika.
+     *
+     * @param login Login użytkownika, dla którego konta należy zarejestrować nieudaną operację logowania
+     * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane nieudane
+     *                        logowanie nie istnieje
+     */
+    @PermitAll
+    public void registerFailedLogInAttempt(String login) throws NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        accountService.registerFailedLogInAttempt(account);
     }
 }

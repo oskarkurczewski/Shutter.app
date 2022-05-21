@@ -63,6 +63,37 @@ public class AccountController {
     }
 
     /**
+     * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
+     *
+     * @param login Login użytkownika, na którego email ma zostać wysłany link
+     * @throws NoAccountFound Jeżeli konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     */
+    @POST
+    @Path("{login}/request-reset")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void requestPasswordReset(@PathParam("login") String login) throws NoAccountFound {
+        accountEndpoint.requestPasswordReset(login);
+    }
+
+    /**
+     * Resetuje hasło dla użytkownika o podanym loginie
+     *
+     * @param login            Login użytkownika, dla którego ma zostać zresetowane hasło
+     * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
+     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
+     * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
+     * @throws ExpiredTokenException    W przypadku gdy żeton jest nieaktualny
+     * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
+     */
+    @POST
+    @Path("{login}/password-reset")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void resetPassword(@PathParam("login") String login, ResetPasswordDto resetPasswordDto)
+            throws InvalidTokenException, NoAccountFound, NoVerificationTokenFound, ExpiredTokenException {
+        accountEndpoint.resetPassword(login, resetPasswordDto);
+    }
+
+    /**
      * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta.
      * W przypadku powodzenia konto musi jeszcze zostać aktywowane w polu 'registered'.
      *
