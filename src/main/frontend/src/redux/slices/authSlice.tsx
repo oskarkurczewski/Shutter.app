@@ -31,9 +31,6 @@ export const authSlice = createSlice({
          localStorage.setItem("accessLevel", AccessLevel.GUEST);
          localStorage.removeItem("token");
       },
-      logout: (state) => {
-         return initialState;
-      },
    },
 });
 
