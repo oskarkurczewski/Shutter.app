@@ -72,7 +72,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto)
-            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
+            throws IdenticalFieldException, DatabaseException {
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
         accountService.registerOwnAccount(account);
     }
@@ -282,6 +282,19 @@ public class AccountEndpoint extends AbstractEndpoint {
     public void registerFailedLogInAttempt(String login) throws NoAccountFound {
         Account account = accountService.findByLogin(login);
         accountService.registerFailedLogInAttempt(account);
+    }
+
+    /**
+     * Powiadamia administratora o zalogowaniu na jego konto poprzez wysłanie na adres email przypisany
+     * do konta o podanym loginie wiadomości zawierającej adres IP, z którego dokonane było logowanie
+     *
+     * @param login     login konto administratora, na które doszło do zalogowania
+     * @param ipAddress adres IP, z którego zostało wykonane logowanie
+     */
+    @PermitAll
+    public void sendAdminAuthenticationWarningEmail(String login, String ipAddress) throws NoAccountFound {
+        Account account = accountService.findByLogin(login);
+        accountService.sendAdminAuthenticationWarningEmail(account, ipAddress);
     }
 
     /*

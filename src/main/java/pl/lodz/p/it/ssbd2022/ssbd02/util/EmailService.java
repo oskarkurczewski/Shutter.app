@@ -138,7 +138,28 @@ public class EmailService {
         }
     }
 
-    /*
+    /**
+     * Wysyła na podany adres email ostrzeżenie o logowaniu na konto administratora
+     *
+     * @param to        email, na który zostać ma wysłane powiadomienie. Powinien być to email administratora systemu
+     * @param login     login użytkownika, na którego email ma zostać przesłane powiadomienie
+     * @param ipAddress adres IP, z którego dokonano logowania na konto administratora
+     */
+    public void sendAdminAuthenticationWaringEmail(String to, String login, String ipAddress) {
+        String subject = "WAŻNE: Logowanie na konto - Shutter.app";
+        String body = String.format(
+                "Administratorze %s, doszło do uwierzytelnienia na twoje konto z adresu IP: %s.",
+                login,
+                ipAddress
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny do aktualizacji adresu email
      *
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
@@ -243,4 +264,5 @@ public class EmailService {
             throw ExceptionFactory.emailException(e.getMessage());
         }
     }
+
 }
