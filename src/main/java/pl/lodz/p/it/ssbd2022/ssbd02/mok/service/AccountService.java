@@ -51,7 +51,7 @@ public class AccountService {
      * @throws NoAccountFound W przypadku nieznalezienia konta
      */
     @PermitAll
-    public Account findByLogin(String login) throws  NoAccountFound {
+    public Account findByLogin(String login) throws NoAccountFound {
         return accountFacade.findByLogin(login);
     }
 
@@ -82,12 +82,12 @@ public class AccountService {
      * Szuka użytkownika
      *
      * @param requester konto użytkownika, który chce uzyskać informacje o danym koncie
-     * @param account konto użytkownika, którego dane mają zostać pozyskane
+     * @param account   konto użytkownika, którego dane mają zostać pozyskane
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
-     *                                     i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                                     ani moderatorem
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     *                        i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
+     *                        ani moderatorem
      * @see AccountInfoDto
      */
     @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
@@ -110,8 +110,8 @@ public class AccountService {
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
      *
-     * @param account   Użytkownik, którego hasło administrator chce zmienić
-     * @param password  Nowe hasło dla wskazanego użytkownika
+     * @param account  Użytkownik, którego hasło administrator chce zmienić
+     * @param password Nowe hasło dla wskazanego użytkownika
      */
     @RolesAllowed(changeSomeonesPassword)
     public void changeAccountPasswordAsAdmin(Account account, String password) {
@@ -139,7 +139,7 @@ public class AccountService {
      * Pomocnicza metoda utworzone w celu uniknięcia powtarzania kodu.
      * Zmienia hasło wskazanego użytkownika
      *
-     * @param target      ID użytkownika, którego modyfikujemy
+     * @param target      Obiekt użytkownika, którego modyfikujemy
      * @param newPassword nowe hasło dla użytkownika
      */
     private void changePassword(Account target, String newPassword) {
@@ -156,9 +156,9 @@ public class AccountService {
      *
      * @param account          Konto, dla którego hasła ma zostać zresetowane
      * @param resetPasswordDto Dto przechowujące informacje wymagane do resetu hasła
-     * @throws InvalidTokenException    Kiedy żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Kiedy nie udało się odnaleźć danego żetonu w systemie
-     * @throws ExpiredTokenException    Kiedy żeton wygasł
+     * @throws InvalidTokenException    Żeton jest nieprawidłowy
+     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @throws ExpiredTokenException    Żeton wygasł
      */
     @PermitAll
     public void resetPassword(Account account, ResetPasswordDto resetPasswordDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
@@ -167,12 +167,28 @@ public class AccountService {
     }
 
     /**
+     * Aktualizuje email danego użytkownika
+     *
+     * @param account        Konto, dla którego email jest zmieniany
+     * @param emailUpdateDto obiekt przechowujący żeton oraz nowy adres email
+     * @throws InvalidTokenException    Żeton jest nieprawidłowy
+     * @throws NoVerificationTokenFound Żie udało się odnaleźć danego żetonu w systemie
+     * @throws ExpiredTokenException    Żeton wygasł
+     */
+    @RolesAllowed((updateEmail))
+    public void updateEmail(Account account, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
+        account.setEmail(emailUpdateDto.getEmail());
+        accountFacade.update(account);
+    }
+
+    /**
      * Nadaje lub odbiera wskazany poziom dostępu w obiekcie klasy użytkownika.
      *
-     * @param account                   Konto użytkownika, dla którego ma nastąpić zmiana poziomu dostępu
-     * @param accessLevelValue          Poziom dostępu który ma zostać zmieniony dla użytkownika
-     * @param active                    Status poziomu dostępu, który ma być ustawiony
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @param account          Konto użytkownika, dla którego ma nastąpić zmiana poziomu dostępu
+     * @param accessLevelValue Poziom dostępu, który ma zostać zmieniony dla użytkownika
+     * @param active           Status poziomu dostępu, który ma być ustawiony
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({ADMINISTRATOR})
@@ -185,7 +201,7 @@ public class AccountService {
                 accessLevelValue
         );
 
-        if(accessLevelFound != null) {
+        if (accessLevelFound != null) {
             if (accessLevelFound.getActive() == active) {
                 throw new CannotChangeException("exception.access_level.already_set");
             }

@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 
@@ -10,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
@@ -93,6 +93,41 @@ public class AccountController extends AbstractController {
             throws InvalidTokenException, NoAccountFound, NoVerificationTokenFound, ExpiredTokenException {
         accountEndpoint.resetPassword(login, resetPasswordDto);
     }
+
+
+    /**
+     * Wysyła link zawierający żeton zmiany adresu email
+     *
+     * @param email Nowy email użytkownika, na którego zostanie wysłany link weryfikacyjny
+     * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     */
+    @POST
+    @Path("request-email-update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response requestEmailUpdate(@NotNull @Valid RequestEmailUpdateDto email) throws NoAccountFound, NoAuthenticatedAccountFound {
+        accountEndpoint.requestEmailUpdate(email);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    /**
+     * Aktualizuje email danego użytkownika
+     *
+     * @param login          Login użytkownika, dla którego być zmieniony email
+     * @param emailUpdateDto Informacje do zmiany emaila użytkownika
+     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
+     * @throws InvalidTokenException    Żeton jest nieprawidłowy
+     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @throws ExpiredTokenException    Żeton wygasł
+     */
+    @POST
+    @Path("{login}/verify-email-update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
+        accountEndpoint.updateEmail(login, emailUpdateDto);
+        return Response.status(Response.Status.OK).build();
+    }
+
 
     /**
      * Punkt końcowy pozwalający na rejestrację użytkownika o poziomie dostępu klienta.
@@ -212,11 +247,11 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
      *
-     * @param data                      Obiekt przedstawiające dane zawierające poziom dostępu
+     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
      * @return Odpowiedź HTTP
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                               lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      */
     @POST
     @Path("/{login}/accessLevel")
