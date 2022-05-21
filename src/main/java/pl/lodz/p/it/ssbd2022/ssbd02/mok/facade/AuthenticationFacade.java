@@ -45,6 +45,59 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     /**
+     * Zwraca listę wszystkich użytkowników których imię lub nazwisko pasuje do podanej frazy
+     *
+     * @param name           fraza zawierająca się w imieniu/nazwisku
+     * @param page           numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @return lista wynikowa zapytania do bazy danych
+     * @throws WrongParameterException zła nazwa kolumny
+     */
+    public List<String> findByNameSurname(String name, int page, int recordsPerPage, String orderBy, String order) throws WrongParameterException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
+        Root<Account> table = query.from(Account.class);
+        query.select(table.get("login"));
+
+        try {
+            switch (order) {
+                case "asc": {
+                    query.orderBy(criteriaBuilder.asc(table.get(orderBy)));
+                    break;
+
+                }
+                case "desc": {
+                    query.orderBy(criteriaBuilder.desc(table.get(orderBy)));
+                    break;
+
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            throw ExceptionFactory.wrongParameterException();
+        }
+
+        query.where(
+                criteriaBuilder.or(
+                        criteriaBuilder.like(
+                                criteriaBuilder.lower(table.get("name")), addPercent(name.toLowerCase())
+                        ),
+                        criteriaBuilder.like(
+                                criteriaBuilder.lower(table.get("surname")), addPercent(name.toLowerCase())
+                        )
+                )
+        );
+
+        return em
+                .createQuery(query)
+                .setFirstResult(recordsPerPage * (page - 1))
+                .setMaxResults(recordsPerPage)
+                .getResultList();
+
+    }
+
+    /**
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
      * @param page           numer strony do pobrania
@@ -58,7 +111,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param registered     czy użytkownik zarejestrowany
      * @param active         czy konto aktywne
      * @return lista wynikowa zapytania do bazy danych
-     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny
+     * @throws WrongParameterException zła nazwa kolumny
      */
     public List<String> getAccountList(
             int page,
@@ -115,17 +168,15 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
 
-
-
     /**
      * Zwraca ilość rekordów po przefiltrowaniu
      *
-     * @param login          nazwa użytkownika
-     * @param email          email
-     * @param name           imie
-     * @param surname        nazwisko
-     * @param registered     czy użytkownik zarejestrowany
-     * @param active         czy konto aktywne
+     * @param login      nazwa użytkownika
+     * @param email      email
+     * @param name       imie
+     * @param surname    nazwisko
+     * @param registered czy użytkownik zarejestrowany
+     * @param active     czy konto aktywne
      * @return ilość rekordów
      */
     public Long getAccountListSize(
