@@ -2,8 +2,11 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -203,6 +206,18 @@ public class AccountEndpoint extends AbstractEndpoint {
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound, PasswordMismatchException {
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.updateOwnPassword(account, data);
+    }
+
+    /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @RolesAllowed(listAllAccounts)
+    public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+        return accountService.getAccountList(requestDto);
     }
 
     /**

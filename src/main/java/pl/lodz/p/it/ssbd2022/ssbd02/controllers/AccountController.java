@@ -2,7 +2,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -242,6 +245,45 @@ public class AccountController extends AbstractController {
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         repeat(() ->  accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto), accountEndpoint);
+    }
+
+    /**
+     * Punkt końcowy zwracający listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param pageNo         numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param columnName     nazwa kolumny, po której nastąpi sortowanie
+     * @param order          kolejność sortowania
+     * @param login          nazwa użytkownika
+     * @param email          email
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param registered     czy użytkownik zarejestrowany
+     * @param active         czy konto aktywne
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     * @see ListResponseDto
+     */
+    @GET
+    @Path("list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListResponseDto<String> getAccountList(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("columnName") @NotNull String columnName,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("login") String login,
+            @QueryParam("email") String email,
+            @QueryParam("name") String name,
+            @QueryParam("surname") String surname,
+            @QueryParam("registered") Boolean registered,
+            @QueryParam("active") Boolean active
+    ) throws WrongParameterException {
+        return accountEndpoint.getAccountList(new AccountListRequestDto(
+                        pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
+                )
+        );
     }
 
     /**

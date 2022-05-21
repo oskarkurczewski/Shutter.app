@@ -13,4 +13,7 @@ public final class REGEXP {
 
     public static final String ACCESS_LEVEL_PATTERN
             = "^(?!ADMINISTRATOR).*$";
+    
+    public static final String ORDER_PATTERN
+            = "^asc|desc$";
 }

@@ -108,4 +108,7 @@ public class ExceptionFactory {
         return new InvalidTokenException("exception.token.invalid");
     }
 
+    public static WrongParameterException wrongParameterException() {
+        return new WrongParameterException("exception.wrong_parameter");
+    }
 }
