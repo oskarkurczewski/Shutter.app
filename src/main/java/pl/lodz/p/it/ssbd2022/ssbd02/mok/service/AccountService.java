@@ -377,6 +377,45 @@ public class AccountService {
     }
 
     /**
+     * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
+     *
+     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
+     * @return lista użytkowników
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @RolesAllowed(listAllAccounts)
+    public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+        List<String> list = accountFacade.getAccountList(
+                requestDto.getPage(),
+                requestDto.getRecordsPerPage(),
+                requestDto.getOrderBy(),
+                requestDto.getOrder(),
+                requestDto.getLogin(),
+                requestDto.getEmail(),
+                requestDto.getName(),
+                requestDto.getSurname(),
+                requestDto.getRegistered(),
+                requestDto.getActive()
+        );
+        Long allRecords = accountFacade.getAccountListSize(
+                requestDto.getLogin(),
+                requestDto.getEmail(),
+                requestDto.getName(),
+                requestDto.getSurname(),
+                requestDto.getRegistered(),
+                requestDto.getActive()
+        );
+
+        return new ListResponseDto<>(
+                requestDto.getPage(),
+                (int) Math.ceil(allRecords.doubleValue() / requestDto.getRecordsPerPage()),
+                requestDto.getRecordsPerPage(),
+                allRecords,
+                list
+        );
+    }
+
+    /**
      * Rejestruje nieudane logowanie na konto użytkownika poprzez inkrementację licznika nieudanych
      * logowań jego konta. Jeżeli liczba nieudanych logowań będzie równa lub większa od 3, to konto zostaje
      * automatycznie zablokowane, a użytkownik zostaje powiadomiony o tym drogą mailową.
