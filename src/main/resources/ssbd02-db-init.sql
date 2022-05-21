@@ -278,6 +278,12 @@ CREATE TABLE public.token (
     modified_at timestamp
 );
 
+CREATE TABLE old_password (
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    account_id bigint NOT NULL,
+    password character varying(60) NOT NULL
+);
+
 ALTER TABLE ONLY public.token ADD CONSTRAINT token_key UNIQUE (token);
 
 ALTER TABLE ONLY public.token OWNER TO ssbd02admin;
@@ -492,6 +498,8 @@ ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.created_by" FOREIGN KEY (
 
 ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
 
+ALTER TABLE ONLY public.old_password ADD CONSTRAINT "FK_old_password.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.access_level TO ssbd02mok;
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.access_level_assignment TO ssbd02mok;
@@ -513,6 +521,8 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.photo TO ssbd02mow;
 GRANT SELECT,INSERT,DELETE ON TABLE public.photo_like TO ssbd02mow;
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.photographer_info TO ssbd02mok;
+
+GRANT SELECT,INSERT ON TABLE public.old_password TO ssbd02mok;
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.photographer_report TO ssbd02mow;
 
