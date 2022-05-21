@@ -178,7 +178,7 @@ public class AccountService {
     @RolesAllowed((updateEmail))
     public void updateEmail(Account account, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
         verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
-        account.setEmail(emailUpdateDto.getEmail());
+        account.setEmail(emailUpdateDto.getNewEmail());
         accountFacade.update(account);
     }
 

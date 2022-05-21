@@ -234,6 +234,7 @@ public class AccountEndpoint {
 
     /**
      * Rejestruje udane logowanie na konto użytkownika.
+     *
      * @param login Login użytkownika, dla którego konta należy zarejestrować udaną operację logowania
      * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane udane
      *                        logowanie nie istnieje
@@ -256,7 +257,7 @@ public class AccountEndpoint {
         Account account = accountService.findByLogin(login);
         accountService.registerFailedLogInAttempt(account);
     }
-    
+
     /*
      * Wysyła link zawierający żeton zmiany adresu email
      *
@@ -267,7 +268,7 @@ public class AccountEndpoint {
     @RolesAllowed((updateEmail))
     public void requestEmailUpdate(RequestEmailUpdateDto requestEmailUpdateDto) throws NoAccountFound, NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
-        verificationTokenService.sendEmailUpdateToken(account, requestEmailUpdateDto.getEmail());
+        verificationTokenService.sendEmailUpdateToken(account, requestEmailUpdateDto.getNewEmail());
     }
 
 
