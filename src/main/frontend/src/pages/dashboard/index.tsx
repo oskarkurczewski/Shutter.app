@@ -3,6 +3,7 @@ import "./style.scss";
 import Card from "components/shared/Card";
 import Button from "components/shared/Button";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { logout } from "redux/slices/authSlice";
 
 const DashboardPage = () => {
    const dispatch = useAppDispatch();
@@ -10,8 +11,8 @@ const DashboardPage = () => {
    const roles = useAppSelector((state) => state.auth.accessLevel);
 
    const handleClick = () => {
-      //TODO wylogowanie
-      console.log("wylogowanie");
+      dispatch(logout());
+      localStorage.removeItem("token");
    };
 
    return (

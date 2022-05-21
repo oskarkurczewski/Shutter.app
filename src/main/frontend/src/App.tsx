@@ -6,8 +6,17 @@ import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
 import AuthenticatedRoute from "util/AuthenticatedRoute";
 import Confirm from "components/client/Confirm";
+import { useAppDispatch } from "redux/hooks";
+import { getLoginPayload, getTokenExp } from "util/loginUtil";
+import { login } from "redux/slices/authSlice";
 
 function App() {
+   const dispatch = useAppDispatch();
+   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
+      const payload = getLoginPayload();
+      dispatch(login(payload));
+   }
+
    return (
       <BrowserRouter>
          <Routes>
