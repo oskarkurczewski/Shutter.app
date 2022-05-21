@@ -7,6 +7,7 @@ export enum StyleColorType {
    gray100,
    gray200,
    gray300,
+   gray300transparent,
 
    white,
    blueGray100,

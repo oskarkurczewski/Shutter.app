@@ -1,5 +1,5 @@
 @import "./variables.scss";
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap");
 
 * {
    box-sizing: border-box;
@@ -30,25 +30,46 @@ body {
 // Typography
 html {
    .section-title {
-      font-size: calc($scale-2 * 1rem);
+      font-size: calc($scale-1 * 1rem);
+      font-weight: bold;
       letter-spacing: 1%;
+      font-family: "Open Sans", sans-serif;
+      text-transform: capitalize;
+      color: $gray-300;
    }
 
    .category-title {
-      font-size: calc($scale-3 * 1rem);
+      font-size: calc($scale-2 * 1rem);
+      font-weight: bold;
       letter-spacing: 2.5%;
+      font-family: "Open Sans", sans-serif;
    }
 
    h3 {
-      font-size: calc($scale-4 * 1rem);
+      font-size: calc($scale-3 * 1rem);
+      font-family: "Open Sans", sans-serif;
    }
 
    h2 {
-      font-size: calc($scale-5 * 1rem);
+      font-size: calc($scale-4 * 1rem);
+      font-family: "Open Sans", sans-serif;
    }
 
    h1 {
-      font-size: calc($scale-6 * 1rem);
+      font-size: calc($scale-5 * 1rem);
+      font-family: "Open Sans", sans-serif;
+   }
+
+   .label {
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: "Open Sans", sans-serif;
+   }
+
+   .label-bold {
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: "Open Sans", sans-serif;
    }
 }
 
