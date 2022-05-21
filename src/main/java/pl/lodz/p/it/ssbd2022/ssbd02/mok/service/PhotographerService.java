@@ -46,6 +46,27 @@ public class PhotographerService {
         return photographerInfoFacade.findPhotographerByLogin(login);
     }
 
+
+    /**
+     * Tworzy pusty obiekt reprezentujący informacje o fotografie
+     *
+     * @param account Account Konto fotografa, któremu chcemy dodać informacje
+     */
+    public void createEmptyPhotographerInfo(Account account) {
+        PhotographerInfo photographerInfo = new PhotographerInfo();
+
+        photographerInfo.setId(account.getId());
+        photographerInfo.setScore(0L);
+        photographerInfo.setReviewCount(0L);
+        photographerInfo.setAccount(account);
+        photographerInfo.setDescription("");
+        photographerInfo.setLatitude(null);
+        photographerInfo.setLongitude(null);
+        photographerInfo.setVisible(true);
+
+        photographerInfoFacade.persist(photographerInfo);
+    }
+
     /**
      * Szuka fotografa
      *

@@ -208,6 +208,40 @@ public class AccountService {
     }
 
     /**
+     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     *
+     * @param account                   Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
+     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({becomePhotographer})
+    public void becomePhotographer(Account account)
+            throws CannotChangeException, DataNotFoundException {
+
+        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
+                account,
+                accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER")
+        );
+
+        if (accessLevelFound != null) {
+            if (accessLevelFound.getActive()) {
+                throw new CannotChangeException("exception.access_level.already_set");
+            }
+
+            accessLevelFound.setActive(true);
+            accessLevelFacade.update(accessLevelFound);
+        } else {
+            AccessLevelAssignment assignment = new AccessLevelAssignment();
+
+            assignment.setLevel(accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER"));
+            assignment.setAccount(account);
+            assignment.setActive(true);
+
+            accessLevelFacade.persist(assignment);
+        }
+    }
+
+    /**
      * Rejestruje konto użytkownika z danych podanych w obiekcie klasy użytkownika
      * oraz przypisuje do niego poziom dostępu klienta.
      * W celu aktywowania konta należy jeszcze zmienić pole 'registered' na wartość 'true'.
