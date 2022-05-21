@@ -97,15 +97,14 @@ public class AccountController extends AbstractController {
     /**
      * Wysyła link zawierający żeton zmiany adresu email
      *
-     * @param email Nowy email użytkownika, na którego zostanie wysłany link weryfikacyjny
      * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @POST
     @Path("request-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response requestEmailUpdate(@NotNull @Valid RequestEmailUpdateDto email) throws NoAccountFound, NoAuthenticatedAccountFound {
-        accountEndpoint.requestEmailUpdate(email);
+    public Response requestEmailUpdate() throws NoAccountFound, NoAuthenticatedAccountFound {
+        accountEndpoint.requestEmailUpdate();
         return Response.status(Response.Status.OK).build();
     }
 

@@ -5,10 +5,10 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -267,9 +267,9 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @RolesAllowed((updateEmail))
-    public void requestEmailUpdate(RequestEmailUpdateDto requestEmailUpdateDto) throws NoAccountFound, NoAuthenticatedAccountFound {
+    public void requestEmailUpdate() throws NoAccountFound, NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
-        verificationTokenService.sendEmailUpdateToken(account, requestEmailUpdateDto.getNewEmail());
+        verificationTokenService.sendEmailUpdateToken(account);
     }
 
 
