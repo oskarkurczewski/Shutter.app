@@ -12,14 +12,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class VerificationTokenService {
+    private static final int TOKEN_TIME = 20;
     @Inject
     private TokenFacade tokenFacade;
-
     @Inject
     private EmailService emailService;
-
-    private static final int TOKEN_TIME = 20;
-
 
     /**
      * Pomocnicza funkcja do sprawdzania podstawowych warunków żetonu
@@ -27,21 +24,43 @@ public class VerificationTokenService {
      * @param token     żeton do sprawdzenia
      * @param tokenType typ żetonu jako enum
      * @return zwraca żeton w celu dalszego sprawdzania warunków
-     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
-     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
-     * @throws ExpiredTokenException    Żeton wygasł
+     * @throws InvalidTokenException Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws ExpiredTokenException Żeton wygasł
      * @see TokenType
      */
-    private VerificationToken checkToken(String token, TokenType tokenType) throws NoVerificationTokenFound, ExpiredTokenException, InvalidTokenException {
-        VerificationToken verificationToken = tokenFacade.find(token);
-        if (LocalDateTime.now().isAfter(verificationToken.getExpiration())) {
+    private void checkToken(VerificationToken token, TokenType tokenType) throws ExpiredTokenException, InvalidTokenException {
+        if (LocalDateTime.now().isAfter(token.getExpiration())) {
             throw ExceptionFactory.expiredTokenException();
         }
 
-        if (verificationToken.getTokenType() != tokenType) {
+        if (token.getTokenType() != tokenType) {
             throw ExceptionFactory.invalidTokenException();
         }
-        return verificationToken;
+    }
+
+    /**
+     * Pomocnicza funkcja do sprawdzania, czy konto jest aktywne oraz zarejestrowane
+     *
+     * @param account Konto do sprawdzenia
+     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     */
+    private void checkAccount(Account account) throws NoAccountFound {
+        if (!account.getActive() || !account.getRegistered()) {
+            throw ExceptionFactory.noAccountFound();
+        }
+    }
+
+    /**
+     * Pomocnicza funkcja w celu usuwania starych żetonów
+     *
+     * @param account   konto, dla którego żetony mają być usunięte
+     * @param tokenType typ żetonu
+     */
+    private void removeOldToken(Account account, TokenType tokenType) {
+        List<VerificationToken> oldTokens = tokenFacade.findByAccountIdAndType(account, tokenType);
+        for (VerificationToken oldToken : oldTokens) {
+            tokenFacade.remove(oldToken);
+        }
     }
 
     /**
@@ -50,19 +69,9 @@ public class VerificationTokenService {
      * @param account   Konto, dla którego zostanie utworzony wysłany email z żetonem
      * @param tokenType typ żetonu
      * @return utworzony żeton
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @see TokenType
      */
-    private VerificationToken createNewToken(Account account, TokenType tokenType) throws NoAccountFound {
-        if (!account.getActive() || !account.getRegistered()) {
-            throw ExceptionFactory.noAccountFound();
-        }
-
-        List<VerificationToken> oldTokens = tokenFacade.findByAccountIdAndType(account, tokenType);
-        for (VerificationToken oldToken : oldTokens) {
-            tokenFacade.remove(oldToken);
-        }
-
+    private VerificationToken createNewToken(Account account, TokenType tokenType) {
         VerificationToken registrationToken = new VerificationToken(
                 LocalDateTime.now().plusMinutes(VerificationTokenService.TOKEN_TIME),
                 account,
@@ -99,7 +108,8 @@ public class VerificationTokenService {
      */
     public Account confirmRegistration(String token)
             throws InvalidTokenException, AccountConfirmedException, NoVerificationTokenFound, ExpiredTokenException {
-        VerificationToken registrationToken = checkToken(token, TokenType.REGISTRATION_CONFIRMATION);
+        VerificationToken registrationToken = tokenFacade.find(token);
+        checkToken(registrationToken, TokenType.REGISTRATION_CONFIRMATION);
 
         if (registrationToken.getTargetUser().getRegistered()) {
             tokenFacade.remove(registrationToken);
@@ -117,6 +127,8 @@ public class VerificationTokenService {
      * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     public void sendPasswordResetToken(Account account) throws NoAccountFound {
+        checkAccount(account);
+        removeOldToken(account, TokenType.PASSWORD_RESET);
         VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
         emailService.sendPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
     }
@@ -131,7 +143,8 @@ public class VerificationTokenService {
      */
     public void confirmPasswordReset(String token)
             throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
-        VerificationToken resetToken = checkToken(token, TokenType.PASSWORD_RESET);
+        VerificationToken resetToken = tokenFacade.find(token);
+        checkToken(resetToken, TokenType.PASSWORD_RESET);
         tokenFacade.remove(resetToken);
     }
 
@@ -142,6 +155,8 @@ public class VerificationTokenService {
      * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     public void sendEmailUpdateToken(Account account, String newEmail) throws NoAccountFound {
+        checkAccount(account);
+        removeOldToken(account, TokenType.EMAIL_UPDATE);
         VerificationToken verificationToken = createNewToken(account, TokenType.EMAIL_UPDATE);
         emailService.sendEmailUpdateEmail(newEmail, account.getLogin(), verificationToken);
     }
@@ -156,7 +171,8 @@ public class VerificationTokenService {
      */
     public void confirmEmailUpdate(String token)
             throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
-        VerificationToken resetToken = checkToken(token, TokenType.EMAIL_UPDATE);
+        VerificationToken resetToken = tokenFacade.find(token);
+        checkToken(resetToken, TokenType.EMAIL_UPDATE);
         tokenFacade.remove(resetToken);
     }
 }

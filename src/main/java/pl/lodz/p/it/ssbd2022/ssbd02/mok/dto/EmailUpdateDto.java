@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class EmailUpdateDto {
     @NotNull
-    private String token;
-    @NotNull
     @Email
-    String email;
+    String newEmail;
+    @NotNull
+    private String token;
 }

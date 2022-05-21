@@ -15,5 +15,5 @@ import javax.validation.constraints.NotNull;
 public class RequestEmailUpdateDto {
     @NotNull
     @Email
-    String email;
+    String newEmail;
 }
