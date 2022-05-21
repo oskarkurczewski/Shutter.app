@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -33,6 +34,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
     }
 
     @Override
+    @PermitAll
     public AccessLevelAssignment persist(AccessLevelAssignment entity) throws BaseApplicationException {
         try {
             return super.persist(entity);
@@ -46,6 +48,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
     }
 
     @Override
+    @PermitAll
     public void remove(AccessLevelAssignment entity) throws BaseApplicationException {
         try {
             super.remove(entity);
@@ -59,6 +62,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
     }
 
     @Override
+    @PermitAll
     public AccessLevelAssignment update(AccessLevelAssignment entity) throws BaseApplicationException {
         try {
             return super.update(entity);
@@ -84,6 +88,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
      * @throws DataNotFoundException W przypadku, gdy funkcja nie znajdzie rekordu
      *                               ze wskazaną nazwą
      */
+    @PermitAll
     public AccessLevelValue getAccessLevelValue(String accessLevel) throws DataNotFoundException {
         TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
         query.setParameter("access_level", accessLevel);
@@ -103,6 +108,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
      * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
      * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
      */
+    @PermitAll
     public AccessLevelAssignment getAccessLevelAssignmentForAccount(Account account, AccessLevelValue accessLevelValue) {
         return account.getAccessLevelAssignmentList().stream()
                 .filter(a -> a.getLevel().getName().equals(accessLevelValue.getName()))

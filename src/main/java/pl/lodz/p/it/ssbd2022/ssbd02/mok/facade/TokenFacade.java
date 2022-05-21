@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -39,11 +40,13 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
     }
 
     @Override
+    @PermitAll
     public VerificationToken persist(VerificationToken entity) throws BaseApplicationException {
         return super.persist(entity);
     }
 
     @Override
+    @PermitAll
     public void remove(VerificationToken entity) throws BaseApplicationException {
         try {
             super.remove(entity);
@@ -56,6 +59,7 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         }
     }
 
+    @PermitAll
     public VerificationToken find(String token) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery("VerificationToken.findByTokenEquals", VerificationToken.class);
         query.setParameter("token", token);
@@ -72,6 +76,7 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         }
     }
 
+    @PermitAll
     public List<VerificationToken> findByAccountIdAndType(Account account, TokenType type) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery(
                 "VerificationToken.findByAccountIdAndType",
@@ -89,6 +94,7 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         }
     }
 
+    @PermitAll
     public List<VerificationToken> findExpiredAfterOfType(TokenType type, LocalDateTime expiresAfter) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery(
                 "VerificationToken.findExpiredAfterOfType",
