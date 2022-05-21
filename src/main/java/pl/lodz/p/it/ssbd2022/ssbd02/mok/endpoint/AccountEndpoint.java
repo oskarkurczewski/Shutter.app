@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
@@ -22,7 +23,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @Stateful
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class AccountEndpoint {
+public class AccountEndpoint extends AbstractEndpoint {
 
     @Inject
     private AuthenticationContext authenticationContext;

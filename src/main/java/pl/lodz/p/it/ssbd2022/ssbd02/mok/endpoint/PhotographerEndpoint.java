@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
@@ -21,7 +22,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @Stateful
 @Interceptors(LoggingInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class PhotographerEndpoint {
+public class PhotographerEndpoint extends AbstractEndpoint {
 
     @Inject
     private PhotographerService photographerService;

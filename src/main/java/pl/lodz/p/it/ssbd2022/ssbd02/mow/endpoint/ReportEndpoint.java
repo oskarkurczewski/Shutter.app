@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -11,7 +12,7 @@ import java.util.List;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
-public class ReportEndpoint {
+public class ReportEndpoint extends AbstractEndpoint {
     @RolesAllowed(reportClient)
     public void reportAccount(CreateAccountReportDto createAccountReportDto)
             throws NoAuthenticatedAccountFound, NoAccountFound {

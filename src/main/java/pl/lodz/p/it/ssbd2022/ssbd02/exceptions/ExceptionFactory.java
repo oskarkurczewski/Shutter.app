@@ -48,6 +48,10 @@ public class ExceptionFactory {
         return new WrongPasswordException("mes");
     }
 
+    public static UnexpectedFailException unexpectedFailException() {
+        return new UnexpectedFailException("exception.unexpected");
+    }
+
     public static AvailabilityOverlapException availabilityOverlapException() {
         return new AvailabilityOverlapException("exception.availability.overlap");
     }

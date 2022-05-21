@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/report")
-public class ReportController {
+public class ReportController extends AbstractController {
 
     @Inject
     ReportEndpoint reportEndpoint;

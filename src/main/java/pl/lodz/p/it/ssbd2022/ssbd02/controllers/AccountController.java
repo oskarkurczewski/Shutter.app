@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
-public class AccountController {
+public class AccountController extends AbstractController {
 
     @Inject
     AccountEndpoint accountEndpoint;
@@ -28,8 +28,8 @@ public class AccountController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void blockAccount(
             @NotNull @PathParam("login") String login
-    ) throws NoAccountFound {
-        accountEndpoint.blockAccount(login);
+    ) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.blockAccount(login), accountEndpoint);
     }
 
     /**
@@ -42,8 +42,9 @@ public class AccountController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void unblockAccount(
             @NotNull @PathParam("login") String login
-    ) throws NoAccountFound {
-        accountEndpoint.unblockAccount(login);
+    ) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.unblockAccount(login), accountEndpoint);
+
     }
 
     @PUT
@@ -51,15 +52,15 @@ public class AccountController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountPasswordAsAdmin(
             @NotNull @PathParam("login") String login,
-            @NotNull @Valid AccountUpdatePasswordDto password) throws NoAccountFound {
-        accountEndpoint.updatePasswordAsAdmin(login, password);
+            @NotNull @Valid AccountUpdatePasswordDto password) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
     }
 
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound, PasswordMismatchException {
-        accountEndpoint.updateOwnPassword(data);
+    public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.updateOwnPassword(data), accountEndpoint);
     }
 
     /**
@@ -105,9 +106,8 @@ public class AccountController {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto)
-            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
-        accountEndpoint.registerAccount(accountRegisterDto);
+    public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -122,7 +122,7 @@ public class AccountController {
     @Path("/confirm/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid @PathParam("token") String token) throws BaseApplicationException {
-        accountEndpoint.confirmAccountRegistration(token);
+        repeat(() ->  accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -138,8 +138,9 @@ public class AccountController {
     @Path("/register-as-admin")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto)
-            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
-        accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto);
+            throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
+
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -159,8 +160,8 @@ public class AccountController {
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
     public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login)
-            throws NoAuthenticatedAccountFound, NoAccountFound {
-        return accountEndpoint.getAccountInfo(login);
+            throws BaseApplicationException {
+        return repeat(() ->  accountEndpoint.getAccountInfo(login), accountEndpoint);
     }
 
     /**
@@ -173,8 +174,8 @@ public class AccountController {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo() throws NoAuthenticatedAccountFound {
-        return accountEndpoint.getOwnAccountInfo();
+    public AccountInfoDto getUserInfo() throws BaseApplicationException {
+        return repeat(() ->  accountEndpoint.getOwnAccountInfo(), accountEndpoint);
     }
 
     /**
@@ -187,9 +188,9 @@ public class AccountController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void editOwnAccountInfo(
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
-    ) throws NoAuthenticatedAccountFound {
+    ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        accountEndpoint.editAccountInfo(editAccountInfoDto);
+        repeat(() ->  accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
     }
 
     /**
@@ -203,9 +204,9 @@ public class AccountController {
     public void editAccountInfo(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
-    ) throws NoAccountFound {
+    ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto);
+        repeat(() ->  accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto), accountEndpoint);
     }
 
     /**
@@ -223,8 +224,8 @@ public class AccountController {
     public Response assignAccountAccessLevel(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountAccessLevelChangeDto data
-    ) throws CannotChangeException, DataNotFoundException, NoAccountFound {
-        accountEndpoint.changeAccountAccessLevel(login, data);
+    ) throws BaseApplicationException {
+        repeat(() ->  accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
