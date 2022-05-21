@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class EnhancedAccountInfoDto {
+public class DetailedAccountInfoDto {
 
     @NotNull
     private String login;
@@ -37,7 +37,7 @@ public class EnhancedAccountInfoDto {
      *
      * @param account encja użytkownika
      */
-    public EnhancedAccountInfoDto(Account account) {
+    public DetailedAccountInfoDto(Account account) {
         login = account.getLogin();
         email = account.getEmail();
         name = account.getName();

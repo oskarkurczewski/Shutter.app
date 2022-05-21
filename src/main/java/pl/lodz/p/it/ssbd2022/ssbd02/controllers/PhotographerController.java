@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EnhancedPhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.PhotographerEndpoint;
 
 import javax.inject.Inject;
@@ -47,9 +47,9 @@ public class PhotographerController {
      * @see BasePhotographerInfoDto
      */
     @GET
-    @Path("/{login}/infoplus")
+    @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
-    public EnhancedPhotographerInfoDto getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public DetailedPhotographerInfoDto getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerEndpoint.getEnhancedPhotographerInfo(login);
     }
 
@@ -63,7 +63,7 @@ public class PhotographerController {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public EnhancedPhotographerInfoDto getPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public DetailedPhotographerInfoDto getPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerEndpoint.getYourPhotographerInfo();
     }
 }

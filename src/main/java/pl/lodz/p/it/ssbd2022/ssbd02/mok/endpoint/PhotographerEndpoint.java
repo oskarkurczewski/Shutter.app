@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EnhancedPhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -58,9 +58,9 @@ public class PhotographerEndpoint {
      * @see BasePhotographerInfoDto
      */
     @RolesAllowed(getEnhancedPhotographerInfo)
-    public EnhancedPhotographerInfoDto getEnhancedPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public DetailedPhotographerInfoDto getEnhancedPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
-        return new EnhancedPhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
+        return new DetailedPhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
     }
 
     /**
@@ -71,8 +71,8 @@ public class PhotographerEndpoint {
      * @see BasePhotographerInfoDto
      */
     @RolesAllowed(getOwnPhotographerInfo)
-    public EnhancedPhotographerInfoDto getYourPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public DetailedPhotographerInfoDto getYourPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
-        return new EnhancedPhotographerInfoDto(photographerService.findByLogin(account.getLogin()));
+        return new DetailedPhotographerInfoDto(photographerService.findByLogin(account.getLogin()));
     }
 }

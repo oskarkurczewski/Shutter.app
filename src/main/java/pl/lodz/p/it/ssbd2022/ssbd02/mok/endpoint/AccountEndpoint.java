@@ -184,9 +184,9 @@ public class AccountEndpoint {
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getEnhancedAccountInfo)
-    public EnhancedAccountInfoDto getEnhancedAccountInfo(String login) throws NoAccountFound {
+    public DetailedAccountInfoDto getEnhancedAccountInfo(String login) throws NoAccountFound {
         Account account = accountService.findByLogin(login);
-        return new EnhancedAccountInfoDto(account);
+        return new DetailedAccountInfoDto(account);
     }
 
     /**
@@ -212,9 +212,9 @@ public class AccountEndpoint {
      * @see BaseAccountInfoDto
      */
     @PermitAll
-    public EnhancedAccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
+    public DetailedAccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
-        return new EnhancedAccountInfoDto(account);
+        return new DetailedAccountInfoDto(account);
     }
 
     @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})

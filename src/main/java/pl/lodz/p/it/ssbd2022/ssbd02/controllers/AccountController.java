@@ -123,9 +123,9 @@ public class AccountController {
      * @see BaseAccountInfoDto
      */
     @GET
-    @Path("/{login}/infoplus")
+    @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
-    public EnhancedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
+    public DetailedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
             throws NoAccountFound {
         return accountEndpoint.getEnhancedAccountInfo(login);
     }
@@ -157,7 +157,7 @@ public class AccountController {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public EnhancedAccountInfoDto getAccountInfo() throws NoAuthenticatedAccountFound {
+    public DetailedAccountInfoDto getAccountInfo() throws NoAuthenticatedAccountFound {
         return accountEndpoint.getOwnAccountInfo();
     }
 
