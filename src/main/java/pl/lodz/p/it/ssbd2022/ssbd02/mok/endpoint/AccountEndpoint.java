@@ -157,14 +157,14 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Wywołuję funkcję do edycji danych użytkownika przez administratora
      *
-     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      * @throws NoAccountFound W przypadku gdy nie znaleziono użytkownika o danym loginie
      */
     @RolesAllowed({ADMINISTRATOR})
-    public void editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws NoAccountFound {
+    public void editAccountInfoAsAdmin(String login, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws NoAccountFound {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakować go w dto
         Account account = accountService.findByLogin(login);
-        accountService.editAccountInfoAsAdmin(account, editAccountInfoDto);
+        accountService.editAccountInfoAsAdmin(account, editAccountInfoAsAdminDto);
     }
 
     /**

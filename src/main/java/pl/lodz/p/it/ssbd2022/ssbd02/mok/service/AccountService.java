@@ -356,7 +356,6 @@ public class AccountService {
      */
     @RolesAllowed(editOwnAccountData)
     public void editAccountInfo(Account account, EditAccountInfoDto editAccountInfoDto) {
-        account.setEmail(editAccountInfoDto.getEmail());
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
         accountFacade.update(account);
@@ -366,13 +365,13 @@ public class AccountService {
      * Funkcja do edycji danych innego użytkownika przez Administratora. Pozwala zmienić jedynie email,
      * imię oraz nazwisko
      *
-     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      */
     @RolesAllowed({ADMINISTRATOR})
-    public void editAccountInfoAsAdmin(Account account, EditAccountInfoDto editAccountInfoDto) {
-        account.setEmail(editAccountInfoDto.getEmail());
-        account.setName(editAccountInfoDto.getName());
-        account.setSurname(editAccountInfoDto.getSurname());
+    public void editAccountInfoAsAdmin(Account account, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) {
+        account.setEmail(editAccountInfoAsAdminDto.getEmail());
+        account.setName(editAccountInfoAsAdminDto.getName());
+        account.setSurname(editAccountInfoAsAdminDto.getSurname());
         accountFacade.update(account);
     }
 

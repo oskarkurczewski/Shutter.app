@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
@@ -29,7 +28,7 @@ public class AccountController extends AbstractController {
     public void blockAccount(
             @NotNull @PathParam("login") String login
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.blockAccount(login), accountEndpoint);
+        repeat(() -> accountEndpoint.blockAccount(login), accountEndpoint);
     }
 
     /**
@@ -43,7 +42,7 @@ public class AccountController extends AbstractController {
     public void unblockAccount(
             @NotNull @PathParam("login") String login
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.unblockAccount(login), accountEndpoint);
+        repeat(() -> accountEndpoint.unblockAccount(login), accountEndpoint);
 
     }
 
@@ -53,14 +52,14 @@ public class AccountController extends AbstractController {
     public void changeAccountPasswordAsAdmin(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountUpdatePasswordDto password) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
+        repeat(() -> accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
     }
 
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.updateOwnPassword(data), accountEndpoint);
+        repeat(() -> accountEndpoint.updateOwnPassword(data), accountEndpoint);
     }
 
     /**
@@ -142,7 +141,7 @@ public class AccountController extends AbstractController {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
+        repeat(() -> accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -157,7 +156,7 @@ public class AccountController extends AbstractController {
     @Path("/confirm/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid @PathParam("token") String token) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
+        repeat(() -> accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -174,7 +173,7 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto)
             throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
+        repeat(() -> accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
 
         return Response.status(Response.Status.CREATED).build();
     }
@@ -196,7 +195,7 @@ public class AccountController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login)
             throws BaseApplicationException {
-        return repeat(() ->  accountEndpoint.getAccountInfo(login), accountEndpoint);
+        return repeat(() -> accountEndpoint.getAccountInfo(login), accountEndpoint);
     }
 
     /**
@@ -210,7 +209,7 @@ public class AccountController extends AbstractController {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public AccountInfoDto getUserInfo() throws BaseApplicationException {
-        return repeat(() ->  accountEndpoint.getOwnAccountInfo(), accountEndpoint);
+        return repeat(() -> accountEndpoint.getOwnAccountInfo(), accountEndpoint);
     }
 
     /**
@@ -225,23 +224,23 @@ public class AccountController extends AbstractController {
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        repeat(() ->  accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
+        repeat(() -> accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
     }
 
     /**
      * Pozwala zmienić informację użytkownika przez administratora przez podany login
      *
-     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      */
     @PUT
     @Path("/{login}/editAccountInfo")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editAccountInfo(
             @NotNull @PathParam("login") String login,
-            @NotNull @Valid EditAccountInfoDto editAccountInfoDto
+            @NotNull @Valid EditAccountInfoAsAdminDto editAccountInfoAsAdminDto
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        repeat(() ->  accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto), accountEndpoint);
+        repeat(() -> accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoAsAdminDto), accountEndpoint);
     }
 
     /**
@@ -260,7 +259,7 @@ public class AccountController extends AbstractController {
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountAccessLevelChangeDto data
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
+        repeat(() -> accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
