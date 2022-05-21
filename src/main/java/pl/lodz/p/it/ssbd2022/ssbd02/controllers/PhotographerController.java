@@ -2,7 +2,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EnhancedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.PhotographerEndpoint;
 
 import javax.inject.Inject;
@@ -27,13 +28,29 @@ public class PhotographerController {
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                                     niebędący ani administratorem, ani moderatorem
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see PhotographerInfoDto
+     * @see BasePhotographerInfoDto
      */
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public PhotographerInfoDto getUserInfo(@NotNull @PathParam("login") String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public BasePhotographerInfoDto getPhotographerInfo(@NotNull @PathParam("login") String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerEndpoint.getPhotographerInfo(login);
+    }
+    /**
+     * Punkt końcowy szukający fotografa
+     *
+     * @param login nazwa użytkownika fotografa
+     * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
+     *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see BasePhotographerInfoDto
+     */
+    @GET
+    @Path("/{login}/infoplus")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EnhancedPhotographerInfoDto getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
+        return photographerEndpoint.getEnhancedPhotographerInfo(login);
     }
 
     /**
@@ -41,12 +58,12 @@ public class PhotographerController {
      *
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see PhotographerInfoDto
+     * @see BasePhotographerInfoDto
      */
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public PhotographerInfoDto getUserInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public EnhancedPhotographerInfoDto getPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
         return photographerEndpoint.getYourPhotographerInfo();
     }
 }

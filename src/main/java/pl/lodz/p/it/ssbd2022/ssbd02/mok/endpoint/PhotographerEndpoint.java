@@ -4,7 +4,8 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.PhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EnhancedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -19,7 +20,7 @@ import javax.interceptor.Interceptors;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
-@Interceptors(LoggingInterceptor.class)
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class PhotographerEndpoint {
 
@@ -38,13 +39,28 @@ public class PhotographerEndpoint {
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                                     niebędący ani administratorem, ani moderatorem
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see PhotographerInfoDto
+     * @see BasePhotographerInfoDto
      */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, CLIENT, PHOTOGRAPHER})
-    public PhotographerInfoDto getPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
-        Account requester = authenticationContext.getCurrentUsersAccount();
+    @RolesAllowed(getPhotographerInfo)
+    public BasePhotographerInfoDto getPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
-        return photographerService.getPhotographerInfo(requester, photographerInfo);
+        return new BasePhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
+    }
+    /**
+     * Szuka fotografa
+     *
+     * @param login nazwa użytkownika fotografa
+     * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
+     *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
+     *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
+     *                                     niebędący ani administratorem, ani moderatorem
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @see BasePhotographerInfoDto
+     */
+    @RolesAllowed(getEnhancedPhotographerInfo)
+    public EnhancedPhotographerInfoDto getEnhancedPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
+        PhotographerInfo photographerInfo = photographerService.findByLogin(login);
+        return new EnhancedPhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
     }
 
     /**
@@ -52,11 +68,11 @@ public class PhotographerEndpoint {
      *
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see PhotographerInfoDto
+     * @see BasePhotographerInfoDto
      */
-    @RolesAllowed({PHOTOGRAPHER})
-    public PhotographerInfoDto getYourPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    @RolesAllowed(getOwnPhotographerInfo)
+    public EnhancedPhotographerInfoDto getYourPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
         Account account = authenticationContext.getCurrentUsersAccount();
-        return new PhotographerInfoDto(photographerService.findByLogin(account.getLogin()));
+        return new EnhancedPhotographerInfoDto(photographerService.findByLogin(account.getLogin()));
     }
 }

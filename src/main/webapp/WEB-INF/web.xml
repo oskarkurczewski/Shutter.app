@@ -59,6 +59,18 @@
         <role-name>getAccountInfo</role-name>
     </security-role>
     <security-role>
+        <role-name>getEnhancedAccountInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getPhotographerInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getEnhancedPhotographerInfo</role-name>
+    </security-role>
+    <security-role>
+        <role-name>getOwnPhotographerInfo</role-name>
+    </security-role>
+    <security-role>
         <role-name>listAllAccounts</role-name>
     </security-role>
     <security-role>
