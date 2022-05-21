@@ -18,8 +18,8 @@ import java.time.Duration;
 public class OneTimeCodeUtils {
     @Inject
     private ConfigLoader configLoader;
-    private byte[] secret;
-    private TOTP totpGenerator;
+
+    private int period;
 
     public void setConfigLoader(ConfigLoader configLoader) {
         this.configLoader = configLoader;
@@ -27,30 +27,31 @@ public class OneTimeCodeUtils {
 
     @PostConstruct
     public void init() {
-        String period = "600";
         try {
-            this.secret = configLoader
+            period = Integer.parseInt(
+                    configLoader
                     .loadProperties("config.2fa.properties")
-                    .getProperty("2fa.secret")
-                    .getBytes(StandardCharsets.UTF_8);
-            period = configLoader
-                    .loadProperties("config.2fa.properties")
-                    .getProperty("2fa.period");
+                    .getProperty("2fa.period")
+            );
         } catch (NoConfigFileFound e) {
             throw new RuntimeException(e);
         }
-        TOTP.Builder builder = new TOTP.Builder(secret);
-        this.totpGenerator = builder
+    }
+
+    private TOTP createTotp(String secret) {
+        return new TOTP.Builder(secret.getBytes(StandardCharsets.UTF_8))
                 .withPasswordLength(6)
                 .withAlgorithm(HMACAlgorithm.SHA512)
-                .withPeriod(Duration.ofSeconds(Integer.parseInt(period)))
+                .withPeriod(Duration.ofSeconds(period))
                 .build();
     }
 
-    public String generateCode() {
-        return totpGenerator.now();
+    public String generateCode(String secret) {
+        TOTP generator = createTotp(secret);
+        return generator.now();
     }
-    public boolean verifyCode(String code) {
-        return totpGenerator.verify(code);
+    public boolean verifyCode(String secret, String code) {
+        TOTP verifier = createTotp(secret);
+        return verifier.verify(code);
     }
 }
