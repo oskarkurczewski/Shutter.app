@@ -19,26 +19,16 @@ const ModeratorButtonList: FC<Props> = ({ path, expanded }) => {
 
    return (
       <>
-         {arr.map((btn) =>
-            path === btn.to ? (
-               <BarButton
-                  active
-                  expanded={expanded}
-                  to={btn.to}
-                  icon={btn.icon}
-                  key={btn.to}
-                  text={btn.text}
-               />
-            ) : (
-               <BarButton
-                  expanded={expanded}
-                  to={btn.to}
-                  icon={btn.icon}
-                  key={btn.to}
-                  text={btn.text}
-               />
-            )
-         )}
+         {arr.map((btn) => (
+            <BarButton
+               active={path === btn.to}
+               expanded={expanded}
+               to={btn.to}
+               icon={btn.icon}
+               key={btn.to}
+               text={btn.text}
+            />
+         ))}
       </>
    );
 };
