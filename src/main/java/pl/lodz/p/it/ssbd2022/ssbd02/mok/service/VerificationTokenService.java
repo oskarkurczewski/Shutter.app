@@ -51,6 +51,19 @@ public class VerificationTokenService {
     }
 
     /**
+     * Pomocnicza funkcja w celu usuwania starych żetonów
+     *
+     * @param account   konto, dla którego żetony mają być usunięte
+     * @param tokenType typ żetonu
+     */
+    private void removeOldToken(Account account, TokenType tokenType) {
+        List<VerificationToken> oldTokens = tokenFacade.findByAccountIdAndType(account, tokenType);
+        for (VerificationToken oldToken : oldTokens) {
+            tokenFacade.remove(oldToken);
+        }
+    }
+
+    /**
      * Pomocnicza funkcja do tworzenia żetonu weryfikacyjnego
      *
      * @param account   Konto, dla którego zostanie utworzony wysłany email z żetonem
@@ -59,11 +72,6 @@ public class VerificationTokenService {
      * @see TokenType
      */
     private VerificationToken createNewToken(Account account, TokenType tokenType) {
-        List<VerificationToken> oldTokens = tokenFacade.findByAccountIdAndType(account, tokenType);
-        for (VerificationToken oldToken : oldTokens) {
-            tokenFacade.remove(oldToken);
-        }
-
         VerificationToken registrationToken = new VerificationToken(
                 LocalDateTime.now().plusMinutes(VerificationTokenService.TOKEN_TIME),
                 account,
@@ -120,6 +128,7 @@ public class VerificationTokenService {
      */
     public void sendPasswordResetToken(Account account) throws NoAccountFound {
         checkAccount(account);
+        removeOldToken(account, TokenType.PASSWORD_RESET);
         VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
         emailService.sendPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
     }
@@ -147,6 +156,7 @@ public class VerificationTokenService {
      */
     public void sendEmailUpdateToken(Account account, String newEmail) throws NoAccountFound {
         checkAccount(account);
+        removeOldToken(account, TokenType.EMAIL_UPDATE);
         VerificationToken verificationToken = createNewToken(account, TokenType.EMAIL_UPDATE);
         emailService.sendEmailUpdateEmail(newEmail, account.getLogin(), verificationToken);
     }
