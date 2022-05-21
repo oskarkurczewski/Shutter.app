@@ -177,6 +177,24 @@ public class EmailService {
     }
 
     /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
+     * aktywowane w systemie.
+     *
+     * @param to adresat wiadomości email
+     */
+    public void sendAccountActivated(String to) {
+        String subject = "Konto aktywowane - Shutter.app";
+        String body = "Twoje konto w aplikacji Shutter.app zostało pomyślnie aktywowane. Życzymy miłego dalszego " +
+                "korzystania z usługi.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
      * Funkcja służąca do wysyłania emaili
      *
      * @param toEmail  adres email odbiorcy
