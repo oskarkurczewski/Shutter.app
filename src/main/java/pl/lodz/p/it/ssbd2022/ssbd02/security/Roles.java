@@ -20,6 +20,7 @@ public class Roles {
     public static final String editOwnAccountData = "editOwnAccountData";
     public static final String editSomeonesAccountData = "editSomeonesAccountData";
     public static final String getAccountInfo = "getAccountInfo";
+    public static final String getOwnAccountInfo = "getAccountInfo";
     public static final String getEnhancedAccountInfo = "getEnhancedAccountInfo";
     public static final String getPhotographerInfo = "getPhotographerInfo";
     public static final String getEnhancedPhotographerInfo = "getEnhancedPhotographerInfo";

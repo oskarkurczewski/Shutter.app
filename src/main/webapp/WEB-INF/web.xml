@@ -59,6 +59,9 @@
         <role-name>getAccountInfo</role-name>
     </security-role>
     <security-role>
+        <role-name>getOwnAccountInfo</role-name>
+    </security-role>
+    <security-role>
         <role-name>getEnhancedAccountInfo</role-name>
     </security-role>
     <security-role>

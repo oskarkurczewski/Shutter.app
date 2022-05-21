@@ -55,6 +55,15 @@
     <security-role-mapping>
         <role-name>getAccountInfo</role-name>
         <group-name>PHOTOGRAPHER</group-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getOwnAccountInfo</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>PHOTOGRAPHER</group-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>getEnhancedAccountInfo</role-name>
