@@ -311,7 +311,7 @@ public class AccountEndpoint extends AbstractEndpoint {
         accountService.updateEmail(account, emailUpdateDto);
     }
 
-    @RolesAllowed({ADMINISTRATOR, MODERATOR})
+    @RolesAllowed(getAccountInfo)
     public ListResponseDto<String> findByNameSurname(
             String name,
             int page,

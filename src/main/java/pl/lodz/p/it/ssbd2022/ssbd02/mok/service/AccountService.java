@@ -56,7 +56,7 @@ public class AccountService {
         assignment.setLevel(levelValue);
         assignment.setAccount(account);
         assignment.setActive(true);
-               accessLevelFacade.persist(assignment);
+        accessLevelFacade.persist(assignment);
     }
 
     /**
@@ -75,7 +75,7 @@ public class AccountService {
         } else {
             throw ExceptionFactory.noAccountFound();
         }
- 
+
     }
 
 
@@ -249,7 +249,7 @@ public class AccountService {
         return accountFacade.findByLogin(login);
     }
 
-    @RolesAllowed({ADMINISTRATOR, MODERATOR})
+    @RolesAllowed(getAccountInfo)
     public ListResponseDto<String> findByNameSurname(
             String name,
             int page,
@@ -268,34 +268,6 @@ public class AccountService {
         );
     }
 
-    /**
-     * Szuka użytkownika
-     *
-     * @param requester konto użytkownika, który chce uzyskać informacje o danym koncie
-     * @param account   konto użytkownika, którego dane mają zostać pozyskane
-     * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
-     *                        i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                        ani moderatorem
-     * @see AccountInfoDto
-     */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
-    public Account getAccountInfo(Account requester, Account account) throws NoAccountFound {
-        List<String> accessLevelList = requester
-                .getAccessLevelAssignmentList()
-                .stream()
-                .filter(AccessLevelAssignment::getActive)
-                .map(a -> a.getLevel().getName())
-                .collect(Collectors.toList());
-        if (Boolean.TRUE.equals(account.getActive()) && Boolean.TRUE.equals(account.getRegistered())) {
-            return account;
-        }
-        if (accessLevelList.contains(ADMINISTRATOR) || accessLevelList.contains(MODERATOR)) {
-            return account;
-        }
-        throw ExceptionFactory.noAccountFound();
-    }
 
     /**
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
