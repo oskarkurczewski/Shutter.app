@@ -18,7 +18,7 @@ public class FacadeAccessInterceptor {
 
     @AroundInvoke
     public Object intercept(InvocationContext ctx) throws Exception {
-        if (!ctx.getMethod().getDeclaringClass().equals(FacadeTemplate.class)) return ctx.proceed();
+        if (!ctx.getMethod().getDeclaringClass().getPackageName().contains("facade")) return ctx.proceed();
         String methodName = ctx.getMethod().getName();
         try {
             if (methodName.equals("persist")) {
