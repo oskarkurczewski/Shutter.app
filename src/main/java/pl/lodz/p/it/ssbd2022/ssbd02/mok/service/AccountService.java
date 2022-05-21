@@ -408,4 +408,16 @@ public class AccountService {
         if (!account.getActive() || !account.getRegistered()) return;
         account.setFailedLogInAttempts(0);
     }
+
+    /**
+     * Powiadamia administratora o zalogowaniu na jego konto poprzez wysłanie na adres email przypisany
+     * do jego konta wiadomości zawierającej adres IP, z którego dokonane było logowanie
+     *
+     * @param account   konto administratora, na które doszło do zalogowania
+     * @param ipAddress adres IP, z którego zostało wykonane logowanie
+     */
+    @PermitAll
+    public void sendAdminAuthenticationWarningEmail(Account account, String ipAddress) {
+        emailService.sendAdminAuthenticationWaringEmail(account.getEmail(), account.getLogin(), ipAddress);
+    }
 }
