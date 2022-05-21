@@ -40,7 +40,7 @@ public class PhotographerService {
      * @throws NoPhotographerFound W przypadku kiedy fotograf o danym loginie nie istnieje
      */
     @PermitAll
-    public PhotographerInfo findByLogin(String login) throws NoPhotographerFound {
+    public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
         return photographerInfoFacade.findPhotographerByLogin(login);
     }
 

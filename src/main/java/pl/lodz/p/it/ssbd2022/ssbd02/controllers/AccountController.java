@@ -194,7 +194,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
     public DetailedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
-            throws NoAccountFound {
+            throws BaseApplicationException {
         return accountEndpoint.getEnhancedAccountInfo(login);
     }
 

@@ -179,7 +179,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getEnhancedAccountInfo)
-    public DetailedAccountInfoDto getEnhancedAccountInfo(String login) throws NoAccountFound {
+    public DetailedAccountInfoDto getEnhancedAccountInfo(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         return new DetailedAccountInfoDto(account);
     }
@@ -194,7 +194,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getAccountInfo)
-    public BaseAccountInfoDto getAccountInfo(String login) throws NoAccountFound {
+    public BaseAccountInfoDto getAccountInfo(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         return new BaseAccountInfoDto(accountService.getAccountInfo(account));
     }

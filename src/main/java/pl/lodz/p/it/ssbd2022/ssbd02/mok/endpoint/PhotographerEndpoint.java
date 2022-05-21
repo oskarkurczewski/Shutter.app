@@ -44,7 +44,7 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      * @see BasePhotographerInfoDto
      */
     @RolesAllowed(getPhotographerInfo)
-    public BasePhotographerInfoDto getPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public BasePhotographerInfoDto getPhotographerInfo(String login) throws BaseApplicationException {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
         return new BasePhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
     }
@@ -60,7 +60,7 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      * @see BasePhotographerInfoDto
      */
     @RolesAllowed(getEnhancedPhotographerInfo)
-    public DetailedPhotographerInfoDto getEnhancedPhotographerInfo(String login) throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public DetailedPhotographerInfoDto getEnhancedPhotographerInfo(String login) throws BaseApplicationException {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
         return new DetailedPhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
     }
@@ -73,7 +73,7 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      * @see BasePhotographerInfoDto
      */
     @RolesAllowed(getOwnPhotographerInfo)
-    public DetailedPhotographerInfoDto getYourPhotographerInfo() throws NoPhotographerFound, NoAuthenticatedAccountFound {
+    public DetailedPhotographerInfoDto getYourPhotographerInfo() throws BaseApplicationException {
         Account account = authenticationContext.getCurrentUsersAccount();
         return new DetailedPhotographerInfoDto(photographerService.findByLogin(account.getLogin()));
     }
