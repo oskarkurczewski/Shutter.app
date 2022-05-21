@@ -154,11 +154,11 @@ public class VerificationTokenService {
      * @param account Konto, na które zostanie wysłany email z żetonem
      * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
-    public void sendEmailUpdateToken(Account account, String newEmail) throws NoAccountFound {
+    public void sendEmailUpdateToken(Account account) throws NoAccountFound {
         checkAccount(account);
         removeOldToken(account, TokenType.EMAIL_UPDATE);
         VerificationToken verificationToken = createNewToken(account, TokenType.EMAIL_UPDATE);
-        emailService.sendEmailUpdateEmail(newEmail, account.getLogin(), verificationToken);
+        emailService.sendEmailUpdateEmail(account.getEmail(), account.getLogin(), verificationToken);
     }
 
     /**
