@@ -9,20 +9,16 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.TransactionClass;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
-
 import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory.unexpectedFailException;
 
 public abstract class AbstractController {
+    private static final String CONFIG_FILE_NAME = "config.transaction.properties";
     private int transactionRepetitionLimit;
-
     @Inject
     private ConfigLoader configLoader;
-
     private Properties properties;
-
-    private static final String CONFIG_FILE_NAME = "config.transaction.properties";
 
 
     @PostConstruct
@@ -37,11 +33,11 @@ public abstract class AbstractController {
     }
 
     /**
-     * Zmienia status użytkownika o danym loginie na podany
+     * Metoda powtarzająca transakcję w przypadku niepowodzenia
      *
-     * @param executor                      wyrażenie lambda wykonywanej metody
-     * @param transactionClass              klasa rozpoczynająca transakcję aplikacyjną
-     * @throws BaseApplicationException     Bazowy wyjątek aplikacyjny
+     * @param executor         wyrażenie lambda wykonywanej metody
+     * @param transactionClass klasa rozpoczynająca transakcję aplikacyjną
+     * @throws BaseApplicationException Bazowy wyjątek aplikacyjny
      */
     protected void repeat(VoidExecutor executor, TransactionClass transactionClass) throws BaseApplicationException {
         int repetitionCounter = 0;
@@ -53,10 +49,7 @@ public abstract class AbstractController {
             } catch (EJBTransactionRolledbackException | DatabaseException e) {
                 isRollback = true;
             }
-            if (repetitionCounter > 0) {
-                //TODO rejestracja w dzienniku zdarzeń informacji o powtórzeniu transakcji
-            }
-            repetitionCounter ++;
+            repetitionCounter++;
         } while (isRollback && repetitionCounter <= transactionRepetitionLimit);
 
         if (repetitionCounter > transactionRepetitionLimit) {
@@ -65,12 +58,12 @@ public abstract class AbstractController {
     }
 
     /**
-     * Zmienia status użytkownika o danym loginie na podany
+     * Metoda powtarzająca transakcję w przypadku niepowodzenia
      *
-     * @param executor                      wyrażenie lambda wykonywanej metody
-     * @param transactionClass              klasa rozpoczynająca transakcję aplikacyjną
-     * @param <T>                           typ obiektu zwracanego przez klasę transactionClass
-     * @throws BaseApplicationException     Bazowy wyjątek aplikacyjny
+     * @param executor         wyrażenie lambda wykonywanej metody
+     * @param transactionClass klasa rozpoczynająca transakcję aplikacyjną
+     * @param <T>              typ obiektu zwracanego przez klasę transactionClass
+     * @throws BaseApplicationException Bazowy wyjątek aplikacyjny
      */
     protected <T> T repeat(ReturnExecutor<T> executor, TransactionClass transactionClass) throws BaseApplicationException {
         int repetitionCounter = 0;
@@ -83,10 +76,7 @@ public abstract class AbstractController {
             } catch (EJBTransactionRolledbackException | DatabaseException e) {
                 isRollback = true;
             }
-            if (repetitionCounter > 0) {
-                //TODO rejestracja w dzienniku zdarzeń informacji o powtórzeniu transakcji
-            }
-            repetitionCounter ++;
+            repetitionCounter++;
         } while (isRollback && repetitionCounter <= transactionRepetitionLimit);
 
         if (repetitionCounter > transactionRepetitionLimit) {
@@ -94,6 +84,7 @@ public abstract class AbstractController {
         }
         return result;
     }
+
 
     /**
      * Interfejs funkcyjny metod typu void
