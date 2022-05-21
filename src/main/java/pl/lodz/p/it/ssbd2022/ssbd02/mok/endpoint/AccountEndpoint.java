@@ -5,10 +5,10 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
