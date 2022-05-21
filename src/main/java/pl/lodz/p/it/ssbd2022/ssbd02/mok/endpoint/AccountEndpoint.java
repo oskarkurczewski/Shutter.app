@@ -216,6 +216,7 @@ public class AccountEndpoint {
     /**
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
+     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */

@@ -320,20 +320,21 @@ public class AccountService {
     /**
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
+     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
     @RolesAllowed(listAllAccounts)
     public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
         List<String> list = accountFacade.getAccountList(
-                requestDto.getPage(), 
+                requestDto.getPage(),
                 requestDto.getRecordsPerPage(),
                 requestDto.getOrderBy(),
-                requestDto.getOrder(), 
+                requestDto.getOrder(),
                 requestDto.getLogin(),
                 requestDto.getEmail(),
                 requestDto.getName(),
-                requestDto.getSurname(), 
+                requestDto.getSurname(),
                 requestDto.getRegistered(),
                 requestDto.getActive()
         );
@@ -347,9 +348,9 @@ public class AccountService {
         );
 
         return new ListResponseDto<>(
-                requestDto.getPage(), 
+                requestDto.getPage(),
                 (int) Math.ceil(allRecords.doubleValue() / requestDto.getRecordsPerPage()),
-                requestDto.getRecordsPerPage(), 
+                requestDto.getRecordsPerPage(),
                 allRecords,
                 list
         );
