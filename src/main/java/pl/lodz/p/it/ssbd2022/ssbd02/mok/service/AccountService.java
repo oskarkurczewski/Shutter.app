@@ -207,6 +207,8 @@ public class AccountService {
             }
 
             accessLevelFound.setActive(active);
+
+            sendAccessLevelChangeMail(accessLevelValue, account, active);
             accessLevelFacade.update(accessLevelFound);
         } else {
             AccessLevelAssignment assignment = new AccessLevelAssignment();
@@ -219,7 +221,29 @@ public class AccountService {
             assignment.setAccount(account);
             assignment.setActive(active);
 
+            sendAccessLevelChangeMail(accessLevelValue, account, true);
             accessLevelFacade.persist(assignment);
+        }
+    }
+
+    /**
+     * Metoda pomocnicza służąca do wysyłania powiadomień o zmianach poziomu dostępu użytkownika
+     *
+     * @param accessLevelValue wartość poziomu dostępu
+     * @param account          konto dla, którego poziom dostępu został zmieniony
+     * @param active           określa czy zmiana stanowiła przyznanie, czy odebranie poziomu dostępu
+     */
+    private void sendAccessLevelChangeMail(AccessLevelValue accessLevelValue, Account account, Boolean active) {
+        if (active) {
+            emailService.sendAccessLevelGrantedEmail(
+                    account.getEmail(),
+                    accessLevelValue.getName()
+            );
+        } else {
+            emailService.sendAccessLevelRevokedEmail(
+                    account.getEmail(),
+                    accessLevelValue.getName()
+            );
         }
     }
 

@@ -177,6 +177,40 @@ public class EmailService {
     }
 
     /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że danemu użytkownikowi o tym adresie
+     * email został przypisany nowy poziom dostępu.
+     *
+     * @param to              adresat wiadomości email
+     * @param accessLevelName nazwa poziomu dostępu, który został przypisany
+     */
+    public void sendAccessLevelGrantedEmail(String to, String accessLevelName) {
+        String subject = "Przypisanie poziomu dostepu - Shutter.app";
+        String body = "Do twojego konta został przypisany poziom dostępu: " + accessLevelName + ".";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że danemu użytkownikowi o tym adresie
+     * email został odebrany poziom dostępu
+     *
+     * @param to              adresat wiadomości email
+     * @param accessLevelName nazwa poziomu dostępu, który został odebrany
+     */
+    public void sendAccessLevelRevokedEmail(String to, String accessLevelName) {
+        String subject = "Odebranie poziomu dostepu - Shutter.app";
+        String body = "Dla twojego konta został odebrany poziom dostępu: " + accessLevelName + ".";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Funkcja służąca do wysyłania emaili
      *
      * @param toEmail  adres email odbiorcy
