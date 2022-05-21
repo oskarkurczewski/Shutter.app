@@ -5,24 +5,32 @@ import io.fusionauth.jwt.domain.JWT;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BadJWTTokenException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.Roles;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStoreHandler;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.getJwtFromAuthHeader;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.refresh;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Groups.ADMINISTRATOR;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.refreshToken;
 
 
@@ -33,11 +41,16 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.refreshToken;
 @Path("auth")
 public class AuthController {
 
+    private static final Logger LOGGER = Logger.getLogger(AuthController.class.getName());
+
     @Inject
     private IdentityStoreHandler storeHandler;
 
     @Inject
     private AccountEndpoint accountEndpoint;
+
+    @Context
+    HttpServletRequest httpServletRequest;
 
     /**
      * Pozwala na uwierzytelnienie użytkownika weryfikując podane przez niego poświadczenia.
@@ -60,6 +73,19 @@ public class AuthController {
 
         if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
             String token = JWTHandler.generateJWT(validationResult);
+
+            if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
+                accountEndpoint.sendAdminAuthenticationWarningEmail(
+                        data.getLogin(),
+                        httpServletRequest.getRemoteAddr()
+                );
+            }
+
+            LOGGER.log(
+                    Level.INFO,
+                "Successful authentication for user {0} from IP {1}",
+                    new Object[]{data.getLogin(), httpServletRequest.getRemoteAddr()}
+            );
 
             accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
             return Response.ok().entity(token).build();

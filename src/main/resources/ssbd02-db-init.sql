@@ -141,7 +141,7 @@ CREATE TABLE public.photographer_info (
     account_id bigint NOT NULL,
     score bigint DEFAULT 0 NOT NULL,
     review_count bigint DEFAULT 0 NOT NULL,
-    description character varying(4096)[],
+    description character varying(4096),
     lat real,
     long real,
     visible boolean DEFAULT TRUE,

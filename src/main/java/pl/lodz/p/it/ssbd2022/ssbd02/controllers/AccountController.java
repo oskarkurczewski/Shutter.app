@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
@@ -187,19 +188,32 @@ public class AccountController extends AbstractController {
      *
      * @param login nazwa użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound              W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                                     gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
-     *                                     i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                                     ani moderatorem
-     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see AccountInfoDto
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje
+     * @see BaseAccountInfoDto
+     */
+    @GET
+    @Path("/{login}/detailed-info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DetailedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
+            throws NoAccountFound {
+        return accountEndpoint.getEnhancedAccountInfo(login);
+    }
+
+    /**
+     * Punkt końcowy szukający użytkownika
+     *
+     * @param login nazwa użytkownika
+     * @return obiekt DTO informacji o użytkowniku
+     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
+     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @see BaseAccountInfoDto
      */
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo(@NotNull @PathParam("login") String login)
+    public BaseAccountInfoDto getAccountInfo(@NotNull @PathParam("login") String login)
             throws BaseApplicationException {
-        return repeat(() ->  accountEndpoint.getAccountInfo(login), accountEndpoint);
+        return repeat(() -> accountEndpoint.getAccountInfo(login), accountEndpoint);
     }
 
     /**
@@ -207,13 +221,13 @@ public class AccountController extends AbstractController {
      *
      * @return obiekt DTO informacji o użytkowniku
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @see AccountInfoDto
+     * @see DetailedAccountInfoDto
      */
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AccountInfoDto getUserInfo() throws BaseApplicationException {
-        return repeat(() ->  accountEndpoint.getOwnAccountInfo(), accountEndpoint);
+    public DetailedAccountInfoDto getAccountInfo() throws BaseApplicationException {
+        return repeat(() -> accountEndpoint.getOwnAccountInfo(), accountEndpoint);
     }
 
     /**

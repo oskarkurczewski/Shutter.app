@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
@@ -81,31 +80,21 @@ public class AccountService {
     /**
      * Szuka użytkownika
      *
-     * @param requester konto użytkownika, który chce uzyskać informacje o danym koncie
-     * @param account   konto użytkownika, którego dane mają zostać pozyskane
+     * @param account konto użytkownika, którego dane mają zostać pozyskane
      * @return obiekt DTO informacji o użytkowniku
      * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
      *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
-     *                        i informacje próbuje uzyskać użytkownik niebędący ani administratorem,
-     *                        ani moderatorem
-     * @see AccountInfoDto
+     * @see Account
      */
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
-    public Account getAccountInfo(Account requester, Account account) throws NoAccountFound {
-        List<String> accessLevelList = requester
-                .getAccessLevelAssignmentList()
-                .stream()
-                .filter(AccessLevelAssignment::getActive)
-                .map(a -> a.getLevel().getName())
-                .collect(Collectors.toList());
+    @RolesAllowed(getAccountInfo)
+    public Account getAccountInfo(Account account) throws NoAccountFound {
         if (Boolean.TRUE.equals(account.getActive()) && Boolean.TRUE.equals(account.getRegistered())) {
             return account;
+        } else {
+            throw ExceptionFactory.noAccountFound();
         }
-        if (accessLevelList.contains(ADMINISTRATOR) || accessLevelList.contains(MODERATOR)) {
-            return account;
-        }
-        throw ExceptionFactory.noAccountFound();
     }
+
 
     /**
      * Metoda pozwalająca administratorowi zmienić hasło dowolnego użytkowika
@@ -446,5 +435,17 @@ public class AccountService {
     public void registerSuccessfulLogInAttempt(Account account) {
         if (!account.getActive() || !account.getRegistered()) return;
         account.setFailedLogInAttempts(0);
+    }
+
+    /**
+     * Powiadamia administratora o zalogowaniu na jego konto poprzez wysłanie na adres email przypisany
+     * do jego konta wiadomości zawierającej adres IP, z którego dokonane było logowanie
+     *
+     * @param account   konto administratora, na które doszło do zalogowania
+     * @param ipAddress adres IP, z którego zostało wykonane logowanie
+     */
+    @PermitAll
+    public void sendAdminAuthenticationWarningEmail(Account account, String ipAddress) {
+        emailService.sendAdminAuthenticationWaringEmail(account.getEmail(), account.getLogin(), ipAddress);
     }
 }

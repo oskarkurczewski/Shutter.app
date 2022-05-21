@@ -55,7 +55,37 @@
     </security-role-mapping>
     <security-role-mapping>
         <role-name>getAccountInfo</role-name>
+        <group-name>PHOTOGRAPHER</group-name>
         <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getOwnAccountInfo</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>PHOTOGRAPHER</group-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getEnhancedAccountInfo</role-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getPhotographerInfo</role-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+        <group-name>PHOTOGRAPHER</group-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getOwnPhotographerInfo</role-name>
+        <group-name>PHOTOGRAPHER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getEnhancedPhotographerInfo</role-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>listAllAccounts</role-name>

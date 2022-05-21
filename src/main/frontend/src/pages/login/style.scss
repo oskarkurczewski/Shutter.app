@@ -1,34 +1,71 @@
 @import "variables.scss";
 
 section.login-wrapper {
-   margin: 2rem auto;
-   width: 600px;
+   margin: 1rem;
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
 
    .card-wrapper {
-      padding: calc($scale-1 * 1rem);
+      overflow: hidden;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: flex-end;
 
-      h3 {
-         margin-bottom: calc($scale-1 * 1rem);
-      }
+      .aside {
+         background-color: $purple-100;
+         padding: 3rem 2rem;
+         padding-top: 5rem;
+         gap: 2rem;
+         display: flex;
+         flex-direction: column;
+         justify-content: flex-end;
+         text-align: center;
+         align-items: center;
 
-      .text-input-wrapper {
-         margin: 0.5rem;
-      }
+         img {
+            fill: $white;
+            filter: invert(1);
+            width: 100px;
+         }
 
-      .message {
-         color: $red-200;
-         font-weight: bold;
-         margin-left: 0.5rem;
-         &.hidden {
-            display: none;
+         div {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+
+            * {
+               color: $white;
+            }
+         }
+
+         .button-wrapper {
+            background-color: $white;
+
+            p {
+               color: $purple-100;
+            }
          }
       }
 
-      .button-wrapper {
-         margin-top: calc($scale-1 * 1rem);
-         align-self: flex-end;
+      form {
+         padding: 3rem 2rem;
+         width: 500px;
+         display: flex;
+         flex-direction: column;
+         gap: 1.5rem;
+
+         .footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 2rem;
+
+            a {
+               color: $blue-400;
+               font-weight: bold;
+            }
+         }
       }
    }
 }
