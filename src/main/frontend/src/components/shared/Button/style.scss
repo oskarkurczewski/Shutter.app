@@ -1,12 +1,12 @@
 @import "variables.scss";
 
 .button-wrapper {
-   background-color: $purple-200;
+   background-color: $purple-100;
    color: $white;
    display: flex;
    align-items: center;
    padding: 0.66rem;
-   border-radius: $border-radius;
+   border-radius: 7px;
    box-shadow: $elevation-1;
    text-transform: uppercase;
    cursor: pointer;
@@ -17,6 +17,7 @@
 
    p {
       color: $white;
+      font-weight: 600;
       padding: 0 0.66rem;
    }
 }
