@@ -42,41 +42,6 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     /**
-     * Pobiera przypisanie poziomu dostępu z bazy danych na podstawie przekazanego łańcucha znaków
-     * dla wskazanego użytkownika.
-     *
-     * @param account Konto użytkownika, dla którego wyszukiwany jest poziom dostępu
-     * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
-     * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
-     */
-    public AccessLevelAssignment getAccessLevelAssignmentForAccount(Account account, AccessLevelValue accessLevelValue) {
-        return account.getAccessLevelAssignmentList().stream()
-                .filter(a -> a.getLevel().getName().equals(accessLevelValue.getName()))
-                .findAny()
-                .orElse(null);
-    }
-
-    /**
-     * Pobiera poziom dostępu z bazy danych na podstawie przekazanego łańcucha znaków,
-     * w przypadku nieznalezienia pasującego wyniku otrzymujemy wyjątek
-     *
-     * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
-     * @throws DataNotFoundException W przypadku, gdy funkcja nie znajdzie rekordu
-     * ze wskazaną nazwą
-     */
-    public AccessLevelValue getAccessLevelValue(String accessLevel) throws DataNotFoundException {
-        TypedQuery<AccessLevelValue> query = getEm().createNamedQuery("account.getAccessLevelValue", AccessLevelValue.class);
-        query.setParameter("access_level", accessLevel);
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            throw new DataNotFoundException("exception.access_level.not_found");
-        }
-
-    }
-
-
-    /**
      * Szuka profilu fotografa
      *
      * @param login nazwa użytkownika fotografa

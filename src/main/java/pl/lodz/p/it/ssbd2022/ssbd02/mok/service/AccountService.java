@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountAccessLevelChangeDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AccountUpdatePasswordDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.EditAccountInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -37,6 +38,9 @@ public class AccountService {
     private AuthenticationFacade accountFacade;
 
     @Inject
+    private AccessLevelFacade accessLevelFacade;
+
+    @Inject
     private VerificationTokenService verificationTokenService;
 
     /**
@@ -58,7 +62,7 @@ public class AccountService {
      */
     @PermitAll
     public AccessLevelValue findAccessLevelValueByName(String name) throws DataNotFoundException {
-        return accountFacade.getAccessLevelValue(name);
+        return accessLevelFacade.getAccessLevelValue(name);
     }
 
     /**
@@ -160,7 +164,7 @@ public class AccountService {
             throws CannotChangeException {
 
         List<AccessLevelAssignment> accountAccessLevels = account.getAccessLevelAssignmentList();
-        AccessLevelAssignment accessLevelFound = accountFacade.getAccessLevelAssignmentForAccount(
+        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
                 account,
                 accessLevelValue
         );
@@ -171,6 +175,7 @@ public class AccountService {
             }
 
             accessLevelFound.setActive(active);
+            accessLevelFacade.update(accessLevelFound);
         } else {
             AccessLevelAssignment assignment = new AccessLevelAssignment();
 
@@ -181,12 +186,9 @@ public class AccountService {
             assignment.setLevel(accessLevelValue);
             assignment.setAccount(account);
             assignment.setActive(active);
-            accountAccessLevels.add(assignment);
 
-            account.setAccessLevelAssignmentList(accountAccessLevels);
+            accessLevelFacade.persist(assignment);
         }
-
-        accountFacade.update(account);
     }
 
     /**
@@ -206,10 +208,10 @@ public class AccountService {
         account.setActive(true);
         account.setRegistered(false);
 
-        List<AccessLevelAssignment> list = addClientAccessLevel(account);
-        account.setAccessLevelAssignmentList(list);
+        addNewAccount(account);
 
-        registerAccountHelper(account);
+        addClientAccessLevel(account);
+
         verificationTokenService.sendRegistrationToken(account);
     }
 
@@ -227,10 +229,10 @@ public class AccountService {
             throws IdenticalFieldException, DatabaseException, DataNotFoundException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
 
-        List<AccessLevelAssignment> list = addClientAccessLevel(account);
-        account.setAccessLevelAssignmentList(list);
+        addNewAccount(account);
 
-        registerAccountHelper(account);
+        addClientAccessLevel(account);
+
         if (!account.getRegistered()) {
             verificationTokenService.sendRegistrationToken(account);
         }
@@ -243,7 +245,7 @@ public class AccountService {
      * @param account obiekt encji użytkownika
      * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    private void registerAccountHelper(Account account) throws IdenticalFieldException, DatabaseException {
+    private void addNewAccount(Account account) throws IdenticalFieldException, DatabaseException {
         try {
             accountFacade.persist(account);
         } catch (PersistenceException ex) {
@@ -264,20 +266,17 @@ public class AccountService {
      * Metoda pomocnicza tworząca wpis o poziomie dostępu klient dla danego użytkownika.
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
-     * @return Lista poziomów dostępu użytkownika
      */
-    private List<AccessLevelAssignment> addClientAccessLevel(Account account) throws DataNotFoundException {
-        AccessLevelValue levelValue = accountFacade.getAccessLevelValue(CLIENT);
+    private void addClientAccessLevel(Account account) throws DataNotFoundException {
+        AccessLevelValue levelValue = accessLevelFacade.getAccessLevelValue(CLIENT);
+
         AccessLevelAssignment assignment = new AccessLevelAssignment();
 
         assignment.setLevel(levelValue);
         assignment.setAccount(account);
         assignment.setActive(true);
 
-        List<AccessLevelAssignment> list = account.getAccessLevelAssignmentList();
-        list.add(assignment);
-
-        return list;
+        accessLevelFacade.persist(assignment);
     }
 
     /**
