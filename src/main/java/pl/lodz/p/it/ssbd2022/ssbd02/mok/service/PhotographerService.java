@@ -4,6 +4,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
@@ -42,7 +43,7 @@ public class PhotographerService {
      * @param login Login fotografa dla którego chemy pozyskać informacje
      * @throws NoPhotographerFound W przypadku kiedy fotograf o danym loginie nie istnieje
      */
-    public PhotographerInfo findByLogin(String login) throws NoPhotographerFound {
+    public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
         return photographerInfoFacade.findPhotographerByLogin(login);
     }
 

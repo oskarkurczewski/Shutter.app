@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -14,30 +16,30 @@ public abstract class FacadeTemplate<T extends ManagedEntity> {
         this.type = type;
     }
 
-    public abstract EntityManager getEm();
+    protected abstract EntityManager getEm();
 
-    public T persist(T entity) {
+    protected T persist(T entity) throws BaseApplicationException {
         getEm().persist(entity);
         getEm().flush();
         return entity;
     }
 
-    public void remove(T entity) {
+    protected void remove(T entity) throws BaseApplicationException {
         getEm().remove(entity);
         getEm().flush();
     }
 
-    public T update(T entity) {
+    protected T update(T entity) throws BaseApplicationException {
         T updated = getEm().merge(entity);
         getEm().flush();
         return updated;
     }
 
-    public T find(Long id) {
+    protected T find(Long id) throws BaseApplicationException {
         return getEm().find(type, id);
     }
 
-    public List<T> findAll() {
+    protected List<T> findAll() {
         CriteriaBuilder cb = getEm().getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(type);
         Root<T> vr = cq.from(type);

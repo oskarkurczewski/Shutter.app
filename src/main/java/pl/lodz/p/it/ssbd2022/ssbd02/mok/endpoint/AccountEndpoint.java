@@ -42,7 +42,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      *                        w bazie danych
      */
     @RolesAllowed({blockAccount})
-    public void blockAccount(String login) throws NoAccountFound {
+    public void blockAccount(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountStatus(account, false);
     }
@@ -55,7 +55,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      *                        w bazie danych
      */
     @RolesAllowed({unblockAccount})
-    public void unblockAccount(String login) throws NoAccountFound {
+    public void unblockAccount(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountStatus(account, true);
     }
@@ -69,7 +69,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto)
-            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
+            throws BaseApplicationException {
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
         accountService.registerOwnAccount(account);
     }
@@ -83,7 +83,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed({ADMINISTRATOR})
     public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto)
-            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
+            throws BaseApplicationException {
         Account account = accountRegisterDtoToAccount(accountRegisterAsAdminDto);
         account.setActive(accountRegisterAsAdminDto.getActive());
         account.setRegistered(accountRegisterAsAdminDto.getRegistered());
@@ -91,7 +91,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     @RolesAllowed({ADMINISTRATOR})
-    public void updatePasswordAsAdmin(String login, AccountUpdatePasswordDto passwordDto) throws NoAccountFound {
+    public void updatePasswordAsAdmin(String login, AccountUpdatePasswordDto passwordDto) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountPasswordAsAdmin(account, passwordDto.getPassword());
     }
@@ -124,7 +124,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed({ADMINISTRATOR})
     public void changeAccountAccessLevel(String login, AccountAccessLevelChangeDto data)
-            throws CannotChangeException, DataNotFoundException, NoAccountFound {
+            throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName(data.getAccessLevel());
         accountService.changeAccountAccessLevel(account, accessLevelValue, data.getActive());
@@ -148,7 +148,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAuthenticatedAccountFound W przypadku gdy nie znaleziono aktualnego użytkownika
      */
     @RolesAllowed(editOwnAccountData)
-    public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws NoAuthenticatedAccountFound {
+    public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.editAccountInfo(account, editAccountInfoDto);
@@ -161,7 +161,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAccountFound W przypadku gdy nie znaleziono użytkownika o danym loginie
      */
     @RolesAllowed({ADMINISTRATOR})
-    public void editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws NoAccountFound {
+    public void editAccountInfoAsAdmin(String login, EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakować go w dto
         Account account = accountService.findByLogin(login);
         accountService.editAccountInfoAsAdmin(account, editAccountInfoDto);
@@ -180,7 +180,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @see AccountInfoDto
      */
     @RolesAllowed({ADMINISTRATOR, MODERATOR})
-    public AccountInfoDto getAccountInfo(String login) throws NoAccountFound, NoAuthenticatedAccountFound {
+    public AccountInfoDto getAccountInfo(String login) throws BaseApplicationException {
         Account requester = authenticationContext.getCurrentUsersAccount();
         Account account = accountService.findByLogin(login);
         return new AccountInfoDto(accountService.getAccountInfo(requester, account));
@@ -200,7 +200,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
-    public void updateOwnPassword(AccountUpdatePasswordDto data) throws NoAuthenticatedAccountFound, PasswordMismatchException {
+    public void updateOwnPassword(AccountUpdatePasswordDto data) throws BaseApplicationException {
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.updateOwnPassword(account, data);
     }
@@ -216,7 +216,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
      */
     @PermitAll
-    public void resetPassword(String login, ResetPasswordDto resetPasswordDto) throws NoAccountFound, InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+    public void resetPassword(String login, ResetPasswordDto resetPasswordDto) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.resetPassword(account, resetPasswordDto);
     }
@@ -228,7 +228,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAccountFound Jeżeli konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     @PermitAll
-    public void requestPasswordReset(String login) throws NoAccountFound {
+    public void requestPasswordReset(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         verificationTokenService.sendPasswordResetToken(account);
     }
@@ -241,7 +241,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      *                        logowanie nie istnieje
      */
     @PermitAll
-    public void registerSuccessfulLogInAttempt(String login) throws NoAccountFound {
+    public void registerSuccessfulLogInAttempt(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.registerSuccessfulLogInAttempt(account);
     }
@@ -254,7 +254,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      *                        logowanie nie istnieje
      */
     @PermitAll
-    public void registerFailedLogInAttempt(String login) throws NoAccountFound {
+    public void registerFailedLogInAttempt(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.registerFailedLogInAttempt(account);
     }
@@ -267,7 +267,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @RolesAllowed((updateEmail))
-    public void requestEmailUpdate(RequestEmailUpdateDto requestEmailUpdateDto) throws NoAccountFound, NoAuthenticatedAccountFound {
+    public void requestEmailUpdate(RequestEmailUpdateDto requestEmailUpdateDto) throws BaseApplicationException {
         Account account = authenticationContext.getCurrentUsersAccount();
         verificationTokenService.sendEmailUpdateToken(account, requestEmailUpdateDto.getNewEmail());
     }
@@ -284,7 +284,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))
-    public void updateEmail(String login, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
+    public void updateEmail(String login, EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.updateEmail(account, emailUpdateDto);
     }

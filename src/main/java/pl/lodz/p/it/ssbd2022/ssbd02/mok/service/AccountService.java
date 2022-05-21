@@ -51,7 +51,7 @@ public class AccountService {
      * @throws NoAccountFound W przypadku nieznalezienia konta
      */
     @PermitAll
-    public Account findByLogin(String login) throws NoAccountFound {
+    public Account findByLogin(String login) throws BaseApplicationException {
         return accountFacade.findByLogin(login);
     }
 
@@ -73,7 +73,7 @@ public class AccountService {
      * @param active  status, który ma zostać ustawiony
      */
     @RolesAllowed({blockAccount, unblockAccount})
-    public void changeAccountStatus(Account account, Boolean active) {
+    public void changeAccountStatus(Account account, Boolean active) throws BaseApplicationException {
         account.setActive(active);
         accountFacade.update(account);
     }
@@ -114,7 +114,7 @@ public class AccountService {
      * @param password Nowe hasło dla wskazanego użytkownika
      */
     @RolesAllowed(changeSomeonesPassword)
-    public void changeAccountPasswordAsAdmin(Account account, String password) {
+    public void changeAccountPasswordAsAdmin(Account account, String password) throws BaseApplicationException {
         changePassword(account, password);
     }
 
@@ -124,7 +124,7 @@ public class AccountService {
      * @param data obiekt zawierający stare hasło (w celu weryfikacji) oraz nowe mające być ustawione dla użytkownika
      */
     @RolesAllowed(changeOwnPassword)
-    public void updateOwnPassword(Account account, AccountUpdatePasswordDto data) throws PasswordMismatchException {
+    public void updateOwnPassword(Account account, AccountUpdatePasswordDto data) throws BaseApplicationException {
         if (data.getOldPassword() == null) {
             throw ExceptionFactory.wrongPasswordException();
         }
@@ -142,7 +142,7 @@ public class AccountService {
      * @param target      Obiekt użytkownika, którego modyfikujemy
      * @param newPassword nowe hasło dla użytkownika
      */
-    private void changePassword(Account target, String newPassword) {
+    private void changePassword(Account target, String newPassword) throws BaseApplicationException {
         if (newPassword.trim().length() < 8) {
             throw ExceptionFactory.wrongPasswordException();
         }
@@ -161,7 +161,7 @@ public class AccountService {
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @PermitAll
-    public void resetPassword(Account account, ResetPasswordDto resetPasswordDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+    public void resetPassword(Account account, ResetPasswordDto resetPasswordDto) throws BaseApplicationException {
         verificationTokenService.confirmPasswordReset(resetPasswordDto.getToken());
         changePassword(account, resetPasswordDto.getNewPassword());
     }
@@ -176,7 +176,7 @@ public class AccountService {
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))
-    public void updateEmail(Account account, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+    public void updateEmail(Account account, EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
         verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
         account.setEmail(emailUpdateDto.getNewEmail());
         accountFacade.update(account);
@@ -193,7 +193,7 @@ public class AccountService {
      */
     @RolesAllowed({ADMINISTRATOR})
     public void changeAccountAccessLevel(Account account, AccessLevelValue accessLevelValue, Boolean active)
-            throws CannotChangeException {
+            throws BaseApplicationException {
 
         List<AccessLevelAssignment> accountAccessLevels = account.getAccessLevelAssignmentList();
         AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
@@ -259,7 +259,7 @@ public class AccountService {
      */
     @PermitAll
     public void registerOwnAccount(Account account)
-            throws IdenticalFieldException, DatabaseException {
+            throws BaseApplicationException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setActive(true);
         account.setRegistered(false);
@@ -281,7 +281,7 @@ public class AccountService {
      */
     @RolesAllowed({ADMINISTRATOR})
     public void registerAccountByAdmin(Account account)
-            throws IdenticalFieldException, DatabaseException, DataNotFoundException {
+            throws BaseApplicationException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setFailedLogInAttempts(0);
 
@@ -301,7 +301,7 @@ public class AccountService {
      * @param account obiekt encji użytkownika
      * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    private void addNewAccount(Account account) throws IdenticalFieldException, DatabaseException {
+    private void addNewAccount(Account account) throws BaseApplicationException{
         try {
             accountFacade.persist(account);
         } catch (PersistenceException ex) {
@@ -323,7 +323,7 @@ public class AccountService {
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
      */
-    private void addClientAccessLevel(Account account) throws DataNotFoundException {
+    private void addClientAccessLevel(Account account) throws BaseApplicationException {
         AccessLevelValue levelValue = accessLevelFacade.getAccessLevelValue(CLIENT);
 
         AccessLevelAssignment assignment = new AccessLevelAssignment();
@@ -355,7 +355,7 @@ public class AccountService {
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      */
     @RolesAllowed(editOwnAccountData)
-    public void editAccountInfo(Account account, EditAccountInfoDto editAccountInfoDto) {
+    public void editAccountInfo(Account account, EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
         account.setEmail(editAccountInfoDto.getEmail());
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
@@ -369,7 +369,7 @@ public class AccountService {
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
      */
     @RolesAllowed({ADMINISTRATOR})
-    public void editAccountInfoAsAdmin(Account account, EditAccountInfoDto editAccountInfoDto) {
+    public void editAccountInfoAsAdmin(Account account, EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
         account.setEmail(editAccountInfoDto.getEmail());
         account.setName(editAccountInfoDto.getName());
         account.setSurname(editAccountInfoDto.getSurname());
