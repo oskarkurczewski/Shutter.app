@@ -198,6 +198,23 @@ public class EmailService {
     }
 
     /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
+     * zablokowane w systemie.
+     *
+     * @param to adresat wiadomości email
+     */
+    public void sendAccountBlocked(String to) {
+        String subject = "Konto zablokowane - Shutter.app";
+        String body = "Twoje konto w aplikacji Shutter.app zostało zablokowane. Aby je " +
+                "odblokować skontaktuj się z administratorem systemu.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Funkcja wysyłająca na podany adres email informację o tym, że danemu użytkownikowi o tym adresie
      * email został przypisany nowy poziom dostępu.
      *
@@ -247,6 +264,8 @@ public class EmailService {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
     /**
