@@ -320,6 +320,7 @@ CREATE TABLE public.token
 
 CREATE TABLE public.old_password
 (
+    version    bigint,
     id         bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
     account_id bigint                NOT NULL,
     password   character varying(60) NOT NULL

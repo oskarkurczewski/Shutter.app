@@ -122,6 +122,10 @@ public class Account extends ManagedEntity {
     @OneToMany(mappedBy = "account")
     private List<Reservation> reservationsList = new ArrayList<>();
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "account")
+    private List<OldPassword> oldPasswordList = new ArrayList<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
