@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -43,6 +44,9 @@ public class AccountService {
 
     @Inject
     private EmailService emailService;
+
+    @Inject
+    private OneTimeCodeUtils codeUtils;
 
     /**
      * Odnajduje konto użytkownika o podanym loginie
@@ -545,5 +549,16 @@ public class AccountService {
      */
     private boolean isPasswordUniqueForUser(String newPassword, Account account) {
         return account.getOldPasswordList().stream().noneMatch(op -> op.getPassword().equals(newPassword));
+    }
+
+    /**
+     * Generuje oraz wysyła kod 2fa dla danego użytkownika na jego adres email
+     *
+     * @param account Konto użytkownika
+     */
+    @PermitAll
+    public void send2faCode(Account account) {
+        String totp = codeUtils.generateCode(account.getSecret());
+        emailService.send2faCodeEmail(account.getEmail(), totp);
     }
 }

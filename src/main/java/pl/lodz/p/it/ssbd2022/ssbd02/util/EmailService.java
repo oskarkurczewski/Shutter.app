@@ -325,4 +325,9 @@ public class EmailService {
         }
     }
 
+    // TODO do zrobienia
+    public void send2faCodeEmail(String to, String code) {
+        throw new UnsupportedOperationException();
+    }
+
 }
