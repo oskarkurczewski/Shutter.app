@@ -5,14 +5,15 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Klasa do zmiany danych użytkownika
+ * Klasa do zmiany danych użytkownika przez Administratora
  */
 @Data
-public class EditAccountInfoDto {
+public class EditAccountInfoAsAdminDto {
 
+    @NotNull
+    private String email;
     @NotNull
     private String name;
     @NotNull
     private String surname;
-
 }

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.OptLockException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.TransactionClass;
 
@@ -46,7 +47,7 @@ public abstract class AbstractController {
             try {
                 executor.execute();
                 isRollback = transactionClass.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException | DatabaseException e) {
+            } catch (EJBTransactionRolledbackException | OptLockException | DatabaseException e) {
                 isRollback = true;
             }
             repetitionCounter++;
@@ -73,7 +74,7 @@ public abstract class AbstractController {
             try {
                 result = executor.execute();
                 isRollback = transactionClass.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException | DatabaseException e) {
+            } catch (EJBTransactionRolledbackException | OptLockException | DatabaseException e) {
                 isRollback = true;
             }
             repetitionCounter++;

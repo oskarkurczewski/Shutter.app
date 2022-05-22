@@ -2,14 +2,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 
 import io.fusionauth.jwt.domain.JWT;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BadJWTTokenException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
-import pl.lodz.p.it.ssbd2022.ssbd02.security.Roles;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -20,17 +16,21 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.getJwtFromAuthHeader;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.refresh;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Groups.ADMINISTRATOR;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeGroup;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.refreshToken;
 
 
@@ -52,6 +52,10 @@ public class AuthController {
     @Context
     HttpServletRequest httpServletRequest;
 
+    @Context
+    SecurityContext securityContext;
+
+
     /**
      * Pozwala na uwierzytelnienie użytkownika weryfikując podane przez niego poświadczenia.
      * W przypadku powodzenia zwracany jest żeton JWT, w przeciwnym wypadku zwracany jest stosowny komunikat
@@ -68,7 +72,7 @@ public class AuthController {
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(@NotNull LoginData data) throws BadJWTTokenException, NoAccountFound {
+    public Response login(@NotNull LoginData data) throws BaseApplicationException {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
 
         if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
@@ -93,6 +97,33 @@ public class AuthController {
 
         accountEndpoint.registerFailedLogInAttempt(data.getLogin());
         throw ExceptionFactory.badJWTTokenException();
+    }
+
+    /**
+     * Rejestruje w dzienniku zdarzeń próbę zmiany grupy, do której przynależy użytkownik w widoku aplikacji
+     *
+     * @param group nazwa grupy, na którą użytkownik dokonać chciał zmiany
+     * @throws UserNotInGroupException użytkownik nie należy do podanej grupy
+     */
+    @POST
+    @Path("change-group/{group}")
+    @RolesAllowed(changeGroup)
+    public Response changeGroup(@PathParam("group") String group) throws UserNotInGroupException {
+        if (securityContext.isUserInRole(group)) {
+            LOGGER.log(Level.INFO,
+                    "Successful group change to {0} for user {1} from IP {2}",
+                    new Object[]{group, securityContext.getUserPrincipal().getName(),
+                            httpServletRequest.getRemoteAddr()}
+            );
+            return Response.ok().build();
+        } else {
+            LOGGER.log(Level.INFO,
+                    "Unsuccessful group change to {0} for user {1} from IP {2}",
+                    new Object[]{group, securityContext.getUserPrincipal().getName(),
+                            httpServletRequest.getRemoteAddr()}
+            );
+            throw ExceptionFactory.userNotInGroupException();
+        }
     }
 
     /**

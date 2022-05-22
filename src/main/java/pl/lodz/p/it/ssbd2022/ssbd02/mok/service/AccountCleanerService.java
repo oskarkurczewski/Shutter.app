@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.TokenType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
 
@@ -36,7 +37,7 @@ public class AccountCleanerService {
     }
 
     @Timeout
-    public void cleanUnregisteredAccounts() {
+    public void cleanUnregisteredAccounts() throws BaseApplicationException {
         List<VerificationToken> expired = tokenFacade.findExpiredAfterOfType(
                 TokenType.REGISTRATION_CONFIRMATION,
                 LocalDateTime.now()

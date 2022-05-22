@@ -108,7 +108,14 @@ public class ExceptionFactory {
         return new InvalidTokenException("exception.token.invalid");
     }
 
+    public static BaseApplicationException OptLockException() {
+        return new OptLockException();
+    }
     public static WrongParameterException wrongParameterException() {
         return new WrongParameterException("exception.wrong_parameter");
+    }
+
+    public static UserNotInGroupException userNotInGroupException() {
+        return new UserNotInGroupException("exception.user_not_in_group");
     }
 }

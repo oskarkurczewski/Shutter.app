@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
@@ -39,7 +40,7 @@ public class PhotographerService {
      * @throws NoPhotographerFound W przypadku kiedy fotograf o danym loginie nie istnieje
      */
     @PermitAll
-    public PhotographerInfo findByLogin(String login) throws NoPhotographerFound {
+    public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
         return photographerInfoFacade.findPhotographerByLogin(login);
     }
 

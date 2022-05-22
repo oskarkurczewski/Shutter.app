@@ -166,7 +166,7 @@ public class EmailService {
      * @param token Żeton, który ma zostać wysłany
      */
     public void sendEmailUpdateEmail(String to, String login, VerificationToken token) {
-        String subject = "Resetowanie hasła Shutter.app";
+        String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
                 "%s/%s/email-update/%s",
                 BASE_URL,
@@ -190,6 +190,23 @@ public class EmailService {
         String subject = "Konto odblokowane - Shutter.app";
         String body = "Twoje konto w aplikacji Shutter.app zostało odblokowane. Życzymy miłego dalszego " +
                 "korzystania z usługi.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
+     * zablokowane w systemie.
+     *
+     * @param to adresat wiadomości email
+     */
+    public void sendAccountBlocked(String to) {
+        String subject = "Konto zablokowane - Shutter.app";
+        String body = "Twoje konto w aplikacji Shutter.app zostało zablokowane. Aby je " +
+                "odblokować skontaktuj się z administratorem systemu.";
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -232,6 +249,26 @@ public class EmailService {
     }
 
     /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
+     * aktywowane w systemie.
+     *
+     * @param to adresat wiadomości email
+     */
+    public void sendAccountActivated(String to) {
+        String subject = "Konto aktywowane - Shutter.app";
+        String body = "Twoje konto w aplikacji Shutter.app zostało pomyślnie aktywowane. Życzymy miłego dalszego " +
+                "korzystania z usługi.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+    /**
      * Funkcja służąca do wysyłania emaili
      *
      * @param toEmail  adres email odbiorcy
@@ -264,5 +301,4 @@ public class EmailService {
             throw ExceptionFactory.emailException(e.getMessage());
         }
     }
-
 }

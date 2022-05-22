@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
 @Path("/account")
@@ -33,7 +32,7 @@ public class AccountController extends AbstractController {
     public void blockAccount(
             @NotNull @PathParam("login") String login
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.blockAccount(login), accountEndpoint);
+        repeat(() -> accountEndpoint.blockAccount(login), accountEndpoint);
     }
 
     /**
@@ -47,8 +46,7 @@ public class AccountController extends AbstractController {
     public void unblockAccount(
             @NotNull @PathParam("login") String login
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.unblockAccount(login), accountEndpoint);
-
+        repeat(() -> accountEndpoint.unblockAccount(login), accountEndpoint);
     }
 
     @PUT
@@ -57,14 +55,14 @@ public class AccountController extends AbstractController {
     public void changeAccountPasswordAsAdmin(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountUpdatePasswordDto password) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
+        repeat(() -> accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
     }
 
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateOwnPassword(@NotNull @Valid AccountUpdatePasswordDto data) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.updateOwnPassword(data), accountEndpoint);
+        repeat(() -> accountEndpoint.updateOwnPassword(data), accountEndpoint);
     }
 
     /**
@@ -76,59 +74,54 @@ public class AccountController extends AbstractController {
     @POST
     @Path("{login}/request-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void requestPasswordReset(@PathParam("login") String login) throws NoAccountFound {
+    public void requestPasswordReset(@PathParam("login") String login) throws BaseApplicationException {
         accountEndpoint.requestPasswordReset(login);
     }
 
     /**
-     * Resetuje hasło dla użytkownika o podanym loginie
+     * Resetuje hasło dla użytkownika
      *
-     * @param login            Login użytkownika, dla którego ma zostać zresetowane hasło
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
      * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
      * @throws ExpiredTokenException    W przypadku gdy żeton jest nieaktualny
      * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
      */
     @POST
-    @Path("{login}/password-reset")
+    @Path("/password-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void resetPassword(@PathParam("login") String login, @NotNull @Valid ResetPasswordDto resetPasswordDto)
-            throws InvalidTokenException, NoAccountFound, NoVerificationTokenFound, ExpiredTokenException {
-        accountEndpoint.resetPassword(login, resetPasswordDto);
+    public void resetPassword(@NotNull @Valid ResetPasswordDto resetPasswordDto)
+            throws BaseApplicationException {
+        repeat(() -> accountEndpoint.resetPassword(resetPasswordDto), accountEndpoint);
     }
 
 
     /**
      * Wysyła link zawierający żeton zmiany adresu email
      *
-     * @param email Nowy email użytkownika, na którego zostanie wysłany link weryfikacyjny
      * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @POST
     @Path("request-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response requestEmailUpdate(@NotNull @Valid RequestEmailUpdateDto email) throws NoAccountFound, NoAuthenticatedAccountFound {
-        accountEndpoint.requestEmailUpdate(email);
+    public Response requestEmailUpdate() throws BaseApplicationException {
+        accountEndpoint.requestEmailUpdate();
         return Response.status(Response.Status.OK).build();
     }
 
     /**
-     * Aktualizuje email danego użytkownika
+     * Aktualizuje email użytkownika
      *
-     * @param login          Login użytkownika, dla którego być zmieniony email
      * @param emailUpdateDto Informacje do zmiany emaila użytkownika
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
      * @throws InvalidTokenException    Żeton jest nieprawidłowy
      * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @POST
-    @Path("{login}/verify-email-update")
+    @Path("/verify-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
-        accountEndpoint.updateEmail(login, emailUpdateDto);
+    public Response verifyEmailUpdate(@NotNull @Valid EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.updateEmail(emailUpdateDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -146,7 +139,7 @@ public class AccountController extends AbstractController {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid AccountRegisterDto accountRegisterDto) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
+        repeat(() -> accountEndpoint.registerAccount(accountRegisterDto), accountEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -161,7 +154,7 @@ public class AccountController extends AbstractController {
     @Path("/confirm/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccount(@NotNull @Valid @PathParam("token") String token) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
+        repeat(() -> accountEndpoint.confirmAccountRegistration(token), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -178,7 +171,7 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto)
             throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
+        repeat(() -> accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
 
         return Response.status(Response.Status.CREATED).build();
     }
@@ -195,7 +188,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
     public DetailedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
-            throws NoAccountFound {
+            throws BaseApplicationException {
         return accountEndpoint.getEnhancedAccountInfo(login);
     }
 
@@ -242,23 +235,23 @@ public class AccountController extends AbstractController {
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        repeat(() ->  accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
+        repeat(() -> accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
     }
 
     /**
      * Pozwala zmienić informację użytkownika przez administratora przez podany login
      *
-     * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      */
     @PUT
     @Path("/{login}/editAccountInfo")
     @Consumes(MediaType.APPLICATION_JSON)
     public void editAccountInfo(
             @NotNull @PathParam("login") String login,
-            @NotNull @Valid EditAccountInfoDto editAccountInfoDto
+            @NotNull @Valid EditAccountInfoAsAdminDto editAccountInfoAsAdminDto
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        repeat(() ->  accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoDto), accountEndpoint);
+        repeat(() -> accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoAsAdminDto), accountEndpoint);
     }
 
     /**
@@ -316,8 +309,20 @@ public class AccountController extends AbstractController {
             @NotNull @PathParam("login") String login,
             @NotNull @Valid AccountAccessLevelChangeDto data
     ) throws BaseApplicationException {
-        repeat(() ->  accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
+        repeat(() -> accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
+    @GET
+    @Path("/list-name")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListResponseDto<String> findByNameSurname(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("columnName") @NotNull String columnName,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("q") @NotNull String query
+    ) throws BaseApplicationException {
+        return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
+    }
 }

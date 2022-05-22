@@ -3,20 +3,19 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.TokenType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoVerificationTokenFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,32 +39,77 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         return em;
     }
 
-    public VerificationToken find(String token) throws NoVerificationTokenFound {
+    @Override
+    @PermitAll
+    public VerificationToken persist(VerificationToken entity) throws BaseApplicationException {
+        return super.persist(entity);
+    }
+
+    @Override
+    @PermitAll
+    public void remove(VerificationToken entity) throws BaseApplicationException {
+        try {
+            super.remove(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @PermitAll
+    public VerificationToken find(String token) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery("VerificationToken.findByTokenEquals", VerificationToken.class);
         query.setParameter("token", token);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
             throw ExceptionFactory.noVerificationTokenFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
         }
     }
 
-    public List<VerificationToken> findByAccountIdAndType(Account account, TokenType type) {
+    @PermitAll
+    public List<VerificationToken> findByAccountIdAndType(Account account, TokenType type) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery(
                 "VerificationToken.findByAccountIdAndType",
                 VerificationToken.class);
         query.setParameter("account", account);
         query.setParameter("type", type);
-        return query.getResultList();
+        try {
+            return query.getResultList();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
     }
 
-    public List<VerificationToken> findExpiredAfterOfType(TokenType type, LocalDateTime expiresAfter) {
+    @PermitAll
+    public List<VerificationToken> findExpiredAfterOfType(TokenType type, LocalDateTime expiresAfter) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery(
                 "VerificationToken.findExpiredAfterOfType",
                 VerificationToken.class);
         query.setParameter("type", type);
         query.setParameter("time", expiresAfter);
-        return query.getResultList();
+        try {
+            return query.getResultList();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
     }
 }
 
