@@ -143,30 +143,29 @@ public class AccountService {
     /**
      * Resetuje hasło użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
      *
-     * @param account          Konto, dla którego hasła ma zostać zresetowane
      * @param resetPasswordDto Dto przechowujące informacje wymagane do resetu hasła
      * @throws InvalidTokenException    Żeton jest nieprawidłowy
      * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @PermitAll
-    public void resetPassword(Account account, ResetPasswordDto resetPasswordDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
-        verificationTokenService.confirmPasswordReset(resetPasswordDto.getToken());
+    public void resetPassword(ResetPasswordDto resetPasswordDto)
+            throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        Account account = verificationTokenService.confirmPasswordReset(resetPasswordDto.getToken());
         changePassword(account, resetPasswordDto.getNewPassword());
     }
 
     /**
-     * Aktualizuje email danego użytkownika
+     * Aktualizuje adres email użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
      *
-     * @param account        Konto, dla którego email jest zmieniany
      * @param emailUpdateDto obiekt przechowujący żeton oraz nowy adres email
      * @throws InvalidTokenException    Żeton jest nieprawidłowy
      * @throws NoVerificationTokenFound Żie udało się odnaleźć danego żetonu w systemie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))
-    public void updateEmail(Account account, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
-        verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
+    public void updateEmail(EmailUpdateDto emailUpdateDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        Account account = verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
         account.setEmail(emailUpdateDto.getNewEmail());
         accountFacade.update(account);
     }

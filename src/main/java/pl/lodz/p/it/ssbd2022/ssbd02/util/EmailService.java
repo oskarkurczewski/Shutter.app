@@ -166,7 +166,7 @@ public class EmailService {
      * @param token Żeton, który ma zostać wysłany
      */
     public void sendEmailUpdateEmail(String to, String login, VerificationToken token) {
-        String subject = "Resetowanie hasła Shutter.app";
+        String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
                 "%s/%s/email-update/%s",
                 BASE_URL,

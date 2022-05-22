@@ -80,21 +80,19 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Resetuje hasło dla użytkownika o podanym loginie
+     * Resetuje hasło dla użytkownika
      *
-     * @param login            Login użytkownika, dla którego ma zostać zresetowane hasło
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
      * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
      * @throws ExpiredTokenException    W przypadku gdy żeton jest nieaktualny
      * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
      */
     @POST
-    @Path("{login}/password-reset")
+    @Path("/password-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void resetPassword(@PathParam("login") String login, @NotNull @Valid ResetPasswordDto resetPasswordDto)
-            throws InvalidTokenException, NoAccountFound, NoVerificationTokenFound, ExpiredTokenException {
-        accountEndpoint.resetPassword(login, resetPasswordDto);
+    public void resetPassword(@NotNull @Valid ResetPasswordDto resetPasswordDto)
+            throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        accountEndpoint.resetPassword(resetPasswordDto);
     }
 
 
@@ -113,20 +111,19 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Aktualizuje email danego użytkownika
+     * Aktualizuje email użytkownika
      *
-     * @param login          Login użytkownika, dla którego być zmieniony email
      * @param emailUpdateDto Informacje do zmiany emaila użytkownika
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
      * @throws InvalidTokenException    Żeton jest nieprawidłowy
      * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @POST
-    @Path("{login}/verify-email-update")
+    @Path("/verify-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
-        accountEndpoint.updateEmail(login, emailUpdateDto);
+    public Response verifyEmailUpdate(@NotNull @Valid EmailUpdateDto emailUpdateDto)
+            throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound {
+        accountEndpoint.updateEmail(emailUpdateDto);
         return Response.status(Response.Status.OK).build();
     }
 

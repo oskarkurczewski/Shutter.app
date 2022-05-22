@@ -231,19 +231,16 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     /**
-     * Resetuje hasło dla użytkownika o podanym loginie
+     * Resetuje hasło użytkownika
      *
-     * @param login            Login użytkownika, dla którego ma zostać zresetowane hasło
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
      * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
      * @throws ExpiredTokenException    W przypadku gdy żeton wygasł
      * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
      */
     @PermitAll
-    public void resetPassword(String login, ResetPasswordDto resetPasswordDto) throws NoAccountFound, InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
-        Account account = accountService.findByLogin(login);
-        accountService.resetPassword(account, resetPasswordDto);
+    public void resetPassword(ResetPasswordDto resetPasswordDto) throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+        accountService.resetPassword(resetPasswordDto);
     }
 
     /**
@@ -312,19 +309,17 @@ public class AccountEndpoint extends AbstractEndpoint {
 
 
     /**
-     * Aktualizuje email danego użytkownika
+     * Aktualizuje email użytkownika
      *
-     * @param login          Login użytkownika, dla którego być zmieniony email
      * @param emailUpdateDto Informacje do zmiany emaila użytkownika
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
      * @throws InvalidTokenException    Żeton jest nieprawidłowy
      * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))
-    public void updateEmail(String login, EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
-        Account account = accountService.findByLogin(login);
-        accountService.updateEmail(account, emailUpdateDto);
+    public void updateEmail(EmailUpdateDto emailUpdateDto)
+            throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound {
+        accountService.updateEmail(emailUpdateDto);
     }
 
 }
