@@ -230,5 +230,12 @@
         <group-name>CLIENT</group-name>
         <group-name>PHOTOGRAPHER</group-name>
     </security-role-mapping>
+    <security-role-mapping>
+        <role-name>changeGroup</role-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>PHOTOGRAPHER</group-name>
+    </security-role-mapping>
 
 </glassfish-web-app>

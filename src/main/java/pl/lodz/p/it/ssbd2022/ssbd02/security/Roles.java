@@ -50,4 +50,5 @@ public class Roles {
     public static final String showJobs = "showJobs";
     public static final String resolveReport = "resolveReport";
     public static final String updateEmail = "updateEmail";
+    public static final String changeGroup = "changeGroup";
 }
