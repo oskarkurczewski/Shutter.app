@@ -5,20 +5,21 @@ import "./style.scss";
 import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
 import AuthenticatedRoute from "util/AuthenticatedRoute";
-import Confirm from "components/client/Confirm";
+import ConfirmRegistrationPage from "pages/ConfirmRegistration";
 import PageLayout from "pages/layout";
 import Homepage from "pages/homepage";
 import NotFound404 from "pages/not-found";
 import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
+import SettingsPage from "pages/settings";
 
 function App() {
    const dispatch = useAppDispatch();
    if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
-       dispatch(login(getLoginPayload()));
+      dispatch(login(getLoginPayload()));
    } else {
-       localStorage.setItem("accessLevel", "GUEST");
+      localStorage.setItem("accessLevel", "GUEST");
    }
 
    return (
@@ -29,6 +30,10 @@ function App() {
                <Route path="/" element={<Homepage />} />
                <Route path="/login" element={<LoginPage />} />
                <Route
+                  path="/confirm-registration/:registerationToken"
+                  element={<ConfirmRegistrationPage />}
+               />
+               <Route
                   path="/dashboard"
                   element={
                      <AuthenticatedRoute>
@@ -36,7 +41,14 @@ function App() {
                      </AuthenticatedRoute>
                   }
                />
-               <Route path="/confirm/:registerationToken" element={<Confirm />} />
+               <Route
+                  path="/settings"
+                  element={
+                     <AuthenticatedRoute>
+                        <SettingsPage />
+                     </AuthenticatedRoute>
+                  }
+               />
             </Route>
          </Routes>
       </BrowserRouter>
