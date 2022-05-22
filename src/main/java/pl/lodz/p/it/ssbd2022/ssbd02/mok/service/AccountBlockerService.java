@@ -47,7 +47,7 @@ public class AccountBlockerService {
         }
         timerService.createTimer(0,
                 interval,
-                "Co każdą ustaloną przez zmienną interval liczbę godzin");
+                "Co każdą ustaloną przez zmienną interval liczbę milisekund");
     }
 
     /**
