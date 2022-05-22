@@ -1,6 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +12,9 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Timeout;
 import javax.ejb.TimerService;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Klasa służąca do automatycznego blokowania kont, na które
@@ -21,6 +26,9 @@ public class AccountBlockerService {
     private final ConfigLoader configLoader = new ConfigLoader();
     @Resource
     TimerService timerService;
+
+    @Inject
+    private AuthenticationFacade authenticationFacade;
 
     /**
      * Metoda inicjująca timer, aby działał co określoną w pliku
@@ -49,7 +57,7 @@ public class AccountBlockerService {
      * przez domyślną wartość 30dni
      */
     @Timeout
-    public void blockUnusedAccounts() {
+    public void blockUnusedAccounts() throws BaseApplicationException {
         Long days = null;
         try {
             days = Long.parseLong(configLoader
@@ -59,7 +67,10 @@ public class AccountBlockerService {
             days = 30L;
         }
         LocalDateTime dateTime = LocalDateTime.now().minusDays(days);
-        // TODO pobieranie z fasady kont z ostatnim logowaniem po dateTime
-        // TODO Blokowanie wszystkich odczytanych kont
+        List<Account> accounts = authenticationFacade.getWithLastLoginBefore(dateTime);
+        for (Account acc : accounts) {
+            acc.setActive(false);
+            authenticationFacade.update(acc);
+        }
     }
 }

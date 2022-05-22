@@ -17,6 +17,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -298,5 +299,20 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return em.createQuery(query).getSingleResult();
     }
 
+    public List<Account> getWithLastLoginBefore(LocalDateTime dateTime) throws BaseApplicationException {
+        TypedQuery<Account> query = getEm().createNamedQuery("account.findByLastLogInIsBefore", Account.class);
+        try {
+            List<Account> res = query.getResultList();
+            return res;
+        }catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
 
 }
