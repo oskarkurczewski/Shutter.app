@@ -181,6 +181,27 @@ public class EmailService {
     }
 
     /**
+     * Wysyła na adres email podany jako parametr kod 2FA
+     *
+     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca kod 2FA
+     * @param login Nazwa użytkownika, do którego jest wysyłany kod
+     * @param code  Kod 2FA
+     */
+    public void sendEmail2FA(String to, String login, String code) {
+        String subject = "Dwustopniowe logowanie Shutter.app";
+        String body =
+                login.substring(0, 1).toUpperCase() +
+                        login.substring(1) +
+                        " twój kod do zalogowania: " +
+                        code;
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
      * odblokowane w systemie.
      *
