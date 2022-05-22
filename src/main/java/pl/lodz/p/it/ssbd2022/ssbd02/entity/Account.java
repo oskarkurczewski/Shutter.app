@@ -27,7 +27,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "account.findByLogin", query = "SELECT u from Account u WHERE u.login = :login"),
         @NamedQuery(name = "account.getAccessLevelValue", query = "SELECT level FROM AccessLevelValue AS level WHERE level.name = :access_level"),
-        @NamedQuery(name = "account.findByLastLogInIsBefore", query = "select a from Account a where a.lastLogIn < :lastLogIn")
+        @NamedQuery(name = "account.findByLastLogInIsBefore", query = "SELECT a from Account AS a where a.lastLogIn < :lastLogIn")
 })
 public class Account extends ManagedEntity {
 

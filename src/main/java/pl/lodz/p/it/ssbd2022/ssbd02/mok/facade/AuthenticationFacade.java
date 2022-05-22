@@ -266,6 +266,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     public EntityManager getEm() {
         return em;
     }
@@ -277,6 +278,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param name imie
      * @return ilość rekordów
      */
+    @PermitAll
     public Long getAccountListSizeNameSurname(
             String name
     ) {
@@ -299,9 +301,11 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return em.createQuery(query).getSingleResult();
     }
 
+    @PermitAll
     public List<Account> getWithLastLoginBefore(LocalDateTime dateTime) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLastLogInIsBefore", Account.class);
         try {
+            query.setParameter("lastLogIn", dateTime);
             List<Account> res = query.getResultList();
             return res;
         }catch (NoResultException e) {
