@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -38,6 +39,7 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
      * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
      * @see PhotographerInfo
      */
+    @PermitAll
     public PhotographerInfo findPhotographerByLogin(String login) throws BaseApplicationException {
         TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);

@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -41,6 +42,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     public Account persist(Account entity) throws BaseApplicationException {
         try {
             return super.persist(entity);
@@ -54,6 +56,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     public Account update(Account entity) throws BaseApplicationException {
         try {
             return super.update(entity);
@@ -67,6 +70,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     public void remove(Account entity) throws BaseApplicationException {
         try {
             super.remove(entity);
@@ -79,6 +83,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         }
     }
 
+    @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
         query.setParameter("login", login);
@@ -164,6 +169,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @return lista wynikowa zapytania do bazy danych
      * @throws WrongParameterException zła nazwa kolumny
      */
+    @PermitAll
     public List<String> getAccountList(
             int page,
             int recordsPerPage,
@@ -230,6 +236,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param active     czy konto aktywne
      * @return ilość rekordów
      */
+    @PermitAll
     public Long getAccountListSize(
             String login,
             String email,
