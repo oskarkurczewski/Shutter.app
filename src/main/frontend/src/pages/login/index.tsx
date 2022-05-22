@@ -19,7 +19,7 @@ const LoginPage = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
 
-   const onSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
+   const onSubmit = async (e) => {
       e.preventDefault();
       try {
          await getToken(username, password);
@@ -47,7 +47,7 @@ const LoginPage = () => {
                </div>
                <Button
                   onClick={() => {
-                     console.log(); // Navigate to register page
+                     navigate("/register");
                   }}
                >
                   Zarejestruj się

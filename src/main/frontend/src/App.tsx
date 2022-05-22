@@ -5,7 +5,7 @@ import "./style.scss";
 import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
 import AuthenticatedRoute from "util/AuthenticatedRoute";
-import ConfirmRegistrationPage from "pages/ConfirmRegistration";
+import ConfirmRegistrationPage from "pages/confirmRegistration";
 import PageLayout from "pages/layout";
 import Homepage from "pages/homepage";
 import NotFound404 from "pages/not-found";
@@ -13,6 +13,7 @@ import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
 import SettingsPage from "pages/settings";
+import RegisterPage from "pages/register";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -29,6 +30,7 @@ function App() {
             <Route element={<PageLayout />}>
                <Route path="/" element={<Homepage />} />
                <Route path="/login" element={<LoginPage />} />
+               <Route path="/register" element={<RegisterPage />} />
                <Route
                   path="/confirm-registration/:registerationToken"
                   element={<ConfirmRegistrationPage />}

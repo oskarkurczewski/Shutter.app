@@ -4,6 +4,14 @@ div.text-input-wrapper {
    p.label {
       margin-bottom: 10px;
       color: $gray-300;
+
+      &.required {
+         &::after {
+            content: "*";
+            color: $red-200;
+            margin-left: 2px;
+         }
+      }
    }
 
    div {
