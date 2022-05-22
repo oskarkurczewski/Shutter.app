@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 public class AccountAccessLevelChangeDto {
     @NotNull(message = "validator.incorrect.access_level.null")
     @AccessLevel
-    private final String accessLevel;
+    private String accessLevel;
 
     @NotNull(message = "validator.incorrect.active.null")
-    private final Boolean active;
+    private Boolean active;
 }

@@ -56,7 +56,7 @@ public class VerificationTokenService {
      * @param account   konto, dla którego żetony mają być usunięte
      * @param tokenType typ żetonu
      */
-    private void removeOldToken(Account account, TokenType tokenType) {
+    private void removeOldToken(Account account, TokenType tokenType) throws BaseApplicationException {
         List<VerificationToken> oldTokens = tokenFacade.findByAccountIdAndType(account, tokenType);
         for (VerificationToken oldToken : oldTokens) {
             tokenFacade.remove(oldToken);
@@ -71,7 +71,7 @@ public class VerificationTokenService {
      * @return utworzony żeton
      * @see TokenType
      */
-    private VerificationToken createNewToken(Account account, TokenType tokenType) {
+    private VerificationToken createNewToken(Account account, TokenType tokenType) throws BaseApplicationException {
         VerificationToken registrationToken = new VerificationToken(
                 LocalDateTime.now().plusMinutes(VerificationTokenService.TOKEN_TIME),
                 account,
@@ -86,7 +86,7 @@ public class VerificationTokenService {
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
      */
-    public void sendRegistrationToken(Account account) {
+    public void sendRegistrationToken(Account account) throws BaseApplicationException {
         VerificationToken registrationToken = new VerificationToken(
                 LocalDateTime.now().plusDays(1),
                 account,
@@ -107,7 +107,7 @@ public class VerificationTokenService {
      * @throws ExpiredTokenException     Żeton wygasł
      */
     public Account confirmRegistration(String token)
-            throws InvalidTokenException, AccountConfirmedException, NoVerificationTokenFound, ExpiredTokenException {
+            throws BaseApplicationException {
         VerificationToken registrationToken = tokenFacade.find(token);
         checkToken(registrationToken, TokenType.REGISTRATION_CONFIRMATION);
 
@@ -126,7 +126,7 @@ public class VerificationTokenService {
      * @param account Konto, na które zostanie wysłany email z żetonem
      * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
-    public void sendPasswordResetToken(Account account) throws NoAccountFound {
+    public void sendPasswordResetToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.PASSWORD_RESET);
         VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
@@ -142,7 +142,7 @@ public class VerificationTokenService {
      * @throws ExpiredTokenException    Żeton wygasł
      */
     public void confirmPasswordReset(String token)
-            throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+            throws BaseApplicationException {
         VerificationToken resetToken = tokenFacade.find(token);
         checkToken(resetToken, TokenType.PASSWORD_RESET);
         tokenFacade.remove(resetToken);
@@ -154,7 +154,7 @@ public class VerificationTokenService {
      * @param account Konto, na które zostanie wysłany email z żetonem
      * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
-    public void sendEmailUpdateToken(Account account) throws NoAccountFound {
+    public void sendEmailUpdateToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.EMAIL_UPDATE);
         VerificationToken verificationToken = createNewToken(account, TokenType.EMAIL_UPDATE);
@@ -170,7 +170,7 @@ public class VerificationTokenService {
      * @throws ExpiredTokenException    Żeton wygasł
      */
     public void confirmEmailUpdate(String token)
-            throws InvalidTokenException, NoVerificationTokenFound, ExpiredTokenException {
+            throws BaseApplicationException {
         VerificationToken resetToken = tokenFacade.find(token);
         checkToken(resetToken, TokenType.EMAIL_UPDATE);
         tokenFacade.remove(resetToken);

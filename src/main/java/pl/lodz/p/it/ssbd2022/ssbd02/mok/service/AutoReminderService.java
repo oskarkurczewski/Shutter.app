@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.TokenType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
@@ -41,10 +42,15 @@ public class AutoReminderService {
 
     @Timeout
     public void remindRegistrationConfirmation() {
-        List<VerificationToken> toRemindTokens = tokenFacade.findExpiredAfterOfType(
-                TokenType.REGISTRATION_CONFIRMATION,
-                LocalDateTime.now().plusHours(12)
-        );
+        List<VerificationToken> toRemindTokens = null;
+        try {
+            toRemindTokens = tokenFacade.findExpiredAfterOfType(
+                    TokenType.REGISTRATION_CONFIRMATION,
+                    LocalDateTime.now().plusHours(12)
+            );
+        } catch (BaseApplicationException ex) {
+            return;
+        }
 
         for (VerificationToken token : toRemindTokens) {
             emailService.sendRegistrationConfirmationReminder(

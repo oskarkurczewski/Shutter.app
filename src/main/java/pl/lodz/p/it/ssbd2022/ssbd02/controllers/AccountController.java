@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
@@ -47,7 +48,6 @@ public class AccountController extends AbstractController {
             @NotNull @PathParam("login") String login
     ) throws BaseApplicationException {
         repeat(() -> accountEndpoint.unblockAccount(login), accountEndpoint);
-
     }
 
     @PUT
@@ -75,7 +75,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("{login}/request-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void requestPasswordReset(@PathParam("login") String login) throws NoAccountFound {
+    public void requestPasswordReset(@PathParam("login") String login) throws BaseApplicationException {
         accountEndpoint.requestPasswordReset(login);
     }
 
@@ -93,8 +93,8 @@ public class AccountController extends AbstractController {
     @Path("{login}/password-reset")
     @Consumes(MediaType.APPLICATION_JSON)
     public void resetPassword(@PathParam("login") String login, @NotNull @Valid ResetPasswordDto resetPasswordDto)
-            throws InvalidTokenException, NoAccountFound, NoVerificationTokenFound, ExpiredTokenException {
-        accountEndpoint.resetPassword(login, resetPasswordDto);
+            throws BaseApplicationException {
+        repeat(() -> accountEndpoint.resetPassword(login, resetPasswordDto), accountEndpoint);
     }
 
 
@@ -107,7 +107,7 @@ public class AccountController extends AbstractController {
     @POST
     @Path("request-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response requestEmailUpdate() throws NoAccountFound, NoAuthenticatedAccountFound {
+    public Response requestEmailUpdate() throws BaseApplicationException {
         accountEndpoint.requestEmailUpdate();
         return Response.status(Response.Status.OK).build();
     }
@@ -125,8 +125,8 @@ public class AccountController extends AbstractController {
     @POST
     @Path("{login}/verify-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws InvalidTokenException, ExpiredTokenException, NoVerificationTokenFound, NoAccountFound {
-        accountEndpoint.updateEmail(login, emailUpdateDto);
+    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.updateEmail(login, emailUpdateDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -193,7 +193,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
     public DetailedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
-            throws NoAccountFound {
+            throws BaseApplicationException {
         return accountEndpoint.getEnhancedAccountInfo(login);
     }
 
