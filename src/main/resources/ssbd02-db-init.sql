@@ -311,12 +311,16 @@ CREATE TABLE public.token
     modified_at  timestamp
 );
 
-CREATE TABLE old_password
+CREATE TABLE public.old_password
 (
     version    bigint,
     id         bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
     account_id bigint                NOT NULL,
-    password   character varying(60) NOT NULL
+    password   character varying(60) NOT NULL,
+    created_by   bigint,
+    created_at   timestamp,
+    modified_by  bigint,
+    modified_at  timestamp
 );
 
 ALTER TABLE ONLY public.token ADD CONSTRAINT token_key UNIQUE (token);
