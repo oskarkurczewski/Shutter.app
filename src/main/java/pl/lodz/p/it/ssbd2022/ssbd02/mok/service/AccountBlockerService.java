@@ -23,12 +23,14 @@ import java.util.List;
 @Startup
 @Singleton
 public class AccountBlockerService {
-    private final ConfigLoader configLoader = new ConfigLoader();
     @Resource
     TimerService timerService;
 
     @Inject
     private AuthenticationFacade authenticationFacade;
+
+    @Inject
+    private ConfigLoader configLoader;
 
     /**
      * Metoda inicjująca timer, aby działał co określoną w pliku
@@ -37,16 +39,8 @@ public class AccountBlockerService {
      */
     @PostConstruct
     public void init() {
-        Long interval = null;
-        try {
-            interval = Long.parseLong(configLoader
-                    .loadProperties("config.timeout.properties")
-                    .getProperty("block.check-timeout"));
-        } catch (NoConfigFileFound e) {
-            interval = 24L;
-        }
         timerService.createTimer(0,
-                interval * 60 * 60 * 1000,
+                configLoader.getBlockCheckTimeout() * 60 * 60 * 1000,
                 "Co każdą ustaloną przez zmienną interval liczbę godzin");
     }
 
@@ -58,15 +52,7 @@ public class AccountBlockerService {
      */
     @Timeout
     public void blockUnusedAccounts() throws BaseApplicationException {
-        Long days = null;
-        try {
-            days = Long.parseLong(configLoader
-                    .loadProperties("config.timeout.properties")
-                    .getProperty("block.timeout"));
-        } catch (NoConfigFileFound e) {
-            days = 30L;
-        }
-        LocalDateTime dateTime = LocalDateTime.now().minusDays(days);
+        LocalDateTime dateTime = LocalDateTime.now().minusDays(configLoader.getBlockTimeout());
         List<Account> accounts = authenticationFacade.getWithLastLoginBefore(dateTime);
         for (Account acc : accounts) {
             acc.setActive(false);

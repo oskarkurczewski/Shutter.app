@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.TokenType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 
 import javax.annotation.security.RolesAllowed;
@@ -15,11 +16,15 @@ import java.util.List;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeSomeonesPassword;
 
 public class VerificationTokenService {
-    private static final int TOKEN_TIME = 20;
+
     @Inject
     private TokenFacade tokenFacade;
     @Inject
     private EmailService emailService;
+
+    @Inject
+    private ConfigLoader configLoader;
+
 
     /**
      * Pomocnicza funkcja do sprawdzania podstawowych warunków żetonu
@@ -66,31 +71,13 @@ public class VerificationTokenService {
     }
 
     /**
-     * Pomocnicza funkcja do tworzenia żetonu weryfikacyjnego
-     *
-     * @param account   Konto, dla którego zostanie utworzony wysłany email z żetonem
-     * @param tokenType typ żetonu
-     * @return utworzony żeton
-     * @see TokenType
-     */
-    private VerificationToken createNewToken(Account account, TokenType tokenType) throws BaseApplicationException {
-        VerificationToken registrationToken = new VerificationToken(
-                LocalDateTime.now().plusMinutes(VerificationTokenService.TOKEN_TIME),
-                account,
-                tokenType
-        );
-
-        return tokenFacade.persist(registrationToken);
-    }
-
-    /**
      * Tworzy żeton używany do aktywacji konta po potwierdzeniu rejestracji przez użytkownika
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
      */
     public void sendRegistrationToken(Account account) throws BaseApplicationException {
         VerificationToken registrationToken = new VerificationToken(
-                LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusHours(configLoader.getRegistrationConfirmationTokenLifetime()),
                 account,
                 TokenType.REGISTRATION_CONFIRMATION
         );
@@ -131,7 +118,14 @@ public class VerificationTokenService {
     public void sendPasswordResetToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.PASSWORD_RESET);
-        VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusMinutes(configLoader.getPasswordResetTokenLifetime()),
+                account,
+                TokenType.PASSWORD_RESET
+        );
+        tokenFacade.persist(verificationToken);
+
         emailService.sendPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
     }
 
@@ -146,7 +140,14 @@ public class VerificationTokenService {
     public void sendForcedPasswordResetToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.PASSWORD_RESET);
-        VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusHours(configLoader.getForcedPasswordResetTokenLifetime()),
+                account,
+                TokenType.PASSWORD_RESET
+        );
+        tokenFacade.persist(verificationToken);
+
         emailService.sendForcedPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
     }
 
@@ -175,7 +176,14 @@ public class VerificationTokenService {
     public void sendEmailUpdateToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.EMAIL_UPDATE);
-        VerificationToken verificationToken = createNewToken(account, TokenType.EMAIL_UPDATE);
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusHours(configLoader.getEmailResetTokenLifetime()),
+                account,
+                TokenType.EMAIL_UPDATE
+        );
+        tokenFacade.persist(verificationToken);
+
         emailService.sendEmailUpdateEmail(account.getEmail(), account.getLogin(), verificationToken);
     }
 

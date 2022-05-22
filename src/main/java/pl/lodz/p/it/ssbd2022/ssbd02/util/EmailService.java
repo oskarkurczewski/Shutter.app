@@ -27,36 +27,24 @@ import java.util.Properties;
 @Stateless
 @Interceptors(LoggingInterceptor.class)
 public class EmailService {
-
-    private static final String CONFIG_FILE_NAME = "config.email.properties";
-    private static final String BASE_URL = "http://studapp.it.p.lodz.pl:8002";
-
     private TransactionalEmailsApi api;
     private SendSmtpEmailSender sender;
     @Inject
     private ConfigLoader configLoader;
-    private Properties properties;
 
 
     @PostConstruct
     public void init() {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-        try {
-            configLoader = new ConfigLoader();
-            properties = configLoader.loadProperties(CONFIG_FILE_NAME);
-        } catch (NoConfigFileFound e) {
-            throw new RuntimeException(e);
-        }
-
         // Configure API key authorization: api-key
         ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
-        apiKey.setApiKey(properties.getProperty("api.key"));
+        apiKey.setApiKey(configLoader.getEmailApiKey());
 
         api = new TransactionalEmailsApi();
         sender = new SendSmtpEmailSender();
-        sender.setEmail(properties.getProperty("email.sender.email"));
-        sender.setName(properties.getProperty("email.sender.name"));
+        sender.setEmail(configLoader.getEmailSenderAddress());
+        sender.setName(configLoader.getEmailSenderName());
     }
 
     /**
@@ -69,7 +57,7 @@ public class EmailService {
         String subject = "Weryfikacja konta Shutter.app";
         String body = "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
                 "%s/confirm/%s",
-                BASE_URL,
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -90,7 +78,7 @@ public class EmailService {
         String body = "Przypominamy o konieczności potwierdzenia konta w Shutter.app. " +
                 "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
                 "%s/confirm/%s",
-                BASE_URL,
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -111,7 +99,7 @@ public class EmailService {
         String subject = "Resetowanie hasła Shutter.app";
         String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
                 "%s/%s/password-reset/%s",
-                BASE_URL,
+                configLoader.getEmailAppUrl(),
                 login,
                 token.getToken()
         );
@@ -135,7 +123,7 @@ public class EmailService {
         String body = "Twoje hasło zostało zmienione przez administratora. Aby ustawić nowe hasło dla " +
                 "twojego konta kliknij w podany link: " + String.format(
                 "%s/%s/password-reset/%s",
-                BASE_URL,
+                configLoader.getEmailAppUrl(),
                 login,
                 token.getToken()
         );
@@ -194,7 +182,7 @@ public class EmailService {
         String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
                 "%s/%s/email-update/%s",
-                BASE_URL,
+                configLoader.getEmailAppUrl(),
                 login,
                 token.getToken()
         );
