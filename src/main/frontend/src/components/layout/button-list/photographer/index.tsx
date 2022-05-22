@@ -12,7 +12,7 @@ interface Props {
 const PhotographerButtonList: FC<Props> = ({ path, expanded }) => {
    const arr = [
       { to: "/", icon: <MdSpaceDashboard />, text: "strona główna" },
-      { to: "/login", icon: <BsFillCameraFill />, text: "fotografowie" },
+      { to: "/photographers", icon: <BsFillCameraFill />, text: "fotografowie" },
       { to: "/reservations", icon: <IoCalendarSharp />, text: "rezerwacje" },
       { to: "/settings", icon: <IoSettingsSharp />, text: "ustawienia" },
    ];
