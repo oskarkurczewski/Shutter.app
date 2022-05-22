@@ -32,7 +32,7 @@ const LoginPage = () => {
    };
 
    return (
-      <section className="login-wrapper">
+      <section className="login-page-wrapper">
          <Card>
             <div className="aside">
                <img src="images/logo_new_black.svg" alt="logo" />
