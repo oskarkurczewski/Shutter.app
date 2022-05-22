@@ -143,7 +143,7 @@ public class VerificationTokenService {
      * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     @RolesAllowed(changeSomeonesPassword)
-    public void sendForcedPasswordResetToken(Account account) throws NoAccountFound {
+    public void sendForcedPasswordResetToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.PASSWORD_RESET);
         VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);

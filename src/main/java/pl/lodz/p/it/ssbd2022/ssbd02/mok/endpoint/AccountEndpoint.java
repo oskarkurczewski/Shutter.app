@@ -341,4 +341,11 @@ public class AccountEndpoint extends AbstractEndpoint {
         return accountService.findByNameSurname(name, page, recordsPerPage, orderBy, order);
     }
 
+
+    @PermitAll
+    public void reguest2faCode(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        accountService.send2faCode(account);
+    }
+
 }

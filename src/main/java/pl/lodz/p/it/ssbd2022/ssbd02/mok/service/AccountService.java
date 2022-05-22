@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -43,6 +44,9 @@ public class AccountService {
 
     @Inject
     private EmailService emailService;
+
+    @Inject
+    private OneTimeCodeUtils codeUtils;
 
     /**
      * Odnajduje konto użytkownika o podanym loginie
@@ -470,5 +474,11 @@ public class AccountService {
                 allRecords,
                 list
         );
+    }
+    
+    @PermitAll
+    public void send2faCode(Account account) {
+        String totp = codeUtils.generateCode(account.getSecret());
+        emailService.send2faCodeEmail(account.getEmail(), totp);
     }
 }

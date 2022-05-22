@@ -3,9 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
 import javax.inject.Inject;
@@ -325,4 +324,15 @@ public class AccountController extends AbstractController {
     ) throws BaseApplicationException {
         return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
     }
+
+    @POST
+    @Path("/request-2fa-code/{login}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response request2faCode(@NotNull @Login
+                                   @PathParam("login") String login
+    ) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.reguest2faCode(login), accountEndpoint);
+        return Response.status(200).build();
+    }
+
 }
