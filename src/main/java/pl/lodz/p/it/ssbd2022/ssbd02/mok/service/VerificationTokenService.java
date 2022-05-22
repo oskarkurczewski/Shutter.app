@@ -23,7 +23,6 @@ public class VerificationTokenService {
      *
      * @param token     żeton do sprawdzenia
      * @param tokenType typ żetonu jako enum
-     * @return zwraca żeton w celu dalszego sprawdzania warunków
      * @throws InvalidTokenException Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws ExpiredTokenException Żeton wygasł
      * @see TokenType
@@ -141,11 +140,12 @@ public class VerificationTokenService {
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
-    public void confirmPasswordReset(String token)
+    public Account confirmPasswordReset(String token)
             throws BaseApplicationException {
         VerificationToken resetToken = tokenFacade.find(token);
         checkToken(resetToken, TokenType.PASSWORD_RESET);
         tokenFacade.remove(resetToken);
+        return resetToken.getTargetUser();
     }
 
     /**
@@ -162,17 +162,18 @@ public class VerificationTokenService {
     }
 
     /**
-     * Sprawdza oraz usuwa żeton weryfikacyjny użyty do aktualizacji hasła
+     * Sprawdza oraz usuwa żeton weryfikacyjny użyty do aktualizacji adresu email
      *
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
      * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
-    public void confirmEmailUpdate(String token)
+    public Account confirmEmailUpdate(String token)
             throws BaseApplicationException {
         VerificationToken resetToken = tokenFacade.find(token);
         checkToken(resetToken, TokenType.EMAIL_UPDATE);
         tokenFacade.remove(resetToken);
+        return resetToken.getTargetUser();
     }
 }
