@@ -152,12 +152,13 @@ public class AccountEndpoint {
     }
 
     /**
-     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     * Ukrywa informacje o fotografie i ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
      *
-     * @throws NoAuthenticatedAccountFound   W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @throws NoAuthenticatedAccountFound   W przypadku nieznalezienia konta użytkownika w bazie danych
+     * na podstawie żetonu JWT
+     * @throws DataNotFoundException    W przypadku nieznalezienia na koncie użytkownika roli fotografa
+     * @throws CannotChangeException    W przypadku próby odebrania roli fotografa przez uzytkownika nie będącego
+     * fotografem
      * @see AccountAccessLevelChangeDto
      */
     @RolesAllowed({stopBeingPhotographer})

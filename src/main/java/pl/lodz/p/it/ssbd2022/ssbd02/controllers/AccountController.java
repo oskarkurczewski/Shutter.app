@@ -253,6 +253,10 @@ public class AccountController {
      * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
      * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
      * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws NoAuthenticatedAccountFound W przypadku nieznalezienia konta użytkownika w bazie danych
+     * na podstawie żetonu JWT
+     * @throws NoPhotographerFound W przypadku nieznalezienia konta fotografa
+     *
      */
     @POST
     @Path("/stop-being-photographer")
