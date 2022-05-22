@@ -12,8 +12,6 @@ public class OneTimePasswordTest {
     @Test
     public void createAndValidateToken() {
         OneTimeCodeUtils otp = new OneTimeCodeUtils();
-        otp.setConfigLoader(new ConfigLoader());
-        otp.init();
         String code = otp.generateCode(testSecret);
         assertNotNull(code);
         assertEquals(6, code.length());
