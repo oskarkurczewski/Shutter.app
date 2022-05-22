@@ -127,7 +127,7 @@ public class AccountEndpoint {
      * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({grantAccessLevel, revokeAccessLevel})
     public void changeAccountAccessLevel(String login, AccountAccessLevelChangeDto data)
             throws CannotChangeException, DataNotFoundException, NoAccountFound {
         Account account = accountService.findByLogin(login);
@@ -147,7 +147,8 @@ public class AccountEndpoint {
     @RolesAllowed({becomePhotographer})
     public void becomePhotographer() throws NoAuthenticatedAccountFound, DataNotFoundException, CannotChangeException {
         Account account = authenticationContext.getCurrentUsersAccount();
-        accountService.becomePhotographer(account);
+        AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName("PHOTOGRAPHER");
+        accountService.changeAccountAccessLevel(account, accessLevelValue, true);
         photographerService.createEmptyPhotographerInfo(account);
     }
 
