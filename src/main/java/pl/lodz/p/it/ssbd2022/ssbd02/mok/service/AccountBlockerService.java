@@ -43,11 +43,11 @@ public class AccountBlockerService {
                     .loadProperties("config.timeout.properties")
                     .getProperty("block.check-timeout"));
         } catch (NoConfigFileFound e) {
-            interval = 86400000L;
+            interval = 24L;
         }
         timerService.createTimer(0,
-                interval,
-                "Co każdą ustaloną przez zmienną interval liczbę milisekund");
+                interval * 60 * 60 * 1000,
+                "Co każdą ustaloną przez zmienną interval liczbę godzin");
     }
 
     /**
