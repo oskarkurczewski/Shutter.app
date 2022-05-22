@@ -14,7 +14,7 @@ const Sidebar = () => {
          <AuthCard
             selectedAccessLevel={selectedAccessLevel as AccessLevel}
             username={auth.username}
-            accessLevelList={auth.accessLevel}
+            accessLevelList={auth.roles}
          />
       </div>
    );

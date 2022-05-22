@@ -12,6 +12,7 @@ import GuestButtonList from "../button-list/guest";
 import AdministratorButtonList from "../button-list/administrator";
 import ModeratorButtonList from "../button-list/moderator";
 import PhotographerButtonList from "../button-list/photographer";
+import { useAppSelector } from "redux/hooks";
 
 const Navbar = () => {
    const location = useLocation();
@@ -19,12 +20,11 @@ const Navbar = () => {
 
    const [expanded, setExpanded] = useState(false);
 
-   // const authData = useAppSelector((state) => state.auth);
-   const selectedAccessLevel = localStorage.getItem("accessLevel");
+   const { accessLevel } = useAppSelector((state) => state.auth);
 
    let btn_list;
-   if (selectedAccessLevel) {
-      switch (selectedAccessLevel) {
+   if (accessLevel) {
+      switch (accessLevel) {
          case AccessLevel.ADMINISTRATOR:
             btn_list = <AdministratorButtonList path={path} expanded={expanded} />;
             break;
@@ -47,7 +47,7 @@ const Navbar = () => {
       <div
          className={`layout-bar navbar ${
             expanded && "expanded"
-         } ${selectedAccessLevel.toLowerCase()}`}
+         } ${accessLevel.toLowerCase()}`}
       >
          <div className="logo-container">
             <Link to="/" className="logo-wrapper">
@@ -58,7 +58,7 @@ const Navbar = () => {
          <div className="bar-button-list-wrapper">
             <div className="bar-button-wrapper">{btn_list}</div>
             <div className="bar-button-wrapper">
-               {selectedAccessLevel === AccessLevel.GUEST ? (
+               {accessLevel === AccessLevel.GUEST ? (
                   <BarButton
                      to="login"
                      icon={<RiLoginBoxLine />}
