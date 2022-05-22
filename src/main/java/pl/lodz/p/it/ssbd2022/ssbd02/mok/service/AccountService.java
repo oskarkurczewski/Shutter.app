@@ -103,8 +103,9 @@ public class AccountService {
      * @param password Nowe hasło dla wskazanego użytkownika
      */
     @RolesAllowed(changeSomeonesPassword)
-    public void changeAccountPasswordAsAdmin(Account account, String password) {
+    public void changeAccountPasswordAsAdmin(Account account, String password) throws NoAccountFound {
         changePassword(account, password);
+        verificationTokenService.sendForcedPasswordResetToken(account);
     }
 
     /**

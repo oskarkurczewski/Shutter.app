@@ -104,11 +104,36 @@ public class EmailService {
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła
      *
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param login Login użytkownika, którego hasło ma zostać zresetowane
      * @param token Żeton, który ma zostać wysłany
      */
     public void sendPasswordResetEmail(String to, String login, VerificationToken token) {
         String subject = "Resetowanie hasła Shutter.app";
         String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
+                "%s/%s/password-reset/%s",
+                BASE_URL,
+                login,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła w przypadku kiedy
+     * zostanie ono zmienione przez administratora systemu
+     *
+     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param login Login użytkownika, którego hasło ma zostać zresetowane
+     * @param token Żeton, który ma zostać wysłany
+     */
+    public void sendForcedPasswordResetEmail(String to, String login, VerificationToken token) {
+        String subject = "WAŻNE: Konieczność zmiany hasła - Shutter.app";
+        String body = "Twoje hasło zostało zmienione przez administratora. Aby ustawić nowe hasło dla " +
+                "twojego konta kliknij w podany link: " + String.format(
                 "%s/%s/password-reset/%s",
                 BASE_URL,
                 login,
@@ -282,4 +307,5 @@ public class EmailService {
             throw ExceptionFactory.emailException(e.getMessage());
         }
     }
+
 }
