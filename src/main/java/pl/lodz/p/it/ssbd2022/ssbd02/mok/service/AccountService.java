@@ -142,6 +142,9 @@ public class AccountService {
             throw ExceptionFactory.wrongPasswordException();
         }
         String hashed = BCryptUtils.generate(newPassword.toCharArray());
+        if (!isPasswordUniqueForUser(hashed, target)) {
+            throw ExceptionFactory.nonUniquePasswordException();
+        }
         target.setPassword(hashed);
         accountFacade.update(target);
     }
@@ -295,7 +298,7 @@ public class AccountService {
      * @param account obiekt encji użytkownika
      * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    private void addNewAccount(Account account) throws BaseApplicationException{
+    private void addNewAccount(Account account) throws BaseApplicationException {
         try {
             accountFacade.persist(account);
         } catch (PersistenceException ex) {
@@ -470,5 +473,15 @@ public class AccountService {
                 allRecords,
                 list
         );
+    }
+
+    /**
+     * Sprawdza, czy dany użytkownik miał już dane hasło ustawione w przeszłości
+     * @param newPassword nowe hasło do sprawdzenia
+     * @param account użytkownik zmieniający hasło
+     * @return true jeżeli użytkownik nie miał ustawionego danego hasła
+     */
+    private boolean isPasswordUniqueForUser(String newPassword, Account account) {
+        return account.getOldPasswordList().stream().noneMatch(op -> op.getPassword().equals(newPassword));
     }
 }
