@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -49,6 +50,9 @@ public class AuthController {
     @Inject
     private AccountEndpoint accountEndpoint;
 
+    @Inject
+    OneTimeCodeUtils oneTimeCodeUtils;
+
     @Context
     HttpServletRequest httpServletRequest;
 
@@ -74,8 +78,9 @@ public class AuthController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(@NotNull LoginData data) throws BaseApplicationException {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
+        String secret = accountEndpoint.getSecret(data.getLogin());
 
-        if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
+        if (validationResult.getStatus() == CredentialValidationResult.Status.VALID && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
             String token = JWTHandler.generateJWT(validationResult);
 
             if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
@@ -87,7 +92,7 @@ public class AuthController {
 
             LOGGER.log(
                     Level.INFO,
-                "Successful authentication for user {0} from IP {1}",
+                    "Successful authentication for user {0} from IP {1}",
                     new Object[]{data.getLogin(), httpServletRequest.getRemoteAddr()}
             );
 

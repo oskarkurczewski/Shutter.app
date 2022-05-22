@@ -197,6 +197,18 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     /**
+     * Zwraca wartość secret użytkownika o danym loginie
+     *
+     * @param login nazwa użytkownika
+     * @return secret
+     */
+    @PermitAll
+    public String getSecret(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return account.getSecret();
+    }
+
+    /**
      * Zwraca informacje o zalogowanym użytkowniku
      *
      * @return obiekt DTO informacji o użytkowniku
