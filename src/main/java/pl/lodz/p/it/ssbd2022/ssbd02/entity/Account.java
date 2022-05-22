@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,6 +81,9 @@ public class Account extends ManagedEntity {
     @Column(name = "failed_logins", nullable = false)
     @ToString.Exclude
     private Integer failedLogInAttempts;
+
+    @Column(name = "last_login", nullable = false)
+    private LocalDateTime lastLogIn;
 
     /**
      * Lista reprezentująca poziomy dostępu danego konta

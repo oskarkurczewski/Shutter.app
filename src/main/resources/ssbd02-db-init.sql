@@ -24,6 +24,7 @@ CREATE TABLE public.account (
     registered boolean DEFAULT false NOT NULL,
     active boolean DEFAULT true NOT NULL,
     failed_logins integer DEFAULT 0 NOT NULL,
+    last_login timestamp,
     created_by bigint,
     created_at timestamp,
     modified_by bigint,
