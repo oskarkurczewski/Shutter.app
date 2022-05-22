@@ -118,4 +118,8 @@ public class ExceptionFactory {
     public static UserNotInGroupException userNotInGroupException() {
         return new UserNotInGroupException("exception.user_not_in_group");
     }
+
+    public static NonUniquePasswordException nonUniquePasswordException() {
+        return new NonUniquePasswordException("exception.password.not_unique");
+    }
 }
