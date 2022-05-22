@@ -188,7 +188,7 @@ public class AccountService {
         );
 
         if(accessLevelFound != null) {
-            if (accessLevelFound.getActive() == active) {
+            if (accessLevelFound.getActive().equals(active)) {
                 throw new CannotChangeException("exception.access_level.already_set");
             }
 
