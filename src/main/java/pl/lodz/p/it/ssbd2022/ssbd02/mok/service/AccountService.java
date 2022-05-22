@@ -109,6 +109,7 @@ public class AccountService {
     @RolesAllowed(changeSomeonesPassword)
     public void changeAccountPasswordAsAdmin(Account account, String password) throws BaseApplicationException {
         changePassword(account, password);
+        verificationTokenService.sendForcedPasswordResetToken(account);
     }
 
     /**

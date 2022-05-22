@@ -7,9 +7,12 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeSomeonesPassword;
 
 public class VerificationTokenService {
     private static final int TOKEN_TIME = 20;
@@ -130,6 +133,21 @@ public class VerificationTokenService {
         removeOldToken(account, TokenType.PASSWORD_RESET);
         VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
         emailService.sendPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
+    }
+
+    /**
+     * Wysyła na adres e-mail wskazanego użytkownika link zawierający żeton resetu hasła, w przypadku, kiedy
+     * zostanie ono zmienione przez administratora systemu
+     *
+     * @param account Konto, na które zostanie wysłany email z żetonem
+     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     */
+    @RolesAllowed(changeSomeonesPassword)
+    public void sendForcedPasswordResetToken(Account account) throws NoAccountFound {
+        checkAccount(account);
+        removeOldToken(account, TokenType.PASSWORD_RESET);
+        VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
+        emailService.sendForcedPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
     }
 
     /**
