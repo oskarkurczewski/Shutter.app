@@ -246,4 +246,23 @@ public class AccountController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
+     *
+     * @return Odpowiedź HTTP
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     */
+    @POST
+    @Path("/stop-being-photographer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response stopBeingPhotographer(
+
+    ) throws CannotChangeException, DataNotFoundException, NoAuthenticatedAccountFound, NoPhotographerFound {
+        accountEndpoint.stopBeingPhotographer();
+        return Response.status(Response.Status.OK).build();
+    }
+
+
 }

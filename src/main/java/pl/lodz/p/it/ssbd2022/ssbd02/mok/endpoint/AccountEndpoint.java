@@ -152,6 +152,24 @@ public class AccountEndpoint {
     }
 
     /**
+     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     *
+     * @throws NoAuthenticatedAccountFound   W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({stopBeingPhotographer})
+    public void stopBeingPhotographer() throws NoAuthenticatedAccountFound, DataNotFoundException, CannotChangeException, NoPhotographerFound {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        photographerService.hidePhotographerInfo(account.getLogin());
+        accountService.stopBeingPhotographer(account);
+    }
+
+
+
+    /**
      * Dokonuje potwierdzenia konta używając tokenu weryfikacyjnego wysłanego na adres email.
      *
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji

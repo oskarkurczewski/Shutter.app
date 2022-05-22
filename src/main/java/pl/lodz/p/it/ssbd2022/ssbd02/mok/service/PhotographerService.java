@@ -4,6 +4,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
@@ -66,6 +67,24 @@ public class PhotographerService {
 
         photographerInfoFacade.persist(photographerInfo);
     }
+
+    /**
+     * Ukrywa informacje o fotografie
+     *
+     * @param login Login Konto fotografa, któremu chcemy ukryć informacje
+     */
+    public void hidePhotographerInfo(String login) throws NoPhotographerFound, CannotChangeException {
+        PhotographerInfo photographerInfo = photographerInfoFacade.findPhotographerByLogin(login);
+
+        if (photographerInfo.getVisible()) {
+            photographerInfo.setVisible(false);
+            photographerInfoFacade.persist(photographerInfo);
+        } else {
+            throw ExceptionFactory.cannotChangeException();
+        }
+
+    }
+
 
     /**
      * Szuka fotografa

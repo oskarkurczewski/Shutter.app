@@ -12,6 +12,10 @@ public class ExceptionFactory {
         return new DatabaseException("exception.database");
     }
 
+    public static CannotChangeException cannotChangeException() {
+        return new CannotChangeException("exception.cannotchange");
+    }
+
     public static DataNotFoundException dataNotFoundException() {
         return new DataNotFoundException("exception.notfound");
     }
@@ -47,7 +51,7 @@ public class ExceptionFactory {
     public static WrongPasswordException wrongPasswordException() {
         return new WrongPasswordException("mes");
     }
-
+    
     public static AvailabilityOverlapException availabilityOverlapException() {
         return new AvailabilityOverlapException("exception.availability.overlap");
     }
