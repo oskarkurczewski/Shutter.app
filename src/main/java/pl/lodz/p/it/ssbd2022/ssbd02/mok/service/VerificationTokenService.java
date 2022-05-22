@@ -5,25 +5,32 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.TokenType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeSomeonesPassword;
+
 public class VerificationTokenService {
-    private static final int TOKEN_TIME = 20;
+
     @Inject
     private TokenFacade tokenFacade;
     @Inject
     private EmailService emailService;
+
+    @Inject
+    private ConfigLoader configLoader;
+
 
     /**
      * Pomocnicza funkcja do sprawdzania podstawowych warunków żetonu
      *
      * @param token     żeton do sprawdzenia
      * @param tokenType typ żetonu jako enum
-     * @return zwraca żeton w celu dalszego sprawdzania warunków
      * @throws InvalidTokenException Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws ExpiredTokenException Żeton wygasł
      * @see TokenType
@@ -42,7 +49,7 @@ public class VerificationTokenService {
      * Pomocnicza funkcja do sprawdzania, czy konto jest aktywne oraz zarejestrowane
      *
      * @param account Konto do sprawdzenia
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     private void checkAccount(Account account) throws NoAccountFound {
         if (!account.getActive() || !account.getRegistered()) {
@@ -64,31 +71,13 @@ public class VerificationTokenService {
     }
 
     /**
-     * Pomocnicza funkcja do tworzenia żetonu weryfikacyjnego
-     *
-     * @param account   Konto, dla którego zostanie utworzony wysłany email z żetonem
-     * @param tokenType typ żetonu
-     * @return utworzony żeton
-     * @see TokenType
-     */
-    private VerificationToken createNewToken(Account account, TokenType tokenType) throws BaseApplicationException {
-        VerificationToken registrationToken = new VerificationToken(
-                LocalDateTime.now().plusMinutes(VerificationTokenService.TOKEN_TIME),
-                account,
-                tokenType
-        );
-
-        return tokenFacade.persist(registrationToken);
-    }
-
-    /**
      * Tworzy żeton używany do aktywacji konta po potwierdzeniu rejestracji przez użytkownika
      *
      * @param account Obiekt klasy Account reprezentującej dane użytkownika
      */
     public void sendRegistrationToken(Account account) throws BaseApplicationException {
         VerificationToken registrationToken = new VerificationToken(
-                LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusHours(configLoader.getRegistrationConfirmationTokenLifetime()),
                 account,
                 TokenType.REGISTRATION_CONFIRMATION
         );
@@ -124,13 +113,42 @@ public class VerificationTokenService {
      * Wysyła na adres e-mail wskazanego użytkownika link zawierający żeton resetu hasła
      *
      * @param account Konto, na które zostanie wysłany email z żetonem
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     public void sendPasswordResetToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.PASSWORD_RESET);
-        VerificationToken verificationToken = createNewToken(account, TokenType.PASSWORD_RESET);
-        emailService.sendPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusMinutes(configLoader.getPasswordResetTokenLifetime()),
+                account,
+                TokenType.PASSWORD_RESET
+        );
+        tokenFacade.persist(verificationToken);
+
+        emailService.sendPasswordResetEmail(account.getEmail(), verificationToken);
+    }
+
+    /**
+     * Wysyła na adres e-mail wskazanego użytkownika link zawierający żeton resetu hasła, w przypadku, kiedy
+     * zostanie ono zmienione przez administratora systemu
+     *
+     * @param account Konto, na które zostanie wysłany email z żetonem
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     */
+    @RolesAllowed(changeSomeonesPassword)
+    public void sendForcedPasswordResetToken(Account account) throws BaseApplicationException {
+        checkAccount(account);
+        removeOldToken(account, TokenType.PASSWORD_RESET);
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusHours(configLoader.getForcedPasswordResetTokenLifetime()),
+                account,
+                TokenType.PASSWORD_RESET
+        );
+        tokenFacade.persist(verificationToken);
+
+        emailService.sendForcedPasswordResetEmail(account.getEmail(), verificationToken);
     }
 
     /**
@@ -141,38 +159,47 @@ public class VerificationTokenService {
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
-    public void confirmPasswordReset(String token)
+    public Account confirmPasswordReset(String token)
             throws BaseApplicationException {
         VerificationToken resetToken = tokenFacade.find(token);
         checkToken(resetToken, TokenType.PASSWORD_RESET);
         tokenFacade.remove(resetToken);
+        return resetToken.getTargetUser();
     }
 
     /**
      * Wysyła link zawierający żeton zmiany adresu email
      *
      * @param account Konto, na które zostanie wysłany email z żetonem
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     public void sendEmailUpdateToken(Account account) throws BaseApplicationException {
         checkAccount(account);
         removeOldToken(account, TokenType.EMAIL_UPDATE);
-        VerificationToken verificationToken = createNewToken(account, TokenType.EMAIL_UPDATE);
-        emailService.sendEmailUpdateEmail(account.getEmail(), account.getLogin(), verificationToken);
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusHours(configLoader.getEmailResetTokenLifetime()),
+                account,
+                TokenType.EMAIL_UPDATE
+        );
+        tokenFacade.persist(verificationToken);
+
+        emailService.sendEmailUpdateEmail(account.getEmail(), verificationToken);
     }
 
     /**
-     * Sprawdza oraz usuwa żeton weryfikacyjny użyty do aktualizacji hasła
+     * Sprawdza oraz usuwa żeton weryfikacyjny użyty do aktualizacji adresu email
      *
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
      * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
-    public void confirmEmailUpdate(String token)
+    public Account confirmEmailUpdate(String token)
             throws BaseApplicationException {
         VerificationToken resetToken = tokenFacade.find(token);
         checkToken(resetToken, TokenType.EMAIL_UPDATE);
         tokenFacade.remove(resetToken);
+        return resetToken.getTargetUser();
     }
 }

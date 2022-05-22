@@ -3,12 +3,12 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,7 +17,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -32,12 +32,18 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         super(Account.class);
     }
 
-    @Override
-    public EntityManager getEm() {
-        return em;
+    /**
+     * dodaje znak '%' na początku i na końcu struny
+     *
+     * @param s struna
+     * @return struna wynikowa
+     */
+    private String addPercent(String s) {
+        return "%" + s + "%";
     }
 
     @Override
+    @PermitAll
     public Account persist(Account entity) throws BaseApplicationException {
         try {
             return super.persist(entity);
@@ -51,6 +57,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     public Account update(Account entity) throws BaseApplicationException {
         try {
             return super.update(entity);
@@ -64,6 +71,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     public void remove(Account entity) throws BaseApplicationException {
         try {
             super.remove(entity);
@@ -76,6 +84,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         }
     }
 
+    @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
         query.setParameter("login", login);
@@ -152,7 +161,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param recordsPerPage liczba rekordów na stronie
      * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
      * @param order          kolejność sortowania
-     * @param login          nazwa użytkownika
+     * @param login          Login użytkownika
      * @param email          email
      * @param name           imie
      * @param surname        nazwisko
@@ -161,6 +170,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @return lista wynikowa zapytania do bazy danych
      * @throws WrongParameterException zła nazwa kolumny
      */
+    @PermitAll
     public List<String> getAccountList(
             int page,
             int recordsPerPage,
@@ -219,7 +229,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     /**
      * Zwraca ilość rekordów po przefiltrowaniu
      *
-     * @param login      nazwa użytkownika
+     * @param login      Login użytkownika
      * @param email      email
      * @param name       imie
      * @param surname    nazwisko
@@ -227,6 +237,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param active     czy konto aktywne
      * @return ilość rekordów
      */
+    @PermitAll
     public Long getAccountListSize(
             String login,
             String email,
@@ -254,13 +265,58 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return em.createQuery(query).getSingleResult();
     }
 
-    /**
-     * dodaje znak '%' na początku i na końcu struny
-     *
-     * @param s struna
-     * @return struna wynikowa
-     */
-    private String addPercent(String s) {
-        return "%" + s + "%";
+    @Override
+    @PermitAll
+    public EntityManager getEm() {
+        return em;
     }
+
+
+    /**
+     * Zwraca ilość rekordów po przefiltrowaniu
+     *
+     * @param name imie
+     * @return ilość rekordów
+     */
+    @PermitAll
+    public Long getAccountListSizeNameSurname(
+            String name
+    ) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Account> table = query.from(Account.class);
+        query.select(criteriaBuilder.count(table));
+
+        query.where(
+                criteriaBuilder.or(
+                        criteriaBuilder.like(
+                                criteriaBuilder.lower(table.get("name")), addPercent(name.toLowerCase())
+                        ),
+                        criteriaBuilder.like(
+                                criteriaBuilder.lower(table.get("surname")), addPercent(name.toLowerCase())
+                        )
+                )
+        );
+
+        return em.createQuery(query).getSingleResult();
+    }
+
+    @PermitAll
+    public List<Account> getWithLastLoginBefore(LocalDateTime dateTime) throws BaseApplicationException {
+        TypedQuery<Account> query = getEm().createNamedQuery("account.findByLastLogInIsBefore", Account.class);
+        try {
+            query.setParameter("lastLogIn", dateTime);
+            List<Account> res = query.getResultList();
+            return res;
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
 }

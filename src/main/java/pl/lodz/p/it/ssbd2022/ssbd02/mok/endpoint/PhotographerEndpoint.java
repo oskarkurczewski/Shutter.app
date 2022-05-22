@@ -35,7 +35,7 @@ public class PhotographerEndpoint extends AbstractEndpoint {
     /**
      * Szuka fotografa
      *
-     * @param login nazwa użytkownika fotografa
+     * @param login Login użytkownika fotografa
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
@@ -48,10 +48,11 @@ public class PhotographerEndpoint extends AbstractEndpoint {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
         return new BasePhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
     }
+
     /**
      * Szuka fotografa
      *
-     * @param login nazwa użytkownika fotografa
+     * @param login Login użytkownika fotografa
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik

@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 
 import javax.annotation.PostConstruct;
@@ -27,12 +28,15 @@ public class AutoReminderService {
     @Inject
     private TokenFacade tokenFacade;
 
+    @Inject
+    private ConfigLoader configLoader;
+
     @Resource
     TimerService timerService;
 
     @PostConstruct
     public void init() {
-        long interval = 12 * 60 * 60 * 1000;
+        long interval = (long) configLoader.getRegistrationConfirmationTokenLifetime() * 60 * 60 * 1000;
         timerService.createTimer(
                 0,
                 interval,
@@ -46,7 +50,7 @@ public class AutoReminderService {
         try {
             toRemindTokens = tokenFacade.findExpiredAfterOfType(
                     TokenType.REGISTRATION_CONFIRMATION,
-                    LocalDateTime.now().plusHours(12)
+                    LocalDateTime.now().plusHours(configLoader.getRegistrationConfirmationTokenLifetime())
             );
         } catch (BaseApplicationException ex) {
             return;

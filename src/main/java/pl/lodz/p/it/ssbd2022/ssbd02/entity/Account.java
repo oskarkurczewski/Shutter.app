@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "account.findByLogin", query = "SELECT u from Account u WHERE u.login = :login"),
         @NamedQuery(name = "account.getAccessLevelValue", query = "SELECT level FROM AccessLevelValue AS level WHERE level.name = :access_level"),
-
+        @NamedQuery(name = "account.findByLastLogInIsBefore", query = "SELECT a from Account AS a where a.lastLogIn < :lastLogIn")
 })
 public class Account extends ManagedEntity {
 
@@ -76,10 +77,18 @@ public class Account extends ManagedEntity {
     @ToString.Exclude
     private String password;
 
+    @Size(max = 36)
+    @Column(name = "secret", nullable = false)
+    @ToString.Exclude
+    private String secret;
+
     @NotNull
     @Column(name = "failed_logins", nullable = false)
     @ToString.Exclude
     private Integer failedLogInAttempts;
+
+    @Column(name = "last_login", nullable = false)
+    private LocalDateTime lastLogIn;
 
     /**
      * Lista reprezentująca poziomy dostępu danego konta
@@ -117,6 +126,10 @@ public class Account extends ManagedEntity {
     @ToString.Exclude
     @OneToMany(mappedBy = "account")
     private List<Reservation> reservationsList = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "account")
+    private List<OldPassword> oldPasswordList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

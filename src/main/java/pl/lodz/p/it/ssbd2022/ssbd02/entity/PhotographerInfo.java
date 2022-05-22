@@ -33,7 +33,6 @@ public class PhotographerInfo extends ManagedEntity {
     private Long version;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
     @NotNull
     private Long id;

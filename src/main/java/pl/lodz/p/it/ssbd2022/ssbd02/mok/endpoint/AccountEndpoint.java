@@ -1,14 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -38,14 +35,16 @@ public class AccountEndpoint extends AbstractEndpoint {
     @Inject
     private VerificationTokenService verificationTokenService;
 
+    @Inject
+    private PhotographerService photographerService;
+
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
      *
-     * @param login login użytkownika dla którego chcemy zmienić status
-     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
+     * @param login Login użytkownika, dla którego chcemy zmienić status
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
-    @RolesAllowed({blockAccount})
+    @RolesAllowed(blockAccount)
     public void blockAccount(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountStatus(account, false);
@@ -54,11 +53,10 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na odblokowany
      *
-     * @param login login użytkownika dla którego chcemy zmienić status
-     * @throws NoAccountFound kiedy użytkonwik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
+     * @param login Login użytkownika, dla którego chcemy zmienić status
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
-    @RolesAllowed({unblockAccount})
+    @RolesAllowed(unblockAccount)
     public void unblockAccount(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountStatus(account, true);
@@ -126,12 +124,46 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({grantAccessLevel, revokeAccessLevel})
     public void changeAccountAccessLevel(String login, AccountAccessLevelChangeDto data)
             throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName(data.getAccessLevel());
         accountService.changeAccountAccessLevel(account, accessLevelValue, data.getActive());
+    }
+
+    /**
+     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     *
+     * @throws NoAuthenticatedAccountFound   W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({becomePhotographer})
+    public void becomePhotographer() throws BaseApplicationException {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName("PHOTOGRAPHER");
+        accountService.changeAccountAccessLevel(account, accessLevelValue, true);
+        photographerService.createOrActivatePhotographerInfo(account);
+    }
+
+    /**
+     * Ukrywa informacje o fotografie i ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
+     *
+     * @throws NoAuthenticatedAccountFound   W przypadku nieznalezienia konta użytkownika w bazie danych
+     * na podstawie żetonu JWT
+     * @throws DataNotFoundException    W przypadku nieznalezienia na koncie użytkownika roli fotografa
+     * @throws CannotChangeException    W przypadku próby odebrania roli fotografa przez uzytkownika nie będącego
+     * fotografem
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({stopBeingPhotographer})
+    public void stopBeingPhotographer() throws BaseApplicationException {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        photographerService.hidePhotographerInfo(account.getLogin());
+        accountService.stopBeingPhotographer(account);
     }
 
     /**
@@ -149,7 +181,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @throws NoAuthenticatedAccountFound W przypadku gdy nie znaleziono aktualnego użytkownika
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @RolesAllowed(editOwnAccountData)
     public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
@@ -162,7 +194,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika przez administratora
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
-     * @throws NoAccountFound W przypadku gdy nie znaleziono użytkownika o danym loginie
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @RolesAllowed({ADMINISTRATOR})
     public void editAccountInfoAsAdmin(String login, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws BaseApplicationException {
@@ -174,9 +206,9 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca informacje o dowolnym użytkowniku
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getEnhancedAccountInfo)
@@ -188,16 +220,27 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca informacje o dowolnym użytkowniku
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getAccountInfo)
     public BaseAccountInfoDto getAccountInfo(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         return new BaseAccountInfoDto(accountService.getAccountInfo(account));
+    }
+
+    /**
+     * Zwraca wartość secret użytkownika o danym loginie
+     *
+     * @param login Login użytkownika
+     * @return secret
+     */
+    @PermitAll
+    public String getSecret(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return account.getSecret();
     }
 
     /**
@@ -232,26 +275,23 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     /**
-     * Resetuje hasło dla użytkownika o podanym loginie
+     * Resetuje hasło użytkownika
      *
-     * @param login            Login użytkownika, dla którego ma zostać zresetowane hasło
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
-     * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws ExpiredTokenException    W przypadku gdy żeton wygasł
-     * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
+     * @throws NoVerificationTokenFound Żeton wygasł
      */
     @PermitAll
-    public void resetPassword(String login, ResetPasswordDto resetPasswordDto) throws BaseApplicationException {
-        Account account = accountService.findByLogin(login);
-        accountService.resetPassword(account, resetPasswordDto);
+    public void resetPassword(ResetPasswordDto resetPasswordDto) throws BaseApplicationException {
+        accountService.resetPassword(resetPasswordDto);
     }
 
     /**
      * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
      *
      * @param login Login użytkownika, na którego email ma zostać wysłany link
-     * @throws NoAccountFound Jeżeli konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     @PermitAll
     public void requestPasswordReset(String login) throws BaseApplicationException {
@@ -263,8 +303,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Rejestruje udane logowanie na konto użytkownika.
      *
      * @param login Login użytkownika, dla którego konta należy zarejestrować udaną operację logowania
-     * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane udane
-     *                        logowanie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
     public void registerSuccessfulLogInAttempt(String login) throws BaseApplicationException {
@@ -276,8 +315,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Rejestruje nieudane logowanie na konto użytkownika.
      *
      * @param login Login użytkownika, dla którego konta należy zarejestrować nieudaną operację logowania
-     * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane nieudane
-     *                        logowanie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
     public void registerFailedLogInAttempt(String login) throws BaseApplicationException {
@@ -289,7 +327,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Powiadamia administratora o zalogowaniu na jego konto poprzez wysłanie na adres email przypisany
      * do konta o podanym loginie wiadomości zawierającej adres IP, z którego dokonane było logowanie
      *
-     * @param login     login konto administratora, na które doszło do zalogowania
+     * @param login     Login konto administratora, na które doszło do zalogowania
      * @param ipAddress adres IP, z którego zostało wykonane logowanie
      */
     @PermitAll
@@ -302,7 +340,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wysyła link zawierający żeton zmiany adresu email
      *
      * @param requestEmailUpdateDto E-mail użytkownika, na którego e-mail ma zostać wysłany link
-     * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound              Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @RolesAllowed((updateEmail))
@@ -313,19 +351,41 @@ public class AccountEndpoint extends AbstractEndpoint {
 
 
     /**
-     * Aktualizuje email danego użytkownika
+     * Aktualizuje email użytkownika
      *
-     * @param login          Login użytkownika, dla którego być zmieniony email
      * @param emailUpdateDto Informacje do zmiany emaila użytkownika
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))
-    public void updateEmail(String login, EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
+    public void updateEmail(EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
+        accountService.updateEmail(emailUpdateDto);
+    }
+
+    @RolesAllowed(getAccountInfo)
+    public ListResponseDto<String> findByNameSurname(
+            String name,
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            String order
+    ) throws WrongParameterException {
+        return accountService.findByNameSurname(name, page, recordsPerPage, orderBy, order);
+    }
+
+
+    /**
+     * Wysyła wymagany do zalogowania kod 2fa na adres email użytkownika
+     *
+     * @param login login użytkownika, dla którego ma zostać utworzony kod 2fa
+     * @throws BaseApplicationException W przypadku kiedy użytkownik o podanym loginie nie zostanie znaleziony
+     *                                  lub wystąpi nieoczekiwany błąd
+     */
+    @PermitAll
+    public void reguest2faCode(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
-        accountService.updateEmail(account, emailUpdateDto);
+        accountService.send2faCode(account);
     }
 
 }

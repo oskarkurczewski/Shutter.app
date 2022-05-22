@@ -149,6 +149,9 @@
     <security-role>
         <role-name>updateEmail</role-name>
     </security-role>
+    <security-role>
+        <role-name>changeGroup</role-name>
+    </security-role>
 
     <security-constraint>
         <web-resource-collection>

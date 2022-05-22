@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.util;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.EmailException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 import sendinblue.ApiClient;
 import sendinblue.ApiException;
 import sendinblue.Configuration;
@@ -27,36 +26,24 @@ import java.util.Properties;
 @Stateless
 @Interceptors(LoggingInterceptor.class)
 public class EmailService {
-
-    private static final String CONFIG_FILE_NAME = "config.email.properties";
-    private static final String BASE_URL = "http://studapp.it.p.lodz.pl:8002";
-
     private TransactionalEmailsApi api;
     private SendSmtpEmailSender sender;
     @Inject
     private ConfigLoader configLoader;
-    private Properties properties;
 
 
     @PostConstruct
     public void init() {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-        try {
-            configLoader = new ConfigLoader();
-            properties = configLoader.loadProperties(CONFIG_FILE_NAME);
-        } catch (NoConfigFileFound e) {
-            throw new RuntimeException(e);
-        }
-
         // Configure API key authorization: api-key
         ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
-        apiKey.setApiKey(properties.getProperty("api.key"));
+        apiKey.setApiKey(configLoader.getEmailApiKey());
 
         api = new TransactionalEmailsApi();
         sender = new SendSmtpEmailSender();
-        sender.setEmail(properties.getProperty("email.sender.email"));
-        sender.setName(properties.getProperty("email.sender.name"));
+        sender.setEmail(configLoader.getEmailSenderAddress());
+        sender.setName(configLoader.getEmailSenderName());
     }
 
     /**
@@ -69,7 +56,7 @@ public class EmailService {
         String subject = "Weryfikacja konta Shutter.app";
         String body = "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
                 "%s/confirm/%s",
-                BASE_URL,
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -90,7 +77,7 @@ public class EmailService {
         String body = "Przypominamy o konieczności potwierdzenia konta w Shutter.app. " +
                 "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
                 "%s/confirm/%s",
-                BASE_URL,
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -106,12 +93,33 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendPasswordResetEmail(String to, String login, VerificationToken token) {
+    public void sendPasswordResetEmail(String to, VerificationToken token) {
         String subject = "Resetowanie hasła Shutter.app";
         String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
-                "%s/%s/password-reset/%s",
-                BASE_URL,
-                login,
+                "%s/password-reset/%s",
+                configLoader.getEmailAppUrl(),
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła w przypadku kiedy
+     * zostanie ono zmienione przez administratora systemu
+     *
+     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param token Żeton, który ma zostać wysłany
+     */
+    public void sendForcedPasswordResetEmail(String to, VerificationToken token) {
+        String subject = "WAŻNE: Konieczność zmiany hasła - Shutter.app";
+        String body = "Twoje hasło zostało zmienione przez administratora. Aby ustawić nowe hasło dla " +
+                "twojego konta kliknij w podany link: " + String.format(
+                "%s/password-reset/%s",
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -141,8 +149,8 @@ public class EmailService {
     /**
      * Wysyła na podany adres email ostrzeżenie o logowaniu na konto administratora
      *
-     * @param to        email, na który zostać ma wysłane powiadomienie. Powinien być to email administratora systemu
-     * @param login     login użytkownika, na którego email ma zostać przesłane powiadomienie
+     * @param to        Email, na który zostać ma wysłane powiadomienie. Powinien być to email administratora systemu
+     * @param login     Login użytkownika, na którego email ma zostać przesłane powiadomienie
      * @param ipAddress adres IP, z którego dokonano logowania na konto administratora
      */
     public void sendAdminAuthenticationWaringEmail(String to, String login, String ipAddress) {
@@ -165,12 +173,31 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendEmailUpdateEmail(String to, String login, VerificationToken token) {
-        String subject = "Resetowanie hasła Shutter.app";
+    public void sendEmailUpdateEmail(String to, VerificationToken token) {
+        String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
-                "%s/%s/email-update/%s",
-                BASE_URL,
-                login,
+                "%s/email-update/%s",
+                configLoader.getEmailAppUrl(),
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca do wskazanego użytkownika maila z przypomnieniem o żądaniu zmiany maila konta
+     *
+     * @param to    adresat wiadomości email
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do zmiany maila
+     */
+    public void sendEmailResetReminderEmail(String to, VerificationToken token) {
+        String subject = "PRZYPOMNIENIE: Zmiana adresu e-mail Shutter.app";
+        String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
+                "%s/email-update/%s",
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -190,6 +217,23 @@ public class EmailService {
         String subject = "Konto odblokowane - Shutter.app";
         String body = "Twoje konto w aplikacji Shutter.app zostało odblokowane. Życzymy miłego dalszego " +
                 "korzystania z usługi.";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
+     * zablokowane w systemie.
+     *
+     * @param to adresat wiadomości email
+     */
+    public void sendAccountBlocked(String to) {
+        String subject = "Konto zablokowane - Shutter.app";
+        String body = "Twoje konto w aplikacji Shutter.app zostało zablokowane. Aby je " +
+                "odblokować skontaktuj się z administratorem systemu.";
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -281,5 +325,10 @@ public class EmailService {
         } catch (ApiException e) {
             throw ExceptionFactory.emailException(e.getMessage());
         }
+    }
+
+    // TODO do zrobienia
+    public void send2faCodeEmail(String to, String code) {
+        throw new UnsupportedOperationException();
     }
 }

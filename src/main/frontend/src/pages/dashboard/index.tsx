@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const DashboardPage = () => {
    const dispatch = useAppDispatch();
    const name = useAppSelector((state) => state.auth.username);
-   const roles = useAppSelector((state) => state.auth.accessLevel);
+   const roles = useAppSelector((state) => state.auth.roles);
 
    const navigate = useNavigate();
 
