@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
@@ -256,7 +255,7 @@ public class AccountController extends AbstractController {
             @NotNull @Valid EditAccountInfoAsAdminDto editAccountInfoAsAdminDto
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
-        repeat(() ->  accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoAsAdminDto), accountEndpoint);
+        repeat(() -> accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoAsAdminDto), accountEndpoint);
     }
 
     /**
@@ -316,6 +315,19 @@ public class AccountController extends AbstractController {
     ) throws BaseApplicationException {
         repeat(() -> accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
         return Response.status(Response.Status.OK).build();
+    }
+
+    @GET
+    @Path("/list-name")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListResponseDto<String> findByNameSurname(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("columnName") @NotNull String columnName,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("q") @NotNull String query
+    ) throws BaseApplicationException {
+        return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
     }
 
 }

@@ -447,4 +447,23 @@ public class AccountService {
     public void sendAdminAuthenticationWarningEmail(Account account, String ipAddress) {
         emailService.sendAdminAuthenticationWaringEmail(account.getEmail(), account.getLogin(), ipAddress);
     }
+
+    @RolesAllowed(getAccountInfo)
+    public ListResponseDto<String> findByNameSurname(
+            String name,
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            String order
+    ) throws WrongParameterException {
+        List<String> list = accountFacade.findByNameSurname(name, page, recordsPerPage, orderBy, order);
+        Long allRecords = accountFacade.getAccountListSizeNameSurname(name);
+        return new ListResponseDto<>(
+                page,
+                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                allRecords,
+                list
+        );
+    }
 }

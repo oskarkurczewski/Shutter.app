@@ -3,9 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -17,7 +16,6 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import java.util.List;
 
 
@@ -32,9 +30,14 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         super(Account.class);
     }
 
-    @Override
-    public EntityManager getEm() {
-        return em;
+    /**
+     * dodaje znak '%' na początku i na końcu struny
+     *
+     * @param s struna
+     * @return struna wynikowa
+     */
+    private String addPercent(String s) {
+        return "%" + s + "%";
     }
 
     @Override
@@ -254,13 +257,39 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return em.createQuery(query).getSingleResult();
     }
 
-    /**
-     * dodaje znak '%' na początku i na końcu struny
-     *
-     * @param s struna
-     * @return struna wynikowa
-     */
-    private String addPercent(String s) {
-        return "%" + s + "%";
+    @Override
+    public EntityManager getEm() {
+        return em;
     }
+
+
+    /**
+     * Zwraca ilość rekordów po przefiltrowaniu
+     *
+     * @param name imie
+     * @return ilość rekordów
+     */
+    public Long getAccountListSizeNameSurname(
+            String name
+    ) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Account> table = query.from(Account.class);
+        query.select(criteriaBuilder.count(table));
+
+        query.where(
+                criteriaBuilder.or(
+                        criteriaBuilder.like(
+                                criteriaBuilder.lower(table.get("name")), addPercent(name.toLowerCase())
+                        ),
+                        criteriaBuilder.like(
+                                criteriaBuilder.lower(table.get("surname")), addPercent(name.toLowerCase())
+                        )
+                )
+        );
+
+        return em.createQuery(query).getSingleResult();
+    }
+
+
 }

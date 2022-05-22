@@ -3,11 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -326,6 +323,17 @@ public class AccountEndpoint extends AbstractEndpoint {
     public void updateEmail(String login, EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.updateEmail(account, emailUpdateDto);
+    }
+
+    @RolesAllowed(getAccountInfo)
+    public ListResponseDto<String> findByNameSurname(
+            String name,
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            String order
+    ) throws WrongParameterException {
+        return accountService.findByNameSurname(name, page, recordsPerPage, orderBy, order);
     }
 
 }
