@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -31,7 +32,6 @@ public class PhotographerService {
     @Inject
     private PhotographerInfoFacade photographerInfoFacade;
 
-
     /**
      * Odnajduje informacje o fotografie na podstawie jego loginu
      *
@@ -41,6 +41,44 @@ public class PhotographerService {
     @PermitAll
     public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
         return photographerInfoFacade.findPhotographerByLogin(login);
+    }
+
+
+    /**
+     * Tworzy pusty obiekt reprezentujący informacje o fotografie
+     *
+     * @param account Account Konto fotografa, któremu chcemy dodać informacje
+     */
+    public void createEmptyPhotographerInfo(Account account) throws BaseApplicationException {
+        PhotographerInfo photographerInfo = new PhotographerInfo();
+
+        photographerInfo.setId(account.getId());
+        photographerInfo.setScore(0L);
+        photographerInfo.setReviewCount(0L);
+        photographerInfo.setAccount(account);
+        photographerInfo.setDescription("");
+        photographerInfo.setLatitude(null);
+        photographerInfo.setLongitude(null);
+        photographerInfo.setVisible(true);
+
+        photographerInfoFacade.persist(photographerInfo);
+    }
+
+    /**
+     * Ukrywa informacje o fotografie
+     *
+     * @param login Login Konto fotografa, któremu chcemy ukryć informacje
+     */
+    public void hidePhotographerInfo(String login) throws BaseApplicationException {
+        PhotographerInfo photographerInfo = photographerInfoFacade.findPhotographerByLogin(login);
+
+        if (photographerInfo.getVisible()) {
+            photographerInfo.setVisible(false);
+            photographerInfoFacade.persist(photographerInfo);
+        } else {
+            throw ExceptionFactory.cannotChangeException();
+        }
+
     }
 
     /**

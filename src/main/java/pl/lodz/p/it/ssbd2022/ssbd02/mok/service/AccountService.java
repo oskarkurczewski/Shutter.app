@@ -186,7 +186,7 @@ public class AccountService {
      * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(ADMINISTRATOR)
     public void changeAccountAccessLevel(Account account, AccessLevelValue accessLevelValue, Boolean active)
             throws BaseApplicationException {
 
@@ -240,6 +240,70 @@ public class AccountService {
                     accessLevelValue.getName()
             );
         }
+    }
+
+    /**
+     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     *
+     * @param account                   Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
+     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     *
+     */
+    @RolesAllowed(becomePhotographer)
+    public void becomePhotographer(Account account)
+            throws BaseApplicationException {
+
+        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
+                account,
+                accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER")
+        );
+
+        if (accessLevelFound != null) {
+            if (accessLevelFound.getActive()) {
+                throw ExceptionFactory.cannotChangeException();
+            }
+
+            accessLevelFound.setActive(true);
+            accessLevelFacade.update(accessLevelFound);
+        } else {
+            AccessLevelAssignment assignment = new AccessLevelAssignment();
+
+            assignment.setLevel(accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER"));
+            assignment.setAccount(account);
+            assignment.setActive(true);
+
+            accessLevelFacade.persist(assignment);
+        }
+    }
+
+
+    /**
+     * Odbiera rolę fotografa poprzez ustawienie poziomu dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
+     *
+     * @param account                   Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa
+     * @throws CannotChangeException    W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
+     *                                  tę rolę nieaktywną bądź wcale jej niemającego
+     *
+     */
+
+    @RolesAllowed(stopBeingPhotographer)
+    public void stopBeingPhotographer(Account account) throws BaseApplicationException {
+        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
+                account,
+                accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER")
+        );
+
+        if (accessLevelFound != null) {
+            if (accessLevelFound.getActive()) {
+                accessLevelFound.setActive(false);
+                accessLevelFacade.update(accessLevelFound);
+            } else {
+                throw ExceptionFactory.cannotChangeException();
+            }
+        } else {
+            throw ExceptionFactory.cannotChangeException();
+        }
+
     }
 
     /**

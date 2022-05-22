@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -33,6 +34,9 @@ public class AccountEndpoint extends AbstractEndpoint {
 
     @Inject
     private VerificationTokenService verificationTokenService;
+
+    @Inject
+    private PhotographerService photographerService;
 
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
@@ -126,6 +130,39 @@ public class AccountEndpoint extends AbstractEndpoint {
         Account account = accountService.findByLogin(login);
         AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName(data.getAccessLevel());
         accountService.changeAccountAccessLevel(account, accessLevelValue, data.getActive());
+    }
+
+    /**
+     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     *
+     * @throws NoAuthenticatedAccountFound   W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({becomePhotographer})
+    public void becomePhotographer() throws BaseApplicationException {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        accountService.becomePhotographer(account);
+        photographerService.createEmptyPhotographerInfo(account);
+    }
+
+    /**
+     * Ukrywa informacje o fotografie i ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
+     *
+     * @throws NoAuthenticatedAccountFound   W przypadku nieznalezienia konta użytkownika w bazie danych
+     * na podstawie żetonu JWT
+     * @throws DataNotFoundException    W przypadku nieznalezienia na koncie użytkownika roli fotografa
+     * @throws CannotChangeException    W przypadku próby odebrania roli fotografa przez uzytkownika nie będącego
+     * fotografem
+     * @see AccountAccessLevelChangeDto
+     */
+    @RolesAllowed({stopBeingPhotographer})
+    public void stopBeingPhotographer() throws BaseApplicationException {
+        Account account = authenticationContext.getCurrentUsersAccount();
+        photographerService.hidePhotographerInfo(account.getLogin());
+        accountService.stopBeingPhotographer(account);
     }
 
     /**

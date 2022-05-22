@@ -321,4 +321,42 @@ public class AccountController extends AbstractController {
     ) throws BaseApplicationException {
         return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
     }
+
+    /**
+     * Punkt końcowy pozwalający na zostanie fotografem
+     *
+     * @return Odpowiedź HTTP
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     */
+    @POST
+    @Path("/become-photographer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response becomePhotographer() throws BaseApplicationException {
+        accountEndpoint.becomePhotographer();
+        return Response.status(Response.Status.OK).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na zaprzestanie bycia fotografem
+     *
+     * @return Odpowiedź HTTP
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws NoAuthenticatedAccountFound W przypadku nieznalezienia konta użytkownika w bazie danych
+     * na podstawie żetonu JWT
+     * @throws NoPhotographerFound W przypadku nieznalezienia konta fotografa
+     *
+     */
+    @POST
+    @Path("/stop-being-photographer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response stopBeingPhotographer() throws BaseApplicationException {
+        accountEndpoint.stopBeingPhotographer();
+        return Response.status(Response.Status.OK).build();
+    }
+
+
 }
