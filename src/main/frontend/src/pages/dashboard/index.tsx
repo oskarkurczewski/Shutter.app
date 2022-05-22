@@ -20,7 +20,7 @@ const DashboardPage = () => {
    };
 
    return (
-      <section className="dashboard-wrapper">
+      <section className="dashboard-page-wrapper">
          <Card>
             <div className="header">
                <h3>Witaj {name}</h3>
