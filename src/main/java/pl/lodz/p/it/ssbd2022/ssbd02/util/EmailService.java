@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.util;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.EmailException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 import sendinblue.ApiClient;
 import sendinblue.ApiException;
 import sendinblue.Configuration;
@@ -92,15 +91,13 @@ public class EmailService {
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła
      *
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
-     * @param login Login użytkownika, którego hasło ma zostać zresetowane
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendPasswordResetEmail(String to, String login, VerificationToken token) {
+    public void sendPasswordResetEmail(String to, VerificationToken token) {
         String subject = "Resetowanie hasła Shutter.app";
         String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
-                "%s/%s/password-reset/%s",
+                "%s/password-reset/%s",
                 configLoader.getEmailAppUrl(),
-                login,
                 token.getToken()
         );
         try {
@@ -115,16 +112,14 @@ public class EmailService {
      * zostanie ono zmienione przez administratora systemu
      *
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
-     * @param login Login użytkownika, którego hasło ma zostać zresetowane
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendForcedPasswordResetEmail(String to, String login, VerificationToken token) {
+    public void sendForcedPasswordResetEmail(String to, VerificationToken token) {
         String subject = "WAŻNE: Konieczność zmiany hasła - Shutter.app";
         String body = "Twoje hasło zostało zmienione przez administratora. Aby ustawić nowe hasło dla " +
                 "twojego konta kliknij w podany link: " + String.format(
-                "%s/%s/password-reset/%s",
+                "%s/password-reset/%s",
                 configLoader.getEmailAppUrl(),
-                login,
                 token.getToken()
         );
         try {
@@ -178,12 +173,31 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendEmailUpdateEmail(String to, String login, VerificationToken token) {
+    public void sendEmailUpdateEmail(String to, VerificationToken token) {
         String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
-                "%s/%s/email-update/%s",
+                "%s/email-update/%s",
                 configLoader.getEmailAppUrl(),
-                login,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca do wskazanego użytkownika maila z przypomnieniem o żądaniu zmiany maila konta
+     *
+     * @param to    adresat wiadomości email
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do zmiany maila
+     */
+    public void sendEmailResetReminderEmail(String to, VerificationToken token) {
+        String subject = "PRZYPOMNIENIE: Zmiana adresu e-mail Shutter.app";
+        String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
+                "%s/email-update/%s",
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -317,5 +331,4 @@ public class EmailService {
     public void send2faCodeEmail(String to, String code) {
         throw new UnsupportedOperationException();
     }
-
 }
