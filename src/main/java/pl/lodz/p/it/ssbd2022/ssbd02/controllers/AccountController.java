@@ -1,10 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
@@ -24,7 +21,7 @@ public class AccountController extends AbstractController {
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
      *
-     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login Login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/block")
@@ -38,7 +35,7 @@ public class AccountController extends AbstractController {
     /**
      * Zmienia status użytkownika o danym loginie na odblokowany
      *
-     * @param login login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     * @param login Login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/unblock")
@@ -69,7 +66,7 @@ public class AccountController extends AbstractController {
      * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
      *
      * @param login Login użytkownika, na którego email ma zostać wysłany link
-     * @throws NoAccountFound Jeżeli konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje lub jest niepotwierdzone/zablokowane
      */
     @POST
     @Path("{login}/request-reset")
@@ -82,9 +79,9 @@ public class AccountController extends AbstractController {
      * Resetuje hasło dla użytkownika
      *
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
-     * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws ExpiredTokenException    W przypadku gdy żeton jest nieaktualny
-     * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
+     * @throws NoVerificationTokenFound Żeton wygasł
      */
     @POST
     @Path("/password-reset")
@@ -113,8 +110,8 @@ public class AccountController extends AbstractController {
      * Aktualizuje email użytkownika
      *
      * @param emailUpdateDto Informacje do zmiany emaila użytkownika
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @POST
@@ -179,9 +176,9 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy szukający użytkownika
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      * @see BaseAccountInfoDto
      */
     @GET
@@ -195,10 +192,9 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy szukający użytkownika
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @see BaseAccountInfoDto
      */
     @GET
@@ -261,7 +257,7 @@ public class AccountController extends AbstractController {
      * @param recordsPerPage liczba rekordów na stronie
      * @param columnName     nazwa kolumny, po której nastąpi sortowanie
      * @param order          kolejność sortowania
-     * @param login          nazwa użytkownika
+     * @param login          Login użytkownika
      * @param email          email
      * @param name           imie
      * @param surname        nazwisko

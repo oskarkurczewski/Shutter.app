@@ -37,9 +37,8 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
      *
-     * @param login login użytkownika dla którego chcemy zmienić status
-     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
+     * @param login Login użytkownika, dla którego chcemy zmienić status
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @RolesAllowed(blockAccount)
     public void blockAccount(String login) throws BaseApplicationException {
@@ -50,9 +49,8 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Ustawia status użytkownika o danym loginie na odblokowany
      *
-     * @param login login użytkownika dla którego chcemy zmienić status
-     * @throws NoAccountFound kiedy użytkownik o danym loginie nie zostanie odnaleziony
-     *                        w bazie danych
+     * @param login Login użytkownika, dla którego chcemy zmienić status
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @RolesAllowed(unblockAccount)
     public void unblockAccount(String login) throws BaseApplicationException {
@@ -145,7 +143,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @throws NoAuthenticatedAccountFound W przypadku gdy nie znaleziono aktualnego użytkownika
+     * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @RolesAllowed(editOwnAccountData)
     public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
@@ -158,7 +156,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika przez administratora
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
-     * @throws NoAccountFound W przypadku gdy nie znaleziono użytkownika o danym loginie
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @RolesAllowed({ADMINISTRATOR})
     public void editAccountInfoAsAdmin(String login, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws BaseApplicationException {
@@ -170,9 +168,9 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca informacje o dowolnym użytkowniku
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getEnhancedAccountInfo)
@@ -184,10 +182,9 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca informacje o dowolnym użytkowniku
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getAccountInfo)
@@ -199,7 +196,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca wartość secret użytkownika o danym loginie
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return secret
      */
     @PermitAll
@@ -243,9 +240,9 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Resetuje hasło użytkownika
      *
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
-     * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws ExpiredTokenException    W przypadku gdy żeton wygasł
-     * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
+     * @throws NoVerificationTokenFound Żeton wygasł
      */
     @PermitAll
     public void resetPassword(ResetPasswordDto resetPasswordDto) throws BaseApplicationException {
@@ -256,7 +253,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
      *
      * @param login Login użytkownika, na którego email ma zostać wysłany link
-     * @throws NoAccountFound Jeżeli konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     @PermitAll
     public void requestPasswordReset(String login) throws BaseApplicationException {
@@ -268,8 +265,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Rejestruje udane logowanie na konto użytkownika.
      *
      * @param login Login użytkownika, dla którego konta należy zarejestrować udaną operację logowania
-     * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane udane
-     *                        logowanie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
     public void registerSuccessfulLogInAttempt(String login) throws BaseApplicationException {
@@ -281,8 +277,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Rejestruje nieudane logowanie na konto użytkownika.
      *
      * @param login Login użytkownika, dla którego konta należy zarejestrować nieudaną operację logowania
-     * @throws NoAccountFound W przypadku gdy konto, dla którego ma zostać zarejestrowane nieudane
-     *                        logowanie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
     public void registerFailedLogInAttempt(String login) throws BaseApplicationException {
@@ -294,7 +289,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Powiadamia administratora o zalogowaniu na jego konto poprzez wysłanie na adres email przypisany
      * do konta o podanym loginie wiadomości zawierającej adres IP, z którego dokonane było logowanie
      *
-     * @param login     login konto administratora, na które doszło do zalogowania
+     * @param login     Login konto administratora, na które doszło do zalogowania
      * @param ipAddress adres IP, z którego zostało wykonane logowanie
      */
     @PermitAll
@@ -307,7 +302,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wysyła link zawierający żeton zmiany adresu email
      *
      * @param requestEmailUpdateDto E-mail użytkownika, na którego e-mail ma zostać wysłany link
-     * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound              Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
     @RolesAllowed((updateEmail))
@@ -321,8 +316,8 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Aktualizuje email użytkownika
      *
      * @param emailUpdateDto Informacje do zmiany emaila użytkownika
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))

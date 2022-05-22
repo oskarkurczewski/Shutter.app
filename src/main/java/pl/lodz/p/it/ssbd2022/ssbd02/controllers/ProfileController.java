@@ -50,7 +50,7 @@ public class ProfileController extends AbstractController {
     public Response deletePhotoFromGallery(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
         throw new UnsupportedOperationException();
     }
-//
+
     @POST
     @Path("/photo/{id}/like")
     public Response likePhoto(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {

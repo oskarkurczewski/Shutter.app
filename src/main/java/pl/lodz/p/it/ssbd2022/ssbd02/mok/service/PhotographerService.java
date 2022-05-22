@@ -32,12 +32,11 @@ public class PhotographerService {
     private PhotographerInfoFacade photographerInfoFacade;
 
 
-
     /**
      * Odnajduje informacje o fotografie na podstawie jego loginu
      *
      * @param login Login fotografa dla którego chemy pozyskać informacje
-     * @throws NoPhotographerFound W przypadku kiedy fotograf o danym loginie nie istnieje
+     * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      */
     @PermitAll
     public PhotographerInfo findByLogin(String login) throws BaseApplicationException {

@@ -166,8 +166,8 @@ public class EmailService {
     /**
      * Wysyła na podany adres email ostrzeżenie o logowaniu na konto administratora
      *
-     * @param to        email, na który zostać ma wysłane powiadomienie. Powinien być to email administratora systemu
-     * @param login     login użytkownika, na którego email ma zostać przesłane powiadomienie
+     * @param to        Email, na który zostać ma wysłane powiadomienie. Powinien być to email administratora systemu
+     * @param login     Login użytkownika, na którego email ma zostać przesłane powiadomienie
      * @param ipAddress adres IP, z którego dokonano logowania na konto administratora
      */
     public void sendAdminAuthenticationWaringEmail(String to, String login, String ipAddress) {
@@ -289,8 +289,6 @@ public class EmailService {
             throw new RuntimeException(e);
         }
     }
-
-
 
 
     /**

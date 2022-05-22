@@ -3,8 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -161,7 +161,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param recordsPerPage liczba rekordów na stronie
      * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
      * @param order          kolejność sortowania
-     * @param login          nazwa użytkownika
+     * @param login          Login użytkownika
      * @param email          email
      * @param name           imie
      * @param surname        nazwisko
@@ -229,7 +229,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     /**
      * Zwraca ilość rekordów po przefiltrowaniu
      *
-     * @param login      nazwa użytkownika
+     * @param login      Login użytkownika
      * @param email      email
      * @param name       imie
      * @param surname    nazwisko
@@ -308,7 +308,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
             query.setParameter("lastLogIn", dateTime);
             List<Account> res = query.getResultList();
             return res;
-        }catch (NoResultException e) {
+        } catch (NoResultException e) {
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
