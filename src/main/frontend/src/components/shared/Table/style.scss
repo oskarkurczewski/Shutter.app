@@ -1,0 +1,122 @@
+@import "variables.scss";
+
+.table-wrapper {
+   $border-radius: 10px;
+   color: $gray-200;
+   .table {
+      // border: 1px black solid;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.2rem;
+      th,
+      td {
+         height: 42px;
+         &:nth-of-type(1) {
+            border-top-left-radius: $border-radius;
+            border-bottom-left-radius: $border-radius;
+         }
+         &:nth-last-of-type(1) {
+            border-top-right-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+         }
+         padding: 0rem 0 0 0.8rem;
+         border-right: hidden;
+         resize: horizontal;
+      }
+      &-header {
+         background-color: $gray-200;
+         color: $white;
+         // overflow: hidden;
+         // border-radius: $border-radius;
+         position: sticky;
+         top: 5px;
+         th {
+            // border: 1px black solid;
+            .cell-wrapper {
+               display: flex;
+               justify-content: space-between;
+               height: 100%;
+               align-items: center;
+               .label {
+                  display: flex;
+                  align-items: center;
+               }
+               & > div {
+                  display: flex;
+                  height: 100%;
+                  align-items: center;
+                  .sort {
+                     display: flex;
+                     flex-direction: column;
+                     transform: scale(0.8);
+                     color: $gray-150;
+                     cursor: pointer;
+                     margin-right: 0.3rem;
+                     &.asc {
+                        .up {
+                           color: $white;
+                        }
+                     }
+                     &.desc {
+                        .down {
+                           color: $white;
+                        }
+                     }
+                  }
+                  .drag {
+                     height: 100%;
+                     width: 4px;
+                     background-color: $red-300;
+                     cursor: col-resize;
+                     touch-action: none;
+                  }
+                  .separator {
+                     height: 70%;
+                     width: 1px;
+                     background-color: $gray-100;
+                     cursor: col-resize;
+                     touch-action: none;
+                  }
+               }
+            }
+            &:nth-last-of-type(1) {
+               .drag {
+                  display: none;
+               }
+               .separator {
+                  display: none;
+               }
+            }
+         }
+      }
+      &-row {
+         background-color: $white;
+         &:hover {
+            background-color: $blue-gray-100;
+         }
+         td {
+            // border: 1px black solid;
+         }
+      }
+   }
+   .pages {
+      &-wrapper {
+         display: flex;
+         gap: 1rem;
+         align-items: center;
+         .all-records {
+            white-space: nowrap;
+         }
+         .line {
+            flex-grow: 1;
+            width: 100%;
+            height: 1px;
+            background-color: $gray-200;
+         }
+         .change-page-buttons {
+            display: flex;
+            gap: 0.3rem;
+         }
+      }
+   }
+}
