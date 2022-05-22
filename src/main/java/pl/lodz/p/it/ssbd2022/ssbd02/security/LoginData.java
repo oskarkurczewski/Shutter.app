@@ -18,6 +18,7 @@ public class LoginData {
 
     private String login;
     private String password;
+    private String twoFACode;
 
     /**
      * Metoda fabrykująca obiekt klasy UsernamePasswordCredential

@@ -77,6 +77,11 @@ public class Account extends ManagedEntity {
     @ToString.Exclude
     private String password;
 
+    @Size(max = 36)
+    @Column(name = "secret", nullable = false)
+    @ToString.Exclude
+    private String secret;
+
     @NotNull
     @Column(name = "failed_logins", nullable = false)
     @ToString.Exclude

@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.UUID;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
@@ -256,6 +257,7 @@ public class AccountService {
         account.setActive(true);
         account.setRegistered(false);
         account.setFailedLogInAttempts(0);
+        account.setSecret(UUID.randomUUID().toString());
 
         addNewAccount(account);
 
