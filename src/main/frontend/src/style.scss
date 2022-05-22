@@ -22,6 +22,10 @@ a {
    text-decoration: none;
 }
 
+html {
+   scroll-behavior: smooth;
+}
+
 body {
    background-color: $blue-gray-100;
    font-family: "Roboto", sans-serif;
