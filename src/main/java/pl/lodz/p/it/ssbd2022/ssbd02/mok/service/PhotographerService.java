@@ -45,23 +45,30 @@ public class PhotographerService {
 
 
     /**
-     * Tworzy pusty obiekt reprezentujący informacje o fotografie
+     * Tworzy pusty obiekt reprezentujący informacje o fotografie lub aktywuje istniejący,
+     * jeżeli już istnieje
      *
      * @param account Account Konto fotografa, któremu chcemy dodać informacje
      */
-    public void createEmptyPhotographerInfo(Account account) throws BaseApplicationException {
-        PhotographerInfo photographerInfo = new PhotographerInfo();
+    public void createOrActivatePhotographerInfo(Account account) throws BaseApplicationException {
+        PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
+        if (existingPhotographerInfo != null) {
+            existingPhotographerInfo.setVisible(true);
 
-        photographerInfo.setId(account.getId());
-        photographerInfo.setScore(0L);
-        photographerInfo.setReviewCount(0L);
-        photographerInfo.setAccount(account);
-        photographerInfo.setDescription("");
-        photographerInfo.setLatitude(null);
-        photographerInfo.setLongitude(null);
-        photographerInfo.setVisible(true);
+            photographerInfoFacade.update(existingPhotographerInfo);
+        } else {
+            PhotographerInfo photographerInfo = new PhotographerInfo();
+            photographerInfo.setId(account.getId());
+            photographerInfo.setScore(0L);
+            photographerInfo.setReviewCount(0L);
+            photographerInfo.setAccount(account);
+            photographerInfo.setDescription("");
+            photographerInfo.setLatitude(null);
+            photographerInfo.setLongitude(null);
+            photographerInfo.setVisible(true);
 
-        photographerInfoFacade.persist(photographerInfo);
+            photographerInfoFacade.persist(photographerInfo);
+        }
     }
 
     /**

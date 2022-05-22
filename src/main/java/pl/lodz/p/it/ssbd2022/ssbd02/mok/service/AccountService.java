@@ -186,11 +186,10 @@ public class AccountService {
      * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
-    @RolesAllowed(ADMINISTRATOR)
+    @RolesAllowed({grantAccessLevel, revokeAccessLevel, becomePhotographer})
     public void changeAccountAccessLevel(Account account, AccessLevelValue accessLevelValue, Boolean active)
             throws BaseApplicationException {
 
-        List<AccessLevelAssignment> accountAccessLevels = account.getAccessLevelAssignmentList();
         AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
                 account,
                 accessLevelValue

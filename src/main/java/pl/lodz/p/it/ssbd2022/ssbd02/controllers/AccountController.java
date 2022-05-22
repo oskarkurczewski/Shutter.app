@@ -323,7 +323,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Punkt końcowy pozwalający na zostanie fotografem
+     * Punkt końcowy pozwalający użytkownikowi na zostanie fotografem.
      *
      * @return Odpowiedź HTTP
      * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu

@@ -124,7 +124,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({grantAccessLevel, revokeAccessLevel})
     public void changeAccountAccessLevel(String login, AccountAccessLevelChangeDto data)
             throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
@@ -144,8 +144,9 @@ public class AccountEndpoint extends AbstractEndpoint {
     @RolesAllowed({becomePhotographer})
     public void becomePhotographer() throws BaseApplicationException {
         Account account = authenticationContext.getCurrentUsersAccount();
-        accountService.becomePhotographer(account);
-        photographerService.createEmptyPhotographerInfo(account);
+        AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName("PHOTOGRAPHER");
+        accountService.changeAccountAccessLevel(account, accessLevelValue, true);
+        photographerService.createOrActivatePhotographerInfo(account);
     }
 
     /**
