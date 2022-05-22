@@ -14,4 +14,5 @@ public class EditAccountInfoDto {
     private String name;
     @NotNull
     private String surname;
+
 }

@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
 import javax.validation.constraints.NotNull;
@@ -10,8 +9,7 @@ import javax.validation.constraints.NotNull;
  * Klasa DTO wykorzystywana przy zwracaniu informacji o użytkowniku w punkcie końcowym typu GET
  * <code>/api/account/{login}/info</code>
  */
-@Getter
-@Setter
+@Data
 public class DetailedAccountInfoDto {
 
     @NotNull
