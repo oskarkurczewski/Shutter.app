@@ -75,8 +75,8 @@ public class AccountService {
     public void changeAccountStatus(Account account, Boolean active) throws BaseApplicationException {
         account.setActive(active);
 
-        if (active) {
-            emailService.sendAccountUnblockedEmail(account.getEmail());
+        if (!active) {
+            emailService.sendAccountBlocked(account.getEmail());
         }
         accountFacade.update(account);
     }
