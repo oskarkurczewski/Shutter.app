@@ -25,6 +25,7 @@ CREATE TABLE public.account
     registered    boolean DEFAULT false NOT NULL,
     active        boolean DEFAULT true  NOT NULL,
     failed_logins integer DEFAULT 0     NOT NULL,
+    last_login    timestamp,
     created_by    bigint,
     created_at    timestamp,
     modified_by   bigint,
@@ -317,7 +318,7 @@ CREATE TABLE public.token
     modified_at  timestamp
 );
 
-CREATE TABLE old_password
+CREATE TABLE public.old_password
 (
     id         bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
     account_id bigint                NOT NULL,
