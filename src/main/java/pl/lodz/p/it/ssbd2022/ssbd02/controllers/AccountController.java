@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
@@ -325,6 +324,14 @@ public class AccountController extends AbstractController {
         return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
     }
 
+    /**
+     * Wysyła wymagany do zalogowania kod 2fa
+     *
+     * @param login login użytkownika, dla którego ma zostać utworzony kod 2fa
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException W przypadku kiedy użytkownik o podanym loginie nie zostanie znaleziony
+     *                                  lub wystąpi nieoczekiwany błąd
+     */
     @POST
     @Path("/request-2fa-code/{login}")
     @Consumes(MediaType.APPLICATION_JSON)

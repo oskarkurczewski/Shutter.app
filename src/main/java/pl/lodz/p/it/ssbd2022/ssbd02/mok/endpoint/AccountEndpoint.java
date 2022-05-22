@@ -342,6 +342,13 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
 
+    /**
+     * Wysyła wymagany do zalogowania kod 2fa na adres email użytkownika
+     *
+     * @param login login użytkownika, dla którego ma zostać utworzony kod 2fa
+     * @throws BaseApplicationException W przypadku kiedy użytkownik o podanym loginie nie zostanie znaleziony
+     *                                  lub wystąpi nieoczekiwany błąd
+     */
     @PermitAll
     public void reguest2faCode(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);

@@ -299,7 +299,7 @@ public class AccountService {
      * @param account obiekt encji użytkownika
      * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    private void addNewAccount(Account account) throws BaseApplicationException{
+    private void addNewAccount(Account account) throws BaseApplicationException {
         try {
             accountFacade.persist(account);
         } catch (PersistenceException ex) {
@@ -475,7 +475,12 @@ public class AccountService {
                 list
         );
     }
-    
+
+    /**
+     * Generuje oraz wysyła kod 2fa dla danego użytkownika na jego adres email
+     *
+     * @param account Konto użytkownika
+     */
     @PermitAll
     public void send2faCode(Account account) {
         String totp = codeUtils.generateCode(account.getSecret());
