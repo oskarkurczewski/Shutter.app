@@ -44,7 +44,7 @@ public class VerificationTokenService {
      * Pomocnicza funkcja do sprawdzania, czy konto jest aktywne oraz zarejestrowane
      *
      * @param account Konto do sprawdzenia
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     private void checkAccount(Account account) throws NoAccountFound {
         if (!account.getActive() || !account.getRegistered()) {
@@ -126,7 +126,7 @@ public class VerificationTokenService {
      * Wysyła na adres e-mail wskazanego użytkownika link zawierający żeton resetu hasła
      *
      * @param account Konto, na które zostanie wysłany email z żetonem
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     public void sendPasswordResetToken(Account account) throws BaseApplicationException {
         checkAccount(account);
@@ -140,7 +140,7 @@ public class VerificationTokenService {
      * zostanie ono zmienione przez administratora systemu
      *
      * @param account Konto, na które zostanie wysłany email z żetonem
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     @RolesAllowed(changeSomeonesPassword)
     public void sendForcedPasswordResetToken(Account account) throws NoAccountFound {
@@ -170,7 +170,7 @@ public class VerificationTokenService {
      * Wysyła link zawierający żeton zmiany adresu email
      *
      * @param account Konto, na które zostanie wysłany email z żetonem
-     * @throws NoAccountFound Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     public void sendEmailUpdateToken(Account account) throws BaseApplicationException {
         checkAccount(account);

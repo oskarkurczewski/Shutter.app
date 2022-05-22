@@ -23,14 +23,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Groups.ADMINISTRATOR;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.getJwtFromAuthHeader;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.refresh;
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Groups.ADMINISTRATOR;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeGroup;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.refreshToken;
 
@@ -43,22 +41,16 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.refreshToken;
 public class AuthController {
 
     private static final Logger LOGGER = Logger.getLogger(AuthController.class.getName());
-
-    @Inject
-    private IdentityStoreHandler storeHandler;
-
-    @Inject
-    private AccountEndpoint accountEndpoint;
-
     @Inject
     OneTimeCodeUtils oneTimeCodeUtils;
-
     @Context
     HttpServletRequest httpServletRequest;
-
     @Context
     SecurityContext securityContext;
-
+    @Inject
+    private IdentityStoreHandler storeHandler;
+    @Inject
+    private AccountEndpoint accountEndpoint;
 
     /**
      * Pozwala na uwierzytelnienie użytkownika weryfikując podane przez niego poświadczenia.
@@ -68,9 +60,8 @@ public class AuthController {
      *
      * @param data Obiekt klasy LoginData reprezentujący przesłany przez użytkownika login oraz hasło
      * @return Obiekt klasy Response zawierający JWT lub komunikat tekstowy
-     * @throws BadJWTTokenException Kiedy dostarczony żeton JWT jest nieprawidłowy
-     * @throws NoAccountFound       Kiedy konto, dla którego ma zostać zarejestrowana nieudana próba
-     *                              logowania nie istnieje
+     * @throws BadJWTTokenException Dostarczony żeton JWT jest nieprawidłowy
+     * @throws NoAccountFound       Konto o podanej nazwie nie istnieje
      * @see LoginData
      */
     @POST

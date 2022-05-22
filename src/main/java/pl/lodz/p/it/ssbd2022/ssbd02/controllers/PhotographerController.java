@@ -24,7 +24,7 @@ public class PhotographerController extends AbstractController {
     /**
      * Punkt końcowy szukający fotografa
      *
-     * @param login nazwa użytkownika fotografa
+     * @param login Login użytkownika fotografa
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                                     niebędący ani administratorem, ani moderatorem
@@ -37,10 +37,11 @@ public class PhotographerController extends AbstractController {
     public BasePhotographerInfoDto getPhotographerInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
         return repeat(() -> photographerEndpoint.getPhotographerInfo(login), photographerEndpoint);
     }
+
     /**
      * Punkt końcowy szukający fotografa
      *
-     * @param login nazwa użytkownika fotografa
+     * @param login Login użytkownika fotografa
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                                     niebędący ani administratorem, ani moderatorem

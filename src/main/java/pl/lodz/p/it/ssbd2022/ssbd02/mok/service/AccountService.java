@@ -48,7 +48,7 @@ public class AccountService {
      * Odnajduje konto użytkownika o podanym loginie
      *
      * @param login Login użytkownika, którego konta ma być wyszukane
-     * @throws NoAccountFound W przypadku nieznalezienia konta
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
@@ -87,8 +87,7 @@ public class AccountService {
      *
      * @param account konto użytkownika, którego dane mają zostać pozyskane
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @see Account
      */
     @RolesAllowed(getAccountInfo)
@@ -149,9 +148,9 @@ public class AccountService {
     /**
      * Resetuje hasło użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
      *
-     * @param resetPasswordDto Dto przechowujące informacje wymagane do resetu hasła
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @PermitAll
@@ -163,9 +162,9 @@ public class AccountService {
     /**
      * Aktualizuje adres email użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
      *
-     * @param emailUpdateDto obiekt przechowujący żeton oraz nowy adres email
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Żie udało się odnaleźć danego żetonu w systemie
+     * @param emailUpdateDto Informacje do zmiany emaila użytkownika
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))
@@ -295,7 +294,7 @@ public class AccountService {
      * @param account obiekt encji użytkownika
      * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    private void addNewAccount(Account account) throws BaseApplicationException{
+    private void addNewAccount(Account account) throws BaseApplicationException {
         try {
             accountFacade.persist(account);
         } catch (PersistenceException ex) {
