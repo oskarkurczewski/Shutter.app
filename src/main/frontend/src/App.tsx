@@ -18,7 +18,8 @@ import AccountListPage from "pages/users/list";
 import EditAccountPage from "pages/users/edit";
 import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
-import ConfirmRegistrationPage from "pages/ConfirmRegistration";
+import ConfirmRegistrationPage from "pages/confirmRegistration";
+import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -120,6 +121,9 @@ function App() {
                </Route>
 
                <Route path="dashboard" element={<DashboardPage />} />
+
+               {/* Token-based routes */}
+               <Route path="unblock-account/:token" element={<UnblockOwnAccountPage />} />
             </Route>
          </Routes>
       </BrowserRouter>
