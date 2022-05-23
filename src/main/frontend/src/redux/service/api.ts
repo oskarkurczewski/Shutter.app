@@ -54,6 +54,13 @@ export const api = createApi({
             body: data,
          }),
       }),
+
+      confirmRegistration: builder.mutation<unknown, string>({
+         query: (token) => ({
+            url: `account/confirm/${token}`,
+            method: "POST",
+         }),
+      }),
    }),
 });
 
@@ -63,4 +70,5 @@ export const {
    useRegisterMutation,
    useUserInfoQuery,
    useRegisterAsAdminMutation,
+   useConfirmRegistrationMutation,
 } = api;

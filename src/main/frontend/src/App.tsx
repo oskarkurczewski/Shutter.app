@@ -17,8 +17,8 @@ import AccountListPage from "pages/users/list";
 import EditAccountPage from "pages/users/edit";
 import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
-import ConfirmRegistrationPage from "pages/confirmRegistration";
 import LoginPage from "pages/login";
+import ConfirmRegistrationPage from "pages/token-based/confirm-registration";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -55,7 +55,7 @@ function App() {
                />
 
                <Route
-                  path="/confirm-registration/:registerationToken"
+                  path="/confirm-registration/:token"
                   element={
                      <ProtectedRoute roles={[AccessLevel.GUEST]}>
                         <ConfirmRegistrationPage />
