@@ -72,7 +72,8 @@ public class AuthController {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
         String secret = accountEndpoint.getSecret(data.getLogin());
 
-        if (validationResult.getStatus() == CredentialValidationResult.Status.VALID && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
+        //if (validationResult.getStatus() == CredentialValidationResult.Status.VALID && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
+        if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
             String token = JWTHandler.generateJWT(validationResult);
 
             if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
