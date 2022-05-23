@@ -6,10 +6,13 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ProfileService {
 
     @PermitAll

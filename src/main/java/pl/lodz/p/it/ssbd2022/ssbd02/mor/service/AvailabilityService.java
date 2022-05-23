@@ -11,6 +11,8 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.EditAvailabilityDto;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.naming.OperationNotSupportedException;
 import java.util.List;
@@ -19,6 +21,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeAvailabilityHour
 
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AvailabilityService {
 
     @PermitAll

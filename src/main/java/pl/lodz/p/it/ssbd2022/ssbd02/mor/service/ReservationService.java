@@ -7,12 +7,15 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.AvailabilityDto;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReservationService {
 
     @PermitAll
