@@ -412,6 +412,7 @@ public class AccountService {
         account.setRegistered(true);
         addClientAccessLevel(account);
         accountFacade.update(account);
+        emailService.sendAccountActivated(account.getEmail());
     }
 
     /**
