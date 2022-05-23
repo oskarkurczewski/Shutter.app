@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style.scss";
 
-import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
 import PageLayout from "pages/layout";
 import Homepage from "pages/homepage";
@@ -19,6 +18,7 @@ import EditAccountPage from "pages/users/edit";
 import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
 import ConfirmRegistrationPage from "pages/confirmRegistration";
+import LoginPage from "pages/login";
 
 function App() {
    const dispatch = useAppDispatch();

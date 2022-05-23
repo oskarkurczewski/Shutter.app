@@ -11,7 +11,7 @@ import { login } from "redux/slices/authSlice";
 import { useLoginMutation } from "redux/service/api";
 import { LoginRequest } from "redux/types/api/authTypes";
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
 
@@ -22,7 +22,6 @@ const LoginPage = () => {
    });
 
    const [loginMutation, test] = useLoginMutation();
-   console.log(test);
 
    const handleChange = ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
@@ -30,7 +29,7 @@ const LoginPage = () => {
    const [showMesage, setShowMessage] = useState<boolean>(false);
    const [check, setCheck] = useState<boolean>(false);
 
-   const onSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
+   const onSubmit = async (e) => {
       e.preventDefault();
       try {
          const token = await loginMutation(formState).unwrap();
@@ -59,7 +58,7 @@ const LoginPage = () => {
                </div>
                <Button
                   onClick={() => {
-                     navigate("register"); // Navigate to register page
+                     navigate("/register");
                   }}
                >
                   Zarejestruj się
