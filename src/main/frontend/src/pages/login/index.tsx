@@ -4,12 +4,12 @@ import Card from "components/shared/Card";
 import TextInput from "components/shared/TextInput";
 import Checkbox from "components/shared/Checkbox";
 import Button from "components/shared/Button";
-import { getToken } from "actions/loginActions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
-import { LoginRequest, useLoginMutation } from "redux/service/api";
+import { useLoginMutation } from "redux/service/api";
+import { LoginRequest } from "redux/types/api/authTypes";
 
 const LoginPage = () => {
    const navigate = useNavigate();
@@ -21,7 +21,8 @@ const LoginPage = () => {
       twoFACode: "000000",
    });
 
-   const [loginMutation, { isLoading, isError, isSuccess }] = useLoginMutation();
+   const [loginMutation, test] = useLoginMutation();
+   console.log(test);
 
    const handleChange = ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
@@ -54,6 +55,7 @@ const LoginPage = () => {
                      Załóż je teraz, <br />
                      to zupełnie darmowe!
                   </p>
+                  <p>{test.isLoading ? "loading..." : "done"}</p>
                </div>
                <Button
                   onClick={() => {
@@ -70,8 +72,6 @@ const LoginPage = () => {
                   placeholder="Login"
                   type="text"
                   name="login"
-                  // value={username}
-                  // onChange={(e) => setUsername(e.target.value)}
                   value={formState.login}
                   onChange={handleChange}
                />
@@ -82,8 +82,6 @@ const LoginPage = () => {
                   value={formState.password}
                   name="password"
                   onChange={handleChange}
-                  // value={password}
-                  // onChange={(e) => setPassword(e.target.value)}
                />
                <Checkbox value={check} onChange={(e) => setCheck(e.target.checked)}>
                   Zapamiętaj mnie

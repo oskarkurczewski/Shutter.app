@@ -1,15 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+   basicUserInfoResponse,
+   registerAccountAsAdminRequest,
+   registerAccountRequest,
+} from "redux/types/api/accountTypes";
+import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
 import { RootState } from "../store";
-
-export interface LoginRequest {
-   login: string;
-   password: string;
-   twoFACode: string;
-}
-
-export interface LoginResponse {
-   token: string;
-}
 
 export const api = createApi({
    reducerPath: "api",
@@ -31,7 +27,32 @@ export const api = createApi({
             body: credentials,
          }),
       }),
+
+      userInfo: builder.query<basicUserInfoResponse, string>({
+         query: (login) => ({ url: `account/${login}/info` }),
+      }),
+
+      register: builder.mutation<unknown, registerAccountRequest>({
+         query: (data) => ({
+            url: "account/register",
+            method: "POST",
+            body: data,
+         }),
+      }),
+
+      registerAsAdmin: builder.mutation<unknown, registerAccountAsAdminRequest>({
+         query: (data) => ({
+            url: "account/register",
+            method: "POST",
+            body: data,
+         }),
+      }),
    }),
 });
 
-export const { useLoginMutation } = api;
+export const {
+   useLoginMutation,
+   useUserInfoQuery,
+   useRegisterMutation,
+   useRegisterAsAdminMutation,
+} = api;
