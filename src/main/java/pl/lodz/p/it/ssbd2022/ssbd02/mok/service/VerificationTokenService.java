@@ -187,6 +187,22 @@ public class VerificationTokenService {
         emailService.sendEmailUpdateEmail(account.getEmail(), verificationToken);
     }
 
+    public void sendUnblockOwnAccountEmail(Account account) throws BaseApplicationException {
+        if (!account.getRegistered()) {
+            throw ExceptionFactory.noAccountFound();
+        }
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusHours(configLoader.getUnblockOwnAccountTokenLifetime()),
+                account,
+                TokenType.UNBLOCK_OWN_ACCOUNT
+        );
+
+        tokenFacade.persist(verificationToken);
+
+        emailService.sendEmailUnblockAccount(account.getEmail(), verificationToken);
+    }
+
     /**
      * Sprawdza oraz usuwa żeton weryfikacyjny użyty do aktualizacji adresu email
      *
