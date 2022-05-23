@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mappers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.ErrorDto;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
@@ -19,7 +21,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
 
     @Override
     public Response toResponse(ConstraintViolationException e) {
-        return Response.status(Response.Status.BAD_REQUEST).entity(getMessage(e)).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDto(getMessage(e))).build();
     }
 
     private String getMessage(ConstraintViolationException exception) {

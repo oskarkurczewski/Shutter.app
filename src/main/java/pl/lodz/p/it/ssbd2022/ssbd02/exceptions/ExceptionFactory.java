@@ -113,7 +113,7 @@ public class ExceptionFactory {
     }
 
     public static BaseApplicationException OptLockException() {
-        return new OptLockException();
+        return new OptLockException("exception.optlock");
     }
     public static WrongParameterException wrongParameterException() {
         return new WrongParameterException("exception.wrong_parameter");
