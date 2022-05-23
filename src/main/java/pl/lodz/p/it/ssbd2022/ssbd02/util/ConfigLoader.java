@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
@@ -54,6 +55,7 @@ public class ConfigLoader {
         propertiesTransaction = loadProperties(PROPERTIES_TRANSACTION_FILE);
     }
 
+    @PermitAll
     private Properties loadProperties(String fileName) {
         Properties properties = new Properties();
         try {

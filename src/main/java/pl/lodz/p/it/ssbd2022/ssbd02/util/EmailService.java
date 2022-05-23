@@ -15,11 +15,15 @@ import sibModel.SendSmtpEmailSender;
 import sibModel.SendSmtpEmailTo;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.Collections;
 import java.util.Properties;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 /**
  * Klasa służąca do wysyłania maili
@@ -53,6 +57,7 @@ public class EmailService {
      * @param to    adresat wiadomości email
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
      */
+    @PermitAll
     public void sendRegistrationEmail(String to, VerificationToken token) {
         String subject = "Weryfikacja konta Shutter.app";
         String body = "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
@@ -73,6 +78,7 @@ public class EmailService {
      * @param to    adresat wiadomości email
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
      */
+    @PermitAll
     public void sendRegistrationConfirmationReminder(String to, VerificationToken token) {
         String subject = "PRZYPOMNIENIE: Weryfikacja konta Shutter.app";
         String body = "Przypominamy o konieczności potwierdzenia konta w Shutter.app. " +
@@ -94,6 +100,7 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
      * @param token Żeton, który ma zostać wysłany
      */
+    @PermitAll
     public void sendPasswordResetEmail(String to, VerificationToken token) {
         String subject = "Resetowanie hasła Shutter.app";
         String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
@@ -115,6 +122,7 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
      * @param token Żeton, który ma zostać wysłany
      */
+    @RolesAllowed(changeSomeonesPassword)
     public void sendForcedPasswordResetEmail(String to, VerificationToken token) {
         String subject = "WAŻNE: Konieczność zmiany hasła - Shutter.app";
         String body = "Twoje hasło zostało zmienione przez administratora. Aby ustawić nowe hasło dla " +
@@ -136,6 +144,7 @@ public class EmailService {
      *
      * @param to Adres e-mail, na który należy wysłać wiadomość
      */
+    @PermitAll
     public void sendAccountBlockedDueToToManyLogInAttemptsEmail(String to) {
         String subject = "Zbyt wiele nieudanych logowań - Shutter.app";
         String body = "Użytkowniku, twoje konto zostało automatycznie zablokowane z powodu zbyt wielu " +
@@ -154,6 +163,7 @@ public class EmailService {
      * @param login     Login użytkownika, na którego email ma zostać przesłane powiadomienie
      * @param ipAddress adres IP, z którego dokonano logowania na konto administratora
      */
+    @PermitAll
     public void sendAdminAuthenticationWaringEmail(String to, String login, String ipAddress) {
         String subject = "WAŻNE: Logowanie na konto - Shutter.app";
         String body = String.format(
@@ -174,6 +184,7 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
      * @param token Żeton, który ma zostać wysłany
      */
+    @RolesAllowed(updateEmail)
     public void sendEmailUpdateEmail(String to, VerificationToken token) {
         String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
@@ -194,6 +205,7 @@ public class EmailService {
      * @param to    adresat wiadomości email
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do zmiany maila
      */
+    @PermitAll
     public void sendEmailResetReminderEmail(String to, VerificationToken token) {
         String subject = "PRZYPOMNIENIE: Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
@@ -215,6 +227,7 @@ public class EmailService {
      * @param name Imię użytkownika, do którego jest wysyłany kod
      * @param code Kod 2FA
      */
+    @PermitAll
     public void sendEmail2FA(String to, String name, String code) {
         String subject = "Dwustopniowe logowanie Shutter.app";
         String body =
@@ -235,6 +248,7 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłana ma zostać wiadomość
      * @param token Żeton, który ma zostać wysłany
      */
+    @PermitAll
     public void sendEmailUnblockAccount(String to, VerificationToken token) {
         String subject = "Odblokowanie konta Shutter.app";
         String body = "Twoje konto zostało zablokowane z powodu braku aktywności, kliknij w link aby je odblokować "
@@ -256,6 +270,7 @@ public class EmailService {
      *
      * @param to adresat wiadomości email
      */
+    @RolesAllowed(unblockAccount)
     public void sendAccountUnblockedEmail(String to) {
         String subject = "Konto odblokowane - Shutter.app";
         String body = "Twoje konto w aplikacji Shutter.app zostało odblokowane. Życzymy miłego dalszego " +
@@ -273,6 +288,7 @@ public class EmailService {
      *
      * @param to adresat wiadomości email
      */
+    @RolesAllowed(blockAccount)
     public void sendAccountBlocked(String to) {
         String subject = "Konto zablokowane - Shutter.app";
         String body = "Twoje konto w aplikacji Shutter.app zostało zablokowane. Aby je " +
@@ -291,6 +307,7 @@ public class EmailService {
      * @param to              adresat wiadomości email
      * @param accessLevelName nazwa poziomu dostępu, który został przypisany
      */
+    @PermitAll
     public void sendAccessLevelGrantedEmail(String to, String accessLevelName) {
         String subject = "Przypisanie poziomu dostepu - Shutter.app";
         String body = "Do twojego konta został przypisany poziom dostępu: " + accessLevelName + ".";
@@ -308,6 +325,7 @@ public class EmailService {
      * @param to              adresat wiadomości email
      * @param accessLevelName nazwa poziomu dostępu, który został odebrany
      */
+    @RolesAllowed(revokeAccessLevel)
     public void sendAccessLevelRevokedEmail(String to, String accessLevelName) {
         String subject = "Odebranie poziomu dostepu - Shutter.app";
         String body = "Dla twojego konta został odebrany poziom dostępu: " + accessLevelName + ".";
@@ -324,6 +342,7 @@ public class EmailService {
      *
      * @param to adresat wiadomości email
      */
+    @PermitAll
     public void sendAccountActivated(String to) {
         String subject = "Konto aktywowane - Shutter.app";
         String body = "Twoje konto w aplikacji Shutter.app zostało pomyślnie aktywowane. Życzymy miłego dalszego " +
@@ -344,6 +363,7 @@ public class EmailService {
      * @param bodyText treść emaila w html
      * @see "https://developers.sendinblue.com/reference/sendtransacemail/"
      */
+    @PermitAll
     public void sendEmail(String toEmail,
                           String subject,
                           String bodyText) throws EmailException {

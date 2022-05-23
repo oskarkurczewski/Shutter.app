@@ -112,6 +112,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @return lista wynikowa zapytania do bazy danych
      * @throws WrongParameterException zła nazwa kolumny
      */
+    @PermitAll
     public List<String> findByNameSurname(String name, int page, int recordsPerPage, String orderBy, String order) throws WrongParameterException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
