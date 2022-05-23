@@ -22,4 +22,6 @@ public final class REGEXP {
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     public static final String TWO_FA_CODE = "[0-9]{6}";
+
+    public static final String NAME_SURNAME_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹ][a-ząćęńśłóżź]{0,63}";
 }
