@@ -51,12 +51,12 @@ public class PhotographerService {
      * @param account Account Konto fotografa, któremu chcemy dodać informacje
      */
     public void createOrActivatePhotographerInfo(Account account) throws BaseApplicationException {
-        PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
-        if (existingPhotographerInfo != null) {
+        try {
+            PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
             existingPhotographerInfo.setVisible(true);
 
             photographerInfoFacade.update(existingPhotographerInfo);
-        } else {
+        } catch (NoPhotographerFound e) {
             PhotographerInfo photographerInfo = new PhotographerInfo();
             photographerInfo.setId(account.getId());
             photographerInfo.setScore(0L);
