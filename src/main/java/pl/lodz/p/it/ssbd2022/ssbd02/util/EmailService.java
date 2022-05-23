@@ -92,15 +92,13 @@ public class EmailService {
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła
      *
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
-     * @param login Login użytkownika, którego hasło ma zostać zresetowane
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendPasswordResetEmail(String to, String login, VerificationToken token) {
+    public void sendPasswordResetEmail(String to, VerificationToken token) {
         String subject = "Resetowanie hasła Shutter.app";
         String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
-                "%s/%s/password-reset/%s",
+                "%s/password-reset/%s",
                 configLoader.getEmailAppUrl(),
-                login,
                 token.getToken()
         );
         try {
@@ -115,16 +113,14 @@ public class EmailService {
      * zostanie ono zmienione przez administratora systemu
      *
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
-     * @param login Login użytkownika, którego hasło ma zostać zresetowane
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendForcedPasswordResetEmail(String to, String login, VerificationToken token) {
+    public void sendForcedPasswordResetEmail(String to, VerificationToken token) {
         String subject = "WAŻNE: Konieczność zmiany hasła - Shutter.app";
         String body = "Twoje hasło zostało zmienione przez administratora. Aby ustawić nowe hasło dla " +
                 "twojego konta kliknij w podany link: " + String.format(
-                "%s/%s/password-reset/%s",
+                "%s/password-reset/%s",
                 configLoader.getEmailAppUrl(),
-                login,
                 token.getToken()
         );
         try {
@@ -178,12 +174,31 @@ public class EmailService {
      * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
      * @param token Żeton, który ma zostać wysłany
      */
-    public void sendEmailUpdateEmail(String to, String login, VerificationToken token) {
+    public void sendEmailUpdateEmail(String to, VerificationToken token) {
         String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
-                "%s/%s/email-update/%s",
+                "%s/email-update/%s",
                 configLoader.getEmailAppUrl(),
-                login,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca do wskazanego użytkownika maila z przypomnieniem o żądaniu zmiany maila konta
+     *
+     * @param to    adresat wiadomości email
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do zmiany maila
+     */
+    public void sendEmailResetReminderEmail(String to, VerificationToken token) {
+        String subject = "PRZYPOMNIENIE: Zmiana adresu e-mail Shutter.app";
+        String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
+                "%s/email-update/%s",
+                configLoader.getEmailAppUrl(),
                 token.getToken()
         );
         try {
@@ -196,17 +211,38 @@ public class EmailService {
     /**
      * Wysyła na adres email podany jako parametr kod 2FA
      *
-     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca kod 2FA
-     * @param login Nazwa użytkownika, do którego jest wysyłany kod
-     * @param code  Kod 2FA
+     * @param to   Adres e-mail, na który wysłany ma zostać wiadomość zawierająca kod 2FA
+     * @param name Imię użytkownika, do którego jest wysyłany kod
+     * @param code Kod 2FA
      */
-    public void sendEmail2FA(String to, String login, String code) {
+    public void sendEmail2FA(String to, String name, String code) {
         String subject = "Dwustopniowe logowanie Shutter.app";
         String body =
-                login.substring(0, 1).toUpperCase() +
-                        login.substring(1) +
+                name.substring(0, 1).toUpperCase() +
+                        name.substring(1) +
                         " twój kod do zalogowania: " +
                         code;
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Wysyła na adres email podany jako parametr link do aktywacji konta po jego zablokowaniu
+     *
+     * @param to    Adres e-mail, na który wysłana ma zostać wiadomość
+     * @param token Żeton, który ma zostać wysłany
+     */
+    public void sendEmailUnblockAccount(String to, VerificationToken token) {
+        String subject = "Odblokowanie konta Shutter.app";
+        String body = "Twoje konto zostało zablokowane z powodu braku aktywności, kliknij w link aby je odblokować "
+                + String.format(
+                "%s/account-unblock/%s",
+                configLoader.getEmailAppUrl(),
+                token.getToken()
+        );
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
