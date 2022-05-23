@@ -7,9 +7,10 @@ interface Props {
    icon?: string;
    onClick: React.MouseEventHandler<HTMLDivElement> &
       React.KeyboardEventHandler<HTMLDivElement>;
+   title?: string;
 }
 
-const Button: React.FC<Props> = ({ children, className, icon, onClick }) => {
+const Button: React.FC<Props> = ({ children, className, icon, onClick, title }) => {
    return (
       <div
          className={`button-wrapper ${className ? className : ""}`}
@@ -17,6 +18,7 @@ const Button: React.FC<Props> = ({ children, className, icon, onClick }) => {
          onKeyDown={(e) => onClick(e)}
          tabIndex={0}
          role="button"
+         title={title}
       >
          {icon ? <span className="material-icons">{icon}</span> : null}
          <p>{children}</p>
