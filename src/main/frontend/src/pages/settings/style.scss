@@ -52,7 +52,7 @@ section.settings-page-wrapper {
       display: flex;
       flex-direction: column;
       padding: 0;
-      gap: 10px;
+      gap: 20px;
 
       .card-wrapper {
          padding: 20px;
@@ -64,6 +64,20 @@ section.settings-page-wrapper {
 
          & > div.content {
             padding: 20px;
+
+            .buttons {
+               display: flex;
+               flex-direction: row;
+               justify-content: space-between;
+
+               .red-button {
+                  background-color: $red-200;
+               }
+
+               .button-wrapper {
+                  margin-top: 20px;
+               }
+            }
          }
       }
    }
