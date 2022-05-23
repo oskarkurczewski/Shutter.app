@@ -12,20 +12,6 @@
     <default-context-path>/</default-context-path>
 
     <security-role>
-        <role-name>ADMINISTRATOR</role-name>
-    </security-role>
-    <security-role>
-        <role-name>MODERATOR</role-name>
-    </security-role>
-    <security-role>
-        <role-name>CLIENT</role-name>
-    </security-role>
-    <security-role>
-        <role-name>PHOTOGRAPHER</role-name>
-    </security-role>
-    <!--    Zostawione dla kompatybilności wstecznej, ale z czasem nalezy pozbyć się ich z kodu-->
-
-    <security-role>
         <role-name>createAccount</role-name>
     </security-role>
     <security-role>
