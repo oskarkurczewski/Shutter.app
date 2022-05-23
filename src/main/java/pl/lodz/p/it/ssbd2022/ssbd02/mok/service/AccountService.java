@@ -559,6 +559,6 @@ public class AccountService {
     @PermitAll
     public void send2faCode(Account account) {
         String totp = codeUtils.generateCode(account.getSecret());
-        emailService.send2faCodeEmail(account.getEmail(), totp);
+        emailService.sendEmail2FA(account.getEmail(), account.getLogin(), totp);
     }
 }
