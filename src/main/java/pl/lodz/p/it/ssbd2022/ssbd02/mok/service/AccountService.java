@@ -83,7 +83,7 @@ public class AccountService {
         if (!active) {
             emailService.sendAccountBlocked(account.getEmail());
         } else {
-            emailService.sendAccountActivated(account.getEmail());
+            emailService.sendAccountUnblockedEmail(account.getEmail());
         }
         accountFacade.update(account);
     }
