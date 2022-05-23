@@ -126,7 +126,7 @@ public class VerificationTokenService {
         );
         tokenFacade.persist(verificationToken);
 
-        emailService.sendPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
+        emailService.sendPasswordResetEmail(account.getEmail(), verificationToken);
     }
 
     /**
@@ -148,7 +148,7 @@ public class VerificationTokenService {
         );
         tokenFacade.persist(verificationToken);
 
-        emailService.sendForcedPasswordResetEmail(account.getEmail(), account.getLogin(), verificationToken);
+        emailService.sendForcedPasswordResetEmail(account.getEmail(), verificationToken);
     }
 
     /**
@@ -184,7 +184,7 @@ public class VerificationTokenService {
         );
         tokenFacade.persist(verificationToken);
 
-        emailService.sendEmailUpdateEmail(account.getEmail(), account.getLogin(), verificationToken);
+        emailService.sendEmailUpdateEmail(account.getEmail(), verificationToken);
     }
 
     /**
