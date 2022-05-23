@@ -16,15 +16,16 @@ section.register-page-wrapper {
       }
 
       div.register-form {
-         padding: 20px;
-         padding-top: 45px;
-         padding-bottom: 25px;
          display: flex;
          flex-direction: column;
          flex-grow: 1;
          gap: 1.5rem;
+         overflow: hidden;
 
          form {
+            padding: 20px;
+            padding-top: 45px;
+            padding-bottom: 25px;
             display: flex;
             flex-direction: column;
             gap: 1rem;

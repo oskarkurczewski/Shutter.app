@@ -11,7 +11,7 @@ export const validateFields = (formData: {
    [
       // Login section
       {
-         label: "Login musi mieć conajmniej 3 znaki",
+         label: "Login musi mieć przynajmniej 3 znaki",
          valid: formData.login.length == 0 ? null : formData.login.length >= 3,
       },
       {

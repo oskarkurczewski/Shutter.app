@@ -7,27 +7,41 @@ import TextInput from "components/shared/TextInput";
 import ValidationBox from "components/shared/ValidationBox";
 import { Link } from "react-router-dom";
 import { validateFields } from "./validation";
+import { useRegisterMutation } from "redux/service/api";
+import Form from "components/shared/Form";
 
 const RegisterPage = () => {
-   const [formData, setFormData] = useState({
+   const [formState, setFormState] = useState({
       login: "",
       email: "",
       password: "",
       confirmPassword: "",
       name: "",
       surname: "",
+   });
+   const [checkboxState, setCheckboxState] = useState({
       userDataChecked: null,
       termsOfUseChecked: null,
    });
 
-   const [validation, setValidation] = useState(validateFields(formData));
+   const [validation, setValidation] = useState(
+      validateFields({ ...formState, ...checkboxState })
+   );
+
+   const [registerMutation, { isLoading, isSuccess, isError }] = useRegisterMutation();
+
    useEffect(() => {
-      setValidation(validateFields(formData));
-   }, [formData]);
+      setValidation(validateFields({ ...formState, ...checkboxState }));
+   }, [formState, checkboxState]);
+
+   const handleChange = ({
+      target: { name, value },
+   }: React.ChangeEvent<HTMLInputElement>) =>
+      setFormState((prev) => ({ ...prev, [name]: value }));
 
    const onSubmit = (e) => {
       e.preventDefault();
-      console.log(formData);
+      registerMutation(formState);
    };
 
    return (
@@ -35,7 +49,7 @@ const RegisterPage = () => {
          <div className="form-wrapper">
             <ValidationBox data={validation} />
             <Card className="register-form">
-               <form onSubmit={onSubmit}>
+               <Form onSubmit={onSubmit} isLoading={isLoading}>
                   <p className="section-title">Rejestracja</p>
                   <div className="inputs-wrapper">
                      <div className="column">
@@ -43,51 +57,35 @@ const RegisterPage = () => {
                            label="Login"
                            placeholder="Login"
                            required
-                           value={formData.login}
-                           onChange={(e) => {
-                              setFormData({
-                                 ...formData,
-                                 login: e.target.value,
-                              });
-                           }}
+                           name="login"
+                           value={formState.login}
+                           onChange={handleChange}
                         />
                         <TextInput
                            label="Email"
                            placeholder="Email"
                            required
-                           value={formData.email}
-                           onChange={(e) => {
-                              setFormData({
-                                 ...formData,
-                                 email: e.target.value,
-                              });
-                           }}
+                           name="email"
+                           value={formState.email}
+                           onChange={handleChange}
                         />
                         <TextInput
                            label="Hasło"
                            placeholder="Hasło"
                            required
+                           name="password"
                            type="password"
-                           value={formData.password}
-                           onChange={(e) => {
-                              setFormData({
-                                 ...formData,
-                                 password: e.target.value,
-                              });
-                           }}
+                           value={formState.password}
+                           onChange={handleChange}
                         />
                         <TextInput
                            label="Powtórz hasło"
                            placeholder="Hasło"
                            required
+                           name="confirmPassword"
                            type="password"
-                           value={formData.confirmPassword}
-                           onChange={(e) => {
-                              setFormData({
-                                 ...formData,
-                                 confirmPassword: e.target.value,
-                              });
-                           }}
+                           value={formState.confirmPassword}
+                           onChange={handleChange}
                         />
                      </div>
                      <div className="column">
@@ -95,35 +93,27 @@ const RegisterPage = () => {
                            label="Imię"
                            placeholder="Imię"
                            required
-                           value={formData.name}
-                           onChange={(e) => {
-                              setFormData({
-                                 ...formData,
-                                 name: e.target.value,
-                              });
-                           }}
+                           name="name"
+                           value={formState.name}
+                           onChange={handleChange}
                         />
                         <TextInput
                            label="Nazwisko"
                            placeholder="Nazwisko"
                            required
-                           value={formData.surname}
-                           onChange={(e) => {
-                              setFormData({
-                                 ...formData,
-                                 surname: e.target.value,
-                              });
-                           }}
+                           name="surname"
+                           value={formState.surname}
+                           onChange={handleChange}
                         />
                      </div>
                   </div>
                   <div className="checkboxes-wrapper">
                      <Checkbox
                         required
-                        value={formData.userDataChecked}
+                        value={checkboxState.userDataChecked}
                         onChange={(e) => {
-                           setFormData({
-                              ...formData,
+                           setCheckboxState({
+                              ...checkboxState,
                               userDataChecked: e.target.checked,
                            });
                         }}
@@ -132,10 +122,10 @@ const RegisterPage = () => {
                      </Checkbox>
                      <Checkbox
                         required
-                        value={formData.termsOfUseChecked}
+                        value={checkboxState.termsOfUseChecked}
                         onChange={(e) => {
-                           setFormData({
-                              ...formData,
+                           setCheckboxState({
+                              ...checkboxState,
                               termsOfUseChecked: e.target.checked,
                            });
                         }}
@@ -143,11 +133,15 @@ const RegisterPage = () => {
                         Potwierdzam, że zapoznałem się z regulaminem
                      </Checkbox>
                   </div>
+
+                  {isSuccess && <p>Udało się pomyślnie zarejestrować!</p>}
+                  {isError && <p>Nie udało się zarejestrować</p>}
+
                   <div className="footer">
                      <Link to="/login">Masz już konto? Zaloguj się</Link>
                      <Button onClick={onSubmit}>Zarejestruj się</Button>
                   </div>
-               </form>
+               </Form>
             </Card>
          </div>
       </section>
