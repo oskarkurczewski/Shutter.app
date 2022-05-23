@@ -1,0 +1,11 @@
+@import "variables.scss";
+
+.toast-handler-wrapper {
+   position: fixed;
+   bottom: 20px;
+   right: 400px;
+   display: flex;
+   flex-direction: column-reverse;
+   row-gap: 20px;
+   z-index: 2;
+}

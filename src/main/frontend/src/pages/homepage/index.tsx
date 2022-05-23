@@ -2,12 +2,7 @@ import Toast from "components/layout/toast";
 import React from "react";
 
 const Homepage = () => {
-   return (
-      <div>
-         Homepage
-         <Toast></Toast>
-      </div>
-   );
+   return <div>Homepage</div>;
 };
 
 export default Homepage;

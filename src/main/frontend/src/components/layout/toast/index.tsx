@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Button from "components/shared/Button";
 import React from "react";
 import "./style.scss";
@@ -17,6 +19,9 @@ const Toast = () => {
          >
             PRZEDŁUŻ
          </Button>
+         <div className="close-btn-wrapper" onClick={() => console.log("exit")}>
+            <span className="close-btn" />
+         </div>
       </div>
    );
 };
