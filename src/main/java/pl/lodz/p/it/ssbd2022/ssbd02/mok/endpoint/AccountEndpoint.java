@@ -19,6 +19,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
@@ -388,4 +391,19 @@ public class AccountEndpoint extends AbstractEndpoint {
         accountService.send2faCode(account);
     }
 
+    /**
+     * Pobiera wszystkie grupy w których znajduje się użytkownik o danym loginie
+     *
+     * @param login login użytkownika, dla którego mają zostać pobrane grupy
+     * @return lista grup w których znajduje się użytkownik o podanym loginie
+     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @PermitAll
+    public List<String> getAccountGroups(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return account.getAccessLevelAssignmentList().stream()
+                .filter(accessLevel -> accessLevel.getActive())
+                .map(accessLevel -> accessLevel.getLevel().getName())
+                .collect(Collectors.toList());
+    }
 }

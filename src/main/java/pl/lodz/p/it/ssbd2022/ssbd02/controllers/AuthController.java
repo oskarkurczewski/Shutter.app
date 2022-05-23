@@ -24,6 +24,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -132,9 +133,11 @@ public class AuthController {
     @POST
     @Path("/refresh")
     @RolesAllowed(refreshToken)
-    public Response refreshToken(ContainerRequestContext context) {
+    public Response refreshToken(ContainerRequestContext context) throws BaseApplicationException {
         JWT oldToken = getJwtFromAuthHeader(context.getHeaderString("Authorization"));
 
-        return Response.ok().entity(refresh(oldToken)).build();
+        List<String> newGroups = accountEndpoint.getAccountGroups(oldToken.subject);
+
+        return Response.ok().entity(refresh(oldToken, newGroups)).build();
     }
 }
