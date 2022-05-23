@@ -5,10 +5,13 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ProfileEndpoint extends AbstractEndpoint {
 
     @RolesAllowed(changePhotographerDescription)

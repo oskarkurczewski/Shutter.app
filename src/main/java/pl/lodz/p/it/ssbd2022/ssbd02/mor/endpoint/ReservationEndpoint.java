@@ -10,12 +10,15 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ReservationEndpoint extends AbstractEndpoint {
 
     @Inject
