@@ -65,7 +65,7 @@ function App() {
                />
 
                <Route
-                  path="reset-password/:token"
+                  path="password-reset/:token"
                   element={
                      <ProtectedRoute roles={[AccessLevel.GUEST]}>
                         <ResetPasswordPage />
