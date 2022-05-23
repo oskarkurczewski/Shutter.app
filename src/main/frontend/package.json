@@ -58,5 +58,5 @@
       "eslint-plugin-jsx-a11y": "^6.5.1",
       "eslint-plugin-react": "^7.29.4"
    },
-   "proxy": "http://studapp.it.p.lodz.pl:8002"
+   "proxy": "https://studapp.it.p.lodz.pl:8002"
 }

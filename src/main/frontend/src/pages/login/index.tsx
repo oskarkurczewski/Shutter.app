@@ -21,33 +21,24 @@ const LoginPage = () => {
       twoFACode: "000000",
    });
 
-   const [loginMutation, test] = useLoginMutation();
-   console.log(test);
+   const [loginMutation, { isLoading, isError, isSuccess }] = useLoginMutation();
 
    const handleChange = ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
 
-   // const [username, setUsername] = useState<string>("");
-   // const [password, setPassword] = useState<string>("");
    const [showMesage, setShowMessage] = useState<boolean>(false);
    const [check, setCheck] = useState<boolean>(false);
 
    const onSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       try {
-         const user = await loginMutation(formState);
-         console.log(user);
+         const token = await loginMutation(formState).unwrap();
+         localStorage.setItem("token", token.token);
+         dispatch(login(getLoginPayload()));
+         navigate(-1);
       } catch (err) {
          setShowMessage(true);
       }
-      // try {
-      //    await getToken(username, password);
-      //    setShowMessage(false);
-      //    dispatch(login(getLoginPayload()));
-      //    navigate("/", { replace: true });
-      // } catch (err) {
-      //    setShowMessage(true);
-      // }
    };
 
    return (
@@ -66,7 +57,7 @@ const LoginPage = () => {
                </div>
                <Button
                   onClick={() => {
-                     console.log(); // Navigate to register page
+                     navigate("register"); // Navigate to register page
                   }}
                >
                   Zarejestruj się
