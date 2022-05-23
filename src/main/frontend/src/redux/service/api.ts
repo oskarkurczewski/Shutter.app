@@ -1,14 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
-export interface LoginResponse {
-   token: string;
-}
-
 export interface LoginRequest {
    login: string;
    password: string;
-   faCode;
+   twoFACode: string;
+}
+
+export interface LoginResponse {
+   token: string;
 }
 
 export const api = createApi({
