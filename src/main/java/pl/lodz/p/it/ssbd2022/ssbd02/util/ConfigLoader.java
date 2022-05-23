@@ -4,7 +4,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +15,8 @@ import java.util.Properties;
 /**
  * Klasa służąca do wczytywania plików konfiguracyjnych
  */
+@PermitAll
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Startup
 @Singleton
 @Interceptors({LoggingInterceptor.class})
@@ -55,7 +58,6 @@ public class ConfigLoader {
         propertiesTransaction = loadProperties(PROPERTIES_TRANSACTION_FILE);
     }
 
-    @PermitAll
     private Properties loadProperties(String fileName) {
         Properties properties = new Properties();
         try {
