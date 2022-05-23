@@ -4,16 +4,21 @@ import "./style.scss";
 
 import LoginPage from "pages/login";
 import DashboardPage from "pages/dashboard";
-import AuthenticatedRoute from "util/AuthenticatedRoute";
-import ConfirmRegistrationPage from "pages/confirmRegistration";
 import PageLayout from "pages/layout";
 import Homepage from "pages/homepage";
 import NotFound404 from "pages/not-found";
 import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
-import SettingsPage from "pages/settings";
+import ProtectedRoute from "components/routes/protected-route";
+import { AccessLevel } from "types/AccessLevel";
 import RegisterPage from "pages/register";
+import CreateAccountPage from "pages/users/create";
+import AccountListPage from "pages/users/list";
+import EditAccountPage from "pages/users/edit";
+import SettingsPage from "pages/settings";
+import ResetPasswordPage from "pages/reset-password";
+import ConfirmRegistrationPage from "pages/confirmRegistration";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -27,30 +32,94 @@ function App() {
       <BrowserRouter>
          <Routes>
             <Route path="*" element={<NotFound404 />} />
+
             <Route element={<PageLayout />}>
-               <Route path="/" element={<Homepage />} />
-               <Route path="/login" element={<LoginPage />} />
-               <Route path="/register" element={<RegisterPage />} />
+               <Route path="" element={<Homepage />} />
+
+               <Route
+                  path="login"
+                  element={
+                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                        <LoginPage />
+                     </ProtectedRoute>
+                  }
+               />
+
+               <Route
+                  path="register"
+                  element={
+                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                        <RegisterPage />
+                     </ProtectedRoute>
+                  }
+               />
+
                <Route
                   path="/confirm-registration/:registerationToken"
-                  element={<ConfirmRegistrationPage />}
-               />
-               <Route
-                  path="/dashboard"
                   element={
-                     <AuthenticatedRoute>
-                        <DashboardPage />
-                     </AuthenticatedRoute>
+                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                        <ConfirmRegistrationPage />
+                     </ProtectedRoute>
                   }
                />
+
                <Route
-                  path="/settings"
+                  path="reset-password"
                   element={
-                     <AuthenticatedRoute>
+                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                        <ResetPasswordPage />
+                     </ProtectedRoute>
+                  }
+               />
+
+               <Route
+                  path="settings"
+                  element={
+                     <ProtectedRoute
+                        roles={[
+                           AccessLevel.ADMINISTRATOR,
+                           AccessLevel.MODERATOR,
+                           AccessLevel.PHOTOGRAPHER,
+                           AccessLevel.CLIENT,
+                        ]}
+                     >
                         <SettingsPage />
-                     </AuthenticatedRoute>
+                     </ProtectedRoute>
                   }
-               />
+               ></Route>
+
+               <Route path="users">
+                  <Route
+                     path=""
+                     element={
+                        <ProtectedRoute
+                           roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
+                        >
+                           <AccountListPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="create"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
+                           <CreateAccountPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path=":id/edit"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
+                           <EditAccountPage />
+                        </ProtectedRoute>
+                     }
+                  />
+               </Route>
+
+               <Route path="dashboard" element={<DashboardPage />} />
             </Route>
          </Routes>
       </BrowserRouter>

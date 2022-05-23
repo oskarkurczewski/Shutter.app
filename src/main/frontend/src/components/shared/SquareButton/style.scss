@@ -1,0 +1,49 @@
+@import "variables.scss";
+
+.square-button-wrapper {
+   height: 38px;
+   aspect-ratio: 1;
+   button {
+      color: $gray-200;
+
+      height: 100%;
+      width: 100%;
+      border-radius: 6px;
+      border: none;
+      background-color: $blue-gray-100;
+      box-shadow: $shadow-elevated;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+      &:not(:disabled) {
+         cursor: pointer;
+      }
+      svg {
+         font-size: 20px;
+      }
+      &:hover {
+         background-color: $blue-gray-200;
+      }
+      &:active {
+         transform: translateY(4px);
+         box-shadow: none;
+      }
+      &:disabled {
+         color: $gray-100;
+         &:hover {
+            background-color: $blue-gray-100;
+         }
+         &:active {
+            transform: none;
+            box-shadow: $shadow-elevated;
+         }
+      }
+   }
+   &.inactive {
+      button:disabled {
+         color: $gray-200;
+      }
+   }
+}

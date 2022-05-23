@@ -13,11 +13,15 @@ public final class REGEXP {
 
     public static final String ACCESS_LEVEL_PATTERN
             = "^(?!ADMINISTRATOR).*$";
-    
+
     public static final String ORDER_PATTERN
             = "^asc|desc$";
 
     public static final String EMAIL_PATTERN
             = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+
+    public static final String TWO_FA_CODE = "[0-9]{6}";
+
+    public static final String NAME_SURNAME_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹ][a-ząćęńśłóżź]{0,63}";
 }

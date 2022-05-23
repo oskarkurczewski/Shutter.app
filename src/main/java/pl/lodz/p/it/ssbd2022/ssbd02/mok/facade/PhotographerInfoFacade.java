@@ -32,11 +32,54 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
         return em;
     }
 
+    @Override
+    @PermitAll
+    public PhotographerInfo persist(PhotographerInfo entity) throws BaseApplicationException {
+        try {
+            return super.persist(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    @PermitAll
+    public PhotographerInfo update(PhotographerInfo entity) throws BaseApplicationException {
+        try {
+            return super.update(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    @PermitAll
+    public void remove(PhotographerInfo entity) throws BaseApplicationException {
+        try {
+            super.remove(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+
     /**
      * Szuka profilu fotografa
      *
-     * @param login nazwa użytkownika fotografa
-     * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje
+     * @param login Login użytkownika fotografa
+     * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @see PhotographerInfo
      */
     @PermitAll

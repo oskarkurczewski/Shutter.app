@@ -19,30 +19,11 @@ public class OneTimeCodeUtils {
     @Inject
     private ConfigLoader configLoader;
 
-    private int period;
-
-    public void setConfigLoader(ConfigLoader configLoader) {
-        this.configLoader = configLoader;
-    }
-
-    @PostConstruct
-    public void init() {
-        try {
-            period = Integer.parseInt(
-                    configLoader
-                    .loadProperties("config.2fa.properties")
-                    .getProperty("2fa.period")
-            );
-        } catch (NoConfigFileFound e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private TOTP createTotp(String secret) {
         return new TOTP.Builder(secret.getBytes(StandardCharsets.UTF_8))
                 .withPasswordLength(6)
                 .withAlgorithm(HMACAlgorithm.SHA512)
-                .withPeriod(Duration.ofSeconds(period))
+                .withPeriod(Duration.ofSeconds(configLoader.get2FaPeriod()))
                 .build();
     }
 

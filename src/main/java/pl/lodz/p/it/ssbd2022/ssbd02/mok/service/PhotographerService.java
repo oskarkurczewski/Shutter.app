@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -31,17 +32,60 @@ public class PhotographerService {
     @Inject
     private PhotographerInfoFacade photographerInfoFacade;
 
-
-
     /**
      * Odnajduje informacje o fotografie na podstawie jego loginu
      *
      * @param login Login fotografa dla którego chemy pozyskać informacje
-     * @throws NoPhotographerFound W przypadku kiedy fotograf o danym loginie nie istnieje
+     * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      */
     @PermitAll
     public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
         return photographerInfoFacade.findPhotographerByLogin(login);
+    }
+
+
+    /**
+     * Tworzy pusty obiekt reprezentujący informacje o fotografie lub aktywuje istniejący,
+     * jeżeli już istnieje
+     *
+     * @param account Account Konto fotografa, któremu chcemy dodać informacje
+     */
+    public void createOrActivatePhotographerInfo(Account account) throws BaseApplicationException {
+        PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
+        if (existingPhotographerInfo != null) {
+            existingPhotographerInfo.setVisible(true);
+
+            photographerInfoFacade.update(existingPhotographerInfo);
+        } else {
+            PhotographerInfo photographerInfo = new PhotographerInfo();
+            photographerInfo.setId(account.getId());
+            photographerInfo.setScore(0L);
+            photographerInfo.setReviewCount(0L);
+            photographerInfo.setAccount(account);
+            photographerInfo.setDescription("");
+            photographerInfo.setLatitude(null);
+            photographerInfo.setLongitude(null);
+            photographerInfo.setVisible(true);
+
+            photographerInfoFacade.persist(photographerInfo);
+        }
+    }
+
+    /**
+     * Ukrywa informacje o fotografie
+     *
+     * @param login Login Konto fotografa, któremu chcemy ukryć informacje
+     */
+    public void hidePhotographerInfo(String login) throws BaseApplicationException {
+        PhotographerInfo photographerInfo = photographerInfoFacade.findPhotographerByLogin(login);
+
+        if (photographerInfo.getVisible()) {
+            photographerInfo.setVisible(false);
+            photographerInfoFacade.persist(photographerInfo);
+        } else {
+            throw ExceptionFactory.cannotChangeException();
+        }
+
     }
 
     /**

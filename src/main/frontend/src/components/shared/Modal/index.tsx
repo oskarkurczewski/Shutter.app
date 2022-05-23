@@ -22,7 +22,7 @@ type Props =
         onSubmit: () => void;
         title: string;
         children: JSX.Element | JSX.Element[];
-};
+     };
 
 const Modal: React.FC<Props> = ({
    className,

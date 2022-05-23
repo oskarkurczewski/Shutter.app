@@ -17,20 +17,14 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory.unexpecte
 public abstract class AbstractController {
     private static final String CONFIG_FILE_NAME = "config.transaction.properties";
     private int transactionRepetitionLimit;
+
     @Inject
     private ConfigLoader configLoader;
-    private Properties properties;
 
 
     @PostConstruct
     public void init() {
-        try {
-            configLoader = new ConfigLoader();
-            properties = configLoader.loadProperties(CONFIG_FILE_NAME);
-        } catch (NoConfigFileFound e) {
-            throw new RuntimeException(e);
-        }
-        transactionRepetitionLimit = Integer.parseInt(properties.getProperty("transaction.repetition.limit"));
+        transactionRepetitionLimit = configLoader.getTransactionRepetitionLimit();
     }
 
     /**

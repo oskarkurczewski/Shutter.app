@@ -2,7 +2,7 @@ import React from "react";
 import "./style.scss";
 
 interface Props {
-   children: string;
+   children?: string;
    className?: string;
    required?: boolean;
    value: boolean;

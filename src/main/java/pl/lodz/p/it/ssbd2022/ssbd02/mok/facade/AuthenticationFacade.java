@@ -3,8 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -17,6 +17,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -160,7 +161,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param recordsPerPage liczba rekordów na stronie
      * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
      * @param order          kolejność sortowania
-     * @param login          nazwa użytkownika
+     * @param login          Login użytkownika
      * @param email          email
      * @param name           imie
      * @param surname        nazwisko
@@ -228,7 +229,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     /**
      * Zwraca ilość rekordów po przefiltrowaniu
      *
-     * @param login      nazwa użytkownika
+     * @param login      Login użytkownika
      * @param email      email
      * @param name       imie
      * @param surname    nazwisko
@@ -265,6 +266,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     public EntityManager getEm() {
         return em;
     }
@@ -276,6 +278,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param name imie
      * @return ilość rekordów
      */
+    @PermitAll
     public Long getAccountListSizeNameSurname(
             String name
     ) {
@@ -298,5 +301,22 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return em.createQuery(query).getSingleResult();
     }
 
+    @PermitAll
+    public List<Account> getWithLastLoginBefore(LocalDateTime dateTime) throws BaseApplicationException {
+        TypedQuery<Account> query = getEm().createNamedQuery("account.findByLastLogInIsBefore", Account.class);
+        try {
+            query.setParameter("lastLogIn", dateTime);
+            List<Account> res = query.getResultList();
+            return res;
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
 
 }

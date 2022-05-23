@@ -1,11 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
 import javax.inject.Inject;
@@ -24,7 +22,7 @@ public class AccountController extends AbstractController {
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
      *
-     * @param login login użytkownika dla którego ma zostać dokonana zmiana statusu
+     * @param login Login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/block")
@@ -38,7 +36,7 @@ public class AccountController extends AbstractController {
     /**
      * Zmienia status użytkownika o danym loginie na odblokowany
      *
-     * @param login login użytkownika, dla którego ma zostać dokonana zmiana statusu
+     * @param login Login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
     @PUT
     @Path("/{login}/unblock")
@@ -69,7 +67,7 @@ public class AccountController extends AbstractController {
      * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
      *
      * @param login Login użytkownika, na którego email ma zostać wysłany link
-     * @throws NoAccountFound Jeżeli konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje lub jest niepotwierdzone/zablokowane
      */
     @POST
     @Path("{login}/request-reset")
@@ -79,21 +77,19 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Resetuje hasło dla użytkownika o podanym loginie
+     * Resetuje hasło dla użytkownika
      *
-     * @param login            Login użytkownika, dla którego ma zostać zresetowane hasło
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
-     * @throws InvalidTokenException    W przypadku gdy żeton jest nieprawidłowego typu
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws ExpiredTokenException    W przypadku gdy żeton jest nieaktualny
-     * @throws NoVerificationTokenFound W przypadku gdy żeton nie zostanie odnalenzniony w bazie danych
+     * @throws NoVerificationTokenFound Żeton wygasł
      */
     @POST
-    @Path("{login}/password-reset")
+    @Path("/password-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void resetPassword(@PathParam("login") String login, @NotNull @Valid ResetPasswordDto resetPasswordDto)
+    public void resetPassword(@NotNull @Valid ResetPasswordDto resetPasswordDto)
             throws BaseApplicationException {
-        repeat(() -> accountEndpoint.resetPassword(login, resetPasswordDto), accountEndpoint);
+        repeat(() -> accountEndpoint.resetPassword(resetPasswordDto), accountEndpoint);
     }
 
 
@@ -112,20 +108,18 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Aktualizuje email danego użytkownika
+     * Aktualizuje email użytkownika
      *
-     * @param login          Login użytkownika, dla którego być zmieniony email
      * @param emailUpdateDto Informacje do zmiany emaila użytkownika
-     * @throws NoAccountFound           W przypadku gdy dany użytkownik nie istnieje
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @POST
-    @Path("{login}/verify-email-update")
+    @Path("/verify-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response verifyEmailUpdate(@PathParam("login") String login, @NotNull @Valid EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
-        repeat(() -> accountEndpoint.updateEmail(login, emailUpdateDto), accountEndpoint);
+    public Response verifyEmailUpdate(@NotNull @Valid EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.updateEmail(emailUpdateDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -183,9 +177,9 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy szukający użytkownika
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      * @see BaseAccountInfoDto
      */
     @GET
@@ -199,10 +193,9 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy szukający użytkownika
      *
-     * @param login nazwa użytkownika
+     * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @see BaseAccountInfoDto
      */
     @GET
@@ -265,7 +258,7 @@ public class AccountController extends AbstractController {
      * @param recordsPerPage liczba rekordów na stronie
      * @param columnName     nazwa kolumny, po której nastąpi sortowanie
      * @param order          kolejność sortowania
-     * @param login          nazwa użytkownika
+     * @param login          Login użytkownika
      * @param email          email
      * @param name           imie
      * @param surname        nazwisko
@@ -329,5 +322,61 @@ public class AccountController extends AbstractController {
     ) throws BaseApplicationException {
         return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
     }
+
+    /**
+     * Wysyła wymagany do zalogowania kod 2fa
+     *
+     * @param login login użytkownika, dla którego ma zostać utworzony kod 2fa
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException W przypadku kiedy użytkownik o podanym loginie nie zostanie znaleziony
+     *                                  lub wystąpi nieoczekiwany błąd
+     */
+    @POST
+    @Path("/{login}/request-2fa-code")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response request2faCode(@NotNull @Login
+                                   @PathParam("login") String login
+    ) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.reguest2faCode(login), accountEndpoint);
+        return Response.status(200).build();
+    }
+
+
+    /**
+     * Punkt końcowy pozwalający użytkownikowi na zostanie fotografem.
+     *
+     * @return Odpowiedź HTTP
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     */
+    @POST
+    @Path("/become-photographer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response becomePhotographer() throws BaseApplicationException {
+        accountEndpoint.becomePhotographer();
+        return Response.status(Response.Status.OK).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na zaprzestanie bycia fotografem
+     *
+     * @return Odpowiedź HTTP
+     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws NoAuthenticatedAccountFound W przypadku nieznalezienia konta użytkownika w bazie danych
+     * na podstawie żetonu JWT
+     * @throws NoPhotographerFound W przypadku nieznalezienia konta fotografa
+     *
+     */
+    @POST
+    @Path("/stop-being-photographer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response stopBeingPhotographer() throws BaseApplicationException {
+        accountEndpoint.stopBeingPhotographer();
+        return Response.status(Response.Status.OK).build();
+    }
+
 
 }

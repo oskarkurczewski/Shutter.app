@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN"
-    "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
+        "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
 <glassfish-web-app>
     <!-- Left for backwards compatibility -->
     <security-role-mapping>
@@ -225,6 +225,13 @@
     </security-role-mapping>
     <security-role-mapping>
         <role-name>updateEmail</role-name>
+        <group-name>ADMINISTRATOR</group-name>
+        <group-name>MODERATOR</group-name>
+        <group-name>CLIENT</group-name>
+        <group-name>PHOTOGRAPHER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>changeGroup</role-name>
         <group-name>ADMINISTRATOR</group-name>
         <group-name>MODERATOR</group-name>
         <group-name>CLIENT</group-name>

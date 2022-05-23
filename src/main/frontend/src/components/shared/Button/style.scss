@@ -11,6 +11,7 @@
    border-radius: 7px;
    box-shadow: $shadow-elevated;
    text-transform: uppercase;
+   user-select: none;
    cursor: pointer;
 
    span {
@@ -21,5 +22,9 @@
       color: $white;
       font-weight: 600;
       padding: 0 0.66rem;
+   }
+   &:active {
+      transform: translateY(4px);
+      box-shadow: none;
    }
 }

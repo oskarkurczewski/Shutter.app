@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.UUID;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
@@ -43,11 +45,14 @@ public class AccountService {
     @Inject
     private EmailService emailService;
 
+    @Inject
+    private OneTimeCodeUtils codeUtils;
+
     /**
      * Odnajduje konto użytkownika o podanym loginie
      *
      * @param login Login użytkownika, którego konta ma być wyszukane
-     * @throws NoAccountFound W przypadku nieznalezienia konta
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
@@ -77,6 +82,8 @@ public class AccountService {
 
         if (!active) {
             emailService.sendAccountBlocked(account.getEmail());
+        } else {
+            emailService.sendAccountActivated(account.getEmail());
         }
         accountFacade.update(account);
     }
@@ -86,8 +93,7 @@ public class AccountService {
      *
      * @param account konto użytkownika, którego dane mają zostać pozyskane
      * @return obiekt DTO informacji o użytkowniku
-     * @throws NoAccountFound W przypadku gdy użytkownik o podanej nazwie nie istnieje lub
-     *                        gdy konto szukanego użytkownika jest nieaktywne, lub niepotwierdzone
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @see Account
      */
     @RolesAllowed(getAccountInfo)
@@ -109,6 +115,7 @@ public class AccountService {
     @RolesAllowed(changeSomeonesPassword)
     public void changeAccountPasswordAsAdmin(Account account, String password) throws BaseApplicationException {
         changePassword(account, password);
+        verificationTokenService.sendForcedPasswordResetToken(account);
     }
 
     /**
@@ -140,6 +147,9 @@ public class AccountService {
             throw ExceptionFactory.wrongPasswordException();
         }
         String hashed = BCryptUtils.generate(newPassword.toCharArray());
+        if (!isPasswordUniqueForUser(hashed, target)) {
+            throw ExceptionFactory.nonUniquePasswordException();
+        }
         target.setPassword(hashed);
         accountFacade.update(target);
     }
@@ -147,30 +157,28 @@ public class AccountService {
     /**
      * Resetuje hasło użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
      *
-     * @param account          Konto, dla którego hasła ma zostać zresetowane
-     * @param resetPasswordDto Dto przechowujące informacje wymagane do resetu hasła
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Nie udało się odnaleźć danego żetonu w systemie
+     * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @PermitAll
-    public void resetPassword(Account account, ResetPasswordDto resetPasswordDto) throws BaseApplicationException {
-        verificationTokenService.confirmPasswordReset(resetPasswordDto.getToken());
+    public void resetPassword(ResetPasswordDto resetPasswordDto) throws BaseApplicationException {
+        Account account = verificationTokenService.confirmPasswordReset(resetPasswordDto.getToken());
         changePassword(account, resetPasswordDto.getNewPassword());
     }
 
     /**
-     * Aktualizuje email danego użytkownika
+     * Aktualizuje adres email użytkownika na podane pod warunkiem, że żeton weryfikujący jest aktualny oraz poprawny
      *
-     * @param account        Konto, dla którego email jest zmieniany
-     * @param emailUpdateDto obiekt przechowujący żeton oraz nowy adres email
-     * @throws InvalidTokenException    Żeton jest nieprawidłowy
-     * @throws NoVerificationTokenFound Żie udało się odnaleźć danego żetonu w systemie
+     * @param emailUpdateDto Informacje do zmiany emaila użytkownika
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
      */
     @RolesAllowed((updateEmail))
-    public void updateEmail(Account account, EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
-        verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
+    public void updateEmail(EmailUpdateDto emailUpdateDto) throws BaseApplicationException {
+        Account account = verificationTokenService.confirmEmailUpdate(emailUpdateDto.getToken());
         account.setEmail(emailUpdateDto.getNewEmail());
         accountFacade.update(account);
     }
@@ -184,11 +192,10 @@ public class AccountService {
      * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @see AccountAccessLevelChangeDto
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({grantAccessLevel, revokeAccessLevel, becomePhotographer})
     public void changeAccountAccessLevel(Account account, AccessLevelValue accessLevelValue, Boolean active)
             throws BaseApplicationException {
 
-        List<AccessLevelAssignment> accountAccessLevels = account.getAccessLevelAssignmentList();
         AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
                 account,
                 accessLevelValue
@@ -241,6 +248,70 @@ public class AccountService {
     }
 
     /**
+     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     *
+     * @param account                   Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
+     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     *
+     */
+    @RolesAllowed(becomePhotographer)
+    public void becomePhotographer(Account account)
+            throws BaseApplicationException {
+
+        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
+                account,
+                accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER")
+        );
+
+        if (accessLevelFound != null) {
+            if (accessLevelFound.getActive()) {
+                throw ExceptionFactory.cannotChangeException();
+            }
+
+            accessLevelFound.setActive(true);
+            accessLevelFacade.update(accessLevelFound);
+        } else {
+            AccessLevelAssignment assignment = new AccessLevelAssignment();
+
+            assignment.setLevel(accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER"));
+            assignment.setAccount(account);
+            assignment.setActive(true);
+
+            accessLevelFacade.persist(assignment);
+        }
+    }
+
+
+    /**
+     * Odbiera rolę fotografa poprzez ustawienie poziomu dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
+     *
+     * @param account                   Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa
+     * @throws CannotChangeException    W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
+     *                                  tę rolę nieaktywną bądź wcale jej niemającego
+     *
+     */
+
+    @RolesAllowed(stopBeingPhotographer)
+    public void stopBeingPhotographer(Account account) throws BaseApplicationException {
+        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
+                account,
+                accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER")
+        );
+
+        if (accessLevelFound != null) {
+            if (accessLevelFound.getActive()) {
+                accessLevelFound.setActive(false);
+                accessLevelFacade.update(accessLevelFound);
+            } else {
+                throw ExceptionFactory.cannotChangeException();
+            }
+        } else {
+            throw ExceptionFactory.cannotChangeException();
+        }
+
+    }
+
+    /**
      * Rejestruje konto użytkownika z danych podanych w obiekcie klasy użytkownika
      * oraz przypisuje do niego poziom dostępu klienta.
      * W celu aktywowania konta należy jeszcze zmienić pole 'registered' na wartość 'true'.
@@ -257,6 +328,7 @@ public class AccountService {
         account.setActive(true);
         account.setRegistered(false);
         account.setFailedLogInAttempts(0);
+        account.setSecret(UUID.randomUUID().toString());
 
         addNewAccount(account);
 
@@ -294,7 +366,7 @@ public class AccountService {
      * @param account obiekt encji użytkownika
      * @throws IdenticalFieldException W przypadku, gdy login lub adres email już się znajduje w bazie danych
      */
-    private void addNewAccount(Account account) throws BaseApplicationException{
+    private void addNewAccount(Account account) throws BaseApplicationException {
         try {
             accountFacade.persist(account);
         } catch (PersistenceException ex) {
@@ -469,5 +541,26 @@ public class AccountService {
                 allRecords,
                 list
         );
+    }
+
+    /**
+     * Sprawdza, czy dany użytkownik miał już dane hasło ustawione w przeszłości
+     * @param newPassword nowe hasło do sprawdzenia
+     * @param account użytkownik zmieniający hasło
+     * @return true jeżeli użytkownik nie miał ustawionego danego hasła
+     */
+    private boolean isPasswordUniqueForUser(String newPassword, Account account) {
+        return account.getOldPasswordList().stream().noneMatch(op -> op.getPassword().equals(newPassword));
+    }
+
+    /**
+     * Generuje oraz wysyła kod 2fa dla danego użytkownika na jego adres email
+     *
+     * @param account Konto użytkownika
+     */
+    @PermitAll
+    public void send2faCode(Account account) {
+        String totp = codeUtils.generateCode(account.getSecret());
+        emailService.sendEmail2FA(account.getEmail(), account.getLogin(), totp);
     }
 }

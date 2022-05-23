@@ -12,6 +12,10 @@ public class ExceptionFactory {
         return new DatabaseException("exception.database");
     }
 
+    public static CannotChangeException cannotChangeException() {
+        return new CannotChangeException("exception.cannotchange");
+    }
+
     public static DataNotFoundException dataNotFoundException() {
         return new DataNotFoundException("exception.notfound");
     }
@@ -109,9 +113,17 @@ public class ExceptionFactory {
     }
 
     public static BaseApplicationException OptLockException() {
-        return new OptLockException();
+        return new OptLockException("exception.optlock");
     }
     public static WrongParameterException wrongParameterException() {
         return new WrongParameterException("exception.wrong_parameter");
+    }
+
+    public static UserNotInGroupException userNotInGroupException() {
+        return new UserNotInGroupException("exception.user_not_in_group");
+    }
+
+    public static NonUniquePasswordException nonUniquePasswordException() {
+        return new NonUniquePasswordException("exception.password.not_unique");
     }
 }
