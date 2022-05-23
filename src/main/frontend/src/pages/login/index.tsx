@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
-import { useLoginMutation } from "redux/service/api";
+import { useLoginMutation, useSendTwoFACodeMutation } from "redux/service/api";
 import { LoginRequest } from "redux/types/api/authTypes";
 
 const LoginPage: React.FC = () => {
@@ -21,24 +21,23 @@ const LoginPage: React.FC = () => {
       twoFACode: "000000",
    });
 
-   const [loginMutation, test] = useLoginMutation();
+   const [loginMutation, loginMutationState] = useLoginMutation();
+   const [sendTwoFACodeMutation, sendTwoFACodeMutationState] = useSendTwoFACodeMutation();
 
    const handleChange = ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
 
-   const [showMesage, setShowMessage] = useState<boolean>(false);
-   const [check, setCheck] = useState<boolean>(false);
+   const onSendTwoFA = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      sendTwoFACodeMutation(formState.login);
+   };
 
    const onSubmit = async (e) => {
       e.preventDefault();
-      try {
-         const token = await loginMutation(formState).unwrap();
-         localStorage.setItem("token", token.token);
-         dispatch(login(getLoginPayload()));
-         navigate(-1);
-      } catch (err) {
-         setShowMessage(true);
-      }
+      const token = await loginMutation(formState).unwrap();
+      localStorage.setItem("token", token.token);
+      dispatch(login(getLoginPayload()));
+      navigate("/");
    };
 
    return (
@@ -54,7 +53,6 @@ const LoginPage: React.FC = () => {
                      Załóż je teraz, <br />
                      to zupełnie darmowe!
                   </p>
-                  <p>{test.isLoading ? "loading..." : "done"}</p>
                </div>
                <Button
                   onClick={() => {
@@ -82,10 +80,35 @@ const LoginPage: React.FC = () => {
                   name="password"
                   onChange={handleChange}
                />
-               <Checkbox value={check} onChange={(e) => setCheck(e.target.checked)}>
+               <div className="two-factory-auth">
+                  <TextInput
+                     label="Kod uwierzytelnienia"
+                     placeholder="Kod"
+                     value={formState.twoFACode}
+                     name="twoFACode"
+                     onChange={handleChange}
+                  />
+                  <Button onClick={onSendTwoFA}>Send Code</Button>
+               </div>
+
+               {/* <Checkbox value={check} onChange={(e) => setCheck(e.target.checked)}>
                   Zapamiętaj mnie
-               </Checkbox>
-               {showMesage && <p className="message">Zły login lub hasło</p>}
+               </Checkbox> */}
+
+               <p>
+                  {(loginMutationState.isLoading ||
+                     sendTwoFACodeMutationState.isLoading) &&
+                     "loading..."}
+               </p>
+
+               {loginMutationState.isError && (
+                  <p className="message">Zły login lub hasło</p>
+               )}
+               {sendTwoFACodeMutationState.isError && (
+                  <p className="message">Nie udało się wysłać kodu</p>
+               )}
+               {sendTwoFACodeMutationState.isSuccess && <p>Pomyślnie wysłano kod</p>}
+
                <div className="footer">
                   <a href="#a">Zapomniałeś hasła?</a>
                   <Button onClick={(e) => onSubmit(e)}>Zaloguj się</Button>
