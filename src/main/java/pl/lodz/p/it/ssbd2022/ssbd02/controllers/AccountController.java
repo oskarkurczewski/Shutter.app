@@ -272,7 +272,7 @@ public class AccountController extends AbstractController {
     @Path("list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ListResponseDto<String> getAccountList(
+    public ListResponseDto<TableAccountDto> getAccountList(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
@@ -346,9 +346,9 @@ public class AccountController extends AbstractController {
      * Punkt końcowy pozwalający użytkownikowi na zostanie fotografem.
      *
      * @return Odpowiedź HTTP
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                               lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      */
     @POST
     @Path("/become-photographer")
@@ -362,13 +362,12 @@ public class AccountController extends AbstractController {
      * Punkt końcowy pozwalający na zaprzestanie bycia fotografem
      *
      * @return Odpowiedź HTTP
-     * @throws DataNotFoundException    W przypadku próby podania niepoprawnej nazwie poziomu dostępu
-     * lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
-     * @throws CannotChangeException    W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
+     * @throws DataNotFoundException       W przypadku próby podania niepoprawnej nazwie poziomu dostępu
+     *                                     lub próby ustawienia aktywnego/nieaktywnego już poziomu dostępu
+     * @throws CannotChangeException       W przypadku próby odebrania poziomu dostępu, którego użytkownik nigdy nie posiadał
      * @throws NoAuthenticatedAccountFound W przypadku nieznalezienia konta użytkownika w bazie danych
-     * na podstawie żetonu JWT
-     * @throws NoPhotographerFound W przypadku nieznalezienia konta fotografa
-     *
+     *                                     na podstawie żetonu JWT
+     * @throws NoPhotographerFound         W przypadku nieznalezienia konta fotografa
      */
     @POST
     @Path("/stop-being-photographer")

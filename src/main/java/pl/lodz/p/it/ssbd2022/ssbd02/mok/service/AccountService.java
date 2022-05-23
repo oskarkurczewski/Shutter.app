@@ -23,6 +23,7 @@ import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_EMAIL;
@@ -250,9 +251,8 @@ public class AccountService {
     /**
      * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
      *
-     * @param account                   Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
-     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
-     *
+     * @param account Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
+     * @throws CannotChangeException W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
      */
     @RolesAllowed(becomePhotographer)
     public void becomePhotographer(Account account)
@@ -285,10 +285,9 @@ public class AccountService {
     /**
      * Odbiera rolę fotografa poprzez ustawienie poziomu dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
      *
-     * @param account                   Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa
-     * @throws CannotChangeException    W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
-     *                                  tę rolę nieaktywną bądź wcale jej niemającego
-     *
+     * @param account Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa
+     * @throws CannotChangeException W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
+     *                               tę rolę nieaktywną bądź wcale jej niemającego
      */
 
     @RolesAllowed(stopBeingPhotographer)
@@ -448,8 +447,8 @@ public class AccountService {
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
     @RolesAllowed(listAllAccounts)
-    public ListResponseDto<String> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
-        List<String> list = accountFacade.getAccountList(
+    public ListResponseDto<TableAccountDto> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+        List<Account> list = accountFacade.getAccountList(
                 requestDto.getPage(),
                 requestDto.getRecordsPerPage(),
                 requestDto.getOrderBy(),
@@ -475,7 +474,7 @@ public class AccountService {
                 (int) Math.ceil(allRecords.doubleValue() / requestDto.getRecordsPerPage()),
                 requestDto.getRecordsPerPage(),
                 allRecords,
-                list
+                list.stream().map(TableAccountDto::new).collect(Collectors.toList())
         );
     }
 
@@ -545,8 +544,9 @@ public class AccountService {
 
     /**
      * Sprawdza, czy dany użytkownik miał już dane hasło ustawione w przeszłości
+     *
      * @param newPassword nowe hasło do sprawdzenia
-     * @param account użytkownik zmieniający hasło
+     * @param account     użytkownik zmieniający hasło
      * @return true jeżeli użytkownik nie miał ustawionego danego hasła
      */
     private boolean isPasswordUniqueForUser(String newPassword, Account account) {
