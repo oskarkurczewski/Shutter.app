@@ -1,34 +1,34 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Klasa DTO wykorzystywana przy zwracaniu informacji o użytkowniku w punkcie końcowym typu GET
  * <code>/api/account/{login}/info</code>
  */
-@Data
-public class DetailedAccountInfoDto {
+@Getter
+@Setter
+public class DetailedAccountInfoDto extends TracableDto {
 
-    @NotNull
     private String login;
 
-    @NotNull
     private String email;
 
-    @NotNull
     private String name;
 
-    @NotNull
     private String surname;
 
-    @NotNull
     private Boolean active;
 
-    @NotNull
     private Boolean registered;
+
+    private List<AccessLevelDto> accessLevelList = new ArrayList();
 
     /**
      * Konstruktor obiektu DTO użytkownika
@@ -36,6 +36,15 @@ public class DetailedAccountInfoDto {
      * @param account encja użytkownika
      */
     public DetailedAccountInfoDto(Account account) {
+        super(
+                account.getModifiedAt(),
+                Optional.ofNullable(account.getModifiedBy()).map(Account::getLogin).orElse(null),
+                account.getCreatedAt(),
+                Optional.ofNullable(account.getCreatedBy()).map(Account::getLogin).orElse(null)
+        );
+
+        account.getAccessLevelAssignmentList().forEach(level -> accessLevelList.add(new AccessLevelDto(level)));
+
         login = account.getLogin();
         email = account.getEmail();
         name = account.getName();
