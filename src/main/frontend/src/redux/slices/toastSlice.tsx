@@ -1,26 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import Toast from "components/layout/toast";
+import Toast, { ToastType } from "components/layout/toast";
 
 interface ToastHandlerState {
-   stack: JSX.Element[];
+   stack: ToastType[];
 }
 
 const initialState: ToastHandlerState = {
-   stack: [<Toast />],
+   stack: [],
 };
 
 export const toastSlice = createSlice({
    name: "toast",
    initialState,
    reducers: {
-      push: (state: ToastHandlerState, action: PayloadAction<JSX.Element>) => {
+      push: (state: ToastHandlerState, action: PayloadAction<ToastType>) => {
+         if (state.stack.some((element) => element.name === action.payload.name)) return;
          state.stack = [...state.stack, action.payload];
       },
-      remove: (state: ToastHandlerState, action: PayloadAction<JSX.Element>) => {
-         state.stack = state.stack.filter(
-            (element) => !(element.key !== action.payload.key)
-         );
+      remove: (state: ToastHandlerState, action: PayloadAction<string>) => {
+         state.stack = state.stack.filter((element) => element.name !== action.payload);
       },
    },
 });
