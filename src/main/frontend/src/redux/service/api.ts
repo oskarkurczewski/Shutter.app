@@ -3,6 +3,8 @@ import {
    basicUserInfoResponse,
    registerAccountAsAdminRequest,
    registerAccountRequest,
+   requestResetPasswordRequest,
+   resetPasswordRequest,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
 import { RootState } from "../store";
@@ -47,6 +49,22 @@ export const api = createApi({
             body: data,
          }),
       }),
+
+      resetPassword: builder.mutation<unknown, resetPasswordRequest>({
+         query: (data) => ({
+            url: "account/password-reset",
+            method: "POST",
+            body: data,
+         }),
+      }),
+
+      requestResetPassword: builder.mutation<unknown, requestResetPasswordRequest>({
+         query: (data) => ({
+            url: "account/request-reset",
+            method: "POST",
+            body: data,
+         }),
+      }),
    }),
 });
 
@@ -55,4 +73,6 @@ export const {
    useUserInfoQuery,
    useRegisterMutation,
    useRegisterAsAdminMutation,
+   useRequestResetPasswordMutation,
+   useResetPasswordMutation,
 } = api;

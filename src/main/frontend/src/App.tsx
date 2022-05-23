@@ -19,6 +19,7 @@ import EditAccountPage from "pages/users/edit";
 import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
 import ConfirmRegistrationPage from "pages/ConfirmRegistration";
+import RequestResetPasswordPage from "pages/request-reset-password";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -64,10 +65,19 @@ function App() {
                />
 
                <Route
-                  path="reset-password"
+                  path="reset-password/:token"
                   element={
                      <ProtectedRoute roles={[AccessLevel.GUEST]}>
                         <ResetPasswordPage />
+                     </ProtectedRoute>
+                  }
+               />
+
+               <Route
+                  path="request-reset-password"
+                  element={
+                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                        <RequestResetPasswordPage />
                      </ProtectedRoute>
                   }
                />

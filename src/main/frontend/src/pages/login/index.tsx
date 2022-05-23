@@ -88,7 +88,7 @@ const LoginPage = () => {
                </Checkbox>
                {showMesage && <p className="message">Zły login lub hasło</p>}
                <div className="footer">
-                  <a href="#a">Zapomniałeś hasła?</a>
+                  <a href="/request-reset-password">Zapomniałeś hasła?</a>
                   <Button onClick={(e) => onSubmit(e)}>Zaloguj się</Button>
                </div>
             </form>
