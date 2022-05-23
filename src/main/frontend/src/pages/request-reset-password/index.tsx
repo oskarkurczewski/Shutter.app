@@ -7,17 +7,12 @@ import { useRequestResetPasswordMutation } from "redux/service/api";
 
 const RequestResetPasswordPage = () => {
    const [login, setLogin] = useState<string>("");
-   const [showMesage, setShowMessage] = useState<boolean>(false);
-   const [requestResetPasswordMutation, requestResetPasswordMutationData] =
+   const [requestResetPasswordMutation, { isLoading, isSuccess, isError }] =
       useRequestResetPasswordMutation();
 
    const onSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      try {
-         await requestResetPasswordMutation({ login: login });
-      } catch (err) {
-         setShowMessage(true);
-      }
+      await requestResetPasswordMutation({ login: login });
    };
 
    return (
@@ -26,7 +21,7 @@ const RequestResetPasswordPage = () => {
             <form>
                <p className="category-title">Nie pamiętasz ⁠hasła?</p>
                <p>Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.</p>
-               <p> Podaj login:</p>
+               <p>Podaj login:</p>
                <TextInput
                   label="Login"
                   type="login"
@@ -37,9 +32,19 @@ const RequestResetPasswordPage = () => {
                <div className="footer">
                   <Button onClick={(e) => onSubmit(e)}>Wyślij wiadomość email</Button>
                </div>
-               {showMesage && (
-                  <p className="message">Przesłanie emaila nie powiodło się</p>
-               )}
+               {(() => {
+                  if (isLoading) {
+                     return <p>Loading...</p>;
+                  }
+                  if (isError) {
+                     return (
+                        <p className="error">Nie udało się wysłać wiadomości email</p>
+                     );
+                  }
+                  if (isSuccess) {
+                     return <p>Email został wysłany pomyślnie</p>;
+                  }
+               })()}
             </form>
          </Card>
       </section>

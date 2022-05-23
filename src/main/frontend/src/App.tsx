@@ -136,6 +136,6 @@ function App() {
    );
 }
 
-export const apiUrl = "http://studapp.it.p.lodz.pl:8002/api";
+export const apiUrl = "https://studapp.it.p.lodz.pl:8002/api";
 
 export default App;

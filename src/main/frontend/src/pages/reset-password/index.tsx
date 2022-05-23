@@ -10,15 +10,12 @@ const ResetPasswordPage = () => {
    const { token } = useParams();
    const [password, setPassword] = useState<string>("");
    const [showMesage, setShowMessage] = useState<boolean>(false);
-   const [resetPasswordMutation, resetPasswordMutationData] = useResetPasswordMutation();
+   const [resetPasswordMutation, { isLoading, isSuccess, isError }] =
+      useResetPasswordMutation();
 
    const onSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      try {
-         await resetPasswordMutation({ token: token, newPassword: password });
-      } catch (err) {
-         setShowMessage(true);
-      }
+      await resetPasswordMutation({ token: token, newPassword: password });
    };
 
    return (
@@ -40,7 +37,19 @@ const ResetPasswordPage = () => {
                <div className="footer">
                   <Button onClick={(e) => onSubmit(e)}>Zresetuj hasło</Button>
                </div>
-               {showMesage && <p className="message">Hasło nie spełnia wymagań</p>}
+               {(() => {
+                  if (isLoading) {
+                     return <p>Loading...</p>;
+                  }
+                  if (isError) {
+                     return (
+                        <p className="error">Nie udało się wysłać wiadomości email</p>
+                     );
+                  }
+                  if (isSuccess) {
+                     return <p>Email został wysłany pomyślnie</p>;
+                  }
+               })()}{" "}
             </form>
          </Card>
       </section>
