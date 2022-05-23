@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.exceptions;
 
 import lombok.Getter;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.ErrorDto;
 
 import javax.ws.rs.core.Response;
 
