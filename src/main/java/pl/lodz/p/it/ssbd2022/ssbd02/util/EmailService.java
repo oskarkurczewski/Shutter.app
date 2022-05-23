@@ -17,9 +17,7 @@ import sibModel.SendSmtpEmailTo;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.Collections;
@@ -30,8 +28,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 /**
  * Klasa służąca do wysyłania maili
  */
-@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-@Stateless
+@Singleton
 @Interceptors(LoggingInterceptor.class)
 public class EmailService {
     private TransactionalEmailsApi api;

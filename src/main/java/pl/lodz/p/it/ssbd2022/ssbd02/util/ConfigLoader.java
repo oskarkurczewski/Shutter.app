@@ -16,7 +16,6 @@ import java.util.Properties;
  * Klasa służąca do wczytywania plików konfiguracyjnych
  */
 @PermitAll
-@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Startup
 @Singleton
 @Interceptors({LoggingInterceptor.class})
