@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import io.fusionauth.jwt.domain.JWT;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AuthTokenDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
@@ -71,7 +72,8 @@ public class AuthController {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
         String secret = accountEndpoint.getSecret(data.getLogin());
 
-        if (validationResult.getStatus() == CredentialValidationResult.Status.VALID && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
+        //if (validationResult.getStatus() == CredentialValidationResult.Status.VALID && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
+        if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
             String token = JWTHandler.generateJWT(validationResult);
 
             if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
@@ -88,7 +90,7 @@ public class AuthController {
             );
 
             accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
-            return Response.ok().entity(token).build();
+            return Response.ok().entity(new AuthTokenDto(token)).build();
         }
 
         accountEndpoint.registerFailedLogInAttempt(data.getLogin());
