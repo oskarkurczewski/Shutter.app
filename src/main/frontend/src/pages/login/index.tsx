@@ -4,7 +4,7 @@ import Card from "components/shared/Card";
 import TextInput from "components/shared/TextInput";
 import Checkbox from "components/shared/Checkbox";
 import Button from "components/shared/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
@@ -88,7 +88,7 @@ const LoginPage = () => {
                </Checkbox>
                {showMesage && <p className="message">Zły login lub hasło</p>}
                <div className="footer">
-                  <a href="/request-reset-password">Zapomniałeś hasła?</a>
+                  <Link to={"/request-reset-password"}>Zapomniałeś hasła?</Link>
                   <Button onClick={(e) => onSubmit(e)}>Zaloguj się</Button>
                </div>
             </form>
