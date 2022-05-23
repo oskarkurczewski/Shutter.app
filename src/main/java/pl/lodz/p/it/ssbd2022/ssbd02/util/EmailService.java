@@ -181,6 +181,27 @@ public class EmailService {
     }
 
     /**
+     * Wysyła na adres email podany jako parametr link do aktywacji konta po jego zablokowaniu
+     *
+     * @param to    Adres e-mail, na który wysłana ma zostać wiadomość
+     * @param token Żeton, który ma zostać wysłany
+     */
+    public void sendEmailUnblockAccount(String to, String login, VerificationToken token) {
+        String subject = "Odblokowanie konta Shutter.app";
+        String body = "Twoje konto zostało zablokowane kliknij w link aby je odblokować " + String.format(
+                "%s/%s/account-unblock/%s",
+                BASE_URL,
+                login,
+                token.getToken()
+        );
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
      * odblokowane w systemie.
      *
