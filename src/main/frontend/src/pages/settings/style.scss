@@ -64,20 +64,6 @@ section.settings-page-wrapper {
 
          & > div.content {
             padding: 20px;
-
-            .buttons {
-               display: flex;
-               flex-direction: row;
-               justify-content: space-between;
-
-               .red-button {
-                  background-color: $red-200;
-               }
-
-               .button-wrapper {
-                  margin-top: 20px;
-               }
-            }
          }
       }
    }
