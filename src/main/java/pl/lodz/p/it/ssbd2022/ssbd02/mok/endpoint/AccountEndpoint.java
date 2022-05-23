@@ -83,7 +83,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
      * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({createAccount})
     public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto)
             throws BaseApplicationException {
         Account account = accountRegisterDtoToAccount(accountRegisterAsAdminDto);
@@ -92,7 +92,7 @@ public class AccountEndpoint extends AbstractEndpoint {
         accountService.registerAccountByAdmin(account);
     }
 
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({changeSomeonesPassword})
     public void updatePasswordAsAdmin(String login, AccountUpdatePasswordDto passwordDto) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountPasswordAsAdmin(account, passwordDto.getPassword());
@@ -196,7 +196,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({editSomeonesAccountData})
     public void editAccountInfoAsAdmin(String login, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws BaseApplicationException {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakować go w dto
         Account account = accountService.findByLogin(login);
@@ -256,7 +256,7 @@ public class AccountEndpoint extends AbstractEndpoint {
         return new DetailedAccountInfoDto(account);
     }
 
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
+    @RolesAllowed({changeOwnPassword})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws BaseApplicationException {
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.updateOwnPassword(account, data);

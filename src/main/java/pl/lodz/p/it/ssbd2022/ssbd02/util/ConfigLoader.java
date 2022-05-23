@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.Properties;
 /**
  * Klasa służąca do wczytywania plików konfiguracyjnych
  */
+@PermitAll
 @Startup
 @Singleton
 @Interceptors({LoggingInterceptor.class})

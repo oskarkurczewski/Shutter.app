@@ -35,6 +35,7 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
     }
 
     @Override
+    @PermitAll
     public EntityManager getEm() {
         return em;
     }

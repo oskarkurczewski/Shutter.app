@@ -28,6 +28,7 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
     }
 
     @Override
+    @PermitAll
     public EntityManager getEm() {
         return em;
     }

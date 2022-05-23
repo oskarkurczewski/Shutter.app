@@ -248,41 +248,6 @@ public class AccountService {
     }
 
     /**
-     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
-     *
-     * @param account                   Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
-     * @throws CannotChangeException    W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
-     *
-     */
-    @RolesAllowed(becomePhotographer)
-    public void becomePhotographer(Account account)
-            throws BaseApplicationException {
-
-        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
-                account,
-                accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER")
-        );
-
-        if (accessLevelFound != null) {
-            if (accessLevelFound.getActive()) {
-                throw ExceptionFactory.cannotChangeException();
-            }
-
-            accessLevelFound.setActive(true);
-            accessLevelFacade.update(accessLevelFound);
-        } else {
-            AccessLevelAssignment assignment = new AccessLevelAssignment();
-
-            assignment.setLevel(accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER"));
-            assignment.setAccount(account);
-            assignment.setActive(true);
-
-            accessLevelFacade.persist(assignment);
-        }
-    }
-
-
-    /**
      * Odbiera rolę fotografa poprzez ustawienie poziomu dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
      *
      * @param account                   Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa
@@ -344,7 +309,7 @@ public class AccountService {
      *                                 (login lub adres email już istnieje)
      * @see Account
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({createAccount})
     public void registerAccountByAdmin(Account account)
             throws BaseApplicationException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
@@ -432,7 +397,7 @@ public class AccountService {
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({editSomeonesAccountData})
     public void editAccountInfoAsAdmin(Account account, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws BaseApplicationException {
         account.setEmail(editAccountInfoAsAdminDto.getEmail());
         account.setName(editAccountInfoAsAdminDto.getName());

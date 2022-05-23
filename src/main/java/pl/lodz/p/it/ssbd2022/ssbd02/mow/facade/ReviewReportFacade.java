@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -23,6 +24,7 @@ public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
     }
 
     @Override
+    @PermitAll
     public EntityManager getEm() {
         return em;
     }
