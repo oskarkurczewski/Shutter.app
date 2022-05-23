@@ -11,7 +11,7 @@ import io.fusionauth.jwt.hmac.HMACVerifier;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -94,13 +94,13 @@ public class JWTHandler {
      * @param oldToken Żeton, który ma zostać odświeżony
      * @return Odświeżony żeton JWT
      */
-    public static String refresh(JWT oldToken) {
+    public static String refresh(JWT oldToken, List<String> newGroups) {
         Signer signer = HMACSigner.newSHA512Signer(SECRET);
 
         JWT refreshed = new JWT().setIssuer(ISSUER)
                 .setIssuedAt(ZonedDateTime.now())
                 .setSubject(oldToken.subject)
-                .addClaim("roles", oldToken.getString("roles"))
+                .addClaim("roles", String.join(",", newGroups))
                 .setExpiration(ZonedDateTime.now().plusMinutes(TIMEOUT));
 
         return JWT.getEncoder().encode(refreshed, signer);
