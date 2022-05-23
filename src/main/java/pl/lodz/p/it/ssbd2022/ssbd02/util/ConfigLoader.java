@@ -24,6 +24,7 @@ public class ConfigLoader {
     private static final String PROPERTIES_EMAIL_FILE = "config.email.properties";
     private static final String REGISTRATION_CONFIRMATION_TOKEN_LIFETIME = "registration.confirmation.token.lifespan";
     private static final String EMAIL_RESET_TOKEN_LIFETIME = "email.reset.token.lifespan";
+    private static final String UNBLOCK_OWN_ACCOUNT_TOKEN_LIFESPAN = "unblock.own.account.token.lifespan";
     private static final String PASSWORD_RESET_TOKEN_LIFETIME = "password.reset.token.lifespan";
     private static final String FORCED_PASSWORD_RESET_TOKEN_LIFETIME = "forced.password.reset.token.lifespan";
     private static final String PERIOD_2FA = "2fa.period";
@@ -85,6 +86,13 @@ public class ConfigLoader {
      */
     public int getEmailResetTokenLifetime() {
         return getOrDefaultInt(propertiesToken, EMAIL_RESET_TOKEN_LIFETIME, 24);
+    }
+
+    /**
+     * Zwraca czas, przez jaki żeton odblokowania własnego konta jest ważny (w godzinach)
+     */
+    public int getUnblockOwnAccountTokenLifetime() {
+        return getOrDefaultInt(propertiesToken, UNBLOCK_OWN_ACCOUNT_TOKEN_LIFESPAN , 168);
     }
 
     /**

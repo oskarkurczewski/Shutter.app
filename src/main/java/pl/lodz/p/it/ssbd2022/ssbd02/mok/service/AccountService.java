@@ -89,6 +89,19 @@ public class AccountService {
     }
 
     /**
+     * Potwierdza aktywację własnego konta po długim czasie nieaktywności
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do aktywacji konta
+     * @throws BaseApplicationException Występuje w przypadku gdy aktywacja konta się nie powiedzie
+     */
+    @PermitAll
+    public void confirmUnblockOwnAccount(String token) throws BaseApplicationException {
+        Account account = verificationTokenService.confirmUnblockOwnAccount(token);
+        account.setActive(true);
+        accountFacade.update(account);
+    }
+
+    /**
      * Szuka użytkownika
      *
      * @param account konto użytkownika, którego dane mają zostać pozyskane
