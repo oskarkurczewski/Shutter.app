@@ -17,8 +17,8 @@ import AccountListPage from "pages/users/list";
 import EditAccountPage from "pages/users/edit";
 import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
-import ConfirmRegistrationPage from "pages/confirmRegistration";
 import LoginPage from "pages/login";
+import ConfirmRegistrationPage from "pages/ConfirmRegistration";
 
 function App() {
    const dispatch = useAppDispatch();
