@@ -12,7 +12,7 @@ public class CORSConfiguration implements ContainerResponseFilter {
         containerResponseContext.getHeaders().add("Access-Control-Allow-Origin", "https://localhost:3000");
         containerResponseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
         containerResponseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
-        containerResponseContext.getHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+        containerResponseContext.getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
         containerResponseContext.getHeaders().add("Access-Control-Max-Age", "10");
     }
 }
