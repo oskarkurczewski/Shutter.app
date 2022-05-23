@@ -1,22 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import Card from "components/shared/Card";
 import Table from "components/shared/Table";
-import UserFilter from "components/UserFilter";
-import axios from "axios";
-import { apiUrl } from "App";
 import { Link } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
+import { FaCheck, FaEdit } from "react-icons/fa";
 import { useGetUserListQuery } from "redux/service/api";
 
 const AccountListPage = () => {
    const [headers, setHeaders] = useState([
       {
+         id: "id",
+         label: "ID",
+         sortable: true,
+         sort: "asc",
+      },
+      {
          id: "login",
          label: "Login",
          sortable: true,
-         sort: "asc",
+         sort: null,
       },
       {
          id: "email",
@@ -37,15 +39,21 @@ const AccountListPage = () => {
          sort: null,
       },
       {
+         id: "roles",
+         label: "Roles",
+         sortable: false,
+         sort: null,
+      },
+      {
          id: "registered",
          label: "Registered",
-         sortable: true,
+         sortable: false,
          sort: null,
       },
       {
          id: "active",
          label: "Active",
-         sortable: true,
+         sortable: false,
          sort: null,
       },
       {
@@ -59,232 +67,15 @@ const AccountListPage = () => {
    const [recordsPerPage, setRecordsPerPage] = useState(25);
    const allRecords = 2137;
    const allPages = 24;
-   const tableData = [
-      [
-         "Jay Lewis",
-         "afujarwa@dise.cd",
-         "Peter",
-         "Waters",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "David Castillo",
-         "zuj@hah.ly",
-         "Kathryn",
-         "Olson",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Gary Cox",
-         "midonfu@ec.om",
-         "Jason",
-         "Johnston",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Lena Doyle",
-         "jivusev@vime.er",
-         "Norman",
-         "Fields",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Derrick Myers",
-         "fej@tejjehpu.ng",
-         "Marc",
-         "Lloyd",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Nellie Reynolds",
-         "adubo@suzepnoz.cx",
-         "Essie",
-         "Barnett",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Ethel French",
-         "camzafaj@nadjuc.sk",
-         "Lettie",
-         "Russell",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Marguerite Marsh",
-         "jaero@ko.sc",
-         "Minnie",
-         "Hicks",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Glen Morton",
-         "cohziagu@boces.gh",
-         "Richard",
-         "Ross",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Austin Wilkerson",
-         "ribarfob@zolgopa.ki",
-         "Addie",
-         "Leonard",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Rachel Morrison",
-         "wi@mimgip.tl",
-         "Luella",
-         "Cannon",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Marguerite Black",
-         "wusa@ofabi.ne",
-         "Pearl",
-         "Adams",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Seth Brewer",
-         "kegasgaz@eviba.ug",
-         "Amy",
-         "Bradley",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-      [
-         "Austin Watson",
-         "mezonuk@ru.ss",
-         "Sallie",
-         "Cortez",
-         "true",
-         "true",
-         <td key="1">
-            <Link to={"/users/peter/edit"}>
-               <div className="edit-button" role="button">
-                  <FaEdit />
-               </div>
-            </Link>
-         </td>,
-      ],
-   ];
 
    const [listRequestParams, setListRequestParams] = useState({
       pageNo: 1,
       recordsPerPage: 25,
-      columnName: "login",
+      columnName: "id",
       order: "asc",
    });
-
-   const {
-      data = {},
-      isLoading,
-      isFetching,
-      isError,
-   } = useGetUserListQuery(listRequestParams);
+   const [tableData, setTableData] = useState([]);
+   const { data } = useGetUserListQuery(listRequestParams);
 
    useEffect(() => {
       headers.map((header) => {
@@ -296,9 +87,37 @@ const AccountListPage = () => {
             });
          }
       });
-      console.log(data);
-      return;
    }, [headers]);
+
+   useEffect(() => {
+      setTableData([]);
+      data?.list.forEach((item) => {
+         setTableData((a) => [
+            ...a,
+            [
+               item.id,
+               item.login,
+               item.email,
+               item.name,
+               item.surname,
+               <>
+                  {item.accessLevels.map((accessLevel) => (
+                     <p key={`${item.login}-${accessLevel}`}>{accessLevel}</p>
+                  ))}
+               </>,
+               item.isActive ? <FaCheck className="check" /> : <></>,
+               item.isRegistered ? <FaCheck className="check" /> : <></>,
+               <td key={item.login} className="edit-button">
+                  <Link to={`/users/${item.login}/edit`}>
+                     <div role="button">
+                        <FaEdit />
+                     </div>
+                  </Link>
+               </td>,
+            ],
+         ]);
+      });
+   }, [data]);
 
    return (
       <div className="account-list-page-wrapper">

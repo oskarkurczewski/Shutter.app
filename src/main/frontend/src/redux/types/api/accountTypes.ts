@@ -16,6 +16,16 @@ export interface registerAccountAsAdminRequest extends registerAccountRequest {
    registered: boolean;
    active: boolean;
 }
+interface tableAccountData {
+   accessLevels: string[];
+   email: string;
+   id: number;
+   isActive: boolean;
+   isRegistered: boolean;
+   login: string;
+   name: string;
+   surname: string;
+}
 
 export interface getListRequest {
    pageNo: number;
@@ -32,7 +42,7 @@ export interface getListRequest {
 export interface getListResponse {
    allPages: number;
    allRecords: number;
-   list: string[];
+   list: tableAccountData[];
    pageNo: number;
    recordsPerPage: number;
 }
