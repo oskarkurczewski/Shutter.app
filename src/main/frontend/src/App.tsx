@@ -20,6 +20,7 @@ import ResetPasswordPage from "pages/reset-password";
 import ConfirmRegistrationPage from "pages/ConfirmRegistration";
 import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
 import LoginPage from "pages/login";
+import RequestResetPasswordPage from "pages/request-reset-password";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -65,10 +66,19 @@ function App() {
                />
 
                <Route
-                  path="reset-password"
+                  path="password-reset/:token"
                   element={
                      <ProtectedRoute roles={[AccessLevel.GUEST]}>
                         <ResetPasswordPage />
+                     </ProtectedRoute>
+                  }
+               />
+
+               <Route
+                  path="request-reset-password"
+                  element={
+                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                        <RequestResetPasswordPage />
                      </ProtectedRoute>
                   }
                />
@@ -130,6 +140,6 @@ function App() {
    );
 }
 
-export const apiUrl = "http://studapp.it.p.lodz.pl:8002/api";
+export const apiUrl = "https://studapp.it.p.lodz.pl:8002/api";
 
 export default App;

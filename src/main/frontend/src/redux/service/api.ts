@@ -5,6 +5,8 @@ import {
    getListResponse,
    registerAccountAsAdminRequest,
    registerAccountRequest,
+   requestResetPasswordRequest,
+   resetPasswordRequest,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
 import { AuthState } from "redux/types/stateTypes";
@@ -91,6 +93,22 @@ export const api = createApi({
             method: "POST",
          }),
       }),
+
+      resetPassword: builder.mutation<unknown, resetPasswordRequest>({
+         query: (data) => ({
+            url: "account/password-reset",
+            method: "POST",
+            body: data,
+         }),
+      }),
+
+      requestResetPassword: builder.mutation<unknown, requestResetPasswordRequest>({
+         query: (data) => ({
+            url: "account/request-reset",
+            method: "POST",
+            body: data,
+         }),
+      }),
    }),
 });
 
@@ -105,4 +123,6 @@ export const {
    useBecomePhotographerMutation,
    useStopBeingPhotographerMutation,
    useRefreshMutation,
+   useRequestResetPasswordMutation,
+   useResetPasswordMutation,
 } = api;

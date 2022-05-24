@@ -46,3 +46,12 @@ export interface getListResponse {
    pageNo: number;
    recordsPerPage: number;
 }
+
+export interface resetPasswordRequest {
+   token: string;
+   newPassword: string;
+}
+
+export interface requestResetPasswordRequest {
+   login: string;
+}
