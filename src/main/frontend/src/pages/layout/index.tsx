@@ -1,5 +1,6 @@
 import Navbar from "components/layout/navbar";
 import Sidebar from "components/layout/sidebar";
+import Breadcumbs from "components/shared/Breadcumbs";
 import ToastHandler from "components/layout/toast-handler";
 import React from "react";
 import { Outlet } from "react-router-dom";
@@ -10,6 +11,7 @@ const PageLayout: React.FC = () => {
       <>
          <Navbar />
          <div className="content">
+            <Breadcumbs />
             <Outlet />
             <ToastHandler />
          </div>
