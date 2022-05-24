@@ -3,6 +3,9 @@ import {
    basicUserInfoResponse,
    getListRequest,
    getListResponse,
+   changeOwnEmailRequest,
+   changeOwnPasswordRequest,
+   changeOwnUserDataRequest,
    registerAccountAsAdminRequest,
    registerAccountRequest,
    requestResetPasswordRequest,
@@ -33,7 +36,38 @@ export const api = createApi({
          }),
       }),
 
-      sendTwoFACode: builder.mutation<unknown, unknown>({
+      changeOwnUserData: builder.mutation<unknown, changeOwnUserDataRequest>({
+         query: (data) => ({
+            url: "account/editOwnAccountInfo",
+            method: "PUT",
+            body: data,
+         }),
+      }),
+
+      sendChangeOwnEmailLink: builder.mutation<unknown, unknown>({
+         query: () => ({
+            url: "account/request-email-update",
+            method: "POST",
+         }),
+      }),
+
+      changeOwnEmail: builder.mutation<unknown, changeOwnEmailRequest>({
+         query: (data) => ({
+            url: "account/verify-email-update",
+            method: "POST",
+            body: data,
+         }),
+      }),
+
+      changeOwnPassword: builder.mutation<unknown, changeOwnPasswordRequest>({
+         query: (data) => ({
+            url: "account/change-password",
+            method: "PUT",
+            body: data,
+         }),
+      }),
+
+      sendTwoFACode: builder.mutation<unknown, string>({
          query: (login) => ({
             url: `account/${login}/request-2fa-code`,
             method: "POST",
@@ -121,6 +155,10 @@ export const api = createApi({
 
 export const {
    useLoginMutation,
+   useChangeOwnPasswordMutation,
+   useSendChangeOwnEmailLinkMutation,
+   useChangeOwnEmailMutation,
+   useChangeOwnUserDataMutation,
    useSendTwoFACodeMutation,
    useRegisterMutation,
    useUserInfoQuery,

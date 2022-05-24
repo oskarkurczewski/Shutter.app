@@ -55,3 +55,18 @@ export interface resetPasswordRequest {
 export interface requestResetPasswordRequest {
    login: string;
 }
+
+export interface changeOwnUserDataRequest {
+   name: string;
+   surname: string;
+}
+
+export interface changeOwnPasswordRequest {
+   password: string;
+   oldPassword: string;
+}
+
+export interface changeOwnEmailRequest {
+   newEmail: string;
+   token: string;
+}

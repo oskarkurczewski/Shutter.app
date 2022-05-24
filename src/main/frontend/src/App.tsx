@@ -17,11 +17,11 @@ import AccountListPage from "pages/users/list";
 import EditAccountPage from "pages/users/edit";
 import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
-import ConfirmRegistrationPage from "pages/ConfirmRegistration";
 import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
 import LoginPage from "pages/login";
 import RequestResetPasswordPage from "pages/request-reset-password";
 import ConfirmRegistrationPage from "pages/token-based/confirm-registration";
+import ChangeOwnEmailPage from "pages/token-based/change-own-email";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -135,6 +135,8 @@ function App() {
 
                {/* Token-based routes */}
                <Route path="unblock-account/:token" element={<UnblockOwnAccountPage />} />
+
+               <Route path="change-own-email/:token" element={<ChangeOwnEmailPage />} />
             </Route>
          </Routes>
       </BrowserRouter>

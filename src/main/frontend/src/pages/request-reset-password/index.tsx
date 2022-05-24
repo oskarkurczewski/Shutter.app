@@ -10,7 +10,7 @@ const RequestResetPasswordPage = () => {
    const [requestResetPasswordMutation, { isLoading, isSuccess, isError }] =
       useRequestResetPasswordMutation();
 
-   const onSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
+   const onSubmit = async (e) => {
       e.preventDefault();
       await requestResetPasswordMutation({ login: login });
    };
