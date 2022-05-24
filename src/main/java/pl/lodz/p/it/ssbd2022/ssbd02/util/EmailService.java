@@ -61,7 +61,7 @@ public class EmailService {
     public void sendRegistrationEmail(String to, VerificationToken token) {
         String subject = "Weryfikacja konta Shutter.app";
         String body = "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
-                "%s/confirm/%s",
+                "%s/confirm-registration/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
@@ -83,7 +83,7 @@ public class EmailService {
         String subject = "PRZYPOMNIENIE: Weryfikacja konta Shutter.app";
         String body = "Przypominamy o konieczności potwierdzenia konta w Shutter.app. " +
                 "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
-                "%s/confirm/%s",
+                "%s/confirm-registration/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
@@ -188,7 +188,7 @@ public class EmailService {
     public void sendEmailUpdateEmail(String to, VerificationToken token) {
         String subject = "Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
-                "%s/email-update/%s",
+                "%s/change-own-email/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
@@ -209,7 +209,7 @@ public class EmailService {
     public void sendEmailResetReminderEmail(String to, VerificationToken token) {
         String subject = "PRZYPOMNIENIE: Zmiana adresu e-mail Shutter.app";
         String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
-                "%s/email-update/%s",
+                "%s/change-own-email/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
