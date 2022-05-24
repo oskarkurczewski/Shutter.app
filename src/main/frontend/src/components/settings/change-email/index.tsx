@@ -22,7 +22,7 @@ const ChangeEmail = () => {
             Wyślij link
          </Button>
 
-         {isLoading && <p>Nie udało się wysłać wiadomości</p>}
+         {isLoading && <p>Loading...</p>}
          {isError && <p>Nie udało się wysłać wiadomości</p>}
          {isSuccess && <p>Wiadomość została wysłana</p>}
       </Card>
