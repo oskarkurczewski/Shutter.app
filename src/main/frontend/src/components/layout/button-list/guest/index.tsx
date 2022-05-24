@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import BarButton from "components/layout/bar-button";
-import { BsFillCameraFill } from "react-icons/bs";
+// import { BsFillCameraFill } from "react-icons/bs";
 import { MdSpaceDashboard } from "react-icons/md";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 const GuestButtonList: FC<Props> = ({ path, expanded }) => {
    const arr = [
       { to: "/", icon: <MdSpaceDashboard />, text: "strona główna" },
-      { to: "/photographers", icon: <BsFillCameraFill />, text: "fotografowie" },
+      // { to: "/photographers", icon: <BsFillCameraFill />, text: "fotografowie" },
    ];
 
    return (

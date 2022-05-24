@@ -7,8 +7,10 @@ interface TextInputProps {
    label?: string;
    className?: string;
    placeholder?: string;
+   required?: boolean;
    value: string;
    onChange: React.ChangeEventHandler<HTMLInputElement>;
+   name?: string;
 }
 
 const TextInput = ({
@@ -17,12 +19,14 @@ const TextInput = ({
    label,
    className,
    placeholder,
+   required,
    value,
    onChange,
+   name,
 }: TextInputProps) => {
    return (
       <div className={`text-input-wrapper ${className ? className : ""}`}>
-         {label && <p className="label">{label}</p>}
+         {label && <p className={`label ${required && "required"}`}>{label}</p>}
          <div>
             {icon && <span className="material-icons">{icon}</span>}
             <input
@@ -30,6 +34,7 @@ const TextInput = ({
                value={value}
                onChange={onChange}
                placeholder={placeholder}
+               name={name}
             />
          </div>
       </div>

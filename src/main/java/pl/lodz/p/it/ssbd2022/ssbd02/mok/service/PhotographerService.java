@@ -19,7 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getPhotographerInfo;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
 @Interceptors(LoggingInterceptor.class)
@@ -50,13 +50,14 @@ public class PhotographerService {
      *
      * @param account Account Konto fotografa, któremu chcemy dodać informacje
      */
+    @RolesAllowed(becomePhotographer)
     public void createOrActivatePhotographerInfo(Account account) throws BaseApplicationException {
-        PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
-        if (existingPhotographerInfo != null) {
+        try {
+            PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
             existingPhotographerInfo.setVisible(true);
 
             photographerInfoFacade.update(existingPhotographerInfo);
-        } else {
+        } catch (NoPhotographerFound e) {
             PhotographerInfo photographerInfo = new PhotographerInfo();
             photographerInfo.setId(account.getId());
             photographerInfo.setScore(0L);
@@ -76,6 +77,7 @@ public class PhotographerService {
      *
      * @param login Login Konto fotografa, któremu chcemy ukryć informacje
      */
+    @RolesAllowed(stopBeingPhotographer)
     public void hidePhotographerInfo(String login) throws BaseApplicationException {
         PhotographerInfo photographerInfo = photographerInfoFacade.findPhotographerByLogin(login);
 

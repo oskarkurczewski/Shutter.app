@@ -3,34 +3,43 @@ import Button from "components/shared/Button";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { push } from "redux/slices/toastSlice";
+import { useAppSelector } from "redux/hooks";
+import { useRegisterMutation, useUserInfoQuery } from "redux/service/api";
+import { registerAccountRequest } from "redux/types/api/accountTypes";
 
 const Homepage = () => {
-   const dispatch = useAppDispatch();
+   const login = useAppSelector((state) => state.auth.username);
 
-   const data = {
-      name: "refreshToken",
-      label: "Powiadomienie",
-      text: "Twoja sesja niedługo wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć!",
-      content: (
-         <Button
-            onClick={() => {
-               console.log("witam");
-            }}
-         >
-            Przedłuż
-         </Button>
-      ),
-   };
+   const { data, isLoading, isFetching } = useUserInfoQuery(login);
+
+   const data123 = {
+      login: "dissunio",
+      password: "Password1!",
+      email: "yebacdysa@gmail.com",
+      name: "Norbert",
+      surname: "Gierczyca",
+   } as registerAccountRequest;
+
+   const [registerAccount] = useRegisterMutation();
 
    return (
       <div>
-         <button
+         <Button
             onClick={() => {
-               dispatch(push(data));
+               console.log(data);
             }}
          >
             TEST
-         </button>
+         </Button>
+         <Button
+            onClick={async () => {
+               const testt = await registerAccount(data123);
+               console.log("register", testt);
+            }}
+         >
+            BUTTONSZ
+         </Button>
+         {isLoading || (isFetching && <p>witam</p>)}
       </div>
    );
 };

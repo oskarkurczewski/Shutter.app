@@ -19,6 +19,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
@@ -83,7 +86,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
      * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({createAccount})
     public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto)
             throws BaseApplicationException {
         Account account = accountRegisterDtoToAccount(accountRegisterAsAdminDto);
@@ -92,7 +95,7 @@ public class AccountEndpoint extends AbstractEndpoint {
         accountService.registerAccountByAdmin(account);
     }
 
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({changeSomeonesPassword})
     public void updatePasswordAsAdmin(String login, AccountUpdatePasswordDto passwordDto) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.changeAccountPasswordAsAdmin(account, passwordDto.getPassword());
@@ -196,7 +199,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed({editSomeonesAccountData})
     public void editAccountInfoAsAdmin(String login, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws BaseApplicationException {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakować go w dto
         Account account = accountService.findByLogin(login);
@@ -256,7 +259,7 @@ public class AccountEndpoint extends AbstractEndpoint {
         return new DetailedAccountInfoDto(account);
     }
 
-    @RolesAllowed({ADMINISTRATOR, MODERATOR, PHOTOGRAPHER, CLIENT})
+    @RolesAllowed({changeOwnPassword})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws BaseApplicationException {
         Account account = authenticationContext.getCurrentUsersAccount();
         accountService.updateOwnPassword(account, data);
@@ -388,4 +391,19 @@ public class AccountEndpoint extends AbstractEndpoint {
         accountService.send2faCode(account);
     }
 
+    /**
+     * Pobiera wszystkie grupy w których znajduje się użytkownik o danym loginie
+     *
+     * @param login login użytkownika, dla którego mają zostać pobrane grupy
+     * @return lista grup w których znajduje się użytkownik o podanym loginie
+     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @PermitAll
+    public List<String> getAccountGroups(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return account.getAccessLevelAssignmentList().stream()
+                .filter(accessLevel -> accessLevel.getActive())
+                .map(accessLevel -> accessLevel.getLevel().getName())
+                .collect(Collectors.toList());
+    }
 }

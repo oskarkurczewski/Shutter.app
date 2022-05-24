@@ -17,4 +17,12 @@ div.checkbox-wrapper {
          background-repeat: no-repeat;
       }
    }
+
+   p.required {
+      &::after {
+         content: "*";
+         color: $red-200;
+         margin-left: 2px;
+      }
+   }
 }

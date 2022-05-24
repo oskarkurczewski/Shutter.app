@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 
@@ -32,6 +31,9 @@ public class AccountBlockerService {
     @Inject
     private ConfigLoader configLoader;
 
+    @Inject
+    private VerificationTokenService verificationTokenService;
+
     /**
      * Metoda inicjująca timer, aby działał co określoną w pliku
      * konfiguracyjnym liczbę milisekund, lub gdy nie będzie w stanie
@@ -55,8 +57,11 @@ public class AccountBlockerService {
         LocalDateTime dateTime = LocalDateTime.now().minusDays(configLoader.getBlockTimeout());
         List<Account> accounts = authenticationFacade.getWithLastLoginBefore(dateTime);
         for (Account acc : accounts) {
-            acc.setActive(false);
-            authenticationFacade.update(acc);
+            if (acc.getActive()) {
+                acc.setActive(false);
+                authenticationFacade.update(acc);
+                verificationTokenService.sendUnblockOwnAccountEmail(acc);
+            }
         }
     }
 }

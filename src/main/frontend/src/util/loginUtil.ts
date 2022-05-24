@@ -1,13 +1,15 @@
 import jwtDecode from "jwt-decode";
 
 export const getLoginPayload = () => {
-   const decoded = jwtDecode(localStorage.getItem("token") || "");
+   const token = localStorage.getItem("token");
+   const decoded = jwtDecode(token || "");
    const decodedJson = JSON.parse(JSON.stringify(decoded));
    const roles = decodedJson.roles.split(",");
    const username = decodedJson.sub;
    const accessLevel = roles[0];
+   const exp = decodedJson.exp * 1000;
 
-   return { username, roles, accessLevel };
+   return { username, roles, accessLevel, token, exp };
 };
 
 export const getTokenExp = () => {

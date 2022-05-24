@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
 import "./style.scss";
 
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
+   const { token, exp } = useAppSelector((state) => state.auth);
+
    return (
       <div className="auth-card-wrapper">
          <img src="/images/auth-image.png" alt="user sidebar" />
@@ -19,6 +22,8 @@ const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
                <p className="label-bold">{username ? username : "Niezalogowany"}</p>
             </div>
          </div>
+         <p>Token: {token}</p>
+         <p>Exp: {new Date(exp).toLocaleString()}</p>
       </div>
    );
 };

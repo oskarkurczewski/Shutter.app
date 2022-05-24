@@ -76,6 +76,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
     }
 
     @Override
+    @PermitAll
     public EntityManager getEm() {
         return em;
     }

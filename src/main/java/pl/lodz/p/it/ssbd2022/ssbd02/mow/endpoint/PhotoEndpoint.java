@@ -7,11 +7,14 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.unlikePhoto;
 
 @Stateful
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class PhotoEndpoint extends AbstractEndpoint {
     @RolesAllowed(addPhotoToGallery)
     public void addPhotoToGallery(AddPhotoDto addPhotoDto) throws NoAuthenticatedAccountFound {
