@@ -262,6 +262,43 @@ public class AccountService {
     }
 
     /**
+<<<<<<<<< Temporary merge branch 1
+=========
+     * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
+     *
+     * @param account Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
+     * @throws CannotChangeException W przypadku próby zostania fotografem przez uzytkownika mającego już tę rolę
+     */
+    @RolesAllowed(becomePhotographer)
+    public void becomePhotographer(Account account)
+            throws BaseApplicationException {
+
+        AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
+                account,
+                accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER")
+        );
+
+        if (accessLevelFound != null) {
+            if (accessLevelFound.getActive()) {
+                throw ExceptionFactory.cannotChangeException();
+            }
+
+            accessLevelFound.setActive(true);
+            accessLevelFacade.update(accessLevelFound);
+        } else {
+            AccessLevelAssignment assignment = new AccessLevelAssignment();
+
+            assignment.setLevel(accessLevelFacade.getAccessLevelValue("PHOTOGRAPHER"));
+            assignment.setAccount(account);
+            assignment.setActive(true);
+
+            accessLevelFacade.persist(assignment);
+        }
+    }
+
+
+    /**
+>>>>>>>>> Temporary merge branch 2
      * Odbiera rolę fotografa poprzez ustawienie poziomu dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
      *
      * @param account                   Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa

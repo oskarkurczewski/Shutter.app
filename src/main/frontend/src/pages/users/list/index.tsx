@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./style.scss";
 import Card from "components/shared/Card";
 import Table from "components/shared/Table";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCheck, FaEdit } from "react-icons/fa";
 import { useGetUserListQuery } from "redux/service/api";
 
@@ -58,35 +58,45 @@ const AccountListPage = () => {
       },
       {
          id: "edit",
-         label: "",
+         label: "Edit",
          sortable: false,
          sort: null,
       },
    ]);
-   const [pageNo, setPageNo] = useState(1);
-   const [recordsPerPage, setRecordsPerPage] = useState(25);
-   const allRecords = 2137;
-   const allPages = 24;
 
-   const [listRequestParams, setListRequestParams] = useState({
-      pageNo: 1,
-      recordsPerPage: 25,
-      columnName: "id",
-      order: "asc",
-   });
+   const location = useLocation();
+   const navigate = useNavigate();
+   const queryParams = new URLSearchParams(location.search);
+
+   const pageNo = parseInt(queryParams.get("pageNo")) || 1;
+   const recordsPerPage = parseInt(queryParams.get("records")) || 25;
+   const columnName = queryParams.get("column") || "id";
+   const order = queryParams.get("order") || "asc";
+
    const [tableData, setTableData] = useState([]);
-   const { data } = useGetUserListQuery(listRequestParams);
+   const { data } = useGetUserListQuery({
+      pageNo,
+      recordsPerPage,
+      columnName,
+      order,
+   });
+
+   const setQueryParam = (key: string, value: string) => {
+      queryParams.set(key, value);
+      navigate({
+         pathname: location.pathname,
+         search: queryParams.toString(),
+      });
+   };
+
+   const allRecords = data?.allRecords || 0;
+   const allPages = data?.allPages || 0;
 
    useEffect(() => {
-      headers.map((header) => {
-         if (header.sort) {
-            setListRequestParams({
-               ...listRequestParams,
-               columnName: header.id,
-               order: header.sort,
-            });
-         }
-      });
+      const sorted = headers.find((header) => header.sort);
+      setQueryParam("column", sorted.id);
+      setQueryParam("order", sorted.sort);
+      setQueryParam("pageNo", "1");
    }, [headers]);
 
    useEffect(() => {
@@ -101,7 +111,7 @@ const AccountListPage = () => {
                item.name,
                item.surname,
                <>
-                  {item.accessLevels.map((accessLevel) => (
+                  {item.accessLevels?.map((accessLevel) => (
                      <p key={`${item.login}-${accessLevel}`}>{accessLevel}</p>
                   ))}
                </>,
@@ -131,9 +141,12 @@ const AccountListPage = () => {
                allRecords={allRecords}
                allPages={allPages}
                pageNo={pageNo}
-               setPageNo={setPageNo}
+               setPageNo={(num) => setQueryParam("pageNo", num.toString())}
                recordsPerPage={recordsPerPage}
-               setRecordsPerPage={setRecordsPerPage}
+               setRecordsPerPage={(num) => {
+                  setQueryParam("records", num.toString());
+                  setQueryParam("pageNo", "1");
+               }}
             />
          </Card>
       </div>
