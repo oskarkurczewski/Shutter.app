@@ -2,9 +2,12 @@ import Button from "components/shared/Button";
 import Card from "components/shared/Card";
 import TextInput from "components/shared/TextInput";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useChangeOwnPasswordMutation } from "redux/service/api";
 
 const ChangePassword = () => {
+   const { t } = useTranslation();
+
    const [oldPassword, setOldPassword] = useState("");
    const [password, setPassword] = useState("");
    const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,12 +29,12 @@ const ChangePassword = () => {
 
    return (
       <Card id="change-password">
-         <p className="category-title">Hasło</p>
-         <p>Podaj nowe hasło w celu zmiany.</p>
+         <p className="category-title">{t("label.password")}</p>
+         <p>{t("message.change.password")}</p>
          <div className="row">
             <TextInput
-               label="Aktualne Hasło"
-               placeholder="Hasło"
+               label={t("label.current-password")}
+               placeholder={t("label.password")}
                type="password"
                required
                value={oldPassword}
@@ -40,16 +43,16 @@ const ChangePassword = () => {
          </div>
          <div className="row">
             <TextInput
-               label="Hasło"
-               placeholder="Hasło"
+               label={t("label.password")}
+               placeholder={t("label.password")}
                type="password"
                required
                value={password}
                onChange={(e) => setPassword(e.target.value)}
             />
             <TextInput
-               label="Powtórz hasło"
-               placeholder="Hasło"
+               label={t("label.repeat-password")}
+               placeholder={t("label.password")}
                type="password"
                required
                value={confirmPassword}
@@ -59,20 +62,22 @@ const ChangePassword = () => {
 
          {(() => {
             if (isLoading) {
-               return <p>Loading...</p>;
+               return <p>{t("message.loading.change-password")}</p>;
             }
             if (equalityError) {
-               return <p className="error">Hasła różnią się od siebie</p>;
+               return (
+                  <p className="error">{t("message.error.equality-error-password")}</p>
+               );
             }
             if (isError) {
-               return <p className="error">Nie udało się zmienić hasła.</p>;
+               return <p className="error">{t("message.error.change-password")}</p>;
             }
             if (isSuccess) {
-               return <p>Hasło zostało pomyślnie zmienione.</p>;
+               return <p>{t("message.success.change-password")}</p>;
             }
          })()}
 
-         <Button onClick={onSubmit}>Zmień</Button>
+         <Button onClick={onSubmit}>{t("label.change")}</Button>
       </Card>
    );
 };

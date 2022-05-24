@@ -5,8 +5,11 @@ import TextInput from "components/shared/TextInput";
 import React, { useState } from "react";
 import { useResetPasswordMutation } from "redux/service/api";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ResetPasswordPage = () => {
+   const { t } = useTranslation();
+
    const { token } = useParams();
    const [password, setPassword] = useState<string>("");
    const [showMesage, setShowMessage] = useState<boolean>(false);
@@ -22,32 +25,29 @@ const ResetPasswordPage = () => {
       <section className="reset-password-page-wrapper">
          <Card>
             <form>
-               <p className="category-title">Resetowanie hasła</p>
-               <p>
-                  Aby dokończyć procedurę resetowania hasła wpisz nowe hasło dla twojego
-                  konta:
-               </p>
+               <p className="category-title">{t("label.reset-password")}</p>
+               <p>{t("message.info.password-reset-procedure")}</p>
                <TextInput
-                  label="Nowe hasło"
+                  label={t("label.new-password")}
                   type="password"
-                  placeholder="Hasło"
+                  placeholder={t("label.password")}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                />
                <div className="footer">
-                  <Button onClick={(e) => onSubmit(e)}>Zresetuj hasło</Button>
+                  <Button onClick={(e) => onSubmit(e)}>
+                     {t("label.reset-password")}
+                  </Button>
                </div>
                {(() => {
                   if (isLoading) {
-                     return <p>Loading...</p>;
+                     return <p>{t("message.loading.reset-password")}</p>;
                   }
                   if (isError) {
-                     return (
-                        <p className="error">Nie udało się wysłać wiadomości email</p>
-                     );
+                     return <p className="error">{t("message.error.change-email")}</p>;
                   }
                   if (isSuccess) {
-                     return <p>Email został wysłany pomyślnie</p>;
+                     return <p>{t("message.success.change-email")}</p>;
                   }
                })()}{" "}
             </form>

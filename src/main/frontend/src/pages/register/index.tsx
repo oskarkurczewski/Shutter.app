@@ -9,8 +9,11 @@ import { Link } from "react-router-dom";
 import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/api";
 import Form from "components/shared/Form";
+import { useTranslation } from "react-i18next";
 
 const RegisterPage = () => {
+   const { t } = useTranslation();
+
    const [formState, setFormState] = useState({
       login: "",
       email: "",
@@ -50,28 +53,28 @@ const RegisterPage = () => {
             <ValidationBox data={validation} />
             <Card className="register-form">
                <Form onSubmit={onSubmit} isLoading={isLoading}>
-                  <p className="section-title">Rejestracja</p>
+                  <p className="section-title">{t("label.register-title")}</p>
                   <div className="inputs-wrapper">
                      <div className="column">
                         <TextInput
-                           label="Login"
-                           placeholder="Login"
+                           label={t("label.login-label")}
+                           placeholder={t("label.login-label")}
                            required
                            name="login"
                            value={formState.login}
                            onChange={handleChange}
                         />
                         <TextInput
-                           label="Email"
-                           placeholder="Email"
+                           label={t("label.email-short")}
+                           placeholder={t("label.email-short")}
                            required
                            name="email"
                            value={formState.email}
                            onChange={handleChange}
                         />
                         <TextInput
-                           label="Hasło"
-                           placeholder="Hasło"
+                           label={t("label.password")}
+                           placeholder={t("label.password")}
                            required
                            name="password"
                            type="password"
@@ -79,8 +82,8 @@ const RegisterPage = () => {
                            onChange={handleChange}
                         />
                         <TextInput
-                           label="Powtórz hasło"
-                           placeholder="Hasło"
+                           label={t("label.repeat-password")}
+                           placeholder={t("label.password")}
                            required
                            name="confirmPassword"
                            type="password"
@@ -90,16 +93,16 @@ const RegisterPage = () => {
                      </div>
                      <div className="column">
                         <TextInput
-                           label="Imię"
-                           placeholder="Imię"
+                           label={t("label.first-name")}
+                           placeholder={t("label.first-name")}
                            required
                            name="name"
                            value={formState.name}
                            onChange={handleChange}
                         />
                         <TextInput
-                           label="Nazwisko"
-                           placeholder="Nazwisko"
+                           label={t("label.second-name")}
+                           placeholder={t("label.second-name")}
                            required
                            name="surname"
                            value={formState.surname}
@@ -118,7 +121,7 @@ const RegisterPage = () => {
                            });
                         }}
                      >
-                        Wyrażam zgodę na przetwarzanie moich danych osobowych
+                        {t("message.info.processing")}
                      </Checkbox>
                      <Checkbox
                         required
@@ -130,16 +133,18 @@ const RegisterPage = () => {
                            });
                         }}
                      >
-                        Potwierdzam, że zapoznałem się z regulaminem
+                        {t("message.info.tos")}
                      </Checkbox>
                   </div>
 
-                  {isSuccess && <p>Udało się pomyślnie zarejestrować!</p>}
-                  {isError && <p>Nie udało się zarejestrować</p>}
+                  {isSuccess && <p>{t("message.success.register")}</p>}
+                  {isError && <p>{t("message.error.register")}</p>}
 
                   <div className="footer">
-                     <Link to="/login">Masz już konto? Zaloguj się</Link>
-                     <Button onClick={onSubmit}>Zarejestruj się</Button>
+                     <Link to="/login">
+                        {t("message.info.got-account")} {t("label.login")}
+                     </Link>
+                     <Button onClick={onSubmit}>{t("label.register")}</Button>
                   </div>
                </Form>
             </Card>

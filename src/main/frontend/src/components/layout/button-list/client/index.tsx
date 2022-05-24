@@ -4,6 +4,7 @@ import { BsFillCameraFill } from "react-icons/bs";
 import { MdSpaceDashboard } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaRegCalendarCheck } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    path: string;
@@ -11,11 +12,21 @@ interface Props {
 }
 
 const ClientButtonList: FC<Props> = ({ path, expanded }) => {
+   const { t } = useTranslation();
+
    const arr = [
-      { to: "/", icon: <MdSpaceDashboard />, text: "strona główna" },
-      { to: "/photographers", icon: <BsFillCameraFill />, text: "fotografowie" },
-      { to: "/reservations", icon: <FaRegCalendarCheck />, text: "rezerwacje" },
-      { to: "/settings", icon: <IoSettingsSharp />, text: "ustawienia" },
+      { to: "/", icon: <MdSpaceDashboard />, text: t("navbar.buttons.homepage") },
+      {
+         to: "/photographers",
+         icon: <BsFillCameraFill />,
+         text: t("navbar.buttons.photographers"),
+      },
+      {
+         to: "/reservations",
+         icon: <FaRegCalendarCheck />,
+         text: t("navbar.buttons.reservations"),
+      },
+      { to: "/settings", icon: <IoSettingsSharp />, text: t("navbar.buttons.settings") },
    ];
 
    return (

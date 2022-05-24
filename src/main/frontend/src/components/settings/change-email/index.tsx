@@ -1,30 +1,30 @@
 import Button from "components/shared/Button";
 import Card from "components/shared/Card";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSendChangeOwnEmailLinkMutation } from "redux/service/api";
 
 const ChangeEmail = () => {
+   const { t } = useTranslation();
+
    const [mutation, { isLoading, isError, isSuccess }] =
       useSendChangeOwnEmailLinkMutation();
 
    return (
       <Card id="change-email">
-         <p className="category-title">Adres email</p>
-         <p>
-            W przypadku chęci zmiany adresu email zostanie wysłany odpowiedni link na twój
-            aktualny adres email.
-         </p>
+         <p className="category-title">{t("label.email")}</p>
+         <p>{t("message.change.email")}</p>
          <Button
             onClick={() => {
                mutation({});
             }}
          >
-            Wyślij link
+            {t("message.send.link")}
          </Button>
 
-         {isLoading && <p>Loading...</p>}
-         {isError && <p>Nie udało się wysłać wiadomości</p>}
-         {isSuccess && <p>Wiadomość została wysłana</p>}
+         {isLoading && <p>{t("message.loading.change-email")}</p>}
+         {isError && <p>{t("message.error.change-email")}</p>}
+         {isSuccess && <p>{t("message.success.change-email")}</p>}
       </Card>
    );
 };

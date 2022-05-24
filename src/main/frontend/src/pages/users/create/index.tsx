@@ -3,11 +3,14 @@ import Card from "components/shared/Card";
 import Checkbox from "components/shared/Checkbox";
 import TextInput from "components/shared/TextInput";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useRegisterAsAdminMutation } from "redux/service/api";
 import "./style.scss";
 
 const CreateAccountPage = () => {
+   const { t } = useTranslation();
+
    const [formData, setFormData] = useState({
       login: "",
       password: "",
@@ -44,7 +47,7 @@ const CreateAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, login: e.target.value });
                   }}
-                  label="Login"
+                  label={t("label.login-label")}
                   required
                   className="text"
                />
@@ -56,7 +59,7 @@ const CreateAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, name: e.target.value });
                   }}
-                  label="Imię"
+                  label={t("label.first-name")}
                   required
                   className="text"
                />
@@ -67,7 +70,7 @@ const CreateAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, surname: e.target.value });
                   }}
-                  label="Nazwisko"
+                  label={t("label.second-name")}
                   required
                   className="text"
                />
@@ -78,7 +81,7 @@ const CreateAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, email: e.target.value });
                   }}
-                  label="Email"
+                  label={t("label.email-short")}
                   required
                   className="text"
                   type="email"
@@ -90,13 +93,15 @@ const CreateAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, email2: e.target.value });
                   }}
-                  label="Powtórz email"
+                  label={t("label.email-repeat")}
                   required
                   className="text"
                   type="email"
                />
                {!emailCheck && (
-                  <p className="error-message">Adresy email różnią się od siebie</p>
+                  <p className="error-message">
+                     {t("message.error.equality-error-email")}
+                  </p>
                )}
             </div>
             <div>
@@ -105,7 +110,7 @@ const CreateAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, password: e.target.value });
                   }}
-                  label="Hasło"
+                  label={t("label.password")}
                   required
                   className="text"
                   type="password"
@@ -117,13 +122,15 @@ const CreateAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, password2: e.target.value });
                   }}
-                  label="Powtórz hasło"
+                  label={t("label.repeat-password")}
                   required
                   className="text"
                   type="password"
                />
                {!passwordCheck && (
-                  <p className="error-message">Hasła różnią się od siebie</p>
+                  <p className="error-message">
+                     {t("message.error.equality-error-password")}
+                  </p>
                )}
             </div>
             <div>
@@ -133,7 +140,7 @@ const CreateAccountPage = () => {
                      setFormData({ ...formData, active: e.target.checked });
                   }}
                >
-                  Aktywne
+                  {t("label.active")}
                </Checkbox>
                <Checkbox
                   value={formData.registered}
@@ -141,7 +148,7 @@ const CreateAccountPage = () => {
                      setFormData({ ...formData, registered: e.target.checked });
                   }}
                >
-                  Zarejestrowane
+                  {t("label.registered")}
                </Checkbox>
             </div>
             <div>
@@ -160,9 +167,11 @@ const CreateAccountPage = () => {
                      }
                   }}
                >
-                  Stwórz konto
+                  {t("label.create-account")}
                </Button>
-               {isError && <p className="error-message">Nie można utworzyć konta</p>}
+               {isError && (
+                  <p className="error-message">{t("message.error.create-account")}</p>
+               )}
             </div>
          </Card>
       </div>

@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import BarButton from "components/layout/bar-button";
 // import { BsFillCameraFill } from "react-icons/bs";
 import { MdSpaceDashboard } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    path: string;
@@ -9,8 +10,10 @@ interface Props {
 }
 
 const GuestButtonList: FC<Props> = ({ path, expanded }) => {
+   const { t } = useTranslation();
+
    const arr = [
-      { to: "/", icon: <MdSpaceDashboard />, text: "strona główna" },
+      { to: "/", icon: <MdSpaceDashboard />, text: t("navbar.buttons.homepage") },
       // { to: "/photographers", icon: <BsFillCameraFill />, text: "fotografowie" },
    ];
 

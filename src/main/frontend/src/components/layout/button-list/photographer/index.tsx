@@ -3,6 +3,7 @@ import BarButton from "components/layout/bar-button";
 import { BsFillCameraFill } from "react-icons/bs";
 import { MdSpaceDashboard } from "react-icons/md";
 import { IoSettingsSharp, IoCalendarSharp } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    path: string;
@@ -10,11 +11,21 @@ interface Props {
 }
 
 const PhotographerButtonList: FC<Props> = ({ path, expanded }) => {
+   const { t } = useTranslation();
+
    const arr = [
-      { to: "/", icon: <MdSpaceDashboard />, text: "strona główna" },
-      { to: "/photographers", icon: <BsFillCameraFill />, text: "fotografowie" },
-      { to: "/reservations", icon: <IoCalendarSharp />, text: "rezerwacje" },
-      { to: "/settings", icon: <IoSettingsSharp />, text: "ustawienia" },
+      { to: "/", icon: <MdSpaceDashboard />, text: t("navbar.buttons.homepage") },
+      {
+         to: "/photographers",
+         icon: <BsFillCameraFill />,
+         text: t("navbar.buttons.photographers"),
+      },
+      {
+         to: "/reservations",
+         icon: <IoCalendarSharp />,
+         text: t("navbar.buttons.reservations"),
+      },
+      { to: "/settings", icon: <IoSettingsSharp />, text: t("navbar.buttons.settings") },
    ];
 
    return (
