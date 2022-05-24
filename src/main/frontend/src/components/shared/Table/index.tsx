@@ -16,6 +16,7 @@ type header = {
    id: string;
    label: string;
    sort: string | null;
+   sortable: boolean;
 };
 
 interface Props {
@@ -64,31 +65,33 @@ const Table: React.FC<Props> = ({
                         <div className="cell-wrapper">
                            <div className="label">{header.label}</div>
                            <div>
-                              <div
-                                 role="button"
-                                 tabIndex={index}
-                                 onKeyDown={() => {
-                                    return;
-                                 }}
-                                 className={`sort ${header.sort}`}
-                                 onClick={() => {
-                                    switch (header.sort) {
-                                       case "desc":
-                                          changeOrder(header.id, "asc");
-                                          break;
-                                       case "asc":
-                                          changeOrder(header.id, "desc");
-                                          break;
+                              {header.sortable && (
+                                 <div
+                                    role="button"
+                                    tabIndex={index}
+                                    onKeyDown={() => {
+                                       return;
+                                    }}
+                                    className={`sort ${header.sort}`}
+                                    onClick={() => {
+                                       switch (header.sort) {
+                                          case "desc":
+                                             changeOrder(header.id, "asc");
+                                             break;
+                                          case "asc":
+                                             changeOrder(header.id, "desc");
+                                             break;
 
-                                       default:
-                                          changeOrder(header.id, "asc");
-                                          break;
-                                    }
-                                 }}
-                              >
-                                 <VscTriangleUp className="up" />
-                                 <VscTriangleDown className="down" />
-                              </div>
+                                          default:
+                                             changeOrder(header.id, "asc");
+                                             break;
+                                       }
+                                    }}
+                                 >
+                                    <VscTriangleUp className="up" />
+                                    <VscTriangleDown className="down" />
+                                 </div>
+                              )}
                               {/* <div className="drag" /> */}
                               <div className="separator" />
                            </div>

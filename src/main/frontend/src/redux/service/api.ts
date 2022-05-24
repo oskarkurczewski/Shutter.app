@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
    basicUserInfoResponse,
+   getListRequest,
+   getListResponse,
    registerAccountAsAdminRequest,
    registerAccountRequest,
 } from "redux/types/api/accountTypes";
@@ -47,6 +49,13 @@ export const api = createApi({
             body: data,
          }),
       }),
+
+      getUserList: builder.query<getListResponse, getListRequest>({
+         query: (data) => ({
+            url: "account/list",
+            params: data,
+         }),
+      }),
    }),
 });
 
@@ -55,4 +64,5 @@ export const {
    useUserInfoQuery,
    useRegisterMutation,
    useRegisterAsAdminMutation,
+   useGetUserListQuery,
 } = api;
