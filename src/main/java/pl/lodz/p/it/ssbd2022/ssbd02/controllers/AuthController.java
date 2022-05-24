@@ -43,12 +43,13 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.refreshToken;
 public class AuthController {
 
     private static final Logger LOGGER = Logger.getLogger(AuthController.class.getName());
+
     @Inject
-    OneTimeCodeUtils oneTimeCodeUtils;
+    private OneTimeCodeUtils oneTimeCodeUtils;
     @Context
-    HttpServletRequest httpServletRequest;
+    private HttpServletRequest httpServletRequest;
     @Context
-    SecurityContext securityContext;
+    private SecurityContext securityContext;
     @Inject
     private IdentityStoreHandler storeHandler;
     @Inject

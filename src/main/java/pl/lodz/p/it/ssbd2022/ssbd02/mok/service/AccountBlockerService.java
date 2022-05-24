@@ -35,9 +35,6 @@ public class AccountBlockerService {
     @Inject
     private ConfigLoader configLoader;
 
-    @Inject
-    private VerificationTokenService verificationTokenService;
-
     /**
      * Metoda inicjująca timer, aby działał co określoną w pliku
      * konfiguracyjnym liczbę milisekund, lub gdy nie będzie w stanie
