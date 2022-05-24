@@ -4,7 +4,8 @@ import React from "react";
 import { useSendChangeOwnEmailLinkMutation } from "redux/service/api";
 
 const ChangeEmail = () => {
-   const [mutation, mutationState] = useSendChangeOwnEmailLinkMutation();
+   const [mutation, { isLoading, isError, isSuccess }] =
+      useSendChangeOwnEmailLinkMutation();
 
    return (
       <Card id="change-email">
@@ -21,8 +22,9 @@ const ChangeEmail = () => {
             Wyślij link
          </Button>
 
-         {mutationState.isError && <p>Nie udało się wysłać wiadomości</p>}
-         {mutationState.isSuccess && <p>Wiadomość została wysłana</p>}
+         {isLoading && <p>Nie udało się wysłać wiadomości</p>}
+         {isError && <p>Nie udało się wysłać wiadomości</p>}
+         {isSuccess && <p>Wiadomość została wysłana</p>}
       </Card>
    );
 };
