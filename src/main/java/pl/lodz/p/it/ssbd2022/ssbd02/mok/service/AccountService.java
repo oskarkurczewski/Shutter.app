@@ -365,6 +365,7 @@ public class AccountService {
             throws BaseApplicationException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setFailedLogInAttempts(0);
+        account.setSecret(UUID.randomUUID().toString());
 
         addNewAccount(account);
 
