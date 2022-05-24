@@ -107,13 +107,13 @@ const AccountListPage = () => {
                </>,
                item.isActive ? <FaCheck className="check" /> : <></>,
                item.isRegistered ? <FaCheck className="check" /> : <></>,
-               <td key={item.login} className="edit-button">
+               <div key={item.login} className="edit-button">
                   <Link to={`/users/${item.login}/edit`}>
                      <div role="button">
                         <FaEdit />
                      </div>
                   </Link>
-               </td>,
+               </div>,
             ],
          ]);
       });

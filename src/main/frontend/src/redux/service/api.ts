@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
    basicUserInfoResponse,
+   changeAccessLevelRequest,
    getListRequest,
    getListResponse,
    registerAccountAsAdminRequest,
@@ -56,6 +57,14 @@ export const api = createApi({
             params: data,
          }),
       }),
+
+      changeAccessLevel: builder.mutation<unknown, changeAccessLevelRequest>({
+         query: ({ params, body }) => ({
+            url: `account/${params.login}/accessLevel`,
+            method: "POST",
+            body: body,
+         }),
+      }),
    }),
 });
 
@@ -65,4 +74,5 @@ export const {
    useRegisterMutation,
    useRegisterAsAdminMutation,
    useGetUserListQuery,
+   useChangeAccessLevelMutation,
 } = api;

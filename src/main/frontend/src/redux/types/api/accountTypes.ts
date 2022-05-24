@@ -46,3 +46,17 @@ export interface getListResponse {
    pageNo: number;
    recordsPerPage: number;
 }
+
+export interface changeAccessLevelRequestParams {
+   login: string;
+}
+
+export interface changeAccessLevelRequestBody {
+   accessLevel: string;
+   active: boolean;
+}
+
+export interface changeAccessLevelRequest {
+   params: changeAccessLevelRequestParams;
+   body: changeAccessLevelRequestBody;
+}
