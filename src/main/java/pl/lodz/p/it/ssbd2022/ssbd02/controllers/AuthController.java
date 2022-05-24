@@ -142,6 +142,6 @@ public class AuthController {
 
         List<String> newGroups = accountEndpoint.getAccountGroups(oldToken.subject);
 
-        return Response.ok().entity(refresh(oldToken, newGroups)).build();
+        return Response.ok().entity(new AuthTokenDto(refresh(oldToken, newGroups))).build();
     }
 }
