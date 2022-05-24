@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useSwitchCurrentAccessLevelMutation, useUserInfoQuery } from "redux/service/api";
 import { AccessLevel } from "types/AccessLevel";
 import Button from "components/shared/Button";
-import { setAccessLevel } from "redux/slices/authSlice";
+import { setAccessLevel, setUserInfo } from "redux/slices/authSlice";
 
 interface Props {
    username?: string;
@@ -13,7 +13,9 @@ interface Props {
 }
 
 const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
-   const { roles, accessLevel } = useAppSelector((state) => state.auth);
+   const { roles, accessLevel, name, surname, email } = useAppSelector(
+      (state) => state.auth
+   );
    const [currentRole, setCurrentRole] = useState(null);
    const { data } = useUserInfoQuery(username);
 
@@ -30,6 +32,10 @@ const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
       accessLevel && setCurrentRole(accessLevel);
    }, [accessLevel]);
 
+   useEffect(() => {
+      data && dispatch(setUserInfo(data));
+   }, [data]);
+
    return (
       <div className="auth-card-wrapper">
          <img src="/images/auth-image.png" alt="user sidebar" />
@@ -40,12 +46,12 @@ const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
                <p className="label-bold">{username ? username : "Niezalogowany"}</p>
             </div>
          </div>
-         {data && (
+         {name && surname && email && (
             <>
                <p>
-                  {data.name} {data.surname}
+                  {name} {surname}
                </p>
-               <p>{data.email}</p>
+               <p>{email}</p>
             </>
          )}
          {roles.length > 1 && (

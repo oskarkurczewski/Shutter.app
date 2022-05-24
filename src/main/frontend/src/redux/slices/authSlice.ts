@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { AuthState, SetAccessLevel } from "redux/types/stateTypes";
+import { AuthState, SetAccessLevel, SetUserInfo } from "redux/types/stateTypes";
 import { AccessLevel } from "types/AccessLevel";
 
 const initialState: AuthState = {
@@ -33,6 +33,9 @@ export const authSlice = createSlice({
       },
       logout: (state: AuthState) => {
          state.username = initialState.username;
+         state.name = initialState.name;
+         state.surname = initialState.surname;
+         state.email = initialState.email;
          state.roles = initialState.roles;
          state.accessLevel = initialState.accessLevel;
          state.token = initialState.token;
@@ -45,9 +48,14 @@ export const authSlice = createSlice({
          state.accessLevel = action.payload.accessLevel;
          localStorage.setItem("accessLevel", action.payload.accessLevel);
       },
+      setUserInfo: (state: AuthState, action: PayloadAction<SetUserInfo>) => {
+         state.name = action.payload.name;
+         state.surname = action.payload.surname;
+         state.email = action.payload.email;
+      },
    },
 });
 
-export const { login, logout, setAccessLevel } = authSlice.actions;
+export const { login, logout, setAccessLevel, setUserInfo } = authSlice.actions;
 
 export default authSlice.reducer;
