@@ -1,12 +1,20 @@
 import React from "react";
 import "./style.scss";
 import Card from "components/shared/Card";
+import Button from "components/shared/Button";
 import { HiCamera } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
+import BecomePhotographer from "components/settings/photographer-settings/become-photographer";
+import StopBeingPhotographer from "components/settings/photographer-settings/stop-being-photographer";
+import { useAppSelector } from "redux/hooks";
+import { AccessLevel } from "types/AccessLevel";
 
 const SettingsPage: React.FC = () => {
    const location = useLocation();
+
+   const roles = useAppSelector((state) => state.auth.roles);
+
    const sections = [
       {
          icon: <IoSettingsSharp />,
@@ -15,7 +23,7 @@ const SettingsPage: React.FC = () => {
       },
       {
          icon: <HiCamera />,
-         id: "photographer",
+         id: "photographer-settings",
          label: "Ustawienia fotografa",
       },
    ];
@@ -49,6 +57,11 @@ const SettingsPage: React.FC = () => {
                   </p>
                </div>
             </Card>
+            {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
+               <StopBeingPhotographer />
+            ) : (
+               <BecomePhotographer />
+            )}
          </div>
       </section>
    );

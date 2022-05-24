@@ -7,6 +7,7 @@ import {
    registerAccountRequest,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
+import { AuthState } from "redux/types/stateTypes";
 import { RootState } from "../store";
 
 export const api = createApi({
@@ -69,6 +70,27 @@ export const api = createApi({
             params: data,
          }),
       }),
+
+      becomePhotographer: builder.mutation<unknown, unknown>({
+         query: (data) => ({
+            url: "/account/become-photographer",
+            method: "POST",
+         }),
+      }),
+
+      stopBeingPhotographer: builder.mutation<unknown, unknown>({
+         query: (data) => ({
+            url: "/account/stop-being-photographer",
+            method: "POST",
+         }),
+      }),
+
+      refresh: builder.mutation<LoginResponse, unknown>({
+         query: (data) => ({
+            url: "/auth/refresh",
+            method: "POST",
+         }),
+      }),
    }),
 });
 
@@ -80,4 +102,7 @@ export const {
    useRegisterAsAdminMutation,
    useUnblockOwnAccountMutation,
    useGetUserListQuery,
+   useBecomePhotographerMutation,
+   useStopBeingPhotographerMutation,
+   useRefreshMutation,
 } = api;
