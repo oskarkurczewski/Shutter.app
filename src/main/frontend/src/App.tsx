@@ -19,6 +19,7 @@ import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
 import ConfirmRegistrationPage from "pages/confirmRegistration";
 import LoginPage from "pages/login";
+import ChangeOwnEmailPage from "pages/token-based/change-own-email";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -120,6 +121,8 @@ function App() {
                </Route>
 
                <Route path="dashboard" element={<DashboardPage />} />
+
+               <Route path="change-own-email/:token" element={<ChangeOwnEmailPage />} />
             </Route>
          </Routes>
       </BrowserRouter>

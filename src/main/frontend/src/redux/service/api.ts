@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
    basicUserInfoResponse,
+   changeOwnEmailRequest,
+   changeOwnPasswordRequest,
+   changeOwnUserDataRequest,
    registerAccountAsAdminRequest,
    registerAccountRequest,
 } from "redux/types/api/accountTypes";
@@ -28,8 +31,42 @@ export const api = createApi({
          }),
       }),
 
-      userInfo: builder.query<basicUserInfoResponse, string>({
-         query: (login) => ({ url: `account/${login}/info` }),
+      changeOwnUserData: builder.mutation<unknown, changeOwnUserDataRequest>({
+         query: (data) => ({
+            url: "account/editOwnAccountInfo",
+            method: "PUT",
+            body: data,
+         }),
+      }),
+
+      sendChangeOwnEmailLink: builder.mutation<unknown, unknown>({
+         query: () => ({
+            url: "account/request-email-update",
+            method: "POST",
+         }),
+      }),
+
+      changeOwnEmail: builder.mutation<unknown, changeOwnEmailRequest>({
+         query: (data) => ({
+            url: "account/verify-email-update",
+            method: "POST",
+            body: data,
+         }),
+      }),
+
+      changeOwnPassword: builder.mutation<unknown, changeOwnPasswordRequest>({
+         query: (data) => ({
+            url: "account/change-password",
+            method: "PUT",
+            body: data,
+         }),
+      }),
+
+      sendTwoFACode: builder.mutation<unknown, string>({
+         query: (login) => ({
+            url: `account/${login}/request-2fa-code`,
+            method: "POST",
+         }),
       }),
 
       register: builder.mutation<unknown, registerAccountRequest>({
@@ -38,6 +75,10 @@ export const api = createApi({
             method: "POST",
             body: data,
          }),
+      }),
+
+      userInfo: builder.query<basicUserInfoResponse, string>({
+         query: (login) => ({ url: `account/${login}/info` }),
       }),
 
       registerAsAdmin: builder.mutation<unknown, registerAccountAsAdminRequest>({
@@ -52,7 +93,12 @@ export const api = createApi({
 
 export const {
    useLoginMutation,
-   useUserInfoQuery,
+   useChangeOwnPasswordMutation,
+   useSendChangeOwnEmailLinkMutation,
+   useChangeOwnEmailMutation,
+   useChangeOwnUserDataMutation,
+   useSendTwoFACodeMutation,
    useRegisterMutation,
+   useUserInfoQuery,
    useRegisterAsAdminMutation,
 } = api;

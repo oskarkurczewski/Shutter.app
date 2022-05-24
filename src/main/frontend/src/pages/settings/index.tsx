@@ -4,6 +4,11 @@ import Card from "components/shared/Card";
 import { HiCamera } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
+import MainSettings from "components/settings/main-settings";
+import ChangeEmail from "components/settings/change-email";
+import ChangePassword from "components/settings/change-password";
+import { BsKeyFill } from "react-icons/bs";
+import { MdEmail } from "react-icons/md";
 
 const SettingsPage: React.FC = () => {
    const location = useLocation();
@@ -12,6 +17,16 @@ const SettingsPage: React.FC = () => {
          icon: <IoSettingsSharp />,
          id: "main-settings",
          label: "Główne ustawienia",
+      },
+      {
+         icon: <MdEmail />,
+         id: "change-email",
+         label: "Adres email",
+      },
+      {
+         icon: <BsKeyFill />,
+         id: "change-password",
+         label: "Hasło",
       },
       {
          icon: <HiCamera />,
@@ -29,7 +44,7 @@ const SettingsPage: React.FC = () => {
                   <a
                      key={index}
                      href={`#${section.id}`}
-                     className={location.hash.includes(section.id) && "active"}
+                     className={location.hash.includes(section.id) ? "active" : ""}
                   >
                      {section.icon}
                      <p className="label-bold">{section.label}</p>
@@ -39,16 +54,9 @@ const SettingsPage: React.FC = () => {
          </div>
          <div className="content">
             {/* poszczególne sekcje powinny być w osobnych komponentach (można podpiąć je potem pod tablicę `sections` aby później wywołać je tutaj iterując po `sections`) */}
-            <Card id="main-settings">
-               <p className="category-title">Główne ustawienia</p>
-               <div className="content">
-                  <p>
-                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias
-                     laboriosam consequatur rerum nulla temporibus consequuntur, veritatis
-                     distinctio numquam sed fugiat doloribus modi aut ullam.
-                  </p>
-               </div>
-            </Card>
+            <MainSettings />
+            <ChangeEmail />
+            <ChangePassword />
          </div>
       </section>
    );
