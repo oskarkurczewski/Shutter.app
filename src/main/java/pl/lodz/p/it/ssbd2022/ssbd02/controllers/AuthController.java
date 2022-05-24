@@ -75,7 +75,7 @@ public class AuthController {
 
         if (
                 validationResult.getStatus() == CredentialValidationResult.Status.VALID
-//                        && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())
+                        && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())
         ) {
             String token = JWTHandler.generateJWT(validationResult);
 

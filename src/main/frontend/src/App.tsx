@@ -110,7 +110,7 @@ function App() {
                   />
 
                   <Route
-                     path=":id/edit"
+                     path=":login/edit"
                      element={
                         <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
                            <EditAccountPage />

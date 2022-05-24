@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+   advancedUserInfoResponse,
    basicUserInfoResponse,
    changeAccessLevelRequest,
+   editAccountInfoAsAdminRequest,
    getListRequest,
    getListResponse,
    registerAccountAsAdminRequest,
@@ -34,6 +36,9 @@ export const api = createApi({
       userInfo: builder.query<basicUserInfoResponse, string>({
          query: (login) => ({ url: `account/${login}/info` }),
       }),
+      advancedUserInfo: builder.query<advancedUserInfoResponse, string>({
+         query: (login) => ({ url: `account/${login}/detailed-info` }),
+      }),
 
       register: builder.mutation<unknown, registerAccountRequest>({
          query: (data) => ({
@@ -48,6 +53,14 @@ export const api = createApi({
             url: "account/register",
             method: "POST",
             body: data,
+         }),
+      }),
+
+      editAccountInfoAsAdmin: builder.mutation<unknown, editAccountInfoAsAdminRequest>({
+         query: ({ params, body }) => ({
+            url: `account/${params.login}/editAccountInfo`,
+            method: "PUT",
+            body: body,
          }),
       }),
 
@@ -71,8 +84,10 @@ export const api = createApi({
 export const {
    useLoginMutation,
    useUserInfoQuery,
+   useAdvancedUserInfoQuery,
    useRegisterMutation,
    useRegisterAsAdminMutation,
    useGetUserListQuery,
    useChangeAccessLevelMutation,
+   useEditAccountInfoAsAdminMutation,
 } = api;

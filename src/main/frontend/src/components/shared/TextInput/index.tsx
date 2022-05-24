@@ -11,6 +11,7 @@ interface TextInputProps {
    value: string;
    onChange: React.ChangeEventHandler<HTMLInputElement>;
    name?: string;
+   disabled?: boolean;
 }
 
 const TextInput = ({
@@ -23,6 +24,7 @@ const TextInput = ({
    value,
    onChange,
    name,
+   disabled,
 }: TextInputProps) => {
    return (
       <div className={`text-input-wrapper ${className ? className : ""}`}>
@@ -35,6 +37,7 @@ const TextInput = ({
                onChange={onChange}
                placeholder={placeholder}
                name={name}
+               disabled={disabled}
             />
          </div>
       </div>
