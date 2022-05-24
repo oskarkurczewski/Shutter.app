@@ -221,7 +221,7 @@ public class VerificationTokenService {
     /**
      * Sprawdza oraz usuwa żeton weryfikacyjny użyty do aktualizacji adresu email
      *
-     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do aktualizacji adresu email
      * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
@@ -231,6 +231,41 @@ public class VerificationTokenService {
             throws BaseApplicationException {
         VerificationToken resetToken = tokenFacade.find(token);
         checkToken(resetToken, TokenType.EMAIL_UPDATE);
+        tokenFacade.remove(resetToken);
+        return resetToken.getTargetUser();
+    }
+
+    /**
+     * Wysyła link zawierający żeton odblokowania konta
+     *
+     * @param account Konto, na które zostanie wysłany email z żetonem
+     * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone
+     */
+    public void sendUnblockOwnAccountToken(Account account) throws BaseApplicationException {
+        removeOldToken(account, TokenType.UNBLOCK_OWN_ACCOUNT);
+
+        VerificationToken verificationToken = new VerificationToken(
+                LocalDateTime.now().plusHours(configLoader.getUnblockOwnAccountTokenLifetime()),
+                account,
+                TokenType.UNBLOCK_OWN_ACCOUNT
+        );
+        tokenFacade.persist(verificationToken);
+
+        emailService.sendEmailUnblockAccount(account.getEmail(), verificationToken);
+    }
+
+    /**
+     * Sprawdza oraz usuwa żeton weryfikacyjny użyty do odblokowania własnego konta
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do aktywacji własnego konta
+     * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
+     * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
+     * @throws ExpiredTokenException    Żeton wygasł
+     */
+    public Account confirmUnblockOwnAccount(String token)
+            throws BaseApplicationException {
+        VerificationToken resetToken = tokenFacade.find(token);
+        checkToken(resetToken, TokenType.UNBLOCK_OWN_ACCOUNT);
         tokenFacade.remove(resetToken);
         return resetToken.getTargetUser();
     }

@@ -27,6 +27,7 @@ public class ConfigLoader {
     private static final String PROPERTIES_EMAIL_FILE = "config.email.properties";
     private static final String REGISTRATION_CONFIRMATION_TOKEN_LIFETIME = "registration.confirmation.token.lifespan";
     private static final String EMAIL_RESET_TOKEN_LIFETIME = "email.reset.token.lifespan";
+    private static final String UNBLOCK_OWN_ACCOUNT_TOKEN_LIFESPAN = "unblock.own.account.token.lifespan";
     private static final String PASSWORD_RESET_TOKEN_LIFETIME = "password.reset.token.lifespan";
     private static final String FORCED_PASSWORD_RESET_TOKEN_LIFETIME = "forced.password.reset.token.lifespan";
     private static final String UNBLOCK_OWN_ACCOUNT_TOKEN_LIFETIME = "unblock.own.account.token.lifespan";

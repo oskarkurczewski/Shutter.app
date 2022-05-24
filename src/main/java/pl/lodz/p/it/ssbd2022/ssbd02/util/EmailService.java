@@ -253,7 +253,7 @@ public class EmailService {
         String subject = "Odblokowanie konta Shutter.app";
         String body = "Twoje konto zostało zablokowane z powodu braku aktywności, kliknij w link aby je odblokować "
                 + String.format(
-                "%s/account-unblock/%s",
+                "%s/unblock-account/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );

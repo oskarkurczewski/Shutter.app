@@ -60,7 +60,7 @@ public class AccountBlockerService {
             if (acc.getActive()) {
                 acc.setActive(false);
                 authenticationFacade.update(acc);
-                verificationTokenService.sendUnblockOwnAccountEmail(acc);
+                verificationTokenService.sendUnblockOwnAccountToken(acc);
             }
         }
     }

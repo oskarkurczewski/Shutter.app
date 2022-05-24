@@ -47,6 +47,12 @@ export const api = createApi({
             body: data,
          }),
       }),
+
+      unblockOwnAccount: builder.mutation<unknown, string>({
+         query: (token) => ({
+            url: `account/unblock-own-account/${token}`,
+         }),
+      }),
    }),
 });
 
@@ -55,4 +61,5 @@ export const {
    useUserInfoQuery,
    useRegisterMutation,
    useRegisterAsAdminMutation,
+   useUnblockOwnAccountMutation,
 } = api;

@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,8 @@ public class AccountController extends AbstractController {
 
     @Inject
     AccountEndpoint accountEndpoint;
+
+
 
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
@@ -46,6 +49,20 @@ public class AccountController extends AbstractController {
     ) throws BaseApplicationException {
         repeat(() -> accountEndpoint.unblockAccount(login), accountEndpoint);
     }
+
+    /**
+     * Potwierdza aktywację własnego konta po długim czasie nieaktywności
+     *
+     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do aktywacji konta
+     * @throws BaseApplicationException Występuje w przypadku gdy aktywacja konta się nie powiedzie
+     */
+    @PUT
+    @Path("/unblock-own-account/{token}")
+    public void confirmUnblockOwnAccount(@NotNull @PathParam("token") String token)
+            throws BaseApplicationException {
+        accountEndpoint.confirmUnblockOwnAccount(token);
+    }
+
 
     @PUT
     @Path("/{login}/change-password")
