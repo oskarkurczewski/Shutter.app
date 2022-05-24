@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -27,6 +28,9 @@ public class AccountBlockerService {
 
     @Inject
     private AuthenticationFacade authenticationFacade;
+
+    @Inject
+    private VerificationTokenService verificationTokenService;
 
     @Inject
     private ConfigLoader configLoader;
