@@ -3,6 +3,7 @@ import "./style.scss";
 import Button from "../Button";
 import Card from "../Card";
 import ModalRoot from "./ModalRoot";
+import { useTranslation } from "react-i18next";
 
 type Props =
    | {
@@ -33,6 +34,8 @@ const Modal: React.FC<Props> = ({
    onSubmit,
    title,
 }) => {
+   const { t } = useTranslation();
+
    if (!isOpen) {
       return null;
    }
@@ -50,11 +53,11 @@ const Modal: React.FC<Props> = ({
                <div className="modal-footer">
                   {type === "confirm" && (
                      <Button className="cancel" onClick={() => onCancel && onCancel()}>
-                        Cancel
+                        {t("label.cancel")}
                      </Button>
                   )}
                   <Button className="submit" onClick={() => onSubmit()}>
-                     Submit
+                     {t("label.submit")}
                   </Button>
                </div>
             </Card>

@@ -3,8 +3,11 @@ import "./style.scss";
 import Card from "components/shared/Card";
 import { useParams } from "react-router-dom";
 import { useConfirmRegistrationMutation } from "redux/service/api";
+import { useTranslation } from "react-i18next";
 
 const ConfirmRegistrationPage = () => {
+   const { t } = useTranslation();
+
    const { token } = useParams();
 
    const [confirmRegistrationMutation, { isLoading, isSuccess, isError }] =
@@ -17,25 +20,16 @@ const ConfirmRegistrationPage = () => {
    return (
       <section className="confirm-registration-page-wrapper">
          <Card>
-            <p className="category-title">Rejestracja konta</p>
+            <p className="category-title">{t("label.register-account")}</p>
             {(() => {
                if (isLoading) {
-                  return <p>Loading...</p>;
+                  return <p>{t("message.loading.register")}</p>;
                }
                if (isError) {
-                  return (
-                     <p className="error">
-                        Nie udało się potwierdzić rejestracji twojego konta.
-                     </p>
-                  );
+                  return <p className="error">{t("message.error.register-confirm")}</p>;
                }
                if (isSuccess) {
-                  return (
-                     <p>
-                        Twoje konto zostało aktywowane pomyślnie. Możesz się już
-                        zalogować.
-                     </p>
-                  );
+                  return <p>{t("message.success.regiter-confirm")}</p>;
                }
             })()}
          </Card>

@@ -14,8 +14,11 @@ import ChangeEmail from "components/settings/change-email";
 import ChangePassword from "components/settings/change-password";
 import { BsKeyFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 const SettingsPage: React.FC = () => {
+   const { t } = useTranslation();
+
    const location = useLocation();
 
    const roles = useAppSelector((state) => state.auth.roles);
@@ -24,29 +27,29 @@ const SettingsPage: React.FC = () => {
       {
          icon: <IoSettingsSharp />,
          id: "main-settings",
-         label: "Główne ustawienia",
+         label: t("label.settings"),
       },
       {
          icon: <MdEmail />,
          id: "change-email",
-         label: "Adres email",
+         label: t("label.email"),
       },
       {
          icon: <BsKeyFill />,
          id: "change-password",
-         label: "Hasło",
+         label: t("label.password"),
       },
       {
          icon: <HiCamera />,
          id: "photographer-settings",
-         label: "Ustawienia fotografa",
+         label: t("label.photographer-settings"),
       },
    ];
 
    return (
       <section className="settings-page-wrapper">
          <div className="nav">
-            <p className="category-title">Ustawienia</p>
+            <p className="category-title">{t("label.settings-short")}</p>
             <div className="links">
                {sections.map((section, index) => (
                   <a

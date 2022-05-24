@@ -6,8 +6,11 @@ import { useBecomePhotographerMutation, useRefreshMutation } from "redux/service
 import { refreshToken } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
 import { useAppDispatch } from "redux/hooks";
+import { useTranslation } from "react-i18next";
 
 const BecomePhotographer = () => {
+   const { t } = useTranslation();
+
    const [becomePhotographerMutation] = useBecomePhotographerMutation();
    const [refreshMutation, refreshMutationState] = useRefreshMutation();
    const dispatch = useAppDispatch();
@@ -22,13 +25,9 @@ const BecomePhotographer = () => {
 
    return (
       <Card id="photographer-settings" className="become-photographer-wrapper">
-         <p className="category-title">Ustawienia Fotografa</p>
+         <p className="category-title">{t("label.photographer-settings")}</p>
          <div className="content">
-            <p>
-               W każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość
-               tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania
-               rezerwacjami.
-            </p>
+            <p>{t("message.info.photographer-settings")}</p>
             <div className="buttons">
                <Button
                   onClick={async () => {
@@ -36,7 +35,7 @@ const BecomePhotographer = () => {
                      refreshMutation({});
                   }}
                >
-                  Zostań fotografem
+                  {t("label.become-photographer")}
                </Button>
             </div>
          </div>

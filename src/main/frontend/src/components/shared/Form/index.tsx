@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 interface Props {
@@ -9,12 +10,14 @@ interface Props {
 }
 
 const Form: React.FC<Props> = ({ onSubmit, children, isLoading, className }) => {
+   const { t } = useTranslation();
+
    return (
       <form onSubmit={onSubmit} className={`form-wrapper ${className && className}`}>
          {children}
          {isLoading && (
             <div className="loader-wrapper">
-               <p>Loading...</p>
+               <p>{t("message.loading.general")}</p>
             </div>
          )}
       </form>

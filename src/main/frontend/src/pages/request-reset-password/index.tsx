@@ -4,8 +4,11 @@ import Card from "components/shared/Card";
 import TextInput from "components/shared/TextInput";
 import React, { useState } from "react";
 import { useRequestResetPasswordMutation } from "redux/service/api";
+import { useTranslation } from "react-i18next";
 
 const RequestResetPasswordPage = () => {
+   const { t } = useTranslation();
+
    const [login, setLogin] = useState<string>("");
    const [requestResetPasswordMutation, { isLoading, isSuccess, isError }] =
       useRequestResetPasswordMutation();
@@ -19,30 +22,30 @@ const RequestResetPasswordPage = () => {
       <section className="reset-password-page-wrapper">
          <Card>
             <form>
-               <p className="category-title">Nie pamiętasz ⁠hasła?</p>
-               <p>Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.</p>
-               <p>Podaj login:</p>
+               <p className="category-title">{t("label.dont-remember-password")}</p>
+               <p>{t("message.info.email-instruction")}</p>
+               <p>{t("message.info.type-login")}:</p>
                <TextInput
-                  label="Login"
+                  label={t("label.login-label")}
                   type="login"
-                  placeholder="Login"
+                  placeholder={t("label.login-label")}
                   value={login}
                   onChange={(e) => setLogin(e.target.value)}
                />
                <div className="footer">
-                  <Button onClick={(e) => onSubmit(e)}>Wyślij wiadomość email</Button>
+                  <Button onClick={(e) => onSubmit(e)}>
+                     {t("message.info.send-email-message")}
+                  </Button>
                </div>
                {(() => {
                   if (isLoading) {
-                     return <p>Loading...</p>;
+                     return <p>{t("message.loading.reset-password")}</p>;
                   }
                   if (isError) {
-                     return (
-                        <p className="error">Nie udało się wysłać wiadomości email</p>
-                     );
+                     return <p className="error">{t("message.error.reset-password")}</p>;
                   }
                   if (isSuccess) {
-                     return <p>Email został wysłany pomyślnie</p>;
+                     return <p>{t("message.success.reset-password")}</p>;
                   }
                })()}
             </form>

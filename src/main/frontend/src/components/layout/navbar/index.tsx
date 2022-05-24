@@ -13,8 +13,11 @@ import AdministratorButtonList from "../button-list/administrator";
 import ModeratorButtonList from "../button-list/moderator";
 import PhotographerButtonList from "../button-list/photographer";
 import { useAppSelector } from "redux/hooks";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
+   const { t } = useTranslation();
+
    const location = useLocation();
    const path = location.pathname;
 
@@ -52,7 +55,7 @@ const Navbar = () => {
          <div className="logo-container">
             <Link to="/" className="logo-wrapper">
                <img src="/icons/logo.svg" alt="shutter logo" className="navbar-logo" />
-               {expanded && <p className="section-title">pipegz.app</p>}
+               {expanded && <p className="section-title">{t("navbar.title")}</p>}
             </Link>
          </div>
          <div className="bar-button-list-wrapper">
@@ -62,7 +65,7 @@ const Navbar = () => {
                   <BarButton
                      to="login"
                      icon={<RiLoginBoxLine />}
-                     text="Zaloguj się"
+                     text={t("navbar.buttons.login")}
                      expanded={expanded}
                      active={path === "/login"}
                   />
@@ -70,7 +73,7 @@ const Navbar = () => {
                   <BarButton
                      to="dashboard"
                      icon={<RiLogoutBoxRLine />}
-                     text="Wyloguj się"
+                     text={t("navbar.buttons.logout")}
                      expanded={expanded}
                      active={path === "/dashboard"}
                   />

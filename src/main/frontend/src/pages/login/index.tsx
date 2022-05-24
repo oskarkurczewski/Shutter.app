@@ -10,8 +10,11 @@ import { getLoginPayload } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
 import { useLoginMutation, useSendTwoFACodeMutation } from "redux/service/api";
 import { LoginRequest } from "redux/types/api/authTypes";
+import { useTranslation } from "react-i18next";
 
 const LoginPage: React.FC = () => {
+   const { t } = useTranslation();
+
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
 
@@ -46,49 +49,46 @@ const LoginPage: React.FC = () => {
             <div className="aside">
                <img src="images/logo_new_black.svg" alt="logo" />
                <div>
-                  <p className="section-title">
-                     Nie masz <br /> jeszcze konta?
-                  </p>
-                  <p>
-                     Załóż je teraz, <br />
-                     to zupełnie darmowe!
-                  </p>
+                  <p className="section-title">{t("message.info.login-title")}</p>
+                  <p>{t("message.info.register")}</p>
                </div>
                <Button
                   onClick={() => {
                      navigate("/register");
                   }}
                >
-                  Zarejestruj się
+                  {t("label.register")}
                </Button>
             </div>
             <form onSubmit={onSubmit}>
-               <p className="section-title">Logowanie</p>
+               <p className="section-title">{t("label.login-title")}</p>
                <TextInput
-                  label="Login"
-                  placeholder="Login"
+                  label={t("label.login-label")}
+                  placeholder={t("label.login-label")}
                   type="text"
                   name="login"
                   value={formState.login}
                   onChange={handleChange}
                />
                <TextInput
-                  label="Hasło"
+                  label={t("label.password")}
                   type="password"
-                  placeholder="Hasło"
+                  placeholder={t("label.password")}
                   value={formState.password}
                   name="password"
                   onChange={handleChange}
                />
                <div className="two-factory-auth">
                   <TextInput
-                     label="Kod uwierzytelnienia"
-                     placeholder="Kod"
+                     label={t("label.code")}
+                     placeholder={t("label.code-short")}
                      value={formState.twoFACode}
                      name="twoFACode"
                      onChange={handleChange}
                   />
-                  <Button onClick={onSendTwoFA}>Send Code</Button>
+                  <Button onClick={onSendTwoFA}>
+                     {t("message.info.login-send-code")}
+                  </Button>
                </div>
 
                {/* <Checkbox value={check} onChange={(e) => setCheck(e.target.checked)}>
@@ -98,20 +98,24 @@ const LoginPage: React.FC = () => {
                <p>
                   {(loginMutationState.isLoading ||
                      sendTwoFACodeMutationState.isLoading) &&
-                     "loading..."}
+                     t("message.loading.login")}
                </p>
 
                {loginMutationState.isError && (
-                  <p className="message">Zły login lub hasło</p>
+                  <p className="message">{t("message.error.login-credentials")}</p>
                )}
                {sendTwoFACodeMutationState.isError && (
-                  <p className="message">Nie udało się wysłać kodu</p>
+                  <p className="message">{t("label.message.error.login-code")}</p>
                )}
-               {sendTwoFACodeMutationState.isSuccess && <p>Pomyślnie wysłano kod</p>}
+               {sendTwoFACodeMutationState.isSuccess && (
+                  <p>{t("message.success.login-code")}</p>
+               )}
 
                <div className="footer">
-                  <Link to={"/request-reset-password"}>Zapomniałeś hasła?</Link>
-                  <Button onClick={(e) => onSubmit(e)}>Zaloguj się</Button>
+                  <Link to={"/request-reset-password"}>
+                     {t("label.forgot-password")}?
+                  </Link>
+                  <Button onClick={(e) => onSubmit(e)}>{t("label.login")}</Button>
                </div>
             </form>
          </Card>

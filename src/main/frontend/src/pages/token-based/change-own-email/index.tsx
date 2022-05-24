@@ -5,8 +5,11 @@ import Card from "components/shared/Card";
 import TextInput from "components/shared/TextInput";
 import { useParams } from "react-router-dom";
 import { useChangeOwnEmailMutation } from "redux/service/api";
+import { useTranslation } from "react-i18next";
 
 const ChangeOwnEmailPage = () => {
+   const { t } = useTranslation();
+
    const [newEmail, setNewEmail] = useState("");
    const [confirmEmail, setConfirmEmail] = useState("");
    const [equalityError, setEqualityError] = useState(false);
@@ -29,37 +32,37 @@ const ChangeOwnEmailPage = () => {
 
    return (
       <Card className="change-own-email-wrapper">
-         <p className="category-title">Zmiana adresu email</p>
+         <p className="category-title">{t("label.email-change")}</p>
 
          <TextInput
-            label="New Email"
-            placeholder="Email"
+            label={t("label.email-new")}
+            placeholder={t("label.email-short")}
             required
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
          />
          <TextInput
-            label="Confirm Email"
-            placeholder="Email"
+            label={t("label.email-confirm")}
+            placeholder={t("label.email-short")}
             required
             value={confirmEmail}
             onChange={(e) => setConfirmEmail(e.target.value)}
          />
 
-         <Button onClick={onSubmit}>Submit</Button>
+         <Button onClick={onSubmit}>{t("label.submit")}</Button>
 
          {(() => {
             if (isLoading) {
-               return <p>Loading...</p>;
+               return <p>{t("message.loading.change-email")}</p>;
             }
             if (equalityError) {
-               return <p className="error">Adresy email różnią się od siebie</p>;
+               return <p className="error">{t("message.error.equality-error-email")}</p>;
             }
             if (isError) {
-               return <p className="error">Nie udało się zmienić adresu email.</p>;
+               return <p className="error">{t("message.error.failed-change-emial")}</p>;
             }
             if (isSuccess) {
-               return <p>Twój adres email został pomyślnie zmieniony.</p>;
+               return <p>{t("message.success.changed-email")}.</p>;
             }
          })()}
       </Card>

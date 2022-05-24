@@ -6,8 +6,11 @@ import { useStopBeingPhotographerMutation, useRefreshMutation } from "redux/serv
 import { refreshToken } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
 import { useAppDispatch } from "redux/hooks";
+import { useTranslation } from "react-i18next";
 
 const StopBeingPhotographer = () => {
+   const { t } = useTranslation();
+
    const [stopBeingPhotographerMutation] = useStopBeingPhotographerMutation();
    const [refreshMutation, refreshMutationState] = useRefreshMutation();
    const dispatch = useAppDispatch();
@@ -22,14 +25,10 @@ const StopBeingPhotographer = () => {
 
    return (
       <Card id="photographer-settings" className="stop-being-photographer-wrapper">
-         <p className="category-title">Ustawienia Fotografa</p>
+         <p className="category-title">{t("label.photographer-settings")}</p>
          <div className="content">
-            <p>W każdej chwili możesz edytować widoczność swojego profilu fotografa.</p>
-            <p>
-               Uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe
-               rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu
-               fotografa.
-            </p>
+            <p>{t("message.info.photographer-settings-general")}</p>
+            <p>{t("message.info.photographer-settings-warning")}</p>
             <div className="buttons">
                <Button
                   className="red-button"
@@ -38,7 +37,7 @@ const StopBeingPhotographer = () => {
                      refreshMutation({});
                   }}
                >
-                  Wyłącz widoczność profilu
+                  {t("label.hide-photographer")}
                </Button>
             </div>
          </div>

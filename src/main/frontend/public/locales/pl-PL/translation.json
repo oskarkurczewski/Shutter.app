@@ -1,0 +1,142 @@
+{
+   "navbar": {
+      "title": "shutter.app",
+      "buttons": {
+         "login": "zaloguj się",
+         "homepage": "strona główna",
+         "photographers": "fotografowie",
+         "reservations": "rezerwacje",
+         "settings": "ustawienia",
+         "users": "użytkownicy",
+         "reports": "zgłoszenia",
+         "adduser": "dodaj użytkownika"
+      }
+   },
+   "auth": {
+      "notloggedin": "niezalogowany"
+   },
+   "misc": {
+      "token": "żeton",
+      "exp": "wygasa"
+   },
+   "label": {
+      "email": "adres email",
+      "email-short": "email",
+      "email-change": "zmiana adresu email",
+      "email-new": "nowy adres email",
+      "email-confirm": "potwierdz email",
+      "email-repeat": "powtórz email",
+      "password": "hasło",
+      "new-password": "nowe hasło",
+      "current-password": "bieżące hasło",
+      "repeat-password": "powtórz hasło",
+      "change": "zmień",
+      "settings": "główne ustawienia",
+      "settings-short": "ustawienia",
+      "first-name": "imię",
+      "second-name": "nazwisko",
+      "photographer-settings": "ustawienia fotografa",
+      "become-photographer": "zostań fotografem",
+      "hide-photographer": "wyłącz widoczność profilu",
+      "cancel": "anuluj",
+      "submit": "wyślij",
+      "register": "zarejestruj się",
+      "register-title": "rejestracja",
+      "register-account": "Rejestracja konta",
+      "login": "zaloguj się",
+      "forgot-password": "Zapomniałeś hasła?",
+      "login-title": "logowanie",
+      "login-label": "login",
+      "code": "kod uwierzytelniania",
+      "code-short": "kod",
+      "dont-remember-password": "Nie pamiętasz hasła?",
+      "resetting-password": "Resetowanie hasła",
+      "reset-password": "Zresetuj hasło",
+      "unblock-account": "Odblokowywanie konta",
+      "active": "Aktywne",
+      "registered": "Zarejestrowane",
+      "create-account": "Stwórz konto"
+   },
+   "message": {
+      "info": {
+         "main-settings": "poniższe zmiany będą widoczne dla fotografa po dokonaniu u niego rezerwacji.",
+         "photographer-settings": "w każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania rezerwacjami.",
+         "photographer-settings-general": "w każdej chwili możesz edytować widoczność swojego profilu fotografa.",
+         "photographer-settings-warning": "uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu fotografa.",
+         "login-title": "nie masz jeszcze konta?",
+         "login-register": "załóż je teraz, to zupełnie darmowe!",
+         "login-send-code": "wyślij kod",
+         "go-back-404": "wróć na stronę główną",
+         "tos": "Potwierdzam, że zapoznałem się z regulaminem",
+         "processing": "Wyrażam zgodę na przetwarzanie moich danych osobowych",
+         "got-account": "masz już konto?",
+         "email-instruction": "Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła",
+         "type-login": "Podaj login",
+         "send-email-message": "Wyślij wiadomość email",
+         "password-reset-procedure": "Aby dokończyć procedurę resetowania hasła wpisz nowe hasło dla twojego konta:"
+      },
+      "change": {
+         "email": "w przypadku chęci zmiany adresu email zostanie wysłany odpowiedni link na twój aktualny adres email.",
+         "password": "podaj nowe hasło w celu zmiany."
+      },
+      "send": {
+         "link": "wyślij link"
+      },
+      "loading": {
+         "general": "wysyłanie...",
+         "change-email": "wysyłanie...",
+         "change-password": "wysyłanie...",
+         "main-settings": "wysyłanie...",
+         "login": "wysyłanie...",
+         "reset-password": "wysyłanie...",
+         "register": "wysyłanie...",
+         "unblock-account": "wysyłanie..."
+      },
+      "error": {
+         "change-email": "nie udało się wysłać wiadomości",
+         "equality-error-email": "Adresy email różnią się od siebie",
+         "failed-change-email": "Nie udało się zmienić adresu email.",
+         "change-password": "nie udało się zmienić hasła.",
+         "equality-error-password": "hasła różnią się od siebi.",
+         "main-settings": "nie udało się zaktualizować danych.",
+         "login-credentials": "zły login lub hasło",
+         "login-code": "nie udało się wysłać kodu",
+         "register": "nie udało się zarejestrować",
+         "register-confirm": "Nie udało się potwierdzić rejestracji twojego konta.",
+         "unblock-account": "Nie udało się odblokować twojego konta.",
+         "create-account": "Nie można utworzyć konta"
+      },
+      "success": {
+         "change-email": "wiadomość została wysłana",
+         "changed-email": "Twój adres email został pomyślnie zmieniony",
+         "change-password": "hasło zostało pomyślnie zmienione.",
+         "main-settings": "dane zaktualizowane",
+         "login-code": "pomyślnie wysłano kod",
+         "register": "udało się pomyślnie zarejestrować",
+         "register-confirm": "Twoje konto zostało aktywowane pomyślnie. Możesz się już zalogować",
+         "unblock-account": "Twoje konto zostało pomyślnie odblokowane. Możesz się już zalogować"
+      }
+   },
+   "validation": {
+      "login": {
+         "min": "Login musi mieć przynajmniej 3 znaki",
+         "max": "Login nie może mieć więcej niż 15 znaków"
+      },
+      "email": {
+         "format": "Adres email musi mieć poprawny format"
+      },
+      "password": {
+         "min": "Hasło musi mieć przynajmniej 8 znaków",
+         "max": "Hasło nie może mieć więcej niż 64 znaki",
+         "match": "Hasła muszą być ze sobą zgodne"
+      },
+      "name": {
+         "null": "Pole imię nie może być puste"
+      },
+      "surname": {
+         "null": "Pole nazwisko nie może być puste"
+      },
+      "processing": "Należy zaakceptować zgodę na przetwarzanie danych osobowych",
+      "tos": "Należy zaakceptować regulamin"
+   }
+}

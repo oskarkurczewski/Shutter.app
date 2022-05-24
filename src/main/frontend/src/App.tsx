@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style.scss";
 import DashboardPage from "pages/dashboard";
@@ -74,94 +74,95 @@ function App() {
    }, [exp]);
 
    return (
-      <BrowserRouter>
-         <Routes>
-            <Route path="*" element={<NotFound404 />} />
+      <Suspense fallback="loading...">
+         <BrowserRouter>
+            <Routes>
+               <Route path="*" element={<NotFound404 />} />
 
-            <Route element={<PageLayout />}>
-               <Route path="" element={<Homepage />} />
+               <Route element={<PageLayout />}>
+                  <Route path="" element={<Homepage />} />
 
-               <Route
-                  path="login"
-                  element={
-                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                        <LoginPage />
-                     </ProtectedRoute>
-                  }
-               />
-
-               <Route
-                  path="register"
-                  element={
-                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                        <RegisterPage />
-                     </ProtectedRoute>
-                  }
-               />
-
-               <Route
-                  path="/confirm-registration/:token"
-                  element={
-                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                        <ConfirmRegistrationPage />
-                     </ProtectedRoute>
-                  }
-               />
-
-               <Route
-                  path="password-reset/:token"
-                  element={
-                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                        <ResetPasswordPage />
-                     </ProtectedRoute>
-                  }
-               />
-
-               <Route
-                  path="request-reset-password"
-                  element={
-                     <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                        <RequestResetPasswordPage />
-                     </ProtectedRoute>
-                  }
-               />
-
-               <Route
-                  path="settings"
-                  element={
-                     <ProtectedRoute
-                        roles={[
-                           AccessLevel.ADMINISTRATOR,
-                           AccessLevel.MODERATOR,
-                           AccessLevel.PHOTOGRAPHER,
-                           AccessLevel.CLIENT,
-                        ]}
-                     >
-                        <SettingsPage />
-                     </ProtectedRoute>
-                  }
-               ></Route>
-
-               <Route path="users">
                   <Route
-                     path=""
+                     path="login"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <LoginPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="register"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <RegisterPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="/confirm-registration/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <ConfirmRegistrationPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="password-reset/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <ResetPasswordPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="request-reset-password"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <RequestResetPasswordPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="settings"
                      element={
                         <ProtectedRoute
-                           roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
+                           roles={[
+                              AccessLevel.ADMINISTRATOR,
+                              AccessLevel.MODERATOR,
+                              AccessLevel.PHOTOGRAPHER,
+                              AccessLevel.CLIENT,
+                           ]}
                         >
-                           <AccountListPage />
+                           <SettingsPage />
                         </ProtectedRoute>
                      }
-                  />
+                  ></Route>
 
-                  <Route
-                     path="create"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                           <CreateAccountPage />
-                        </ProtectedRoute>
-                     }
-                  />
+                  <Route path="users">
+                     <Route
+                        path=""
+                        element={
+                           <ProtectedRoute
+                              roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
+                           >
+                              <AccountListPage />
+                           </ProtectedRoute>
+                        }
+                     />
+
+                     <Route
+                        path="create"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
+                              <CreateAccountPage />
+                           </ProtectedRoute>
+                        }
+                     />
 
                   <Route
                      path=":login/edit"
@@ -173,15 +174,22 @@ function App() {
                   />
                </Route>
 
-               <Route path="dashboard" element={<DashboardPage />} />
+                  <Route path="dashboard" element={<DashboardPage />} />
 
-               {/* Token-based routes */}
-               <Route path="unblock-account/:token" element={<UnblockOwnAccountPage />} />
+                  {/* Token-based routes */}
+                  <Route
+                     path="unblock-account/:token"
+                     element={<UnblockOwnAccountPage />}
+                  />
 
-               <Route path="change-own-email/:token" element={<ChangeOwnEmailPage />} />
-            </Route>
-         </Routes>
-      </BrowserRouter>
+                  <Route
+                     path="change-own-email/:token"
+                     element={<ChangeOwnEmailPage />}
+                  />
+               </Route>
+            </Routes>
+         </BrowserRouter>
+      </Suspense>
    );
 }
 
