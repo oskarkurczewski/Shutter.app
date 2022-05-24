@@ -5,4 +5,5 @@ export interface AuthState {
    roles: AccessLevel[];
    accessLevel: AccessLevel;
    token: string;
+   exp: number;
 }

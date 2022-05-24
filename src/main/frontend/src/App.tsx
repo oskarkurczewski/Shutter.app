@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style.scss";
-
 import DashboardPage from "pages/dashboard";
 import PageLayout from "pages/layout";
 import Homepage from "pages/homepage";
 import NotFound404 from "pages/not-found";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
-import { login } from "redux/slices/authSlice";
+import { login, logout } from "redux/slices/authSlice";
 import ProtectedRoute from "components/routes/protected-route";
 import { AccessLevel } from "types/AccessLevel";
 import RegisterPage from "pages/register";
@@ -19,17 +18,60 @@ import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
 import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
 import LoginPage from "pages/login";
+import Button from "components/shared/Button";
+import { push, remove } from "redux/slices/toastSlice";
+import { useRefreshTokenMutation } from "redux/service/api";
 import RequestResetPasswordPage from "pages/request-reset-password";
 import ConfirmRegistrationPage from "pages/token-based/confirm-registration";
 import ChangeOwnEmailPage from "pages/token-based/change-own-email";
 
 function App() {
    const dispatch = useAppDispatch();
-   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
+   const exp = useAppSelector((state) => state.auth.exp);
+   const [refreshToken] = useRefreshTokenMutation();
+
+   if (localStorage.getItem("token") && Date.now() < exp) {
       dispatch(login(getLoginPayload()));
    } else {
-      localStorage.setItem("accessLevel", "GUEST");
+      dispatch(logout());
    }
+
+   const data = {
+      name: "refreshToken",
+      label: "Powiadomienie",
+      text: "Twoja sesja niedługo wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć!",
+      content: (
+         <Button
+            onClick={async (e) => {
+               e.preventDefault();
+               try {
+                  const token = await refreshToken({}).unwrap();
+                  localStorage.setItem("token", token.token);
+                  dispatch(login(getLoginPayload()));
+                  dispatch(remove("refreshToken"));
+               } catch (err) {
+                  return;
+               }
+            }}
+         >
+            Przedłuż
+         </Button>
+      ),
+   };
+
+   useEffect(() => {
+      if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) dispatch(push(data));
+
+      const timeoutID = setInterval(() => {
+         if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) {
+            dispatch(push(data));
+         }
+      }, 1000 * 60 * 0.5);
+
+      return () => {
+         clearTimeout(timeoutID);
+      };
+   }, [exp]);
 
    return (
       <BrowserRouter>

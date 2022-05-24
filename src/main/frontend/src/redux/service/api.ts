@@ -36,6 +36,17 @@ export const api = createApi({
          }),
       }),
 
+      refreshToken: builder.mutation<LoginResponse, object>({
+         query: () => ({
+            url: "auth/refresh",
+            method: "POST",
+         }),
+      }),
+
+      userInfo: builder.query<basicUserInfoResponse, string>({
+         query: (login) => ({url: `account/${login}/info`}),
+      }),
+
       changeOwnUserData: builder.mutation<unknown, changeOwnUserDataRequest>({
          query: (data) => ({
             url: "account/editOwnAccountInfo",
@@ -80,10 +91,6 @@ export const api = createApi({
             method: "POST",
             body: data,
          }),
-      }),
-
-      userInfo: builder.query<basicUserInfoResponse, string>({
-         query: (login) => ({ url: `account/${login}/info` }),
       }),
 
       registerAsAdmin: builder.mutation<unknown, registerAccountAsAdminRequest>({
@@ -171,4 +178,5 @@ export const {
    useRequestResetPasswordMutation,
    useResetPasswordMutation,
    useConfirmRegistrationMutation,
+   useRefreshTokenMutation,
 } = api;

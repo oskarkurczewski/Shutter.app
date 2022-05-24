@@ -7,7 +7,6 @@ const DashboardPage = () => {
    return (
       <section className="dashboard-page-wrapper">
          <Card>
-            <Toast></Toast>
          </Card>
       </section>
    );

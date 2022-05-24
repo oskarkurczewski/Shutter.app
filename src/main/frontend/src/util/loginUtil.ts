@@ -6,9 +6,9 @@ const decodeToken = (token) => {
    const roles = decodedJson.roles.split(",");
    const username = decodedJson.sub;
    const accessLevel = roles[0];
-   console.log(username, roles, accessLevel, token);
+   const exp = decodedJson.exp * 1000;
 
-   return { username, roles, accessLevel, token };
+   return { username, roles, accessLevel, token, exp };
 };
 
 export const getLoginPayload = () => {
