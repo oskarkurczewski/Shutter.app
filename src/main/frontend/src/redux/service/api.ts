@@ -28,8 +28,11 @@ export const api = createApi({
          }),
       }),
 
-      userInfo: builder.query<basicUserInfoResponse, string>({
-         query: (login) => ({ url: `account/${login}/info` }),
+      sendTwoFACode: builder.mutation<unknown, unknown>({
+         query: (login) => ({
+            url: `account/${login}/request-2fa-code`,
+            method: "POST",
+         }),
       }),
 
       register: builder.mutation<unknown, registerAccountRequest>({
@@ -38,6 +41,10 @@ export const api = createApi({
             method: "POST",
             body: data,
          }),
+      }),
+
+      userInfo: builder.query<basicUserInfoResponse, string>({
+         query: (login) => ({ url: `account/${login}/info` }),
       }),
 
       registerAsAdmin: builder.mutation<unknown, registerAccountAsAdminRequest>({
@@ -58,8 +65,9 @@ export const api = createApi({
 
 export const {
    useLoginMutation,
-   useUserInfoQuery,
+   useSendTwoFACodeMutation,
    useRegisterMutation,
+   useUserInfoQuery,
    useRegisterAsAdminMutation,
    useUnblockOwnAccountMutation,
 } = api;
