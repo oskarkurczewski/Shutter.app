@@ -1,7 +1,25 @@
+interface traceable {
+   modifiedAt: string;
+   modifiedBy: string;
+   createdAt: string;
+   createdBy: string;
+}
+
 export interface basicUserInfoResponse {
    email: string;
    name: string;
    surname: string;
+}
+
+export interface advancedUserInfoResponse extends basicUserInfoResponse, traceable {
+   login: string;
+   active: boolean;
+   registered: boolean;
+   accessLevelList: accessLevel[];
+}
+
+interface accessLevel extends traceable {
+   name: string;
 }
 
 export interface registerAccountRequest {
@@ -83,4 +101,18 @@ export interface changeAccessLevelRequestBody {
 export interface changeAccessLevelRequest {
    params: changeAccessLevelRequestParams;
    body: changeAccessLevelRequestBody;
+}
+
+interface editAccountInfoAsAdminRequestBody {
+   email: string;
+   name: string;
+   surname: string;
+}
+interface editAccountInfoAsAdminRequestParams {
+   login: string;
+}
+
+export interface editAccountInfoAsAdminRequest {
+   params: editAccountInfoAsAdminRequestParams;
+   body: editAccountInfoAsAdminRequestBody;
 }

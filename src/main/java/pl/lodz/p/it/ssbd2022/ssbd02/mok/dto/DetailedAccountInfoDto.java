@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
 import java.util.ArrayList;
@@ -43,7 +44,12 @@ public class DetailedAccountInfoDto extends TracableDto {
                 Optional.ofNullable(account.getCreatedBy()).map(Account::getLogin).orElse(null)
         );
 
-        account.getAccessLevelAssignmentList().forEach(level -> accessLevelList.add(new AccessLevelDto(level)));
+        account
+                .getAccessLevelAssignmentList()
+                .stream()
+                .filter(AccessLevelAssignment::getActive)
+                .forEach(level -> accessLevelList.add(new AccessLevelDto(level)));
+
 
         login = account.getLogin();
         email = account.getEmail();

@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+   advancedUserInfoResponse,
    basicUserInfoResponse,
    changeAccessLevelRequest,
+   editAccountInfoAsAdminRequest,
    getListRequest,
    getListResponse,
    changeOwnEmailRequest,
@@ -45,7 +47,10 @@ export const api = createApi({
       }),
 
       userInfo: builder.query<basicUserInfoResponse, string>({
-         query: (login) => ({url: `account/${login}/info`}),
+         query: (login) => ({ url: `account/${login}/info` }),
+      }),
+      advancedUserInfo: builder.query<advancedUserInfoResponse, string>({
+         query: (login) => ({ url: `account/${login}/detailed-info` }),
       }),
 
       changeOwnUserData: builder.mutation<unknown, changeOwnUserDataRequest>({
@@ -115,6 +120,14 @@ export const api = createApi({
          }),
       }),
 
+      editAccountInfoAsAdmin: builder.mutation<unknown, editAccountInfoAsAdminRequest>({
+         query: ({ params, body }) => ({
+            url: `account/${params.login}/editAccountInfo`,
+            method: "PUT",
+            body: body,
+         }),
+      }),
+
       getUserList: builder.query<getListResponse, getListRequest>({
          query: (data) => ({
             url: "account/list",
@@ -178,6 +191,7 @@ export const {
    useSendTwoFACodeMutation,
    useRegisterMutation,
    useUserInfoQuery,
+   useAdvancedUserInfoQuery,
    useRegisterAsAdminMutation,
    useUnblockOwnAccountMutation,
    useGetUserListQuery,
@@ -189,4 +203,5 @@ export const {
    useConfirmRegistrationMutation,
    useRefreshTokenMutation,
    useChangeAccessLevelMutation,
+   useEditAccountInfoAsAdminMutation,
 } = api;
