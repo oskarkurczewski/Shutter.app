@@ -10,7 +10,7 @@ const ResetPasswordPage = () => {
    const { token } = useParams();
    const [password, setPassword] = useState<string>("");
    const [showMesage, setShowMessage] = useState<boolean>(false);
-   const [resetPasswordMutation, { isLoading, isSuccess, isError }] =
+   const [resetPasswordMutation, { isLoading, isSuccess, isError, error }] =
       useResetPasswordMutation();
 
    const onSubmit = async (e) => {
@@ -42,6 +42,17 @@ const ResetPasswordPage = () => {
                      return <p>Loading...</p>;
                   }
                   if (isError) {
+                     const err = error as any;
+                     if (
+                        err.status === 400 &&
+                        err.data.message === "exception.password.not_unique"
+                     ) {
+                        return (
+                           <p className="error">
+                              Nie możesz użyć hasła, z którego korzystałeś/aś niedawno!
+                           </p>
+                        );
+                     }
                      return (
                         <p className="error">Nie udało się wysłać wiadomości email</p>
                      );
