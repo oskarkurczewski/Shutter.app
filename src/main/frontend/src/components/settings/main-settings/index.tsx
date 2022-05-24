@@ -8,7 +8,7 @@ const MainSettings = () => {
    const [name, setName] = useState("");
    const [surname, setSurname] = useState("");
 
-   const [mutation, mutationState] = useChangeOwnUserDataMutation();
+   const [mutation, { isLoading, isError, isSuccess }] = useChangeOwnUserDataMutation();
 
    return (
       <Card id="main-settings">
@@ -31,14 +31,19 @@ const MainSettings = () => {
                value={surname}
                onChange={(e) => setSurname(e.target.value)}
             />
-            <Button
-               onClick={() => {
-                  console.log("Change");
-               }}
-            >
-               Zmień
-            </Button>
          </div>
+
+         {isLoading && <p>Loading...</p>}
+         {isError && <p>Nie udało się zaktualizować danych</p>}
+         {isSuccess && <p>Dane zaktualizowane</p>}
+
+         <Button
+            onClick={() => {
+               mutation({ name, surname });
+            }}
+         >
+            Zmień
+         </Button>
       </Card>
    );
 };
