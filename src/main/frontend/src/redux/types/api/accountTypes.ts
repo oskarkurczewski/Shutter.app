@@ -70,3 +70,17 @@ export interface changeOwnEmailRequest {
    newEmail: string;
    token: string;
 }
+
+export interface changeAccessLevelRequestParams {
+   login: string;
+}
+
+export interface changeAccessLevelRequestBody {
+   accessLevel: string;
+   active: boolean;
+}
+
+export interface changeAccessLevelRequest {
+   params: changeAccessLevelRequestParams;
+   body: changeAccessLevelRequestBody;
+}

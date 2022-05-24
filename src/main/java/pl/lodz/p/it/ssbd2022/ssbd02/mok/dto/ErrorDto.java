@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,10 +9,10 @@ import javax.validation.constraints.NotNull;
  *  oraz typ mówiący o tym, z czym powiązany jest dany błąd.
  *
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class ErrorDto {
-
     @NotNull
     private String message;
 }
