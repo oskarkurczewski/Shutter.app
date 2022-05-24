@@ -4,7 +4,6 @@
    $border-radius: 10px;
    color: $gray-200;
    .table {
-      // border: 1px black solid;
       width: 100%;
       border-collapse: separate;
       border-spacing: 0 0.2rem;
@@ -26,12 +25,9 @@
       &-header {
          background-color: $gray-200;
          color: $white;
-         // overflow: hidden;
-         // border-radius: $border-radius;
          position: sticky;
          top: 5px;
          th {
-            // border: 1px black solid;
             .cell-wrapper {
                display: flex;
                justify-content: space-between;
@@ -93,9 +89,6 @@
          background-color: $white;
          &:hover {
             background-color: $blue-gray-100;
-         }
-         td {
-            // border: 1px black solid;
          }
       }
    }

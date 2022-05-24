@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
    basicUserInfoResponse,
+   getListRequest,
+   getListResponse,
    registerAccountAsAdminRequest,
    registerAccountRequest,
 } from "redux/types/api/accountTypes";
@@ -53,6 +55,13 @@ export const api = createApi({
             url: `account/unblock-own-account/${token}`,
          }),
       }),
+
+      getUserList: builder.query<getListResponse, getListRequest>({
+         query: (data) => ({
+            url: "account/list",
+            params: data,
+         }),
+      }),
    }),
 });
 
@@ -62,4 +71,5 @@ export const {
    useRegisterMutation,
    useRegisterAsAdminMutation,
    useUnblockOwnAccountMutation,
+   useGetUserListQuery,
 } = api;
