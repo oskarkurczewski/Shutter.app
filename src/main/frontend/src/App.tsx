@@ -30,7 +30,7 @@ function App() {
    const exp = useAppSelector((state) => state.auth.exp);
    const [refreshToken] = useRefreshTokenMutation();
 
-   if (localStorage.getItem("token") && Date.now() < exp) {
+   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
       dispatch(login(getLoginPayload()));
    } else {
       dispatch(logout());

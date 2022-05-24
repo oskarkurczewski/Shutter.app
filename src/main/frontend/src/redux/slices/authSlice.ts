@@ -41,9 +41,13 @@ export const authSlice = createSlice({
          localStorage.setItem("accessLevel", AccessLevel.GUEST);
          localStorage.removeItem("token");
       },
+      setAccessLevel: (state: AuthState, action: PayloadAction<AuthState>) => {
+         state.accessLevel = action.payload.accessLevel;
+         localStorage.setItem("accessLevel", action.payload.accessLevel);
+      },
    },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setAccessLevel } = authSlice.actions;
 
 export default authSlice.reducer;

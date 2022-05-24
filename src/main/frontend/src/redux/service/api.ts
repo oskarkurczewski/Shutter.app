@@ -14,6 +14,7 @@ import {
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
 import { AuthState } from "redux/types/stateTypes";
+import { AccessLevel } from "types/AccessLevel";
 import { RootState } from "../store";
 
 export const api = createApi({
@@ -45,7 +46,7 @@ export const api = createApi({
       }),
 
       userInfo: builder.query<basicUserInfoResponse, string>({
-         query: (login) => ({url: `account/${login}/info`}),
+         query: (login) => ({ url: `account/${login}/info` }),
       }),
 
       changeOwnUserData: builder.mutation<unknown, changeOwnUserDataRequest>({
@@ -166,6 +167,13 @@ export const api = createApi({
             body: body,
          }),
       }),
+
+      switchCurrentAccessLevel: builder.mutation<unknown, AccessLevel>({
+         query: (group) => ({
+            url: `auth/change-group/${group}`,
+            method: "POST",
+         }),
+      }),
    }),
 });
 
@@ -189,4 +197,5 @@ export const {
    useConfirmRegistrationMutation,
    useRefreshTokenMutation,
    useChangeAccessLevelMutation,
+   useSwitchCurrentAccessLevelMutation,
 } = api;
