@@ -1,13 +1,24 @@
 import React from "react";
 import "./style.scss";
-import Card from "components/shared/Card";
-import Toast from "components/layout/toast";
+import Button from "components/shared/Button";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { logout } from "redux/slices/authSlice";
 
 const DashboardPage = () => {
+   const dispatch = useAppDispatch();
+   const { token } = useAppSelector((state) => state.auth);
+
    return (
       <section className="dashboard-page-wrapper">
-         <Card>
-         </Card>
+         {token && (
+            <Button
+               onClick={() => {
+                  dispatch(logout());
+               }}
+            >
+               Logout
+            </Button>
+         )}
       </section>
    );
 };

@@ -5,7 +5,15 @@ const decodeToken = (token) => {
    const decodedJson = JSON.parse(JSON.stringify(decoded));
    const roles = decodedJson.roles.split(",");
    const username = decodedJson.sub;
-   const accessLevel = roles[0];
+
+   const currentRole = localStorage.getItem("accessLevel");
+   let accessLevel;
+   if (currentRole && roles.includes(currentRole)) {
+      accessLevel = currentRole;
+   } else {
+      accessLevel = roles[0];
+   }
+
    const exp = decodedJson.exp * 1000;
 
    return { username, roles, accessLevel, token, exp };

@@ -62,15 +62,15 @@ const SettingsPage: React.FC = () => {
          </div>
          <div className="content">
             {/* poszczególne sekcje powinny być w osobnych komponentach (można podpiąć je potem pod tablicę `sections` aby później wywołać je tutaj iterując po `sections`) */}
-         </div>
             <MainSettings />
             <ChangeEmail />
             <ChangePassword />
-         {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
-             <StopBeingPhotographer />
-         ) : (
-             <BecomePhotographer />
-         )}
+            {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
+               <StopBeingPhotographer />
+            ) : (
+               <BecomePhotographer />
+            )}
+         </div>
       </section>
    );
 };
