@@ -8,6 +8,7 @@ const initialState: AuthState = {
    roles: [],
    accessLevel: AccessLevel.GUEST,
    token: "",
+   exp: 0,
 };
 
 export const authSlice = createSlice({
@@ -19,6 +20,7 @@ export const authSlice = createSlice({
          state.roles = action.payload.roles;
          state.accessLevel = action.payload.accessLevel;
          state.token = action.payload.token;
+         state.exp = action.payload.exp;
 
          const selectedAccessLevel = localStorage.getItem("accessLevel");
 
@@ -34,6 +36,7 @@ export const authSlice = createSlice({
          state.roles = initialState.roles;
          state.accessLevel = initialState.accessLevel;
          state.token = initialState.token;
+         state.exp = initialState.exp;
 
          localStorage.setItem("accessLevel", AccessLevel.GUEST);
          localStorage.removeItem("token");
