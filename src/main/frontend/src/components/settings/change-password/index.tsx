@@ -11,7 +11,8 @@ const ChangePassword = () => {
 
    const [equalityError, setEqualityError] = useState(false);
 
-   const [mutation, { isLoading, isError, isSuccess }] = useChangeOwnPasswordMutation();
+   const [mutation, { isLoading, isError, isSuccess, error }] =
+      useChangeOwnPasswordMutation();
 
    const onSubmit = () => {
       setEqualityError(false);
@@ -65,6 +66,18 @@ const ChangePassword = () => {
                return <p className="error">Hasła różnią się od siebie</p>;
             }
             if (isError) {
+               const err = error as any;
+               if (
+                  err.status === 400 &&
+                  err.data.message === "exception.password.not_unique"
+               ) {
+                  return (
+                     <p className="error">
+                        Nie możesz użyć hasła, z którego korzystałeś/aś niedawno!
+                     </p>
+                  );
+               }
+
                return <p className="error">Nie udało się zmienić hasła.</p>;
             }
             if (isSuccess) {
