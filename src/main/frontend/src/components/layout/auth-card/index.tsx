@@ -1,8 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "redux/hooks";
-import { AccessLevel } from "types/AccessLevel";
 import "./style.scss";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useSwitchCurrentAccessLevelMutation, useUserInfoQuery } from "redux/service/api";
