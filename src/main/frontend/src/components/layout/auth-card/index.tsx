@@ -22,11 +22,13 @@ const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
 
    useEffect(() => {
       if (mutationState.isSuccess) {
-         dispatch(setAccessLevel(currentRole));
+         dispatch(setAccessLevel({ accessLevel: currentRole }));
       }
    }, [mutationState.isSuccess]);
 
-   console.log(currentRole);
+   useEffect(() => {
+      accessLevel && setCurrentRole(accessLevel);
+   }, [accessLevel]);
 
    return (
       <div className="auth-card-wrapper">

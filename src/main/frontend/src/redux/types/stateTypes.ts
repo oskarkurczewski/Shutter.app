@@ -7,3 +7,7 @@ export interface AuthState {
    token: string;
    exp: number;
 }
+
+export interface SetAccessLevel {
+   accessLevel: AccessLevel;
+}
