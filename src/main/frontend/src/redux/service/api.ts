@@ -19,7 +19,7 @@ import { RootState } from "../store";
 export const api = createApi({
    reducerPath: "api",
    baseQuery: fetchBaseQuery({
-      baseUrl: "https://localhost:8002/api/",
+      baseUrl: "https://studapp.it.p.lodz.pl:8002/api/",
       prepareHeaders: (headers, { getState }) => {
          const token = (getState() as RootState).auth.token;
          if (token) {

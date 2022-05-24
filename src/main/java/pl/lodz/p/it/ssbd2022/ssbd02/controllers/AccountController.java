@@ -60,7 +60,7 @@ public class AccountController extends AbstractController {
     @Path("/unblock-own-account/{token}")
     public void confirmUnblockOwnAccount(@NotNull @PathParam("token") String token)
             throws BaseApplicationException {
-        accountEndpoint.confirmUnblockOwnAccount(token);
+        repeat(() -> accountEndpoint.confirmUnblockOwnAccount(token), accountEndpoint);
     }
 
 
@@ -90,7 +90,7 @@ public class AccountController extends AbstractController {
     @Path("{login}/request-reset")
     @Consumes(MediaType.APPLICATION_JSON)
     public void requestPasswordReset(@PathParam("login") String login) throws BaseApplicationException {
-        accountEndpoint.requestPasswordReset(login);
+        repeat(() -> accountEndpoint.requestPasswordReset(login), accountEndpoint);
     }
 
     /**
@@ -120,7 +120,7 @@ public class AccountController extends AbstractController {
     @Path("request-email-update")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response requestEmailUpdate() throws BaseApplicationException {
-        accountEndpoint.requestEmailUpdate();
+        repeat(() -> accountEndpoint.requestEmailUpdate(), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -187,7 +187,6 @@ public class AccountController extends AbstractController {
     public Response registerAccountAsAdmin(@NotNull @Valid AccountRegisterAsAdminDto accountRegisterAsAdminDto)
             throws BaseApplicationException {
         repeat(() -> accountEndpoint.registerAccountByAdmin(accountRegisterAsAdminDto), accountEndpoint);
-
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -204,7 +203,7 @@ public class AccountController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public DetailedAccountInfoDto getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
             throws BaseApplicationException {
-        return accountEndpoint.getEnhancedAccountInfo(login);
+        return repeat(() -> accountEndpoint.getEnhancedAccountInfo(login), accountEndpoint);
     }
 
     /**
@@ -300,11 +299,10 @@ public class AccountController extends AbstractController {
             @QueryParam("surname") String surname,
             @QueryParam("registered") Boolean registered,
             @QueryParam("active") Boolean active
-    ) throws WrongParameterException {
-        return accountEndpoint.getAccountList(new AccountListRequestDto(
-                        pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
-                )
-        );
+    ) throws BaseApplicationException {
+        return repeat(() -> accountEndpoint.getAccountList(new AccountListRequestDto(
+                pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
+        )), accountEndpoint);
     }
 
     /**
@@ -371,7 +369,7 @@ public class AccountController extends AbstractController {
     @Path("/become-photographer")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response becomePhotographer() throws BaseApplicationException {
-        accountEndpoint.becomePhotographer();
+        repeat(() -> accountEndpoint.becomePhotographer(), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -390,7 +388,7 @@ public class AccountController extends AbstractController {
     @Path("/stop-being-photographer")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response stopBeingPhotographer() throws BaseApplicationException {
-        accountEndpoint.stopBeingPhotographer();
+        repeat(() -> accountEndpoint.stopBeingPhotographer(), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
