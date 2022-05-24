@@ -21,6 +21,7 @@ import ConfirmRegistrationPage from "pages/ConfirmRegistration";
 import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
 import LoginPage from "pages/login";
 import RequestResetPasswordPage from "pages/request-reset-password";
+import ConfirmRegistrationPage from "pages/token-based/confirm-registration";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -57,7 +58,7 @@ function App() {
                />
 
                <Route
-                  path="/confirm-registration/:registerationToken"
+                  path="/confirm-registration/:token"
                   element={
                      <ProtectedRoute roles={[AccessLevel.GUEST]}>
                         <ConfirmRegistrationPage />

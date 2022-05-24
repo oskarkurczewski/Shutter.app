@@ -60,6 +60,13 @@ export const api = createApi({
          }),
       }),
 
+      confirmRegistration: builder.mutation<unknown, string>({
+         query: (token) => ({
+            url: `account/confirm/${token}`,
+            method: "POST",
+         }),
+      }),
+
       unblockOwnAccount: builder.mutation<unknown, string>({
          query: (token) => ({
             url: `account/unblock-own-account/${token}`,
@@ -125,4 +132,5 @@ export const {
    useRefreshMutation,
    useRequestResetPasswordMutation,
    useResetPasswordMutation,
+   useConfirmRegistrationMutation,
 } = api;

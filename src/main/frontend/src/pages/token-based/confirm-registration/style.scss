@@ -1,0 +1,16 @@
+@import "variables.scss";
+
+.confirm-registration-page-wrapper {
+   display: flex;
+   justify-content: center;
+   align-items: flex-start;
+
+   .card-wrapper {
+      padding: 3rem 5rem;
+      display: flex;
+
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+   }
+}
