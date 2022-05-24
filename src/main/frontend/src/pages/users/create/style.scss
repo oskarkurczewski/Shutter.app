@@ -1,0 +1,17 @@
+@import "variables.scss";
+.create-account-page-wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100%;
+   .card {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      .error-message {
+         font-size: 0.7em;
+         color: $red-200;
+      }
+   }
+}

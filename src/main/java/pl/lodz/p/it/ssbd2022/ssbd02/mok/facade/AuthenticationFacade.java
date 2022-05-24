@@ -172,7 +172,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @throws WrongParameterException zła nazwa kolumny
      */
     @PermitAll
-    public List<String> getAccountList(
+    public List<Account> getAccountList(
             int page,
             int recordsPerPage,
             String orderBy,
@@ -185,9 +185,9 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
             Boolean active
     ) throws WrongParameterException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
+        CriteriaQuery<Account> query = criteriaBuilder.createQuery(Account.class);
         Root<Account> table = query.from(Account.class);
-        query.select(table.get("login"));
+        query.select(table);
 
         try {
             switch (order) {
@@ -205,7 +205,6 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         } catch (IllegalArgumentException e) {
             throw ExceptionFactory.wrongParameterException();
         }
-
 
         if (login != null)
             query.where(criteriaBuilder.like(criteriaBuilder.lower(table.get("login")), addPercent(login.toLowerCase())));
