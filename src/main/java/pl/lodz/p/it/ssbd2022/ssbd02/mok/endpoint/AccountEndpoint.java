@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
@@ -300,18 +301,33 @@ public class AccountEndpoint extends AbstractEndpoint {
         Boolean convertedOrder = true;
         if (order.equals("desc")) convertedOrder = false;
 
-        return accountService.getAccountList(account, new AccountListRequestDto(
-            pageNo,
-            recordsPerPage,
-            columnName,
-            convertedOrder,
-            login,
-            email,
-            name,
-            surname,
-            registered,
-            active
-        ));
+        AccountListRequestDto requestDto = new AccountListRequestDto(
+                pageNo,
+                recordsPerPage,
+                columnName,
+                convertedOrder,
+                login,
+                email,
+                name,
+                surname,
+                registered,
+                active
+        );
+
+        accountService.saveAccountListPreferences(account, requestDto);
+        return accountService.getAccountList(account, requestDto);
+    }
+
+    /**
+     * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
+     *
+     * @param login login konta, dla którego należy zwrócić preferencje
+     * @throws BaseApplicationException kiedy preferencje dla danego użytkownika nie zostaną odnalezione
+     */
+    @RolesAllowed(listAllAccounts)
+    public AccountListPreferencesDto getAccountListPreferences(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return new AccountListPreferencesDto(accountService.getAccountListPreferences(account));
     }
 
     /**

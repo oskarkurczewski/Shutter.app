@@ -468,21 +468,9 @@ public class AccountService {
      *
      * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
      * @return lista użytkowników
-     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
     @RolesAllowed(listAllAccounts)
-    public ListResponseDto<TableAccountDto> getAccountList(Account requester, AccountListRequestDto requestDto) throws BaseApplicationException {
-
-        try {
-            AccountListPreferences accountListPreferences = accountListPreferencesFacade.findByAccount(requester);
-            savePreferences(accountListPreferences, requester, requestDto);
-            accountListPreferencesFacade.update(accountListPreferences);
-        } catch(NoAccountListPreferencesFound e) {
-            AccountListPreferences accountListPreferences = new AccountListPreferences();
-            savePreferences(accountListPreferences, requester, requestDto);
-            accountListPreferencesFacade.persist(accountListPreferences);
-        }
-
+    public ListResponseDto<TableAccountDto> getAccountList(Account requester, AccountListRequestDto requestDto) {
         List<Account> list = accountFacade.getAccountList(
                 requestDto.getPage(),
                 requestDto.getRecordsPerPage(),
@@ -516,6 +504,25 @@ public class AccountService {
     /**
      * Zapisuje preferencje wyświetlania listy kont użytkownika
      *
+     * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
+     * @param requestDto preferencje, które mają zostać zapisane
+     */
+    @RolesAllowed(listAllAccounts)
+    public void saveAccountListPreferences(Account account, AccountListRequestDto requestDto) throws BaseApplicationException {
+        try {
+            AccountListPreferences accountListPreferences = accountListPreferencesFacade.findByAccount(account);
+            savePreferences(accountListPreferences, account, requestDto);
+            accountListPreferencesFacade.update(accountListPreferences);
+        } catch(NoAccountListPreferencesFound e) {
+            AccountListPreferences accountListPreferences = new AccountListPreferences();
+            savePreferences(accountListPreferences, account, requestDto);
+            accountListPreferencesFacade.persist(accountListPreferences);
+        }
+    }
+
+    /**
+     * Metoda pomocnicza zapisująca preferencje wyświetlania listy kont użytkownika
+     *
      * @param preferences obiekt preferencji, do którego preferencje mają zostać zapisane
      * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
      * @param data preferencje, które mają zostać zapisane
@@ -529,6 +536,17 @@ public class AccountService {
         preferences.setOrderBy(data.getOrderBy());
         preferences.setPage(data.getPage());
         preferences.setRecordsPerPage(data.getRecordsPerPage());
+    }
+
+    /**
+     * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
+     *
+     * @param account konto, dla którego należy zwrócić preferencje
+     * @throws BaseApplicationException preferencje dla danego użytkownika nie zostaną odnalezione
+     */
+    @RolesAllowed(listAllAccounts)
+    public AccountListPreferences getAccountListPreferences(Account account) throws BaseApplicationException {
+        return accountListPreferencesFacade.findByAccount(account);
     }
 
     /**

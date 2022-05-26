@@ -268,6 +268,19 @@ public class AccountController extends AbstractController {
     }
 
     /**
+     * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
+     *
+     * @param login login konta, dla którego należy zwrócić preferencje
+     * @throws BaseApplicationException kiedy preferencje dla danego użytkownika nie zostaną odnalezione
+     */
+    @GET
+    @Path("{login}/list/preferences")
+    public AccountListPreferencesDto getAccountListPreferences(@PathParam("login") @NotNull String login)
+            throws BaseApplicationException {
+        return repeat(() -> accountEndpoint.getAccountListPreferences(login), accountEndpoint);
+    }
+
+    /**
      * Punkt końcowy zwracający listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
      * @param pageNo         numer strony do pobrania
