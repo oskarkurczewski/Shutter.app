@@ -126,4 +126,8 @@ public class ExceptionFactory {
     public static NonUniquePasswordException nonUniquePasswordException() {
         return new NonUniquePasswordException("exception.password.not_unique");
     }
+
+    public static InvalidRecaptchaException invalidRecaptchaException() {
+        return new InvalidRecaptchaException("exception.captcha.invalid");
+    }
 }
