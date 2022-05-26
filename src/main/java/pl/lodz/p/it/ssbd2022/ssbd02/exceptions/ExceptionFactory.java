@@ -126,4 +126,8 @@ public class ExceptionFactory {
     public static NonUniquePasswordException nonUniquePasswordException() {
         return new NonUniquePasswordException("exception.password.not_unique");
     }
+
+    public static NoAccountListPreferencesFound noAccountListPreferencesFound() {
+        return new NoAccountListPreferencesFound("account_list_preferences.not_found");
+    }
 }

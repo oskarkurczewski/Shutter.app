@@ -279,13 +279,39 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
-     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
     @RolesAllowed(listAllAccounts)
-    public ListResponseDto<TableAccountDto> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
-        return accountService.getAccountList(requestDto);
+    public ListResponseDto<TableAccountDto> getAccountList(
+        int pageNo,
+        int recordsPerPage,
+        String columnName,
+        String order,
+        String login,
+        String email,
+        String name,
+        String surname,
+        Boolean registered,
+        Boolean active
+    ) throws BaseApplicationException {
+        Account account = authenticationContext.getCurrentUsersAccount();
+
+        Boolean convertedOrder = true;
+        if (order.equals("desc")) convertedOrder = false;
+
+        return accountService.getAccountList(account, new AccountListRequestDto(
+            pageNo,
+            recordsPerPage,
+            columnName,
+            convertedOrder,
+            login,
+            email,
+            name,
+            surname,
+            registered,
+            active
+        ));
     }
 
     /**

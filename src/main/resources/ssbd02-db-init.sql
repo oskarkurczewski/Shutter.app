@@ -311,6 +311,8 @@ CREATE TABLE public.token
     modified_at  timestamp
 );
 
+ALTER TABLE public.token OWNER TO ssbd02admin;
+
 CREATE TABLE public.old_password
 (
     version    bigint,
@@ -322,6 +324,25 @@ CREATE TABLE public.old_password
     modified_by  bigint,
     modified_at  timestamp
 );
+
+ALTER TABLE public.old_password OWNER TO ssbd02admin;
+
+CREATE TABLE public.account_list_preferences
+(
+    version          bigint,
+    id               bigint               NOT NULL GENERATED ALWAYS AS IDENTITY,
+    account_id       bigint               NOT NULL,
+    order_asc        boolean DEFAULT TRUE NOT NULL,
+    order_by         character varying(32),
+    page             int     DEFAULT 0,
+    records_per_page int     DEFAULT 25,
+    created_by       bigint,
+    created_at       timestamp,
+    modified_by      bigint,
+    modified_at      timestamp
+);
+
+ALTER TABLE public.account_list_preferences OWNER TO ssbd02admin;
 
 ALTER TABLE ONLY public.token ADD CONSTRAINT token_key UNIQUE (token);
 
@@ -380,6 +401,13 @@ ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT user_report_cause_pk
 ALTER TABLE ONLY public.account_report ADD CONSTRAINT user_report_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.account_list_preferences ADD CONSTRAINT account_list_preferences_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.account_list_preferences ADD CONSTRAINT account_list_preferences_account_id UNIQUE (account_id);
+
+ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_account_list_preferences.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+
 
 CREATE
 INDEX access_level_assignment_access_level_id_idx ON public.access_level_assignment USING btree (access_level_id);
@@ -452,6 +480,9 @@ INDEX review_report_cause_id_idx ON public.review_report USING btree (cause_id);
 
 CREATE
 INDEX review_report_review_id_idx ON public.review_report USING btree (review_id);
+
+CREATE
+INDEX account_list_preferences_account_id_idx ON public.account_list_preferences USING btree (account_id);
 
 ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.access_level_id" FOREIGN KEY (access_level_id) REFERENCES public.access_level(id);
 
@@ -604,3 +635,5 @@ GRANT SELECT, INSERT, UPDATE ON TABLE public.review_report TO ssbd02mow;
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.review_report_cause TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.specialization TO ssbd02mow;
+
+GRANT SELECT, INSERT, UPDATE ON TABLE public.account_list_preferences TO ssbd02mok;

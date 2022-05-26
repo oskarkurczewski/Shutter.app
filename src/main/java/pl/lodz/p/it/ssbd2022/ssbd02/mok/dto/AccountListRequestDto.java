@@ -12,7 +12,7 @@ public class AccountListRequestDto {
     private int page;
     private int recordsPerPage;
     private String orderBy;
-    private String order;
+    private Boolean orderAsc;
     private String login;
     private String email;
     private String name;

@@ -151,7 +151,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param page           numer strony do pobrania
      * @param recordsPerPage liczba rekordów na stronie
      * @param orderBy        nazwa kolumny, po której nastąpi sortowanie
-     * @param order          kolejność sortowania
+     * @param orderAsc       kolejność sortowania
      * @param login          Login użytkownika
      * @param email          email
      * @param name           imie
@@ -159,41 +159,29 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param registered     czy użytkownik zarejestrowany
      * @param active         czy konto aktywne
      * @return lista wynikowa zapytania do bazy danych
-     * @throws WrongParameterException zła nazwa kolumny
      */
     @PermitAll
     public List<Account> getAccountList(
             int page,
             int recordsPerPage,
             String orderBy,
-            String order,
+            Boolean orderAsc,
             String login,
             String email,
             String name,
             String surname,
             Boolean registered,
             Boolean active
-    ) throws WrongParameterException {
+    ) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Account> query = criteriaBuilder.createQuery(Account.class);
         Root<Account> table = query.from(Account.class);
         query.select(table);
 
-        try {
-            switch (order) {
-                case "asc": {
-                    query.orderBy(criteriaBuilder.asc(table.get(orderBy)));
-                    break;
-
-                }
-                case "desc": {
-                    query.orderBy(criteriaBuilder.desc(table.get(orderBy)));
-                    break;
-
-                }
-            }
-        } catch (IllegalArgumentException e) {
-            throw ExceptionFactory.wrongParameterException();
+        if (orderAsc) {
+            query.orderBy(criteriaBuilder.asc(table.get(orderBy)));
+        } else {
+            query.orderBy(criteriaBuilder.desc(table.get(orderBy)));
         }
 
         if (login != null)

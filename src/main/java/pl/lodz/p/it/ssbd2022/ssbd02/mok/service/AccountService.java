@@ -4,9 +4,11 @@ import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountListPreferencesFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
@@ -42,6 +44,9 @@ public class AccountService {
 
     @Inject
     private VerificationTokenService verificationTokenService;
+
+    @Inject
+    private AccountListPreferencesFacade accountListPreferencesFacade;
 
     @Inject
     private EmailService emailService;
@@ -466,12 +471,23 @@ public class AccountService {
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
     @RolesAllowed(listAllAccounts)
-    public ListResponseDto<TableAccountDto> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
+    public ListResponseDto<TableAccountDto> getAccountList(Account requester, AccountListRequestDto requestDto) throws BaseApplicationException {
+
+        try {
+            AccountListPreferences accountListPreferences = accountListPreferencesFacade.findByAccount(requester);
+            savePreferences(accountListPreferences, requester, requestDto);
+            accountListPreferencesFacade.update(accountListPreferences);
+        } catch(NoAccountListPreferencesFound e) {
+            AccountListPreferences accountListPreferences = new AccountListPreferences();
+            savePreferences(accountListPreferences, requester, requestDto);
+            accountListPreferencesFacade.persist(accountListPreferences);
+        }
+
         List<Account> list = accountFacade.getAccountList(
                 requestDto.getPage(),
                 requestDto.getRecordsPerPage(),
                 requestDto.getOrderBy(),
-                requestDto.getOrder(),
+                requestDto.getOrderAsc(),
                 requestDto.getLogin(),
                 requestDto.getEmail(),
                 requestDto.getName(),
@@ -495,6 +511,24 @@ public class AccountService {
                 allRecords,
                 list.stream().map(TableAccountDto::new).collect(Collectors.toList())
         );
+    }
+
+    /**
+     * Zapisuje preferencje wyświetlania listy kont użytkownika
+     *
+     * @param preferences obiekt preferencji, do którego preferencje mają zostać zapisane
+     * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
+     * @param data preferencje, które mają zostać zapisane
+     */
+    private void savePreferences(
+            AccountListPreferences preferences,
+            Account account,
+            AccountListRequestDto data) {
+        preferences.setAccount(account);
+        preferences.setOrderAsc(data.getOrderAsc());
+        preferences.setOrderBy(data.getOrderBy());
+        preferences.setPage(data.getPage());
+        preferences.setRecordsPerPage(data.getRecordsPerPage());
     }
 
     /**

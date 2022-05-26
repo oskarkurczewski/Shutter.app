@@ -74,7 +74,7 @@ const AccountListPage = () => {
    const order = queryParams.get("order") || "asc";
 
    const [tableData, setTableData] = useState([]);
-   const { data } = useGetUserListQuery({
+   const { data, refetch } = useGetUserListQuery({
       pageNo,
       recordsPerPage,
       columnName,
@@ -100,6 +100,7 @@ const AccountListPage = () => {
    }, [headers]);
 
    useEffect(() => {
+      refetch();
       setTableData([]);
       data?.list.forEach((item) => {
          setTableData((a) => [

@@ -300,9 +300,9 @@ public class AccountController extends AbstractController {
             @QueryParam("registered") Boolean registered,
             @QueryParam("active") Boolean active
     ) throws BaseApplicationException {
-        return repeat(() -> accountEndpoint.getAccountList(new AccountListRequestDto(
+        return repeat(() -> accountEndpoint.getAccountList(
                 pageNo, recordsPerPage, columnName, order, login, email, name, surname, registered, active
-        )), accountEndpoint);
+        ), accountEndpoint);
     }
 
     /**
