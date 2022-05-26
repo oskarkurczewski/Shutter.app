@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
+import javax.interceptor.Interceptors;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 public class ManagedEntity {
+
     @NotNull
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

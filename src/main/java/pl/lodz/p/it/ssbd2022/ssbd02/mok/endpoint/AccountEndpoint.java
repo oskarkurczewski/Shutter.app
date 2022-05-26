@@ -157,7 +157,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed({becomePhotographer})
     public void becomePhotographer() throws BaseApplicationException {
-        Account account = authenticationContext.getCurrentUsersAccount();
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName("PHOTOGRAPHER");
         accountService.changeAccountAccessLevel(account, accessLevelValue, true);
         photographerService.createOrActivatePhotographerInfo(account);
@@ -175,7 +175,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed({stopBeingPhotographer})
     public void stopBeingPhotographer() throws BaseApplicationException {
-        Account account = authenticationContext.getCurrentUsersAccount();
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         photographerService.hidePhotographerInfo(account.getLogin());
         accountService.stopBeingPhotographer(account);
     }
@@ -200,7 +200,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     @RolesAllowed(editOwnAccountData)
     public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
-        Account account = authenticationContext.getCurrentUsersAccount();
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         accountService.editAccountInfo(account, editAccountInfoDto);
     }
 
@@ -265,14 +265,14 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @see BaseAccountInfoDto
      */
     @RolesAllowed(getOwnAccountInfo)
-    public DetailedAccountInfoDto getOwnAccountInfo() throws NoAuthenticatedAccountFound {
-        Account account = authenticationContext.getCurrentUsersAccount();
+    public DetailedAccountInfoDto getOwnAccountInfo() throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         return new DetailedAccountInfoDto(account);
     }
 
     @RolesAllowed({changeOwnPassword})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws BaseApplicationException {
-        Account account = authenticationContext.getCurrentUsersAccount();
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         accountService.updateOwnPassword(account, data);
     }
 
@@ -359,7 +359,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed((updateEmail))
     public void requestEmailUpdate() throws BaseApplicationException {
-        Account account = authenticationContext.getCurrentUsersAccount();
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         verificationTokenService.sendEmailUpdateToken(account);
     }
 

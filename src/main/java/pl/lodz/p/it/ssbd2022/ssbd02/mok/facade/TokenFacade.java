@@ -5,8 +5,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.TokenType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoVerificationTokenFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -23,7 +21,7 @@ import java.util.List;
  * Fasada obsługująca tokeny weryfikujące
  */
 @Stateless
-@Interceptors({LoggingInterceptor.class, FacadeAccessInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MokFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class TokenFacade extends FacadeTemplate<VerificationToken> {
 

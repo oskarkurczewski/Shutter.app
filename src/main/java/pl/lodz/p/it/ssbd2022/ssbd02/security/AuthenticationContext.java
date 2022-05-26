@@ -1,34 +1,31 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
+import java.security.Principal;
 
 
 /**
  * Kontekst uwierzytelnienia. Służy do pobrania aktualnego użytkownika po loginie z kontekstu bezpieczeństwa
  */
+@Stateless
 public class AuthenticationContext {
 
     @Inject
     SecurityContext securityContext;
 
-    @Inject
-    AuthenticationFacade authenticationFacade;
+    public String getCurrentUsersLogin() throws NoAuthenticatedAccountFound {
+        return getCurrentPrincipal().getName();
+    }
 
-    public Account getCurrentUsersAccount() throws NoAuthenticatedAccountFound {
+    private Principal getCurrentPrincipal() throws NoAuthenticatedAccountFound {
         if (securityContext.getCallerPrincipal() != null) {
-            try {
-                return authenticationFacade.findByLogin(securityContext.getCallerPrincipal().getName());
-            } catch (BaseApplicationException e) {
-                throw ExceptionFactory.noAuthenticatedAccountFound();
-            }
+            return securityContext.getCallerPrincipal();
         } else {
             throw ExceptionFactory.noAuthenticatedAccountFound();
         }
