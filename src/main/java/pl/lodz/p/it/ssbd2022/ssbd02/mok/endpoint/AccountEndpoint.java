@@ -321,12 +321,11 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
      *
-     * @param login login konta, dla którego należy zwrócić preferencje
      * @throws BaseApplicationException kiedy preferencje dla danego użytkownika nie zostaną odnalezione
      */
     @RolesAllowed(listAllAccounts)
-    public AccountListPreferencesDto getAccountListPreferences(String login) throws BaseApplicationException {
-        Account account = accountService.findByLogin(login);
+    public AccountListPreferencesDto getAccountListPreferences() throws BaseApplicationException {
+        Account account = authenticationContext.getCurrentUsersAccount();
         return new AccountListPreferencesDto(accountService.getAccountListPreferences(account));
     }
 
