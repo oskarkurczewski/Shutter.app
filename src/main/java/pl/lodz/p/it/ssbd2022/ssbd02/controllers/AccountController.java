@@ -3,12 +3,13 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureValidatorFilter;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
-import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -19,7 +20,6 @@ public class AccountController extends AbstractController {
 
     @Inject
     AccountEndpoint accountEndpoint;
-
 
 
     /**
@@ -240,12 +240,16 @@ public class AccountController extends AbstractController {
      * Pozwala zmienić informację aktualnie zalogowanego użytkownika na podstawie aktualnie zalogowanego użytkownika.
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @param tagValue           Etag służący do sprawdzenia wiarygodność przysłanych danych. Wykorzystywany w SignatureValidator
+     * @see SignatureValidatorFilter
      */
     @PUT
     @Path("/editOwnAccountInfo")
     @Consumes(MediaType.APPLICATION_JSON)
+    @SignatureValidatorFilter
     public void editOwnAccountInfo(
-            @NotNull @Valid EditAccountInfoDto editAccountInfoDto
+            @NotNull @Valid EditAccountInfoDto editAccountInfoDto,
+            @HeaderParam("If-match") @NotNull @NotEmpty String tagValue
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         repeat(() -> accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
@@ -255,13 +259,17 @@ public class AccountController extends AbstractController {
      * Pozwala zmienić informację użytkownika przez administratora przez podany login
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
+     * @param tagValue                  Etag służący do sprawdzenia wiarygodność przysłanych danych. Wykorzystywany w SignatureValidator
+     * @see SignatureValidatorFilter
      */
     @PUT
     @Path("/{login}/editAccountInfo")
     @Consumes(MediaType.APPLICATION_JSON)
+    @SignatureValidatorFilter
     public void editAccountInfo(
             @NotNull @PathParam("login") String login,
-            @NotNull @Valid EditAccountInfoAsAdminDto editAccountInfoAsAdminDto
+            @NotNull @Valid EditAccountInfoAsAdminDto editAccountInfoAsAdminDto,
+            @HeaderParam("If-match") @NotNull @NotEmpty String tagValue
     ) throws BaseApplicationException {
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         repeat(() -> accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoAsAdminDto), accountEndpoint);
