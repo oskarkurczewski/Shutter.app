@@ -60,7 +60,7 @@ public class EmailChangeAutoReminderService {
             if (token.getExpiration().isAfter(LocalDateTime.now())) {
                 emailService.sendEmailResetReminderEmail(
                         token.getTargetUser().getEmail(),
-                        new Locale(token.getTargetUser().getLocale()),
+                        token.getTargetUser().getLocale(),
                         token
                 );
             }

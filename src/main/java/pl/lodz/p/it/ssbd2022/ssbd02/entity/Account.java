@@ -2,16 +2,14 @@ package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.converter.LocaleConverter;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Klasa reprezentująca bazowe konto użytkownika
@@ -73,7 +71,8 @@ public class Account extends ManagedEntity {
 
     @NotNull
     @Column(name = "locale", nullable = false)
-    private String locale;
+    @Convert(converter = LocaleConverter.class)
+    private Locale locale;
 
     @NotNull
     @Size(min = 8, max = 64)

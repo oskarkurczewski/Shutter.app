@@ -60,7 +60,7 @@ public class AutoReminderService {
         for (VerificationToken token : toRemindTokens) {
             emailService.sendRegistrationConfirmationReminder(
                     token.getTargetUser().getEmail(),
-                    new Locale(token.getTargetUser().getLocale()),
+                    token.getTargetUser().getLocale(),
                     token
             );
         }

@@ -95,7 +95,7 @@ public class VerificationTokenService {
         tokenFacade.persist(registrationToken);
         emailService.sendRegistrationEmail(
                 account.getEmail(),
-                new Locale(account.getLocale()),
+                account.getLocale(),
                 registrationToken
         );
     }
@@ -144,7 +144,7 @@ public class VerificationTokenService {
 
         emailService.sendPasswordResetEmail(
                 account.getEmail(),
-                new Locale(account.getLocale()),
+                account.getLocale(),
                 verificationToken
         );
     }
@@ -170,7 +170,7 @@ public class VerificationTokenService {
 
         emailService.sendForcedPasswordResetEmail(
                 account.getEmail(),
-                new Locale(account.getLocale()),
+                account.getLocale(),
                 verificationToken
         );
     }
@@ -212,7 +212,7 @@ public class VerificationTokenService {
 
         emailService.sendEmailUpdateEmail(
                 account.getEmail(),
-                new Locale(account.getLocale()),
+                account.getLocale(),
                 verificationToken
         );
     }
@@ -233,7 +233,7 @@ public class VerificationTokenService {
 
         emailService.sendEmailUnblockAccount(
                 account.getEmail(),
-                new Locale(account.getLocale()),
+                account.getLocale(),
                 verificationToken
         );
     }
@@ -273,7 +273,7 @@ public class VerificationTokenService {
 
         emailService.sendEmailUnblockAccount(
                 account.getEmail(),
-                new Locale(account.getLocale()),
+                account.getLocale(),
                 verificationToken
         );
     }
