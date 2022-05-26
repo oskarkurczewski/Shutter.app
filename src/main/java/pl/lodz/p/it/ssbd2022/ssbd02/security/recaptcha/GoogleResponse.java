@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.security.reCAPTCHA;
+package pl.lodz.p.it.ssbd2022.ssbd02.security.recaptcha;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
