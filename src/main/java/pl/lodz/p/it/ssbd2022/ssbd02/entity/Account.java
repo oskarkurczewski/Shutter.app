@@ -72,6 +72,10 @@ public class Account extends ManagedEntity {
     private String surname;
 
     @NotNull
+    @Column(name = "locale", nullable = false)
+    private String locale;
+
+    @NotNull
     @Size(min = 8, max = 64)
     @Column(name = "password", nullable = false)
     @ToString.Exclude

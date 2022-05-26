@@ -18,23 +18,30 @@ import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+import static pl.lodz.p.it.ssbd2022.ssbd02.util.I18n.*;
 
 /**
  * Klasa służąca do wysyłania maili
  */
-@Singleton
+@Stateless
 @Interceptors(LoggingInterceptor.class)
 public class EmailService {
     private TransactionalEmailsApi api;
     private SendSmtpEmailSender sender;
+
     @Inject
     private ConfigLoader configLoader;
+
+    @Inject
+    private I18n i18n;
 
 
     @PostConstruct
@@ -58,9 +65,9 @@ public class EmailService {
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
      */
     @PermitAll
-    public void sendRegistrationEmail(String to, VerificationToken token) {
-        String subject = "Weryfikacja konta Shutter.app";
-        String body = "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
+    public void sendRegistrationEmail(String to, Locale locale, VerificationToken token) {
+        String subject = i18n.getMessage(REGISTRATION_CONFIRMATION_SUBJECT, locale);
+        String body = i18n.getMessage(REGISTRATION_CONFIRMATION_BODY, locale) + String.format(
                 "%s/confirm-registration/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
@@ -79,10 +86,9 @@ public class EmailService {
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
      */
     @PermitAll
-    public void sendRegistrationConfirmationReminder(String to, VerificationToken token) {
-        String subject = "PRZYPOMNIENIE: Weryfikacja konta Shutter.app";
-        String body = "Przypominamy o konieczności potwierdzenia konta w Shutter.app. " +
-                "Kliknij w link aby potwierdzić rejestrację swojego konta: " + String.format(
+    public void sendRegistrationConfirmationReminder(String to, Locale locale, VerificationToken token) {
+        String subject = i18n.getMessage(REGISTRATION_CONFIRMATION_REMINDER_SUBJECT, locale);
+        String body = i18n.getMessage(REGISTRATION_CONFIRMATION_REMINDER_BODY, locale) + String.format(
                 "%s/confirm-registration/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
@@ -101,9 +107,9 @@ public class EmailService {
      * @param token Żeton, który ma zostać wysłany
      */
     @PermitAll
-    public void sendPasswordResetEmail(String to, VerificationToken token) {
-        String subject = "Resetowanie hasła Shutter.app";
-        String body = "Kliknij w link aby dokonać resetu hasła: " + String.format(
+    public void sendPasswordResetEmail(String to, Locale locale, VerificationToken token) {
+        String subject = i18n.getMessage(PASSWORD_RESET_SUBJECT, locale);
+        String body = i18n.getMessage(PASSWORD_RESET_BODY, locale) + String.format(
                 "%s/password-reset/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
@@ -123,10 +129,9 @@ public class EmailService {
      * @param token Żeton, który ma zostać wysłany
      */
     @RolesAllowed(changeSomeonesPassword)
-    public void sendForcedPasswordResetEmail(String to, VerificationToken token) {
-        String subject = "WAŻNE: Konieczność zmiany hasła - Shutter.app";
-        String body = "Twoje hasło zostało zmienione przez administratora. Aby ustawić nowe hasło dla " +
-                "twojego konta kliknij w podany link: " + String.format(
+    public void sendForcedPasswordResetEmail(String to, Locale locale, VerificationToken token) {
+        String subject = i18n.getMessage(FORCED_PASSWORD_RESET_SUBJECT, locale);
+        String body = i18n.getMessage(FORCED_PASSWORD_RESET_REMINDER_BODY, locale) + String.format(
                 "%s/password-reset/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
@@ -145,10 +150,9 @@ public class EmailService {
      * @param to Adres e-mail, na który należy wysłać wiadomość
      */
     @PermitAll
-    public void sendAccountBlockedDueToToManyLogInAttemptsEmail(String to) {
-        String subject = "Zbyt wiele nieudanych logowań - Shutter.app";
-        String body = "Użytkowniku, twoje konto zostało automatycznie zablokowane z powodu zbyt wielu " +
-                "nieudanych prób logowania. Aby je odblokować skontaktuj się z administratorem.";
+    public void sendAccountBlockedDueToToManyLogInAttemptsEmail(String to, Locale locale) {
+        String subject = i18n.getMessage(INACTIVE_ACCOUNT_BLOCK_SUBJECT, locale);
+        String body = i18n.getMessage(INACTIVE_ACCOUNT_BLOCK_BODY, locale);
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -164,10 +168,10 @@ public class EmailService {
      * @param ipAddress adres IP, z którego dokonano logowania na konto administratora
      */
     @PermitAll
-    public void sendAdminAuthenticationWaringEmail(String to, String login, String ipAddress) {
-        String subject = "WAŻNE: Logowanie na konto - Shutter.app";
+    public void sendAdminAuthenticationWaringEmail(String to, Locale locale, String login, String ipAddress) {
+        String subject = i18n.getMessage(ADMIN_AUTHENTICATION_WARNING_SUBJECT, locale);
         String body = String.format(
-                "Administratorze %s, doszło do uwierzytelnienia na twoje konto z adresu IP: %s.",
+                i18n.getMessage(ADMIN_AUTHENTICATION_WARNING_BODY, locale),
                 login,
                 ipAddress
         );
@@ -185,9 +189,9 @@ public class EmailService {
      * @param token Żeton, który ma zostać wysłany
      */
     @RolesAllowed(updateEmail)
-    public void sendEmailUpdateEmail(String to, VerificationToken token) {
-        String subject = "Zmiana adresu e-mail Shutter.app";
-        String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
+    public void sendEmailUpdateEmail(String to, Locale locale, VerificationToken token) {
+        String subject = i18n.getMessage(EMAIL_UPDATE_SUBJECT, locale);
+        String body = i18n.getMessage(EMAIL_UPDATE_BODY, locale) + String.format(
                 "%s/change-own-email/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
@@ -206,9 +210,9 @@ public class EmailService {
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do zmiany maila
      */
     @PermitAll
-    public void sendEmailResetReminderEmail(String to, VerificationToken token) {
-        String subject = "PRZYPOMNIENIE: Zmiana adresu e-mail Shutter.app";
-        String body = "Kliknij w link aby dokonać aktualizacji adresu email: " + String.format(
+    public void sendEmailResetReminderEmail(String to, Locale locale, VerificationToken token) {
+        String subject = i18n.getMessage(EMAIL_UPDATE_REMINDER_SUBJECT, locale);
+        String body = i18n.getMessage(EMAIL_UPDATE_REMINDER_BODY, locale) + String.format(
                 "%s/change-own-email/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
@@ -228,12 +232,12 @@ public class EmailService {
      * @param code Kod 2FA
      */
     @PermitAll
-    public void sendEmail2FA(String to, String name, String code) {
-        String subject = "Dwustopniowe logowanie Shutter.app";
+    public void sendEmail2FA(String to, Locale locale, String name, String code) {
+        String subject = i18n.getMessage(TWO_FA_SUBJECT, locale);
         String body =
                 name.substring(0, 1).toUpperCase() +
                         name.substring(1) +
-                        " twój kod do zalogowania: " +
+                        i18n.getMessage(TWO_FA_BODY, locale) +
                         code;
         try {
             sendEmail(to, subject, body);
@@ -249,10 +253,9 @@ public class EmailService {
      * @param token Żeton, który ma zostać wysłany
      */
     @PermitAll
-    public void sendEmailUnblockAccount(String to, VerificationToken token) {
-        String subject = "Odblokowanie konta Shutter.app";
-        String body = "Twoje konto zostało zablokowane z powodu braku aktywności, kliknij w link aby je odblokować "
-                + String.format(
+    public void sendEmailUnblockAccount(String to, Locale locale, VerificationToken token) {
+        String subject = i18n.getMessage(UNBLOCK_ACCOUNT_SUBJECT, locale);
+        String body = i18n.getMessage(UNBLOCK_ACCOUNT_BODY, locale) + String.format(
                 "%s/unblock-account/%s",
                 configLoader.getEmailAppUrl(),
                 token.getToken()
@@ -271,10 +274,9 @@ public class EmailService {
      * @param to adresat wiadomości email
      */
     @RolesAllowed(unblockAccount)
-    public void sendAccountUnblockedEmail(String to) {
-        String subject = "Konto odblokowane - Shutter.app";
-        String body = "Twoje konto w aplikacji Shutter.app zostało odblokowane. Życzymy miłego dalszego " +
-                "korzystania z usługi.";
+    public void sendAccountUnblockedEmail(String to, Locale locale) {
+        String subject = i18n.getMessage(ACCOUNT_UNBLOCKED_SUBJECT, locale);
+        String body = i18n.getMessage(ACCOUNT_UNBLOCKED_BODY, locale);
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -289,10 +291,9 @@ public class EmailService {
      * @param to adresat wiadomości email
      */
     @RolesAllowed(blockAccount)
-    public void sendAccountBlocked(String to) {
-        String subject = "Konto zablokowane - Shutter.app";
-        String body = "Twoje konto w aplikacji Shutter.app zostało zablokowane. Aby je " +
-                "odblokować skontaktuj się z administratorem systemu.";
+    public void sendAccountBlocked(String to, Locale locale) {
+        String subject = i18n.getMessage(ACCOUNT_BLOCKED_SUBJECT, locale);
+        String body = i18n.getMessage(ACCOUNT_BLOCKED_BODY, locale);
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -308,9 +309,9 @@ public class EmailService {
      * @param accessLevelName nazwa poziomu dostępu, który został przypisany
      */
     @PermitAll
-    public void sendAccessLevelGrantedEmail(String to, String accessLevelName) {
-        String subject = "Przypisanie poziomu dostepu - Shutter.app";
-        String body = "Do twojego konta został przypisany poziom dostępu: " + accessLevelName + ".";
+    public void sendAccessLevelGrantedEmail(String to, Locale locale, String accessLevelName) {
+        String subject = i18n.getMessage(ACCESS_LEVEL_GRANTED_SUBJECT, locale);
+        String body = i18n.getMessage(ACCESS_LEVEL_GRANTED_BODY, locale) + accessLevelName + ".";
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -326,9 +327,9 @@ public class EmailService {
      * @param accessLevelName nazwa poziomu dostępu, który został odebrany
      */
     @RolesAllowed(revokeAccessLevel)
-    public void sendAccessLevelRevokedEmail(String to, String accessLevelName) {
-        String subject = "Odebranie poziomu dostepu - Shutter.app";
-        String body = "Dla twojego konta został odebrany poziom dostępu: " + accessLevelName + ".";
+    public void sendAccessLevelRevokedEmail(String to, Locale locale, String accessLevelName) {
+        String subject = i18n.getMessage(ACCESS_LEVEL_REVOKED_SUBJECT, locale);
+        String body = i18n.getMessage(ACCESS_LEVEL_REVOKED_BODY, locale) + accessLevelName + ".";
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -343,10 +344,9 @@ public class EmailService {
      * @param to adresat wiadomości email
      */
     @PermitAll
-    public void sendAccountActivated(String to) {
-        String subject = "Konto aktywowane - Shutter.app";
-        String body = "Twoje konto w aplikacji Shutter.app zostało pomyślnie aktywowane. Życzymy miłego dalszego " +
-                "korzystania z usługi.";
+    public void sendAccountActivated(String to, Locale locale) {
+        String subject = i18n.getMessage(ACCOUNT_ACTIVATED_SUBJECT, locale);
+        String body = i18n.getMessage(ACCOUNT_ACTIVATED_BODY, locale);
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
