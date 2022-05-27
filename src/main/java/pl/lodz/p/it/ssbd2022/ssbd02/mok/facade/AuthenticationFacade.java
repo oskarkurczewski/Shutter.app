@@ -102,7 +102,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     }
 
     /**
-     * Zwraca listę wszystkich użytkowników których imię lub nazwisko pasuje do podanej frazy
+     * Zwraca listę wszystkich użytkowników, których imię lub nazwisko pasuje do podanej frazy
      *
      * @param name           fraza zawierająca się w imieniu/nazwisku
      * @param page           numer strony do pobrania
@@ -129,23 +129,13 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
                 case "desc": {
                     query.orderBy(criteriaBuilder.desc(table.get(orderBy)));
                     break;
-
                 }
             }
         } catch (IllegalArgumentException e) {
             throw ExceptionFactory.wrongParameterException();
         }
 
-        query.where(
-                criteriaBuilder.or(
-                        criteriaBuilder.like(
-                                criteriaBuilder.lower(table.get("name")), addPercent(name.toLowerCase())
-                        ),
-                        criteriaBuilder.like(
-                                criteriaBuilder.lower(table.get("surname")), addPercent(name.toLowerCase())
-                        )
-                )
-        );
+        addByNameSurnameSearchToQuery(query, table, name);
 
         return em
                 .createQuery(query)
@@ -273,7 +263,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
 
 
     /**
-     * Zwraca ilość rekordów po przefiltrowaniu
+     * Zwraca ilość rekordów po przefiltrowaniu, czy dana fraza znajduje się w imieniu lub nazwisku użytkownika
      *
      * @param name imie
      * @return ilość rekordów
@@ -287,6 +277,21 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         Root<Account> table = query.from(Account.class);
         query.select(criteriaBuilder.count(table));
 
+        addByNameSurnameSearchToQuery(query, table, name);
+
+        return em.createQuery(query).getSingleResult();
+    }
+
+    /**
+     * Dodaje do danej kwerendy szukanie po frazie znajdującej się w imieniu bądź nazwisku danego
+     * użytkownika
+     *
+     * @param query kwerenda, do której należy dodać wyszukiwanie po frazie
+     * @param table tabela, z której kwerenda będzie pobierać informacje kwerenda
+     * @param name  fraza, która ma być wyszukiwana w imieniu lub nazwisku
+     */
+    private <T> void addByNameSurnameSearchToQuery(CriteriaQuery<T> query, Root<Account> table, String name) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         query.where(
                 criteriaBuilder.or(
                         criteriaBuilder.like(
@@ -297,8 +302,6 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
                         )
                 )
         );
-
-        return em.createQuery(query).getSingleResult();
     }
 
     @PermitAll
@@ -318,5 +321,6 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
+
 
 }
