@@ -1,9 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.ChangeType;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -11,6 +15,7 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,8 +29,15 @@ import java.util.List;
 @Interceptors({LoggingInterceptor.class, MokFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AuthenticationFacade extends FacadeTemplate<Account> {
+
     @PersistenceContext(unitName = "ssbd02mokPU")
     private EntityManager em;
+
+    @Inject
+    private AccountChangeLogFacade accountChangeLogFacade;
+
+    @Inject
+    private AuthenticationContext authenticationContext;
 
     public AuthenticationFacade() {
         super(Account.class);
@@ -41,11 +53,30 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return "%" + s + "%";
     }
 
+    /**
+     * Rejestruje zmianę encji JPA danych konta użytkownika, jej typ oraz aktora, który jej dokonał
+     *
+     * @param account konto, którego dane zostały zmienione
+     * @param type typ zmian
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    private void registerAccountChange(Account account, ChangeType type) throws BaseApplicationException {
+        Account by;
+        try {
+            by = findByLogin(authenticationContext.getCurrentUsersLogin());
+        } catch (BaseApplicationException e) {
+            by = null;
+        }
+        accountChangeLogFacade.persist(new AccountChangeLog(account, by, LocalDateTime.now(), type));
+    }
+
     @Override
     @PermitAll
     public Account persist(Account entity) throws BaseApplicationException {
         try {
-            return super.persist(entity);
+            Account ret = super.persist(entity);
+            registerAccountChange(ret, ChangeType.CREATED);
+            return ret;
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
@@ -59,7 +90,9 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     @PermitAll
     public Account update(Account entity) throws BaseApplicationException {
         try {
-            return super.update(entity);
+            Account ret = super.update(entity);
+            registerAccountChange(ret, ChangeType.MODIFIED);
+            return ret;
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
@@ -73,6 +106,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
     @PermitAll
     public void remove(Account entity) throws BaseApplicationException {
         try {
+            registerAccountChange(entity, ChangeType.DELETED);
             super.remove(entity);
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
