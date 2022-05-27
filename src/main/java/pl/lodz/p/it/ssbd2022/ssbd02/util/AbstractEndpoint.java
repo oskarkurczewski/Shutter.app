@@ -48,7 +48,7 @@ public abstract class AbstractEndpoint implements TransactionClass {
         Long timestamp = System.currentTimeMillis();
         String userLogin;
         try {
-            userLogin = authCtx.getCurrentUsersAccount().getLogin();
+            userLogin = authCtx.getCurrentUsersLogin();
         } catch (NoAuthenticatedAccountFound e) {
             userLogin = "Not authenticated";
         }

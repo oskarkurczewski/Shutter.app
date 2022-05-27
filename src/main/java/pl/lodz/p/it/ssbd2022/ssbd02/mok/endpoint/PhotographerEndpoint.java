@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedPhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -28,6 +29,9 @@ public class PhotographerEndpoint extends AbstractEndpoint {
 
     @Inject
     private PhotographerService photographerService;
+
+    @Inject
+    private AccountService accountService;
 
     @Inject
     private AuthenticationContext authenticationContext;
@@ -75,7 +79,7 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed(getOwnPhotographerInfo)
     public DetailedPhotographerInfoDto getYourPhotographerInfo() throws BaseApplicationException {
-        Account account = authenticationContext.getCurrentUsersAccount();
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         return new DetailedPhotographerInfoDto(photographerService.findByLogin(account.getLogin()));
     }
 }
