@@ -260,6 +260,9 @@ public class AccountController extends AbstractController {
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto,
             @HeaderParam("If-match") @NotNull @NotEmpty String tagValue
     ) throws BaseApplicationException {
+        if (!signatureVerifier.verifyEntityIntegrity(tagValue, editAccountInfoDto)) {
+            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+        }
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         repeat(() -> accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
@@ -281,6 +284,10 @@ public class AccountController extends AbstractController {
             @NotNull @Valid EditAccountInfoAsAdminDto editAccountInfoAsAdminDto,
             @HeaderParam("If-match") @NotNull @NotEmpty String tagValue
     ) throws BaseApplicationException {
+        if (!signatureVerifier.verifyEntityIntegrity(tagValue, editAccountInfoAsAdminDto)) {
+            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+        }
+
         // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         repeat(() -> accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoAsAdminDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
