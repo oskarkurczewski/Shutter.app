@@ -1,5 +1,4 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Singleton;
@@ -25,6 +24,8 @@ public class ConfigLoader {
     private static final String PROPERTIES_TIMEOUT_FILE = "config.timeout.properties";
     private static final String PROPERTIES_TRANSACTION_FILE = "config.transaction.properties";
     private static final String PROPERTIES_EMAIL_FILE = "config.email.properties";
+
+    private static final String PROPERTIES_RECAPTCHA_FILE = "config.recaptcha.properties";
     private static final String REGISTRATION_CONFIRMATION_TOKEN_LIFETIME = "registration.confirmation.token.lifespan";
     private static final String EMAIL_RESET_TOKEN_LIFETIME = "email.reset.token.lifespan";
     private static final String UNBLOCK_OWN_ACCOUNT_TOKEN_LIFESPAN = "unblock.own.account.token.lifespan";
@@ -41,11 +42,15 @@ public class ConfigLoader {
     private static final String BLOCK_TIMEOUT = "block.timeout";
     private static final String TRANSACTION_REPETITION_LIMIT = "transaction.repetition.limit";
 
+    private static final String RECAPTCHA_API_KEY = "recaptcha.api.key";
+
     private Properties propertiesToken;
     private Properties properties2Fa;
     private Properties propertiesEmail;
     private Properties propertiesTimeout;
     private Properties propertiesTransaction;
+
+    private Properties propertiesRecaptcha;
 
     public ConfigLoader() {
     }
@@ -57,6 +62,7 @@ public class ConfigLoader {
         propertiesEmail = loadProperties(PROPERTIES_EMAIL_FILE);
         propertiesTimeout = loadProperties(PROPERTIES_TIMEOUT_FILE);
         propertiesTransaction = loadProperties(PROPERTIES_TRANSACTION_FILE);
+        propertiesRecaptcha = loadProperties(PROPERTIES_RECAPTCHA_FILE);
     }
 
     private Properties loadProperties(String fileName) {
@@ -153,5 +159,9 @@ public class ConfigLoader {
 
     public int getTransactionRepetitionLimit() {
         return Integer.parseInt(propertiesTransaction.getProperty(TRANSACTION_REPETITION_LIMIT));
+    }
+
+    public String getRecaptchaApiKey() {
+        return propertiesRecaptcha.getProperty(RECAPTCHA_API_KEY);
     }
 }
