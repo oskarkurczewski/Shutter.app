@@ -16,8 +16,8 @@ public class BaseAccountInfoDto implements SignableEntity {
 
     @NotNull
     Long version;
-    @NotNull(message = "validator.incorrect.login.null")
 
+    @NotNull(message = "validator.incorrect.login.null")
     @Login
     private String login;
 
@@ -37,6 +37,8 @@ public class BaseAccountInfoDto implements SignableEntity {
      * @param account encja użytkownika
      */
     public BaseAccountInfoDto(Account account) {
+        version = account.getVersion();
+        login = account.getLogin();
         email = account.getEmail();
         name = account.getName();
         surname = account.getSurname();
