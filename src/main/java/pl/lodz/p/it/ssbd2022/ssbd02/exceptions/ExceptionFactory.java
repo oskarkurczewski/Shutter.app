@@ -130,4 +130,8 @@ public class ExceptionFactory {
     public static InvalidRecaptchaException invalidRecaptchaException() {
         return new InvalidRecaptchaException("exception.captcha.invalid");
     }
+
+    public static NoAccountListPreferencesFound noAccountListPreferencesFound() {
+        return new NoAccountListPreferencesFound("account_list_preferences.not_found");
+    }
 }
