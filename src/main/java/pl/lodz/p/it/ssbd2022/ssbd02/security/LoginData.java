@@ -24,7 +24,6 @@ public class LoginData {
     @Password
     private String password;
 
-    @NotNull(message = "validator.incorrect.2facode.null")
     @TwoFACode
     private String twoFACode;
 

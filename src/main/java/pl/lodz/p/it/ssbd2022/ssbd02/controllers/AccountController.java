@@ -356,6 +356,20 @@ public class AccountController extends AbstractController {
         return Response.status(200).build();
     }
 
+    /**
+     * Punkt końcowy, który wyłącza lub włącza dwustopniowe uwierzytelnianie dla użytkownika
+     *
+     * @return Odpowiedź HTTP
+     * @throws BaseApplicationException W przypadku kiedy użytkownik o podanym loginie nie zostanie znaleziony
+     *                                  lub wystąpi nieoczekiwany błąd
+     */
+    @POST
+    @Path("/toggle-2fa")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response toggle2fa() throws BaseApplicationException {
+        repeat(() -> accountEndpoint.toggle2fa(), accountEndpoint);
+        return Response.status(200).build();
+    }
 
     /**
      * Punkt końcowy pozwalający użytkownikowi na zostanie fotografem.

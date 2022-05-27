@@ -33,6 +33,7 @@ CREATE TABLE public.account
     password      character varying(60) NOT NULL,
     name          character varying(64) NOT NULL,
     surname       character varying(64) NOT NULL,
+    two_factor_auth boolean DEFAULT FALSE NOT NULL,
     registered    boolean DEFAULT false NOT NULL,
     active        boolean DEFAULT true  NOT NULL,
     failed_logins integer DEFAULT 0     NOT NULL,
