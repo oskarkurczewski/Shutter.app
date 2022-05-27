@@ -4,9 +4,11 @@ import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountChangeLogFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
@@ -48,6 +50,9 @@ public class AccountService {
 
     @Inject
     private OneTimeCodeUtils codeUtils;
+
+    @Inject
+    private AccountChangeLogFacade accountChangeLogFacade;
 
     /**
      * Odnajduje konto użytkownika o podanym loginie
@@ -262,8 +267,6 @@ public class AccountService {
     }
 
     /**
-<<<<<<<<< Temporary merge branch 1
-=========
      * Ustawia poziom dostępu fotografa w obiekcie klasy użytkownika na aktywny.
      *
      * @param account Konto użytkownika, dla którego ma nastąpić nadanie roli fotografa
@@ -298,13 +301,11 @@ public class AccountService {
 
 
     /**
->>>>>>>>> Temporary merge branch 2
      * Odbiera rolę fotografa poprzez ustawienie poziomu dostępu fotografa w obiekcie klasy użytkownika na nieaktywny.
      *
-     * @param account                   Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa
-     * @throws CannotChangeException    W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
-     *                                  tę rolę nieaktywną bądź wcale jej niemającego
-     *
+     * @param account Konto użytkownika, dla którego ma nastąpić odebranie roli fotografa
+     * @throws CannotChangeException W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
+     *                               tę rolę nieaktywną bądź wcale jej niemającego
      */
 
     @RolesAllowed(stopBeingPhotographer)
@@ -582,4 +583,17 @@ public class AccountService {
         String totp = codeUtils.generateCode(account.getSecret());
         emailService.sendEmail2FA(account.getEmail(), account.getLogin(), totp);
     }
+
+    /**
+     * Zwraca historię zmian dla konta
+     *
+     * @param login Login użytkownika, którego historia zmian konta ma być wyszukana
+     * @return Historia zmian konta
+     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @PermitAll
+    public List<AccountChangeLog> getAccountChangeLog(String login) throws BaseApplicationException {
+        return accountChangeLogFacade.findByLogin(login);
+    }
+
 }

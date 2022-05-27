@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
@@ -18,7 +19,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -416,5 +416,30 @@ public class AccountEndpoint extends AbstractEndpoint {
                 .filter(accessLevel -> accessLevel.getActive())
                 .map(accessLevel -> accessLevel.getLevel().getName())
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Zwraca historię zmian dla aktualnego użytkownika
+     *
+     * @return Historia zmian konta
+     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @RolesAllowed({getAccountInfo})
+    public List<AccountChangeLog> getOwnAccountChangeLog() throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        return accountService.getAccountChangeLog(account.getLogin());
+    }
+
+    /**
+     * Zwraca historię zmian dla konta
+     *
+     * @param login Login użytkownika, którego historia zmian konta ma być wyszukana
+     * @return Historia zmian konta
+     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @RolesAllowed({getEnhancedAccountInfo})
+    public List<AccountChangeLog> getAccountChangeLog(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return accountService.getAccountChangeLog(account.getLogin());
     }
 }
