@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStoreHandler;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -70,7 +71,7 @@ public class AuthController {
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(@NotNull LoginData data) throws BaseApplicationException {
+    public Response login(@NotNull @Valid LoginData data) throws BaseApplicationException {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
         String secret = accountEndpoint.getSecret(data.getLogin());
 

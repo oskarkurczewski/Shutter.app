@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
@@ -279,13 +280,53 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
-     * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
     @RolesAllowed(listAllAccounts)
-    public ListResponseDto<TableAccountDto> getAccountList(AccountListRequestDto requestDto) throws WrongParameterException {
-        return accountService.getAccountList(requestDto);
+    public ListResponseDto<TableAccountDto> getAccountList(
+        int pageNo,
+        int recordsPerPage,
+        String columnName,
+        String order,
+        String login,
+        String email,
+        String name,
+        String surname,
+        Boolean registered,
+        Boolean active
+    ) throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+
+        Boolean convertedOrder = true;
+        if (order.equals("desc")) convertedOrder = false;
+
+        AccountListRequestDto requestDto = new AccountListRequestDto(
+                pageNo,
+                recordsPerPage,
+                columnName,
+                convertedOrder,
+                login,
+                email,
+                name,
+                surname,
+                registered,
+                active
+        );
+
+        accountService.saveAccountListPreferences(account, requestDto);
+        return accountService.getAccountList(account, requestDto);
+    }
+
+    /**
+     * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
+     *
+     * @throws BaseApplicationException kiedy preferencje dla danego użytkownika nie zostaną odnalezione
+     */
+    @RolesAllowed(listAllAccounts)
+    public AccountListPreferencesDto getAccountListPreferences() throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        return new AccountListPreferencesDto(accountService.getAccountListPreferences(account));
     }
 
     /**
