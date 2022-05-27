@@ -7,12 +7,16 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 
 @Stateless
@@ -33,7 +37,7 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed({stopBeingPhotographer, becomePhotographer})
     public PhotographerInfo persist(PhotographerInfo entity) throws BaseApplicationException {
         try {
             return super.persist(entity);
@@ -47,7 +51,7 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed(becomePhotographer)
     public PhotographerInfo update(PhotographerInfo entity) throws BaseApplicationException {
         try {
             return super.update(entity);
@@ -61,7 +65,7 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
     }
 
     @Override
-    @PermitAll
+    @DenyAll
     public void remove(PhotographerInfo entity) throws BaseApplicationException {
         try {
             super.remove(entity);
@@ -82,7 +86,7 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @see PhotographerInfo
      */
-    @PermitAll
+    @RolesAllowed({getPhotographerInfo, getEnhancedPhotographerInfo, getOwnPhotographerInfo})
     public PhotographerInfo findPhotographerByLogin(String login) throws BaseApplicationException {
         TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);

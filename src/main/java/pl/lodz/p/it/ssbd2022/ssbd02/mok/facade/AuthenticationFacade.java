@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -18,6 +19,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getAccountInfo;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.listAllAccounts;
 
 
 @Stateless
@@ -41,6 +45,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         return "%" + s + "%";
     }
 
+    // PermitAll aby umożliwić rejestrację użytkowników
     @Override
     @PermitAll
     public Account persist(Account entity) throws BaseApplicationException {
@@ -69,6 +74,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         }
     }
 
+    // PermitAll aby umożliwić działanie serwisu usuwającego niepotwierdzone konta
     @Override
     @PermitAll
     public void remove(Account entity) throws BaseApplicationException {
@@ -83,6 +89,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         }
     }
 
+    // PermitAll aby umożliwić uwierzytelnianie
     @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
@@ -111,7 +118,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @return lista wynikowa zapytania do bazy danych
      * @throws WrongParameterException zła nazwa kolumny
      */
-    @PermitAll
+    @RolesAllowed({getAccountInfo})
     public List<String> findByNameSurname(String name, int page, int recordsPerPage, String orderBy, String order) throws WrongParameterException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
@@ -159,7 +166,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param active         czy konto aktywne
      * @return lista wynikowa zapytania do bazy danych
      */
-    @PermitAll
+    @RolesAllowed(listAllAccounts)
     public List<Account> getAccountList(
             int page,
             int recordsPerPage,
@@ -214,7 +221,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param active     czy konto aktywne
      * @return ilość rekordów
      */
-    @PermitAll
+    @RolesAllowed(listAllAccounts)
     public Long getAccountListSize(
             String login,
             String email,
@@ -255,7 +262,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @param name imie
      * @return ilość rekordów
      */
-    @PermitAll
+    @RolesAllowed(getAccountInfo)
     public Long getAccountListSizeNameSurname(
             String name
     ) {
@@ -291,6 +298,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
         );
     }
 
+    // PermitAll aby umożliwić działanie serwisu blokującego nieaktywne konta
     @PermitAll
     public List<Account> getWithLastLoginBefore(LocalDateTime dateTime) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLastLogInIsBefore", Account.class);
