@@ -24,6 +24,7 @@ import { useRefreshTokenMutation } from "redux/service/api";
 import RequestResetPasswordPage from "pages/request-reset-password";
 import ConfirmRegistrationPage from "pages/token-based/confirm-registration";
 import ChangeOwnEmailPage from "pages/token-based/change-own-email";
+import AccountInfoPage from "pages/users/info";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -169,6 +170,17 @@ function App() {
                         element={
                            <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
                               <EditAccountPage />
+                           </ProtectedRoute>
+                        }
+                     />
+
+                     <Route
+                        path=":login/info"
+                        element={
+                           <ProtectedRoute
+                              roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
+                           >
+                              <AccountInfoPage />
                            </ProtectedRoute>
                         }
                      />

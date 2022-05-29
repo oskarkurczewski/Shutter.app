@@ -1,7 +1,7 @@
 interface traceable {
-   modifiedAt: string;
+   modifiedAt: Date;
    modifiedBy: string;
-   createdAt: string;
+   createdAt: Date;
    createdBy: string;
 }
 

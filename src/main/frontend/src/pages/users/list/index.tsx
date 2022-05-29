@@ -3,7 +3,13 @@ import "./style.scss";
 import Card from "components/shared/Card";
 import Table from "components/shared/Table";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaCheck, FaEdit } from "react-icons/fa";
+import {
+   FaAngleRight,
+   FaCheck,
+   FaChevronRight,
+   FaEdit,
+   FaInfoCircle,
+} from "react-icons/fa";
 import {
    useGetAccountListPreferencesMutation,
    useGetUserListMutation,
@@ -60,8 +66,8 @@ const AccountListPage = () => {
          sort: null,
       },
       {
-         id: "edit",
-         label: "Edit",
+         id: "actions",
+         label: "",
          sortable: false,
          sort: null,
       },
@@ -147,10 +153,15 @@ const AccountListPage = () => {
          </>,
          item.isActive ? <FaCheck className="check" /> : <></>,
          item.isRegistered ? <FaCheck className="check" /> : <></>,
-         <div key={item.login} className="edit-button">
+         <div key={item.login} className="actions">
             <Link to={`/users/${item.login}/edit`}>
-               <div role="button">
+               <div role="button" className="edit">
                   <FaEdit />
+               </div>
+            </Link>
+            <Link to={`/users/${item.login}/info`}>
+               <div role="button" className="info">
+                  <FaAngleRight />
                </div>
             </Link>
          </div>,

@@ -1,12 +1,16 @@
 .account-list-page-wrapper {
    .table-card {
       padding: 1rem;
-      .edit-button {
+      .actions {
          display: flex;
          align-items: center;
          justify-content: center;
-         svg {
+         gap: 0.5rem;
+         .edit > svg {
             font-size: 20px;
+         }
+         .info > svg {
+            font-size: 18px;
          }
       }
    }

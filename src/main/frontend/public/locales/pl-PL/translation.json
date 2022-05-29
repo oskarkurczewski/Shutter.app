@@ -20,7 +20,7 @@
       "exp": "wygasa"
    },
    "label": {
-      "email": "adres email",
+      "email": "Adres email",
       "email-short": "email",
       "email-change": "zmiana adresu email",
       "email-new": "nowy adres email",
@@ -55,7 +55,14 @@
       "unblock-account": "Odblokowywanie konta",
       "active": "Aktywne",
       "registered": "Zarejestrowane",
-      "create-account": "Stwórz konto"
+      "create-account": "Stwórz konto",
+      "name": "Imię",
+      "surname": "Nazwisko",
+      "access-levels": "Poziomy dostępu",
+      "last-modified-at": "Ostatnio modyfikowane",
+      "last-modified-by": "Login modyfikującego",
+      "created-at": "Utworzono",
+      "created-by": "Login stwórcy"
    },
    "message": {
       "info": {
