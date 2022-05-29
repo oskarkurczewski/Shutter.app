@@ -164,15 +164,15 @@ function App() {
                         }
                      />
 
-                  <Route
-                     path=":login/edit"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                           <EditAccountPage />
-                        </ProtectedRoute>
-                     }
-                  />
-               </Route>
+                     <Route
+                        path=":login/edit"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
+                              <EditAccountPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                  </Route>
 
                   <Route path="dashboard" element={<DashboardPage />} />
 
