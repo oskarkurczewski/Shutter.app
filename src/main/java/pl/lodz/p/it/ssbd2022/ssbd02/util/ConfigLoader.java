@@ -3,8 +3,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,8 +22,9 @@ public class ConfigLoader {
     private static final String PROPERTIES_TIMEOUT_FILE = "config.timeout.properties";
     private static final String PROPERTIES_TRANSACTION_FILE = "config.transaction.properties";
     private static final String PROPERTIES_EMAIL_FILE = "config.email.properties";
-
     private static final String PROPERTIES_RECAPTCHA_FILE = "config.recaptcha.properties";
+    private static final String PROPERTIES_ETAG_FILE = "config.etag.properties";
+
     private static final String REGISTRATION_CONFIRMATION_TOKEN_LIFETIME = "registration.confirmation.token.lifespan";
     private static final String EMAIL_RESET_TOKEN_LIFETIME = "email.reset.token.lifespan";
     private static final String UNBLOCK_OWN_ACCOUNT_TOKEN_LIFESPAN = "unblock.own.account.token.lifespan";
@@ -41,6 +40,7 @@ public class ConfigLoader {
     private static final String BLOCK_CHECK_TIMEOUT = "block.check-timeout";
     private static final String BLOCK_TIMEOUT = "block.timeout";
     private static final String TRANSACTION_REPETITION_LIMIT = "transaction.repetition.limit";
+    private static final String ETAG_SECRET = "etag.secret";
 
     private static final String RECAPTCHA_API_KEY = "recaptcha.api.key";
 
@@ -49,6 +49,7 @@ public class ConfigLoader {
     private Properties propertiesEmail;
     private Properties propertiesTimeout;
     private Properties propertiesTransaction;
+    private Properties propertiesETag;
 
     private Properties propertiesRecaptcha;
 
@@ -63,6 +64,7 @@ public class ConfigLoader {
         propertiesTimeout = loadProperties(PROPERTIES_TIMEOUT_FILE);
         propertiesTransaction = loadProperties(PROPERTIES_TRANSACTION_FILE);
         propertiesRecaptcha = loadProperties(PROPERTIES_RECAPTCHA_FILE);
+        propertiesETag = loadProperties(PROPERTIES_ETAG_FILE);
     }
 
     private Properties loadProperties(String fileName) {
@@ -163,5 +165,12 @@ public class ConfigLoader {
 
     public String getRecaptchaApiKey() {
         return propertiesRecaptcha.getProperty(RECAPTCHA_API_KEY);
+    }
+    
+    /**
+     * Zwraca sekret, do tworzenia etaga
+     */
+    public String getETagSecret() {
+        return propertiesETag.getProperty(ETAG_SECRET);
     }
 }

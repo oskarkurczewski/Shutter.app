@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.PhotographerEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -13,13 +14,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/photographer")
 public class PhotographerController extends AbstractController {
 
     @Inject
     PhotographerEndpoint photographerEndpoint;
+
+    @Inject
+    SignatureVerifier signatureVerifier;
 
     /**
      * Punkt końcowy szukający fotografa
@@ -51,8 +57,11 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
-    public DetailedPhotographerInfoDto getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
-        return repeat(() -> photographerEndpoint.getEnhancedPhotographerInfo(login), photographerEndpoint);
+    public Response getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
+        DetailedPhotographerInfoDto detailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getEnhancedPhotographerInfo(login), photographerEndpoint);
+        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedPhotographerInfoDto));
+        return Response.status(Response.Status.ACCEPTED).entity(detailedPhotographerInfoDto).tag(tag).build();
+
     }
 
     /**
@@ -65,7 +74,9 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public DetailedPhotographerInfoDto getPhotographerInfo() throws BaseApplicationException {
-        return repeat(() -> photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
+    public Response getPhotographerInfo() throws BaseApplicationException {
+        DetailedPhotographerInfoDto detailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
+        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedPhotographerInfoDto));
+        return Response.status(Response.Status.ACCEPTED).entity(detailedPhotographerInfoDto).tag(tag).build();
     }
 }

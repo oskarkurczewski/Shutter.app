@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
  * Klasa DTO wykorzystywana przy zwracaniu informacji o fotografie w punkcie końcowym typu GET
  * <code>/api/photographer/{login}/info</code>
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class DetailedPhotographerInfoDto extends DetailedAccountInfoDto {
 
