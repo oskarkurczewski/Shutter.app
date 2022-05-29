@@ -349,6 +349,7 @@ public class AccountService {
     public void registerOwnAccount(Account account)
             throws BaseApplicationException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
+        account.setTwoFAEnabled(false);
         account.setActive(true);
         account.setRegistered(false);
         account.setFailedLogInAttempts(0);
@@ -373,6 +374,7 @@ public class AccountService {
     public void registerAccountByAdmin(Account account)
             throws BaseApplicationException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
+        account.setTwoFAEnabled(false);
         account.setFailedLogInAttempts(0);
         account.setLocale(Locale.forLanguageTag("pl"));
         account.setSecret(UUID.randomUUID().toString());
@@ -624,6 +626,18 @@ public class AccountService {
     }
 
     /**
+     * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
+     *
+     * @param account     użytkownik
+     * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
+     * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
+     */
+    @PermitAll
+    public Boolean is2FAEnabledForUser(Account account) {
+        return account.getTwoFAEnabled();
+    }
+
+    /**
      * Sprawdza, czy dany użytkownik miał już dane hasło ustawione w przeszłości
      *
      * @param newPassword nowe hasło do sprawdzenia
@@ -649,4 +663,16 @@ public class AccountService {
                 totp
         );
     }
+
+    /**
+     * Wyłącza lub włącza dwustopniowe uwierzytelnianie dla użytkownika
+     *
+     * @param account Konto użytkownika
+     */
+    @PermitAll
+    public void toggle2fa(Account account) throws BaseApplicationException {
+        account.setTwoFAEnabled(!account.getTwoFAEnabled());
+        accountFacade.update(account);
+    }
+
 }

@@ -447,6 +447,31 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     /**
+     * Wyłącza lub włącza dwustopniowe uwierzytelnianie dla użytkownika
+     *
+     * @throws BaseApplicationException W przypadku kiedy użytkownik o podanym loginie nie zostanie znaleziony
+     *                                  lub wystąpi nieoczekiwany błąd
+     */
+    @PermitAll
+    public void toggle2fa() throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        accountService.toggle2fa(account);
+    }
+
+    /**
+     * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
+     *
+     * @param login użytkownik
+     * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
+     * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
+     */
+    @PermitAll
+    public Boolean is2FAEnabledForUser(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return accountService.is2FAEnabledForUser(account);
+    }
+
+    /**
      * Pobiera wszystkie grupy w których znajduje się użytkownik o danym loginie
      *
      * @param login login użytkownika, dla którego mają zostać pobrane grupy
