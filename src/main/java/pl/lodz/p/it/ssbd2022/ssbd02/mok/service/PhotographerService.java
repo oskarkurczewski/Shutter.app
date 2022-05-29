@@ -38,7 +38,7 @@ public class PhotographerService {
      * @param login Login fotografa dla którego chemy pozyskać informacje
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      */
-    @PermitAll
+    @RolesAllowed({getPhotographerInfo, getEnhancedPhotographerInfo, getOwnPhotographerInfo})
     public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
         return photographerInfoFacade.findPhotographerByLogin(login);
     }

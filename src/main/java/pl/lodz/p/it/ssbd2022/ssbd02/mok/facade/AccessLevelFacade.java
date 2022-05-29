@@ -9,12 +9,16 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 /**
  * Fasada obsługująca tokeny weryfikujące
@@ -31,6 +35,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
         super(AccessLevelAssignment.class);
     }
 
+    // PermitAll jest niezbędne aby umożliwić rejestrację użytkowników
     @Override
     @PermitAll
     public AccessLevelAssignment persist(AccessLevelAssignment entity) throws BaseApplicationException {
@@ -45,8 +50,9 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
         }
     }
 
+    // DenyAll ponieważ metoda ta obecnie nie jest nigdzie stosowana
     @Override
-    @PermitAll
+    @DenyAll
     public void remove(AccessLevelAssignment entity) throws BaseApplicationException {
         try {
             super.remove(entity);
@@ -60,7 +66,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed({stopBeingPhotographer, becomePhotographer, grantAccessLevel, revokeAccessLevel})
     public AccessLevelAssignment update(AccessLevelAssignment entity) throws BaseApplicationException {
         try {
             return super.update(entity);
@@ -107,7 +113,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
      * @param accessLevelValue Wartość poziomu dostępu, który chcemy wyszukać
      * @return null w przypadku, gdy funkcja nie znajdzie poszukiwanego poziomu dostępu
      */
-    @PermitAll
+    @RolesAllowed({becomePhotographer, stopBeingPhotographer, grantAccessLevel, revokeAccessLevel})
     public AccessLevelAssignment getAccessLevelAssignmentForAccount(Account account, AccessLevelValue accessLevelValue) {
         return account.getAccessLevelAssignmentList().stream()
                 .filter(a -> a.getLevel().getName().equals(accessLevelValue.getName()))

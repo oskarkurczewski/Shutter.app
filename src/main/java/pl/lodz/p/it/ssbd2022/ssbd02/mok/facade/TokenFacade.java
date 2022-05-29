@@ -38,12 +38,14 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         return em;
     }
 
+    // PermitAll aby umożliwić np. uwierzytelnianie 2FA
     @Override
     @PermitAll
     public VerificationToken persist(VerificationToken entity) throws BaseApplicationException {
         return super.persist(entity);
     }
 
+    // PermitAll dla działania serwisów
     @Override
     @PermitAll
     public void remove(VerificationToken entity) throws BaseApplicationException {
@@ -58,6 +60,7 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         }
     }
 
+    // PermitAll aby umożliwić potwierdzenie rejestracji
     @PermitAll
     public VerificationToken find(String token) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery("VerificationToken.findByTokenEquals", VerificationToken.class);
@@ -75,6 +78,7 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         }
     }
 
+    // PermitAll aby umożliwić uwierzytelnianie
     @PermitAll
     public List<VerificationToken> findByAccountIdAndType(Account account, TokenType type) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery(
@@ -93,6 +97,7 @@ public class TokenFacade extends FacadeTemplate<VerificationToken> {
         }
     }
 
+    // PermitAll aby umożliwić działanie serwisów
     @PermitAll
     public List<VerificationToken> findExpiredAfterOfType(TokenType type, LocalDateTime expiresAfter) throws BaseApplicationException {
         TypedQuery<VerificationToken> query = getEm().createNamedQuery(
