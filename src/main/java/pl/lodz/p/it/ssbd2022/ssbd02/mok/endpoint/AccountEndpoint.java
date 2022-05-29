@@ -2,13 +2,13 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.recaptcha.ReCaptchaService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -19,7 +19,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +40,9 @@ public class AccountEndpoint extends AbstractEndpoint {
 
     @Inject
     private PhotographerService photographerService;
+
+    @Inject
+    private ReCaptchaService reCaptchaService;
 
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
@@ -87,6 +89,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto)
             throws BaseApplicationException {
+        reCaptchaService.verify(accountRegisterDto.getReCaptchaToken());
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
         accountService.registerOwnAccount(account);
     }
@@ -285,16 +288,16 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed(listAllAccounts)
     public ListResponseDto<TableAccountDto> getAccountList(
-        int pageNo,
-        int recordsPerPage,
-        String columnName,
-        String order,
-        String login,
-        String email,
-        String name,
-        String surname,
-        Boolean registered,
-        Boolean active
+            int pageNo,
+            int recordsPerPage,
+            String columnName,
+            String order,
+            String login,
+            String email,
+            String name,
+            String surname,
+            Boolean registered,
+            Boolean active
     ) throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
 

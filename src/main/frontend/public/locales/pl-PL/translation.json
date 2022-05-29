@@ -97,7 +97,7 @@
          "equality-error-email": "Adresy email różnią się od siebie",
          "failed-change-email": "Nie udało się zmienić adresu email.",
          "change-password": "nie udało się zmienić hasła.",
-         "equality-error-password": "hasła różnią się od siebi.",
+         "equality-error-password": "hasła różnią się od siebie.",
          "main-settings": "nie udało się zaktualizować danych.",
          "login-credentials": "zły login lub hasło",
          "login-code": "nie udało się wysłać kodu",
