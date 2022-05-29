@@ -76,33 +76,39 @@ public class AuthController {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
         String secret = accountEndpoint.getSecret(data.getLogin());
 
-        if (accountEndpoint.is2FAEnabledForUser(data.getLogin()) && (data.getTwoFACode() == null || !oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode()))) {
+        if (validationResult.getStatus() != CredentialValidationResult.Status.VALID) {
             accountEndpoint.registerFailedLogInAttempt(data.getLogin());
             throw ExceptionFactory.badJWTTokenException();
         }
 
-        if (validationResult.getStatus() == CredentialValidationResult.Status.VALID) {
-            String token = JWTHandler.generateJWT(validationResult);
-
-            if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
-                accountEndpoint.sendAdminAuthenticationWarningEmail(
-                        data.getLogin(),
-                        httpServletRequest.getRemoteAddr()
-                );
+        if (accountEndpoint.is2FAEnabledForUser(data.getLogin())) {
+            if (data.getTwoFACode() == null)  {
+                accountEndpoint.reguest2faCode(data.getLogin());
+                throw ExceptionFactory.twoFARequiredException();
+            } else if (!oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
+                accountEndpoint.registerFailedLogInAttempt(data.getLogin());
+                throw ExceptionFactory.badJWTTokenException();
             }
-
-            LOGGER.log(
-                    Level.INFO,
-                    "Successful authentication for user {0} from IP {1}",
-                    new Object[]{data.getLogin(), httpServletRequest.getRemoteAddr()}
-            );
-
-            accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
-            return Response.ok().entity(new AuthTokenDto(token)).build();
         }
 
-        accountEndpoint.registerFailedLogInAttempt(data.getLogin());
-        throw ExceptionFactory.badJWTTokenException();
+        String token = JWTHandler.generateJWT(validationResult);
+
+        if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
+            accountEndpoint.sendAdminAuthenticationWarningEmail(
+                    data.getLogin(),
+                    httpServletRequest.getRemoteAddr()
+            );
+        }
+
+        LOGGER.log(
+                Level.INFO,
+                "Successful authentication for user {0} from IP {1}",
+                new Object[]{data.getLogin(), httpServletRequest.getRemoteAddr()}
+        );
+
+        accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
+        return Response.ok().entity(new AuthTokenDto(token)).build();
+
     }
 
     /**
