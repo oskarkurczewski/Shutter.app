@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
@@ -403,7 +402,7 @@ public class AccountController extends AbstractController {
     @Path("/get-account-change-log")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOwnAccountChangeLog() throws BaseApplicationException {
-        List<AccountChangeLog> accountChangeLog = repeat(() -> accountEndpoint.getOwnAccountChangeLog(), accountEndpoint);
+        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getOwnAccountChangeLog(), accountEndpoint);
         return Response.status(Response.Status.OK).entity(accountChangeLog).build();
     }
 
@@ -418,7 +417,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/get-account-change-log")
     public Response getAccountChangeLog(@NotNull @Login
                                         @PathParam("login") String login) throws BaseApplicationException {
-        List<AccountChangeLog> accountChangeLog = repeat(() -> accountEndpoint.getAccountChangeLog(login), accountEndpoint);
+        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getAccountChangeLog(login), accountEndpoint);
         return Response.status(Response.Status.OK).entity(accountChangeLog).build();
     }
 

@@ -424,10 +424,12 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @return Historia zmian konta
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
-    @RolesAllowed({getAccountInfo})
-    public List<AccountChangeLog> getOwnAccountChangeLog() throws BaseApplicationException {
+    @RolesAllowed({getOwnAccountInfo})
+    public List<AccountChangeLogDto> getOwnAccountChangeLog() throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
-        return accountService.getAccountChangeLog(account.getLogin());
+        List<AccountChangeLog> accountChangeLog = accountService.getAccountChangeLog(account.getLogin());
+        return accountChangeLog.stream().map(AccountChangeLogDto::new)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -438,8 +440,10 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getEnhancedAccountInfo})
-    public List<AccountChangeLog> getAccountChangeLog(String login) throws BaseApplicationException {
+    public List<AccountChangeLogDto> getAccountChangeLog(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
-        return accountService.getAccountChangeLog(account.getLogin());
+        List<AccountChangeLog> accountChangeLog = accountService.getAccountChangeLog(account.getLogin());
+        return accountChangeLog.stream().map(AccountChangeLogDto::new)
+                .collect(Collectors.toList());
     }
 }
