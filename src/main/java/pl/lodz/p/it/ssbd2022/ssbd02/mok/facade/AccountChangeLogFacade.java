@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import java.util.List;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -30,11 +31,11 @@ public class AccountChangeLogFacade extends FacadeTemplate<AccountChangeLog> {
     }
 
     @PermitAll
-    public AccountChangeLog findByLogin(String login) throws BaseApplicationException {
+    public List<AccountChangeLog> findByLogin(String login) throws BaseApplicationException {
         TypedQuery<AccountChangeLog> query = getEm().createNamedQuery("account_change_log.findByLogin", AccountChangeLog.class);
         query.setParameter("login", login);
         try {
-            return query.getSingleResult();
+            return query.getResultList();
         } catch (NoResultException e) {
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
