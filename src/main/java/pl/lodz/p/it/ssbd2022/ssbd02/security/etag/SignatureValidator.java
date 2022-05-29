@@ -19,7 +19,7 @@ public class SignatureValidator implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) {
-        String header = containerRequestContext.getHeaderString("If-Match");
+        String header = containerRequestContext.getHeaderString("if-Match");
         if (header == null || header.isEmpty()) {
             containerRequestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).build());
         } else if (!signatureVerifier.validateEntitySignature(header)) {

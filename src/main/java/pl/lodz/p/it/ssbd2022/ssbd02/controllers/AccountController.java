@@ -258,7 +258,7 @@ public class AccountController extends AbstractController {
     @SignatureValidatorFilter
     public Response editOwnAccountInfo(
             @NotNull @Valid EditAccountInfoDto editAccountInfoDto,
-            @HeaderParam("If-match") @NotNull @NotEmpty String tagValue
+            @HeaderParam("if-match") @NotNull @NotEmpty String tagValue
     ) throws BaseApplicationException {
         if (!signatureVerifier.verifyEntityIntegrity(tagValue, editAccountInfoDto)) {
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
@@ -282,7 +282,7 @@ public class AccountController extends AbstractController {
     public Response editAccountInfo(
             @NotNull @PathParam("login") String login,
             @NotNull @Valid EditAccountInfoAsAdminDto editAccountInfoAsAdminDto,
-            @HeaderParam("If-match") @NotNull @NotEmpty String tagValue
+            @HeaderParam("if-match") @NotNull @NotEmpty String tagValue
     ) throws BaseApplicationException {
         if (!signatureVerifier.verifyEntityIntegrity(tagValue, editAccountInfoAsAdminDto)) {
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
