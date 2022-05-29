@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./style.scss";
 import Card from "components/shared/Card";
 import Table from "components/shared/Table";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCheck, FaEdit } from "react-icons/fa";
-import { useGetUserListQuery } from "redux/service/api";
+import {
+   useGetAccountListPreferencesMutation,
+   useGetUserListMutation,
+} from "redux/service/api";
 
 const AccountListPage = () => {
    const [headers, setHeaders] = useState([
@@ -64,22 +67,97 @@ const AccountListPage = () => {
       },
    ]);
 
+   const [tableData, setTableData] = useState([]);
+
+   const [params, setParams] = useState({
+      pageNo: 1,
+      recordsPerPage: 25,
+      columnName: "id",
+      order: "asc",
+   });
+
    const location = useLocation();
    const navigate = useNavigate();
    const queryParams = new URLSearchParams(location.search);
 
-   const pageNo = parseInt(queryParams.get("pageNo")) || 1;
-   const recordsPerPage = parseInt(queryParams.get("records")) || 25;
-   const columnName = queryParams.get("column") || "id";
-   const order = queryParams.get("order") || "asc";
+   // Fetching
+   const [fetchParameters, { data: databaseParameters, isSuccess: parametersSuccess }] =
+      useGetAccountListPreferencesMutation();
 
-   const [tableData, setTableData] = useState([]);
-   const { data, refetch } = useGetUserListQuery({
-      pageNo,
-      recordsPerPage,
-      columnName,
-      order,
-   });
+   const [fetchList, { data }] = useGetUserListMutation();
+   // const pageNo = parseInt(queryParams.get("pageNo")) || 1;
+   // const recordsPerPage = parseInt(queryParams.get("records")) || 25;
+   // const columnName = queryParams.get("column") || "id";
+   // const order = queryParams.get("order") || "asc";
+
+   const allRecords = data?.allRecords || 0;
+   const allPages = data?.allPages || 0;
+
+   useEffect(() => {
+      fetchParameters();
+   }, []);
+
+   useEffect(() => {
+      if (parametersSuccess) {
+         const dbOrder = databaseParameters.orderAsc ? "asc" : "desc";
+
+         setParams({
+            pageNo: databaseParameters.page,
+            recordsPerPage: databaseParameters.recordsPerPage,
+            columnName: databaseParameters.orderBy,
+            order: dbOrder,
+         });
+
+         setHeaders(
+            headers.map((hd) =>
+               hd.id === databaseParameters.orderBy
+                  ? { ...hd, sort: dbOrder }
+                  : { ...hd, sort: null }
+            )
+         );
+      }
+   }, [parametersSuccess]);
+
+   useEffect(() => {
+      if (parametersSuccess) {
+         fetchList(params);
+      }
+      setQueryParam("column", params.columnName);
+      setQueryParam("order", params.order);
+      setQueryParam("pageNo", String(params.pageNo));
+      setQueryParam("records", String(params.recordsPerPage));
+   }, [params]);
+
+   useEffect(() => {
+      const sorted = headers.find((header) => header.sort);
+      setParams({ ...params, columnName: sorted.id, order: sorted.sort });
+   }, [headers]);
+
+   useEffect(() => {
+      const list = data?.list?.map((item) => [
+         item.id,
+         item.login,
+         item.email,
+         item.name,
+         item.surname,
+         <>
+            {item.accessLevels?.map((accessLevel) => (
+               <p key={`${item.login}-${accessLevel}`}>{accessLevel}</p>
+            ))}
+         </>,
+         item.isActive ? <FaCheck className="check" /> : <></>,
+         item.isRegistered ? <FaCheck className="check" /> : <></>,
+         <div key={item.login} className="edit-button">
+            <Link to={`/users/${item.login}/edit`}>
+               <div role="button">
+                  <FaEdit />
+               </div>
+            </Link>
+         </div>,
+      ]);
+
+      list && setTableData(list);
+   }, [data]);
 
    const setQueryParam = (key: string, value: string) => {
       queryParams.set(key, value);
@@ -88,47 +166,6 @@ const AccountListPage = () => {
          search: queryParams.toString(),
       });
    };
-
-   const allRecords = data?.allRecords || 0;
-   const allPages = data?.allPages || 0;
-
-   useEffect(() => {
-      const sorted = headers.find((header) => header.sort);
-      setQueryParam("column", sorted.id);
-      setQueryParam("order", sorted.sort);
-      setQueryParam("pageNo", "1");
-   }, [headers]);
-
-   useEffect(() => {
-      refetch();
-      setTableData([]);
-      data?.list.forEach((item) => {
-         setTableData((a) => [
-            ...a,
-            [
-               item.id,
-               item.login,
-               item.email,
-               item.name,
-               item.surname,
-               <>
-                  {item.accessLevels?.map((accessLevel) => (
-                     <p key={`${item.login}-${accessLevel}`}>{accessLevel}</p>
-                  ))}
-               </>,
-               item.isActive ? <FaCheck className="check" /> : <></>,
-               item.isRegistered ? <FaCheck className="check" /> : <></>,
-               <div key={item.login} className="edit-button">
-                  <Link to={`/users/${item.login}/edit`}>
-                     <div role="button">
-                        <FaEdit />
-                     </div>
-                  </Link>
-               </div>,
-            ],
-         ]);
-      });
-   }, [data]);
 
    return (
       <div className="account-list-page-wrapper">
@@ -141,13 +178,12 @@ const AccountListPage = () => {
                }}
                allRecords={allRecords}
                allPages={allPages}
-               pageNo={pageNo}
-               setPageNo={(num) => setQueryParam("pageNo", num.toString())}
-               recordsPerPage={recordsPerPage}
-               setRecordsPerPage={(num) => {
-                  setQueryParam("records", num.toString());
-                  setQueryParam("pageNo", "1");
-               }}
+               pageNo={params.pageNo}
+               setPageNo={(num) => setParams({ ...params, pageNo: num })}
+               recordsPerPage={params.recordsPerPage}
+               setRecordsPerPage={(num) =>
+                  setParams({ ...params, pageNo: 1, recordsPerPage: num })
+               }
             />
          </Card>
       </div>
