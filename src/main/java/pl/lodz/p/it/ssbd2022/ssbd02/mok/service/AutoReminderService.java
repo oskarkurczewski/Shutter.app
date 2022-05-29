@@ -17,6 +17,7 @@ import javax.ejb.TimerService;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Startup
 @Singleton
@@ -59,6 +60,7 @@ public class AutoReminderService {
         for (VerificationToken token : toRemindTokens) {
             emailService.sendRegistrationConfirmationReminder(
                     token.getTargetUser().getEmail(),
+                    token.getTargetUser().getLocale(),
                     token
             );
         }

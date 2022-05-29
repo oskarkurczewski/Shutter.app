@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeSomeonesPassword;
 
@@ -92,8 +93,11 @@ public class VerificationTokenService {
                 TokenType.REGISTRATION_CONFIRMATION
         );
         tokenFacade.persist(registrationToken);
-        emailService.sendRegistrationEmail(account.getEmail(), registrationToken);
-
+        emailService.sendRegistrationEmail(
+                account.getEmail(),
+                account.getLocale(),
+                registrationToken
+        );
     }
 
     /**
@@ -138,7 +142,11 @@ public class VerificationTokenService {
         );
         tokenFacade.persist(verificationToken);
 
-        emailService.sendPasswordResetEmail(account.getEmail(), verificationToken);
+        emailService.sendPasswordResetEmail(
+                account.getEmail(),
+                account.getLocale(),
+                verificationToken
+        );
     }
 
     /**
@@ -160,7 +168,11 @@ public class VerificationTokenService {
         );
         tokenFacade.persist(verificationToken);
 
-        emailService.sendForcedPasswordResetEmail(account.getEmail(), verificationToken);
+        emailService.sendForcedPasswordResetEmail(
+                account.getEmail(),
+                account.getLocale(),
+                verificationToken
+        );
     }
 
     /**
@@ -198,7 +210,11 @@ public class VerificationTokenService {
         );
         tokenFacade.persist(verificationToken);
 
-        emailService.sendEmailUpdateEmail(account.getEmail(), verificationToken);
+        emailService.sendEmailUpdateEmail(
+                account.getEmail(),
+                account.getLocale(),
+                verificationToken
+        );
     }
 
     @PermitAll
@@ -215,7 +231,11 @@ public class VerificationTokenService {
 
         tokenFacade.persist(verificationToken);
 
-        emailService.sendEmailUnblockAccount(account.getEmail(), verificationToken);
+        emailService.sendEmailUnblockAccount(
+                account.getEmail(),
+                account.getLocale(),
+                verificationToken
+        );
     }
 
     /**
@@ -251,7 +271,11 @@ public class VerificationTokenService {
         );
         tokenFacade.persist(verificationToken);
 
-        emailService.sendEmailUnblockAccount(account.getEmail(), verificationToken);
+        emailService.sendEmailUnblockAccount(
+                account.getEmail(),
+                account.getLocale(),
+                verificationToken
+        );
     }
 
     /**

@@ -16,6 +16,7 @@ import javax.ejb.TimerService;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Startup
 @Singleton
@@ -59,6 +60,7 @@ public class EmailChangeAutoReminderService {
             if (token.getExpiration().isAfter(LocalDateTime.now())) {
                 emailService.sendEmailResetReminderEmail(
                         token.getTargetUser().getEmail(),
+                        token.getTargetUser().getLocale(),
                         token
                 );
             }

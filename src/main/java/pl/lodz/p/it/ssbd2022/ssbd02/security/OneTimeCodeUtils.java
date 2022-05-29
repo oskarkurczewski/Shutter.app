@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
@@ -27,10 +28,12 @@ public class OneTimeCodeUtils {
                 .build();
     }
 
+    @PermitAll
     public String generateCode(String secret) {
-        TOTP generator = createTotp(secret);
-        return generator.now();
+        TOTP generator = createTotp(secret); return generator.now();
     }
+
+    @PermitAll
     public boolean verifyCode(String secret, String code) {
         TOTP verifier = createTotp(secret);
         return verifier.verify(code);

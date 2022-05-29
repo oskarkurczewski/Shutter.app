@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -87,9 +88,9 @@ public class AccountService {
         account.setActive(active);
 
         if (!active) {
-            emailService.sendAccountBlocked(account.getEmail());
+            emailService.sendAccountBlocked(account.getEmail(), account.getLocale());
         } else {
-            emailService.sendAccountUnblockedEmail(account.getEmail());
+            emailService.sendAccountUnblockedEmail(account.getEmail(), account.getLocale());
         }
         accountFacade.update(account);
     }
@@ -256,11 +257,13 @@ public class AccountService {
         if (active) {
             emailService.sendAccessLevelGrantedEmail(
                     account.getEmail(),
+                    account.getLocale(),
                     accessLevelValue.getName()
             );
         } else {
             emailService.sendAccessLevelRevokedEmail(
                     account.getEmail(),
+                    account.getLocale(),
                     accessLevelValue.getName()
             );
         }
@@ -349,6 +352,7 @@ public class AccountService {
         account.setActive(true);
         account.setRegistered(false);
         account.setFailedLogInAttempts(0);
+        account.setLocale(Locale.forLanguageTag("pl"));
         account.setSecret(UUID.randomUUID().toString());
 
         addNewAccount(account);
@@ -370,6 +374,7 @@ public class AccountService {
             throws BaseApplicationException {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setFailedLogInAttempts(0);
+        account.setLocale(Locale.forLanguageTag("pl"));
         account.setSecret(UUID.randomUUID().toString());
 
         addNewAccount(account);
@@ -434,7 +439,7 @@ public class AccountService {
         account.setRegistered(true);
         addClientAccessLevel(account);
         accountFacade.update(account);
-        emailService.sendAccountActivated(account.getEmail());
+        emailService.sendAccountActivated(account.getEmail(), account.getLocale());
     }
 
     /**
@@ -567,7 +572,7 @@ public class AccountService {
         if (failedAttempts >= 3) {
             account.setActive(false);
             account.setFailedLogInAttempts(0);
-            emailService.sendAccountBlockedDueToToManyLogInAttemptsEmail(account.getEmail());
+            emailService.sendAccountBlockedDueToToManyLogInAttemptsEmail(account.getEmail(), account.getLocale());
         }
     }
 
@@ -591,7 +596,12 @@ public class AccountService {
      */
     @PermitAll
     public void sendAdminAuthenticationWarningEmail(Account account, String ipAddress) {
-        emailService.sendAdminAuthenticationWaringEmail(account.getEmail(), account.getLogin(), ipAddress);
+        emailService.sendAdminAuthenticationWaringEmail(
+                account.getEmail(),
+                account.getLocale(),
+                account.getLogin(),
+                ipAddress
+        );
     }
 
     @RolesAllowed(getAccountInfo)
@@ -632,6 +642,11 @@ public class AccountService {
     @PermitAll
     public void send2faCode(Account account) {
         String totp = codeUtils.generateCode(account.getSecret());
-        emailService.sendEmail2FA(account.getEmail(), account.getLogin(), totp);
+        emailService.sendEmail2FA(
+                account.getEmail(),
+                account.getLocale(),
+                account.getLogin(),
+                totp
+        );
     }
 }
