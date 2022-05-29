@@ -44,7 +44,6 @@ const ResetPasswordPage = () => {
                      return <p>{t("message.loading.reset-password")}</p>;
                   }
                   if (isError) {
-                     return <p className="error">{t("message.error.change-email")}</p>;
                      const err = error as any;
                      if (
                         err.status === 400 &&
@@ -52,13 +51,11 @@ const ResetPasswordPage = () => {
                      ) {
                         return (
                            <p className="error">
-                              Nie możesz użyć hasła, z którego korzystałeś/aś niedawno!
+                              {t("message.error.password-not-unique")}
                            </p>
                         );
                      }
-                     return (
-                        <p className="error">Nie udało się wysłać wiadomości email</p>
-                     );
+                     return <p className="error">{t("message.error.change-email")}</p>;
                   }
                   if (isSuccess) {
                      return <p>{t("message.success.change-email")}</p>;
