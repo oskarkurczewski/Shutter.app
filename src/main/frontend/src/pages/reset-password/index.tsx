@@ -12,7 +12,6 @@ const ResetPasswordPage = () => {
 
    const { token } = useParams();
    const [password, setPassword] = useState<string>("");
-   const [showMesage, setShowMessage] = useState<boolean>(false);
    const [resetPasswordMutation, { isLoading, isSuccess, isError, error }] =
       useResetPasswordMutation();
 
@@ -55,12 +54,12 @@ const ResetPasswordPage = () => {
                            </p>
                         );
                      }
-                     return <p className="error">{t("message.error.change-email")}</p>;
+                     return <p className="error">{t("message.error.change-password")}</p>;
                   }
                   if (isSuccess) {
                      return <p>{t("message.success.change-email")}</p>;
                   }
-               })()}{" "}
+               })()}
             </form>
          </Card>
       </section>
