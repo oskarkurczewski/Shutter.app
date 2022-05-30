@@ -173,6 +173,7 @@ export const api = createApi({
          query: (data) => ({
             url: `/account/${data.login}/request-reset`,
             method: "POST",
+            body: { reCaptchaToken: data.captcha },
          }),
       }),
 

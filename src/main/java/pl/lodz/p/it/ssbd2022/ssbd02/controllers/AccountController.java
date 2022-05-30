@@ -87,7 +87,7 @@ public class AccountController extends AbstractController {
     @Path("{login}/request-reset")
     @Consumes(MediaType.APPLICATION_JSON)
     public void requestPasswordReset(@PathParam("login") String login,
-                                     @NotNull @Valid RecaptchaTokenDto captcha) throws BaseApplicationException {
+                                     @NotNull RecaptchaTokenDto captcha) throws BaseApplicationException {
         repeat(() -> accountEndpoint.requestPasswordReset(login, captcha), accountEndpoint);
     }
 
