@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./style.scss";
 import Button from "components/shared/Button";
 import Card from "components/shared/Card";
@@ -10,10 +10,12 @@ import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/api";
 import Form from "components/shared/Form";
 import { useTranslation } from "react-i18next";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const RegisterPage = () => {
    const { t } = useTranslation();
 
+   const recaptchaRef = useRef(null);
    const [formState, setFormState] = useState({
       login: "",
       email: "",
@@ -42,9 +44,10 @@ const RegisterPage = () => {
    }: React.ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
 
-   const onSubmit = (e) => {
+   const onSubmit = async (e) => {
       e.preventDefault();
-      registerMutation(formState);
+      const captchaToken = await recaptchaRef.current.getValue();
+      registerMutation({ ...formState, reCaptchaToken: captchaToken });
    };
 
    return (
@@ -135,6 +138,10 @@ const RegisterPage = () => {
                      >
                         {t("message.info.tos")}
                      </Checkbox>
+                     <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LcOjh4gAAAAAJRdv-oKWqqj8565Bz6Y3QlmJv5L"
+                     />
                   </div>
 
                   {isSuccess && <p>{t("message.success.register")}</p>}

@@ -560,7 +560,7 @@ ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.created_by" FOREIGN K
 
 ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
 
-ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.account_it" FOREIGN KEY (account_id) REFERENCES public.account(id);
+ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
 
 ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.changed_by" FOREIGN KEY (changed_by) REFERENCES public.account(id);
 

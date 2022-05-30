@@ -40,10 +40,11 @@ public class AccountEndpoint extends AbstractEndpoint {
     private VerificationTokenService verificationTokenService;
 
     @Inject
-    private PhotographerService photographerService;
+    private ReCaptchaService reCaptchaService;
+
 
     @Inject
-    private ReCaptchaService reCaptchaService;
+    private PhotographerService photographerService;
 
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
