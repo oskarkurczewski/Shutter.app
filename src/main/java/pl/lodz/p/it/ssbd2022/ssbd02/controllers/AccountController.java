@@ -16,6 +16,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/account")
 public class AccountController extends AbstractController {
@@ -25,7 +26,6 @@ public class AccountController extends AbstractController {
 
     @Inject
     SignatureVerifier signatureVerifier;
-
 
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
@@ -444,5 +444,34 @@ public class AccountController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+
+    /**
+     * Zwraca historię zmian dla aktualnego użytkownika
+     *
+     * @return Historia zmian konta
+     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @GET
+    @Path("/get-account-change-log")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOwnAccountChangeLog() throws BaseApplicationException {
+        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getOwnAccountChangeLog(), accountEndpoint);
+        return Response.status(Response.Status.OK).entity(accountChangeLog).build();
+    }
+
+    /**
+     * Zwraca historię zmian dla użytkownika o podanym loginie
+     *
+     * @param login login użytkownika, dla którego zwracana jest historia zmian
+     * @return Historia zmian konta
+     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @GET
+    @Path("/{login}/get-account-change-log")
+    public Response getAccountChangeLog(@NotNull @Login
+                                        @PathParam("login") String login) throws BaseApplicationException {
+        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getAccountChangeLog(login), accountEndpoint);
+        return Response.status(Response.Status.OK).entity(accountChangeLog).build();
+    }
 
 }
