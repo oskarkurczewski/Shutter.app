@@ -15,7 +15,6 @@ import {
    resetPasswordRequest,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
-import { AuthState } from "redux/types/stateTypes";
 import { AccessLevel } from "types/AccessLevel";
 import { RootState } from "../store";
 

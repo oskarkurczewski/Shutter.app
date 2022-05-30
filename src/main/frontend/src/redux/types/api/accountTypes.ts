@@ -28,9 +28,15 @@ export interface registerAccountRequest {
    email: string;
    name: string;
    surname: string;
+   reCaptchaToken: string;
 }
 
-export interface registerAccountAsAdminRequest extends registerAccountRequest {
+export interface registerAccountAsAdminRequest {
+   login: string;
+   password: string;
+   email: string;
+   name: string;
+   surname: string;
    registered: boolean;
    active: boolean;
 }

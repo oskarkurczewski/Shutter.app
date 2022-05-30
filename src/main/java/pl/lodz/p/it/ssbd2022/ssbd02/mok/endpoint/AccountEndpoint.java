@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.recaptcha.ReCaptchaService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -38,6 +39,10 @@ public class AccountEndpoint extends AbstractEndpoint {
 
     @Inject
     private VerificationTokenService verificationTokenService;
+
+    @Inject
+    private ReCaptchaService reCaptchaService;
+
 
     @Inject
     private PhotographerService photographerService;
@@ -87,6 +92,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto)
             throws BaseApplicationException {
+        reCaptchaService.verify(accountRegisterDto.getReCaptchaToken());
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
         accountService.registerOwnAccount(account);
     }
