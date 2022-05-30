@@ -18,7 +18,6 @@ const RequestResetPasswordPage = () => {
 
    const onSubmit = async (e) => {
       e.preventDefault();
-
       const captchaToken = await recaptchaRef.current.getValue();
 
       await requestResetPasswordMutation({ login: login, captcha: captchaToken });

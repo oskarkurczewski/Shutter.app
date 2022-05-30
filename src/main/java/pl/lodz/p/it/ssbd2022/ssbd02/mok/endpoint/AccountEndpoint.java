@@ -359,7 +359,8 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     @PermitAll
-    public void requestPasswordReset(String login) throws BaseApplicationException {
+    public void requestPasswordReset(String login, RecaptchaTokenDto captcha) throws BaseApplicationException {
+        reCaptchaService.verify(captcha.getReCaptchaToken());
         Account account = accountService.findByLogin(login);
         verificationTokenService.sendPasswordResetToken(account);
     }
