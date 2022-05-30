@@ -48,6 +48,29 @@ CREATE TABLE public.account
 
 ALTER TABLE public.account OWNER TO ssbd02admin;
 
+CREATE TABLE public.account_change_log
+(
+    version       bigint,
+    id            bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
+    account_id    bigint                NOT NULL,
+    login         character varying(64) NOT NULL,
+    email         character varying(64) NOT NULL,
+    password      character varying(60) NOT NULL,
+    name          character varying(64) NOT NULL,
+    surname       character varying(64) NOT NULL,
+    registered    boolean DEFAULT false NOT NULL,
+    active        boolean DEFAULT true  NOT NULL,
+    failed_logins integer DEFAULT 0     NOT NULL,
+    last_login    timestamp,
+    created_by    bigint,
+    created_at    timestamp,
+    secret        character varying(36),
+    modified_by   bigint,
+    modified_at   timestamp
+);
+
+ALTER TABLE public.account_change_log OWNER TO ssbd02admin;
+
 CREATE TABLE public.access_level
 (
     version bigint,
@@ -363,6 +386,8 @@ ALTER TABLE ONLY public.account ADD CONSTRAINT account_email_key UNIQUE (email);
 ALTER TABLE ONLY public.account ADD CONSTRAINT account_login_key UNIQUE (login);
 
 ALTER TABLE ONLY public.account ADD CONSTRAINT account_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.account_it" FOREIGN KEY (account_id) REFERENCES public.account(id);
 
 ALTER TABLE ONLY public.availability ADD CONSTRAINT availability_pkey PRIMARY KEY (id);
 
