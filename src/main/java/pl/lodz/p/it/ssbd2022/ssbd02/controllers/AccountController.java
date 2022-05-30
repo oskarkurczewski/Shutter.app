@@ -6,7 +6,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
-import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -19,8 +18,6 @@ public class AccountController extends AbstractController {
 
     @Inject
     AccountEndpoint accountEndpoint;
-
-
 
     /**
      * Zmienia status użytkownika o danym loginie na zablokowany
@@ -89,8 +86,9 @@ public class AccountController extends AbstractController {
     @POST
     @Path("{login}/request-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void requestPasswordReset(@PathParam("login") String login) throws BaseApplicationException {
-        repeat(() -> accountEndpoint.requestPasswordReset(login), accountEndpoint);
+    public void requestPasswordReset(@PathParam("login") String login,
+                                     @NotNull @Valid RecaptchaTokenDto captcha) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.requestPasswordReset(login, captcha), accountEndpoint);
     }
 
     /**
