@@ -24,18 +24,18 @@ VALUES (0, 'ADMINISTRATOR'),
        (0, 'PHOTOGRAPHER'),
        (0, 'CLIENT');
 
-INSERT INTO public.account (version, login, email, name, surname, locale, active, password, registered,
+INSERT INTO public.account (version, login, email, name, surname, locale, two_factor_auth, active, password, registered,
                             created_at, secret) OVERRIDING SYSTEM VALUE
-VALUES (0, 'aurelian', 'aurelian@rzym.it', 'Lucjusz', 'Aurelian', 'pl', true,
+VALUES (0, 'aurelian', 'aurelian@rzym.it', 'Lucjusz', 'Aurelian', 'pl', false, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '1c9ca805-4f1b-4875-9fbc-4fa4ee45f182'),
-       (1, 'majster', 'majster@nadachu.pl', 'majster', 'nadachu', 'pl', true,
+       (1, 'majster', 'majster@nadachu.pl', 'majster', 'nadachu', 'pl', false, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '14d25d6f-f757-4559-ac5d-64aa4703fccb'),
-       (1, 'majster2', 'majster2@nadachu.pl', 'majster', 'nadachu', 'pl', true,
+       (1, 'majster2', 'majster2@nadachu.pl', 'majster', 'nadachu', 'pl', true, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '215a0e2e-b6e5-45d5-902e-9beea66a3826'),
-       (1, 'majster3', 'majster3@nadachu.pl', 'majster', 'nadachu', 'pl', true,
+       (1, 'majster3', 'majster3@nadachu.pl', 'majster', 'nadachu', 'pl', true, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '97ee343b-9e6b-429f-8ece-d0c103c0f483') ON CONFLICT DO NOTHING;
 

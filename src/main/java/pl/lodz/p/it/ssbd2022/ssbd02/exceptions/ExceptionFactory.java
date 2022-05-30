@@ -56,6 +56,10 @@ public class ExceptionFactory {
         return new UnexpectedFailException("exception.unexpected");
     }
 
+    public static TwoFARequiredException twoFARequiredException() {
+        return new TwoFARequiredException("exception.2_fa_code.required");
+    }
+
     public static AvailabilityOverlapException availabilityOverlapException() {
         return new AvailabilityOverlapException("exception.availability.overlap");
     }

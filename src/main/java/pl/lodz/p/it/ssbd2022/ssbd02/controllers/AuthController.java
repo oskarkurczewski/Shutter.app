@@ -2,8 +2,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 
 import io.fusionauth.jwt.domain.JWT;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AuthTokenDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
@@ -75,31 +77,39 @@ public class AuthController {
         CredentialValidationResult validationResult = storeHandler.validate(data.getCredential());
         String secret = accountEndpoint.getSecret(data.getLogin());
 
-        if (
-                validationResult.getStatus() == CredentialValidationResult.Status.VALID
-//                        && oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())
-        ) {
-            String token = JWTHandler.generateJWT(validationResult);
-
-            if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
-                accountEndpoint.sendAdminAuthenticationWarningEmail(
-                        data.getLogin(),
-                        httpServletRequest.getRemoteAddr()
-                );
-            }
-
-            LOGGER.log(
-                    Level.INFO,
-                    "Successful authentication for user {0} from IP {1}",
-                    new Object[]{data.getLogin(), httpServletRequest.getRemoteAddr()}
-            );
-
-            accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
-            return Response.ok().entity(new AuthTokenDto(token)).build();
+        if (validationResult.getStatus() != CredentialValidationResult.Status.VALID) {
+            accountEndpoint.registerFailedLogInAttempt(data.getLogin());
+            throw ExceptionFactory.badJWTTokenException();
         }
 
-        accountEndpoint.registerFailedLogInAttempt(data.getLogin());
-        throw ExceptionFactory.badJWTTokenException();
+        if (accountEndpoint.is2FAEnabledForUser(data.getLogin())) {
+            if (data.getTwoFACode() == null)  {
+                accountEndpoint.reguest2faCode(data.getLogin());
+                throw ExceptionFactory.twoFARequiredException();
+            } else if (!oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
+                accountEndpoint.registerFailedLogInAttempt(data.getLogin());
+                throw ExceptionFactory.badJWTTokenException();
+            }
+        }
+
+        String token = JWTHandler.generateJWT(validationResult);
+
+        if (validationResult.getCallerGroups().contains(ADMINISTRATOR)) {
+            accountEndpoint.sendAdminAuthenticationWarningEmail(
+                    data.getLogin(),
+                    httpServletRequest.getRemoteAddr()
+            );
+        }
+
+        LOGGER.log(
+                Level.INFO,
+                "Successful authentication for user {0} from IP {1}",
+                new Object[]{data.getLogin(), httpServletRequest.getRemoteAddr()}
+        );
+
+        accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
+        return Response.ok().entity(new AuthTokenDto(token)).build();
+
     }
 
     /**

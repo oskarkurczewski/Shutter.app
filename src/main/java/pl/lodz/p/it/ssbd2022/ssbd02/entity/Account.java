@@ -75,6 +75,10 @@ public class Account extends ManagedEntity {
     private Locale locale;
 
     @NotNull
+    @Column(name="two_factor_auth", nullable = false)
+    private Boolean twoFAEnabled;
+
+    @NotNull
     @Size(min = 8, max = 64)
     @Column(name = "password", nullable = false)
     @ToString.Exclude

@@ -2,14 +2,13 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.recaptcha.ReCaptchaService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -41,6 +40,9 @@ public class AccountEndpoint extends AbstractEndpoint {
 
     @Inject
     private PhotographerService photographerService;
+
+    @Inject
+    private ReCaptchaService reCaptchaService;
 
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
@@ -87,6 +89,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto)
             throws BaseApplicationException {
+        reCaptchaService.verify(accountRegisterDto.getReCaptchaToken());
         Account account = accountRegisterDtoToAccount(accountRegisterDto);
         accountService.registerOwnAccount(account);
     }
@@ -285,16 +288,16 @@ public class AccountEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed(listAllAccounts)
     public ListResponseDto<TableAccountDto> getAccountList(
-        int pageNo,
-        int recordsPerPage,
-        String columnName,
-        String order,
-        String login,
-        String email,
-        String name,
-        String surname,
-        Boolean registered,
-        Boolean active
+            int pageNo,
+            int recordsPerPage,
+            String columnName,
+            String order,
+            String login,
+            String email,
+            String name,
+            String surname,
+            Boolean registered,
+            Boolean active
     ) throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
 
@@ -441,6 +444,31 @@ public class AccountEndpoint extends AbstractEndpoint {
     public void reguest2faCode(String login) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
         accountService.send2faCode(account);
+    }
+
+    /**
+     * Wyłącza lub włącza dwustopniowe uwierzytelnianie dla użytkownika
+     *
+     * @throws BaseApplicationException W przypadku kiedy użytkownik o podanym loginie nie zostanie znaleziony
+     *                                  lub wystąpi nieoczekiwany błąd
+     */
+    @PermitAll
+    public void toggle2fa() throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        accountService.toggle2fa(account);
+    }
+
+    /**
+     * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
+     *
+     * @param login użytkownik
+     * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
+     * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
+     */
+    @PermitAll
+    public Boolean is2FAEnabledForUser(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        return accountService.is2FAEnabledForUser(account);
     }
 
     /**

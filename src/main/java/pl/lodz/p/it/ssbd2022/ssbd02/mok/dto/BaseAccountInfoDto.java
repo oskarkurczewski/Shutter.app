@@ -24,6 +24,8 @@ public class BaseAccountInfoDto {
     @NotNull
     private String surname;
 
+    @NotNull
+    private Boolean twoFAEnabled;
 
 
     /**
@@ -35,6 +37,7 @@ public class BaseAccountInfoDto {
         email = account.getEmail();
         name = account.getName();
         surname = account.getSurname();
+        twoFAEnabled = account.getTwoFAEnabled();
     }
 
 }

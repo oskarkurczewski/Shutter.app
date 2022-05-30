@@ -25,6 +25,8 @@ public class DetailedAccountInfoDto extends TracableDto {
 
     private String surname;
 
+    private Boolean twoFAEnabled;
+
     private Boolean active;
 
     private Boolean registered;
@@ -55,8 +57,10 @@ public class DetailedAccountInfoDto extends TracableDto {
         email = account.getEmail();
         name = account.getName();
         surname = account.getSurname();
+        twoFAEnabled = account.getTwoFAEnabled();
         active = account.getActive();
         registered = account.getRegistered();
+
     }
 
 }
