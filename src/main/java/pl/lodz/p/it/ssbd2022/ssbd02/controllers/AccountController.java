@@ -6,20 +6,19 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
-import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/account")
 public class AccountController extends AbstractController {
 
     @Inject
     AccountEndpoint accountEndpoint;
-
 
 
     /**
@@ -404,5 +403,34 @@ public class AccountController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+
+    /**
+     * Zwraca historię zmian dla aktualnego użytkownika
+     *
+     * @return Historia zmian konta
+     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @GET
+    @Path("/get-account-change-log")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOwnAccountChangeLog() throws BaseApplicationException {
+        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getOwnAccountChangeLog(), accountEndpoint);
+        return Response.status(Response.Status.OK).entity(accountChangeLog).build();
+    }
+
+    /**
+     * Zwraca historię zmian dla użytkownika o podanym loginie
+     *
+     * @param login login użytkownika, dla którego zwracana jest historia zmian
+     * @return Historia zmian konta
+     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @GET
+    @Path("/{login}/get-account-change-log")
+    public Response getAccountChangeLog(@NotNull @Login
+                                        @PathParam("login") String login) throws BaseApplicationException {
+        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getAccountChangeLog(login), accountEndpoint);
+        return Response.status(Response.Status.OK).entity(accountChangeLog).build();
+    }
 
 }

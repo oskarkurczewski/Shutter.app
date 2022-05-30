@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
@@ -19,7 +20,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -456,6 +456,35 @@ public class AccountEndpoint extends AbstractEndpoint {
         return account.getAccessLevelAssignmentList().stream()
                 .filter(accessLevel -> accessLevel.getActive())
                 .map(accessLevel -> accessLevel.getLevel().getName())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Zwraca historię zmian dla aktualnego użytkownika
+     *
+     * @return Historia zmian konta
+     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @RolesAllowed({getOwnAccountInfo})
+    public List<AccountChangeLogDto> getOwnAccountChangeLog() throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        List<AccountChangeLog> accountChangeLog = accountService.getAccountChangeLog(account.getLogin());
+        return accountChangeLog.stream().map(AccountChangeLogDto::new)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Zwraca historię zmian dla konta
+     *
+     * @param login Login użytkownika, którego historia zmian konta ma być wyszukana
+     * @return Historia zmian konta
+     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
+     */
+    @RolesAllowed({getEnhancedAccountInfo})
+    public List<AccountChangeLogDto> getAccountChangeLog(String login) throws BaseApplicationException {
+        Account account = accountService.findByLogin(login);
+        List<AccountChangeLog> accountChangeLog = accountService.getAccountChangeLog(account.getLogin());
+        return accountChangeLog.stream().map(AccountChangeLogDto::new)
                 .collect(Collectors.toList());
     }
 }
