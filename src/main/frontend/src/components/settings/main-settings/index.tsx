@@ -19,7 +19,7 @@ const MainSettings = () => {
          <p>{t("message.info.main-settings")}</p>
          <div className="row">
             <TextInput
-               label={t("labe.first-name")}
+               label={t("label.first-name")}
                placeholder={t("label.first-name")}
                required
                value={name}

@@ -9,7 +9,8 @@
          "settings": "ustawienia",
          "users": "użytkownicy",
          "reports": "zgłoszenia",
-         "adduser": "dodaj użytkownika"
+         "adduser": "dodaj użytkownika",
+         "logout": "wyloguj się"
       }
    },
    "auth": {
@@ -64,7 +65,7 @@
          "photographer-settings-general": "w każdej chwili możesz edytować widoczność swojego profilu fotografa.",
          "photographer-settings-warning": "uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu fotografa.",
          "login-title": "nie masz jeszcze konta?",
-         "login-register": "załóż je teraz, to zupełnie darmowe!",
+         "login-register": "Załóż je teraz, to zupełnie darmowe!",
          "login-send-code": "wyślij kod",
          "go-back-404": "wróć na stronę główną",
          "tos": "Potwierdzam, że zapoznałem się z regulaminem",
@@ -93,7 +94,7 @@
          "unblock-account": "wysyłanie..."
       },
       "error": {
-         "change-email": "nie udało się wysłać wiadomości",
+         "change-email": "Nie udało się wysłać wiadomości email, proszę spróbować ponownie za chwilę.",
          "equality-error-email": "Adresy email różnią się od siebie",
          "failed-change-email": "Nie udało się zmienić adresu email.",
          "change-password": "nie udało się zmienić hasła.",
@@ -104,17 +105,20 @@
          "register": "nie udało się zarejestrować",
          "register-confirm": "Nie udało się potwierdzić rejestracji twojego konta.",
          "unblock-account": "Nie udało się odblokować twojego konta.",
-         "create-account": "Nie można utworzyć konta"
+         "create-account": "Nie można utworzyć konta",
+         "reset-password": "Nie udało się wysłać wiadomości email.",
+         "password-not-unique": "Nie możesz użyć hasła, z którego korzystałeś/aś niedawno!"
       },
       "success": {
-         "change-email": "wiadomość została wysłana",
+         "change-email": "Wiadomość email została pomyślnie wysłana na adres email.",
          "changed-email": "Twój adres email został pomyślnie zmieniony",
          "change-password": "hasło zostało pomyślnie zmienione.",
          "main-settings": "dane zaktualizowane",
          "login-code": "pomyślnie wysłano kod",
          "register": "udało się pomyślnie zarejestrować",
          "register-confirm": "Twoje konto zostało aktywowane pomyślnie. Możesz się już zalogować",
-         "unblock-account": "Twoje konto zostało pomyślnie odblokowane. Możesz się już zalogować"
+         "unblock-account": "Twoje konto zostało pomyślnie odblokowane. Możesz się już zalogować",
+         "reset-password": "Email został wysłany pomyślnie."
       }
    },
    "validation": {

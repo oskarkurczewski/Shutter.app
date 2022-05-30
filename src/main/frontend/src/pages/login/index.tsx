@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
                <img src="images/logo_new_black.svg" alt="logo" />
                <div>
                   <p className="section-title">{t("message.info.login-title")}</p>
-                  <p>{t("message.info.register")}</p>
+                  <p>{t("message.info.login-register")}</p>
                </div>
                <Button
                   onClick={() => {

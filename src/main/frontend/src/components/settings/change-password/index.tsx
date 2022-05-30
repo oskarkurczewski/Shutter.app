@@ -71,20 +71,16 @@ const ChangePassword = () => {
                );
             }
             if (isError) {
-               return <p className="error">{t("message.error.change-password")}</p>;
                const err = error as any;
                if (
                   err.status === 400 &&
                   err.data.message === "exception.password.not_unique"
                ) {
                   return (
-                     <p className="error">
-                        Nie możesz użyć hasła, z którego korzystałeś/aś niedawno!
-                     </p>
+                     <p className="error">{t("message.error.password-not-unique")}</p>
                   );
                }
-
-               return <p className="error">Nie udało się zmienić hasła.</p>;
+               return <p className="error">{t("message.error.change-password")}</p>;
             }
             if (isSuccess) {
                return <p>{t("message.success.change-password")}</p>;
