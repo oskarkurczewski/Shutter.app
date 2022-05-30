@@ -62,11 +62,10 @@ CREATE TABLE public.account_change_log
     active        boolean DEFAULT true  NOT NULL,
     failed_logins integer DEFAULT 0     NOT NULL,
     last_login    timestamp,
-    created_by    bigint,
-    created_at    timestamp,
     secret        character varying(36),
-    modified_by   bigint,
-    modified_at   timestamp
+    changed_by    bigint,
+    changed_at    timestamp,
+    change_type   character varying (16)
 );
 
 ALTER TABLE public.account_change_log OWNER TO ssbd02admin;
@@ -387,8 +386,6 @@ ALTER TABLE ONLY public.account ADD CONSTRAINT account_login_key UNIQUE (login);
 
 ALTER TABLE ONLY public.account ADD CONSTRAINT account_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.account_it" FOREIGN KEY (account_id) REFERENCES public.account(id);
-
 ALTER TABLE ONLY public.availability ADD CONSTRAINT availability_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.photo_like ADD CONSTRAINT photo_like_pkey PRIMARY KEY (photo_id, account_id);
@@ -563,6 +560,10 @@ ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.created_by" FOREIGN K
 
 ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
 
+ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.account_it" FOREIGN KEY (account_id) REFERENCES public.account(id);
+
+ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.changed_by" FOREIGN KEY (changed_by) REFERENCES public.account(id);
+
 ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
 
 ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
@@ -626,6 +627,8 @@ GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.access_level TO ssbd02mok;
 GRANT SELECT, INSERT, UPDATE ON TABLE public.access_level_assignment TO ssbd02mok;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.account TO ssbd02mok;
+
+GRANT SELECT, INSERT, DELETE ON TABLE public.account_change_log TO ssbd02mok;
 
 GRANT SELECT, INSERT , DELETE ON public.token TO ssbd02mok;
 
