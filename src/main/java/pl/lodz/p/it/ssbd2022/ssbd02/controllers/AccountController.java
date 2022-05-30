@@ -210,7 +210,7 @@ public class AccountController extends AbstractController {
             throws BaseApplicationException {
         DetailedAccountInfoDto detailedAccountInfoDto = repeat(() -> accountEndpoint.getEnhancedAccountInfo(login), accountEndpoint);
         EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedAccountInfoDto));
-        return Response.status(Response.Status.ACCEPTED).entity(detailedAccountInfoDto).tag(tag).build();
+        return Response.status(Response.Status.ACCEPTED).entity(detailedAccountInfoDto).header("etag", tag.getValue()).build();
     }
 
     /**
@@ -242,7 +242,7 @@ public class AccountController extends AbstractController {
     public Response getAccountInfo() throws BaseApplicationException {
         DetailedAccountInfoDto detailedAccountInfoDto = repeat(() -> accountEndpoint.getOwnAccountInfo(), accountEndpoint);
         EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedAccountInfoDto));
-        return Response.status(Response.Status.ACCEPTED).entity(detailedAccountInfoDto).tag(tag).build();
+        return Response.status(Response.Status.ACCEPTED).entity(detailedAccountInfoDto).header("etag", tag.getValue()).build();
     }
 
     /**
