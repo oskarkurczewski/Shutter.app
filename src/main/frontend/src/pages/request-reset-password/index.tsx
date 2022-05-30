@@ -2,12 +2,15 @@ import "./style.scss";
 import Button from "components/shared/Button";
 import Card from "components/shared/Card";
 import TextInput from "components/shared/TextInput";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRequestResetPasswordMutation } from "redux/service/api";
 import { useTranslation } from "react-i18next";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const RequestResetPasswordPage = () => {
    const { t } = useTranslation();
+
+   const recaptchaRef = useRef(null);
 
    const [login, setLogin] = useState<string>("");
    const [requestResetPasswordMutation, { isLoading, isSuccess, isError }] =
@@ -15,7 +18,10 @@ const RequestResetPasswordPage = () => {
 
    const onSubmit = async (e) => {
       e.preventDefault();
-      await requestResetPasswordMutation({ login: login });
+
+      const captchaToken = await recaptchaRef.current.getValue();
+
+      await requestResetPasswordMutation({ login: login, captcha: captchaToken });
    };
 
    return (
@@ -31,6 +37,10 @@ const RequestResetPasswordPage = () => {
                   placeholder={t("label.login-label")}
                   value={login}
                   onChange={(e) => setLogin(e.target.value)}
+               />
+               <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey="6LcOjh4gAAAAAJRdv-oKWqqj8565Bz6Y3QlmJv5L"
                />
                <div className="footer">
                   <Button onClick={(e) => onSubmit(e)}>
