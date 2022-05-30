@@ -7,8 +7,6 @@ const Breadcumbs = () => {
    const location = useLocation();
    const navigate = useNavigate();
 
-   console.log(location);
-
    let fullURL = "";
    const crumbs = location.pathname
       .split("/")
@@ -23,7 +21,7 @@ const Breadcumbs = () => {
 
    return (
       <div className="breadcumbs-wrapper">
-         <BsFillCaretLeftFill onClick={() => navigate(-1)} />
+         {/* <BsFillCaretLeftFill onClick={() => navigate(-1)} />
          {crumbs.map((crumb, index) => (
             <>
                <Link to={crumb.fullURL} key={index}>
@@ -31,7 +29,7 @@ const Breadcumbs = () => {
                </Link>
                <span>/</span>
             </>
-         ))}
+         ))} */}
       </div>
    );
 };

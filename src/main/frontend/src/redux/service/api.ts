@@ -13,6 +13,7 @@ import {
    registerAccountRequest,
    requestResetPasswordRequest,
    resetPasswordRequest,
+   AccountListPreferencesResponse,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
 import { AuthState } from "redux/types/stateTypes";
@@ -31,6 +32,7 @@ export const api = createApi({
          return headers;
       },
    }),
+   tagTypes: ["List", "Preferences"],
    endpoints: (builder) => ({
       login: builder.mutation<LoginResponse, LoginRequest>({
          query: (credentials) => ({
@@ -128,9 +130,10 @@ export const api = createApi({
             method: "PUT",
             body: body,
          }),
+         invalidatesTags: ["List"],
       }),
 
-      getUserList: builder.query<getListResponse, getListRequest>({
+      getUserList: builder.mutation<getListResponse, getListRequest>({
          query: (data) => ({
             url: "account/list",
             params: data,
@@ -187,6 +190,13 @@ export const api = createApi({
             method: "POST",
          }),
       }),
+      getAccountListPreferences: builder.mutation<AccountListPreferencesResponse, void>({
+         query: () => ({
+            url: "account/list/preferences",
+            method: "GET",
+         }),
+         invalidatesTags: ["Preferences"],
+      }),
    }),
 });
 
@@ -202,7 +212,7 @@ export const {
    useAdvancedUserInfoQuery,
    useRegisterAsAdminMutation,
    useUnblockOwnAccountMutation,
-   useGetUserListQuery,
+   useGetUserListMutation,
    useBecomePhotographerMutation,
    useStopBeingPhotographerMutation,
    useRefreshMutation,
@@ -213,4 +223,5 @@ export const {
    useChangeAccessLevelMutation,
    useSwitchCurrentAccessLevelMutation,
    useEditAccountInfoAsAdminMutation,
+   useGetAccountListPreferencesMutation,
 } = api;

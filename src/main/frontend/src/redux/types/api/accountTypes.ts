@@ -116,3 +116,10 @@ export interface editAccountInfoAsAdminRequest {
    params: editAccountInfoAsAdminRequestParams;
    body: editAccountInfoAsAdminRequestBody;
 }
+
+export interface AccountListPreferencesResponse {
+   page: number;
+   recordsPerPage: number;
+   orderBy: string;
+   orderAsc: boolean;
+}
