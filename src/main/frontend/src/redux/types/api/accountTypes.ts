@@ -72,6 +72,7 @@ export interface resetPasswordRequest {
 
 export interface requestResetPasswordRequest {
    login: string;
+   captcha: string;
 }
 
 export interface changeOwnUserDataRequest {
