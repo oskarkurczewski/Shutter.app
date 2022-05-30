@@ -206,6 +206,9 @@ public class AccountEndpoint extends AbstractEndpoint {
     public void editAccountInfo(EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakowac go w dto
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        if (account.getVersion() > editAccountInfoDto.getVersion()) {
+            throw new OptLockException("exception.opt.lock");
+        }
         accountService.editAccountInfo(account, editAccountInfoDto);
     }
 
@@ -219,6 +222,9 @@ public class AccountEndpoint extends AbstractEndpoint {
     public void editAccountInfoAsAdmin(String login, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws BaseApplicationException {
         // Można zwrócić użytkownika do userController w przyszłości, trzeba tylko opakować go w dto
         Account account = accountService.findByLogin(login);
+        if (account.getVersion() > editAccountInfoAsAdminDto.getVersion()) {
+            throw new OptLockException("exception.opt.lock");
+        }
         accountService.editAccountInfoAsAdmin(account, editAccountInfoAsAdminDto);
     }
 

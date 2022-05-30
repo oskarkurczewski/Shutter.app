@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "components/shared/Card";
 import TextInput from "components/shared/TextInput";
 import Button from "components/shared/Button";
-import { useChangeOwnUserDataMutation } from "redux/service/api";
+import { useChangeOwnUserDataMutation, useCurrentUserInfoQuery } from "redux/service/api";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from "redux/hooks";
 
 const MainSettings = () => {
    const { t } = useTranslation();
@@ -11,7 +12,9 @@ const MainSettings = () => {
    const [name, setName] = useState("");
    const [surname, setSurname] = useState("");
 
+   const { username } = useAppSelector((state) => state.auth);
    const [mutation, { isLoading, isError, isSuccess }] = useChangeOwnUserDataMutation();
+   const { data } = useCurrentUserInfoQuery({});
 
    return (
       <Card id="main-settings">
@@ -40,7 +43,10 @@ const MainSettings = () => {
 
          <Button
             onClick={() => {
-               mutation({ name, surname });
+               mutation({
+                  body: { name, surname, login: username },
+                  etag: { etag: data.etag, version: data.data.version },
+               });
             }}
          >
             {t("label.change")}

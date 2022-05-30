@@ -6,12 +6,14 @@ interface traceable {
 }
 
 export interface basicUserInfoResponse {
+   version: number;
    email: string;
    name: string;
    surname: string;
 }
 
 export interface advancedUserInfoResponse extends basicUserInfoResponse, traceable {
+   version: number;
    login: string;
    active: boolean;
    registered: boolean;
@@ -75,8 +77,12 @@ export interface requestResetPasswordRequest {
 }
 
 export interface changeOwnUserDataRequest {
-   name: string;
-   surname: string;
+   body: {
+      login: string;
+      name: string;
+      surname: string;
+   };
+   etag: etagData;
 }
 
 export interface changeOwnPasswordRequest {
@@ -103,18 +109,19 @@ export interface changeAccessLevelRequest {
    body: changeAccessLevelRequestBody;
 }
 
-interface editAccountInfoAsAdminRequestBody {
-   email: string;
-   name: string;
-   surname: string;
-}
-interface editAccountInfoAsAdminRequestParams {
-   login: string;
+export interface editAccountInfoAsAdminRequest {
+   body: {
+      email: string;
+      name: string;
+      surname: string;
+      login: string;
+   };
+   etag: etagData;
 }
 
-export interface editAccountInfoAsAdminRequest {
-   params: editAccountInfoAsAdminRequestParams;
-   body: editAccountInfoAsAdminRequestBody;
+export interface etagData {
+   version: number;
+   etag: string;
 }
 
 export interface AccountListPreferencesResponse {
