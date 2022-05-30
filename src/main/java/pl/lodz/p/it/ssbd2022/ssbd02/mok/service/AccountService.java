@@ -591,7 +591,7 @@ public class AccountService {
      * @return Historia zmian konta
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
-    @PermitAll
+    @RolesAllowed({getOwnAccountInfo, getEnhancedAccountInfo})
     public List<AccountChangeLog> getAccountChangeLog(String login) throws BaseApplicationException {
         return accountChangeLogFacade.findByLogin(login);
     }
