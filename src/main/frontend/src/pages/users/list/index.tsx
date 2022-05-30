@@ -81,8 +81,10 @@ const AccountListPage = () => {
    const queryParams = new URLSearchParams(location.search);
 
    // Fetching
-   const [fetchParameters, { data: databaseParameters, isSuccess: parametersSuccess }] =
-      useGetAccountListPreferencesMutation();
+   const [
+      fetchParameters,
+      { data: databaseParameters, isSuccess: parametersSuccess, isUninitialized },
+   ] = useGetAccountListPreferencesMutation();
 
    const [fetchList, { data }] = useGetUserListMutation();
    // const pageNo = parseInt(queryParams.get("pageNo")) || 1;
@@ -119,14 +121,14 @@ const AccountListPage = () => {
    }, [parametersSuccess]);
 
    useEffect(() => {
-      if (parametersSuccess) {
+      if (parametersSuccess || !isUninitialized) {
          fetchList(params);
       }
       setQueryParam("column", params.columnName);
       setQueryParam("order", params.order);
       setQueryParam("pageNo", String(params.pageNo));
       setQueryParam("records", String(params.recordsPerPage));
-   }, [params]);
+   }, [params, isUninitialized]);
 
    useEffect(() => {
       const sorted = headers.find((header) => header.sort);
