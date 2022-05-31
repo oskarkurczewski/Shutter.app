@@ -3,7 +3,7 @@ import {
    advancedUserInfoResponse,
    basicUserInfoResponse,
    changeAccessLevelRequest,
-   getListRequest,
+   getAdvancedUserListRequest,
    getListResponse,
    changeOwnEmailRequest,
    changeOwnPasswordRequest,
@@ -18,6 +18,7 @@ import {
    tableAccountChangeLogInfo,
    getAccountChangeLogRequest,
    getOwnAccountChangeLogRequest,
+   getBasicUserListRequest,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
 import { AccessLevel } from "types/AccessLevel";
@@ -154,9 +155,22 @@ export const api = createApi({
          invalidatesTags: ["List"],
       }),
 
-      getUserList: builder.mutation<getListResponse<tableAccountData>, getListRequest>({
+      getAdvancedUserList: builder.mutation<
+         getListResponse<tableAccountData>,
+         getAdvancedUserListRequest
+      >({
          query: (data) => ({
             url: "account/list",
+            params: data,
+         }),
+      }),
+
+      getBasicUserList: builder.mutation<
+         getListResponse<tableAccountData>,
+         getBasicUserListRequest
+      >({
+         query: (data) => ({
+            url: "account/list-name",
             params: data,
          }),
       }),
@@ -249,7 +263,7 @@ export const {
    useRegisterMutation,
    useCurrentUserInfoQuery,
    useUserInfoQuery,
-   useGetUserListMutation,
+   useGetAdvancedUserListMutation,
    useRefreshTokenMutation,
    useAdvancedUserInfoQuery,
    useSendTwoFACodeMutation,
@@ -270,4 +284,5 @@ export const {
    useSendChangeOwnEmailLinkMutation,
    useSwitchCurrentAccessLevelMutation,
    useGetAccountListPreferencesMutation,
+   useGetBasicUserListMutation,
 } = api;

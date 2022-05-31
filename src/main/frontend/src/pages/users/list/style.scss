@@ -1,4 +1,7 @@
 .account-list-page-wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 2rem;
    .table-card {
       padding: 1rem;
       .actions {

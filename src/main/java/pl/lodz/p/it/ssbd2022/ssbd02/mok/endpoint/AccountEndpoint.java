@@ -324,7 +324,13 @@ public class AccountEndpoint extends AbstractEndpoint {
                 active
         );
 
-        accountService.saveAccountListPreferences(account, requestDto);
+        accountService.saveAccountListPreferences(
+                account,
+                pageNo,
+                recordsPerPage,
+                columnName,
+                convertedOrder
+        );
         return accountService.getAccountList(account, requestDto);
     }
 
@@ -430,13 +436,26 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     @RolesAllowed(getAccountInfo)
-    public ListResponseDto<String> findByNameSurname(
+    public ListResponseDto<TableAccountDto> findByNameSurname(
             String name,
             int page,
             int recordsPerPage,
             String orderBy,
             String order
-    ) throws WrongParameterException {
+    ) throws BaseApplicationException {
+        Boolean convertedOrder = true;
+        if (order.equals("desc")) convertedOrder = false;
+
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+
+        accountService.saveAccountListPreferences(
+                account,
+                page,
+                recordsPerPage,
+                orderBy,
+                convertedOrder
+        );
+
         return accountService.findByNameSurname(name, page, recordsPerPage, orderBy, order);
     }
 

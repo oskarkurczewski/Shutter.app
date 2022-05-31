@@ -509,17 +509,22 @@ public class AccountService {
      * Zapisuje preferencje wyświetlania listy kont użytkownika
      *
      * @param account    konto użytkownika, dla którego mają zostać zapisane preferencje
-     * @param requestDto preferencje, które mają zostać zapisane
      */
     @RolesAllowed(listAllAccounts)
-    public void saveAccountListPreferences(Account account, AccountListRequestDto requestDto) throws BaseApplicationException {
+    public void saveAccountListPreferences(
+            Account account,
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            Boolean orderAsc
+        ) throws BaseApplicationException {
         try {
             AccountListPreferences accountListPreferences = accountListPreferencesFacade.findByAccount(account);
-            savePreferences(accountListPreferences, account, requestDto);
+            savePreferences(accountListPreferences, account, page, recordsPerPage, orderBy, orderAsc);
             accountListPreferencesFacade.update(accountListPreferences);
         } catch (NoAccountListPreferencesFound e) {
             AccountListPreferences accountListPreferences = new AccountListPreferences();
-            savePreferences(accountListPreferences, account, requestDto);
+            savePreferences(accountListPreferences, account, page, recordsPerPage, orderBy, orderAsc);
             accountListPreferencesFacade.persist(accountListPreferences);
         }
     }
@@ -530,17 +535,20 @@ public class AccountService {
      *
      * @param preferences obiekt preferencji, do którego preferencje mają zostać zapisane
      * @param account     konto użytkownika, dla którego mają zostać zapisane preferencje
-     * @param data        preferencje, które mają zostać zapisane
      */
     private void savePreferences(
             AccountListPreferences preferences,
             Account account,
-            AccountListRequestDto data) {
+            int page,
+            int recordsPerPage,
+            String orderBy,
+            Boolean orderAsc
+        ) {
         preferences.setAccount(account);
-        preferences.setOrderAsc(data.getOrderAsc());
-        preferences.setOrderBy(data.getOrderBy());
-        preferences.setPage(data.getPage());
-        preferences.setRecordsPerPage(data.getRecordsPerPage());
+        preferences.setOrderAsc(orderAsc);
+        preferences.setOrderBy(orderBy);
+        preferences.setPage(page);
+        preferences.setRecordsPerPage(recordsPerPage);
     }
 
     /**
@@ -605,21 +613,21 @@ public class AccountService {
     }
 
     @RolesAllowed(getAccountInfo)
-    public ListResponseDto<String> findByNameSurname(
+    public ListResponseDto<TableAccountDto> findByNameSurname(
             String name,
             int page,
             int recordsPerPage,
             String orderBy,
             String order
     ) throws WrongParameterException {
-        List<String> list = accountFacade.findByNameSurname(name, page, recordsPerPage, orderBy, order);
+        List<Account> list = accountFacade.findByNameSurname(name, page, recordsPerPage, orderBy, order);
         Long allRecords = accountFacade.getAccountListSizeNameSurname(name);
         return new ListResponseDto<>(
                 page,
                 (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
                 recordsPerPage,
                 allRecords,
-                list
+                list.stream().map(TableAccountDto::new).collect(Collectors.toList())
         );
     }
 

@@ -8,7 +8,12 @@ import { FaSearchMinus, FaSearchPlus } from "react-icons/fa";
 import FilterDropdownInput from "../FilterDropdownInput";
 import FilterTextInput from "../FilterTextInput";
 
-const ListUsersFilter: React.FC = () => {
+interface Props {
+   query: string;
+   setQuery: (q: string) => void;
+}
+
+const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
    const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
    const [basicSearchValue, setBasicSearchValue] = useState("");
 
@@ -92,10 +97,10 @@ const ListUsersFilter: React.FC = () => {
             ) : (
                <div className="filters-wrapper-basic">
                   <TextInput
-                     value={basicSearchValue}
+                     value={query}
                      placeholder="szukaj"
                      onChange={(e) => {
-                        setBasicSearchValue(e.target.value);
+                        setQuery(e.target.value);
                      }}
                   />
                </div>
