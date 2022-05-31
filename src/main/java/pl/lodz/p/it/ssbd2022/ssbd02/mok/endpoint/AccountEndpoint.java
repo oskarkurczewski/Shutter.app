@@ -430,7 +430,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     @RolesAllowed(getAccountInfo)
-    public ListResponseDto<String> findByNameSurname(
+    public ListResponseDto<TableAccountDto> findByNameSurname(
             String name,
             int page,
             int recordsPerPage,

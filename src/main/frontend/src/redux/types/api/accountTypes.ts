@@ -60,7 +60,15 @@ export interface tableAccountData {
    surname: string;
 }
 
-export interface getListRequest {
+export interface getAdvancedUserListRequest {
+   pageNo: number;
+   recordsPerPage: number;
+   columnName: string;
+   order: string;
+   q?: string;
+}
+
+export interface getBasicUserListRequest {
    pageNo: number;
    recordsPerPage: number;
    columnName: string;

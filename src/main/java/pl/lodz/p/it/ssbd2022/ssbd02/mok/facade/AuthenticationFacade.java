@@ -5,7 +5,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ChangeType;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
@@ -61,7 +60,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * Rejestruje zmianę encji JPA danych konta użytkownika, jej typ oraz aktora, który jej dokonał
      *
      * @param account konto, którego dane zostały zmienione
-     * @param type typ zmian
+     * @param type    typ zmian
      * @throws BaseApplicationException niepowodzenie operacji
      */
     private void registerAccountChange(Account account, ChangeType type) throws BaseApplicationException {
@@ -153,11 +152,11 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * @throws WrongParameterException zła nazwa kolumny
      */
     @RolesAllowed({getAccountInfo})
-    public List<String> findByNameSurname(String name, int page, int recordsPerPage, String orderBy, String order) throws WrongParameterException {
+    public List<Account> findByNameSurname(String name, int page, int recordsPerPage, String orderBy, String order) throws WrongParameterException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
+        CriteriaQuery<Account> query = criteriaBuilder.createQuery(Account.class);
         Root<Account> table = query.from(Account.class);
-        query.select(table.get("login"));
+        query.select(table);
 
         try {
             switch (order) {

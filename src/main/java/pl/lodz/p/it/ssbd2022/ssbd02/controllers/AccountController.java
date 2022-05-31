@@ -366,7 +366,7 @@ public class AccountController extends AbstractController {
     @GET
     @Path("/list-name")
     @Produces(MediaType.APPLICATION_JSON)
-    public ListResponseDto<String> findByNameSurname(
+    public ListResponseDto<TableAccountDto> findByNameSurname(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
