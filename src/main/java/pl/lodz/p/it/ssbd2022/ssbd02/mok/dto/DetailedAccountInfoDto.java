@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignableEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +15,12 @@ import java.util.Optional;
  * Klasa DTO wykorzystywana przy zwracaniu informacji o użytkowniku w punkcie końcowym typu GET
  * <code>/api/account/{login}/info</code>
  */
-@Getter
-@Setter
-public class DetailedAccountInfoDto extends TracableDto {
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@Data
+public class DetailedAccountInfoDto extends TracableDto implements SignableEntity {
+
+    private Long version;
 
     private String login;
 
@@ -52,7 +57,7 @@ public class DetailedAccountInfoDto extends TracableDto {
                 .filter(AccessLevelAssignment::getActive)
                 .forEach(level -> accessLevelList.add(new AccessLevelDto(level)));
 
-
+        version = account.getVersion();
         login = account.getLogin();
         email = account.getEmail();
         name = account.getName();
@@ -63,4 +68,8 @@ public class DetailedAccountInfoDto extends TracableDto {
 
     }
 
+    @Override
+    public String getSignablePayload() {
+        return login + version.toString();
+    }
 }

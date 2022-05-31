@@ -28,45 +28,42 @@ const EditAccountPage = () => {
    });
 
    const [allRoles, setAllRoles] = useState([]);
-
-   const userInfo = useAdvancedUserInfoQuery(login);
-
-   const userRoles = useAdvancedUserInfoQuery(login);
-
    const [refresh, setRefresh] = useState(true);
+
+   const [emailCheck, setEmailCheck] = useState(false);
+   const [selectedRole, setSelectedRole] = useState("CLIENT");
+
+   const { data: userInfoData } = useAdvancedUserInfoQuery(login);
+   const { data: userRolesData } = useAdvancedUserInfoQuery(login);
+
+   const [infoMutation, infoMutationState] = useEditAccountInfoAsAdminMutation();
+   const [accessLevelMutation, accessLevelMutationState] = useChangeAccessLevelMutation();
 
    useEffect(() => {
       setFormData({
          ...formData,
-         login: userInfo.data?.login,
-         name: userInfo.data?.name,
-         surname: userInfo.data?.surname,
-         email: userInfo.data?.email,
-         email2: userInfo.data?.email,
-         registered: userInfo.data?.registered,
-         active: userInfo.data?.active,
+         login: userInfoData?.data.login,
+         name: userInfoData?.data.name,
+         surname: userInfoData?.data.surname,
+         email: userInfoData?.data.email,
+         email2: userInfoData?.data.email,
+         registered: userInfoData?.data.registered,
+         active: userInfoData?.data.active,
       });
-   }, [userInfo]);
-
-   const mutationInfo = useEditAccountInfoAsAdminMutation();
-
-   const mutationLevel = useChangeAccessLevelMutation();
+   }, [userInfoData]);
 
    useEffect(() => {
-      userRoles.data?.accessLevelList && setAllRoles([...userInfo.data.accessLevelList]);
-   }, [userRoles.data, mutationLevel[1].isLoading]);
-
-   const [emailCheck, setEmailCheck] = useState(false);
-
-   const [selectedRole, setSelectedRole] = useState("CLIENT");
+      userRolesData?.data.accessLevelList &&
+         setAllRoles([...userInfoData.data.accessLevelList]);
+   }, [userRolesData, accessLevelMutationState.isLoading]);
 
    useEffect(() => {
       setEmailCheck(formData.email == formData.email2);
    }, [formData]);
 
    useEffect(() => {
-      mutationInfo[1].isSuccess && navigate("/users");
-   }, [mutationInfo[1].isSuccess]);
+      infoMutationState.isSuccess && navigate("/users");
+   }, [infoMutationState.isSuccess]);
 
    const navigate = useNavigate();
 
@@ -94,7 +91,7 @@ const EditAccountPage = () => {
                <div className="buttons">
                   <SquareButton
                      onClick={() => {
-                        mutationLevel[0]({
+                        accessLevelMutation({
                            params: { login: formData.login },
                            body: { accessLevel: selectedRole, active: true },
                         });
@@ -105,7 +102,7 @@ const EditAccountPage = () => {
                   </SquareButton>
                   <SquareButton
                      onClick={() => {
-                        mutationLevel[0]({
+                        accessLevelMutation({
                            params: { login: formData.login },
                            body: { accessLevel: selectedRole, active: false },
                         });
@@ -188,19 +185,23 @@ const EditAccountPage = () => {
                <Button
                   onClick={() => {
                      emailCheck &&
-                        mutationInfo[0]({
-                           params: { login: formData.login },
+                        infoMutation({
                            body: {
+                              login: formData.login,
                               email: formData.email,
                               name: formData.name,
                               surname: formData.surname,
+                           },
+                           etag: {
+                              version: userInfoData.data.version,
+                              etag: userInfoData.etag,
                            },
                         });
                   }}
                >
                   Zapisz
                </Button>
-               {mutationInfo[1].isError && (
+               {infoMutationState.isError && (
                   <p className="error-message">Nie można zapisać edycji</p>
                )}
             </div>

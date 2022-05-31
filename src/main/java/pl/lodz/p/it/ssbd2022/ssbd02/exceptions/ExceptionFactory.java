@@ -119,6 +119,7 @@ public class ExceptionFactory {
     public static BaseApplicationException OptLockException() {
         return new OptLockException("exception.optlock");
     }
+
     public static WrongParameterException wrongParameterException() {
         return new WrongParameterException("exception.wrong_parameter");
     }
@@ -133,6 +134,10 @@ public class ExceptionFactory {
 
     public static InvalidRecaptchaException invalidRecaptchaException() {
         return new InvalidRecaptchaException("exception.captcha.invalid");
+    }
+
+    public static ETagException etagException() {
+        return new ETagException("exception.etag");
     }
 
     public static NoAccountListPreferencesFound noAccountListPreferencesFound() {

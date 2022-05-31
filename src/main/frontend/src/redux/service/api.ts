@@ -3,7 +3,6 @@ import {
    advancedUserInfoResponse,
    basicUserInfoResponse,
    changeAccessLevelRequest,
-   editAccountInfoAsAdminRequest,
    getListRequest,
    getListResponse,
    changeOwnEmailRequest,
@@ -13,6 +12,7 @@ import {
    registerAccountRequest,
    requestResetPasswordRequest,
    resetPasswordRequest,
+   editAccountInfoAsAdminRequest,
    AccountListPreferencesResponse,
    tableAccountData,
    tableAccountChangeLogInfo,
@@ -20,7 +20,6 @@ import {
    getOwnAccountChangeLogRequest,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
-import { AuthState } from "redux/types/stateTypes";
 import { AccessLevel } from "types/AccessLevel";
 import { RootState } from "../store";
 
@@ -53,19 +52,36 @@ export const api = createApi({
          }),
       }),
 
+      currentUserInfo: builder.query<
+         { data: basicUserInfoResponse; etag: string },
+         unknown
+      >({
+         query: () => ({ url: `account/info` }),
+         transformResponse(data: basicUserInfoResponse, meta) {
+            return { data, etag: meta.response.headers.get("etag") };
+         },
+      }),
+
       userInfo: builder.query<basicUserInfoResponse, string>({
          query: (login) => ({ url: `account/${login}/info` }),
       }),
 
-      advancedUserInfo: builder.query<advancedUserInfoResponse, string>({
+      advancedUserInfo: builder.query<
+         { data: advancedUserInfoResponse; etag: string },
+         string
+      >({
          query: (login) => ({ url: `account/${login}/detailed-info` }),
+         transformResponse(data: advancedUserInfoResponse, meta) {
+            return { data, etag: meta.response.headers.get("etag") };
+         },
       }),
 
       changeOwnUserData: builder.mutation<unknown, changeOwnUserDataRequest>({
-         query: (data) => ({
+         query: ({ body, etag }) => ({
             url: "account/editOwnAccountInfo",
             method: "PUT",
-            body: data,
+            body: { ...body, version: etag.version },
+            headers: { "If-Match": etag.etag },
          }),
       }),
 
@@ -129,10 +145,11 @@ export const api = createApi({
       }),
 
       editAccountInfoAsAdmin: builder.mutation<unknown, editAccountInfoAsAdminRequest>({
-         query: ({ params, body }) => ({
-            url: `account/${params.login}/editAccountInfo`,
+         query: ({ body, etag }) => ({
+            url: `account/${body.login}/editAccountInfo`,
             method: "PUT",
-            body: body,
+            body: { ...body, version: etag.version },
+            headers: { "If-Match": etag.etag },
          }),
          invalidatesTags: ["List"],
       }),
@@ -177,6 +194,7 @@ export const api = createApi({
          query: (data) => ({
             url: `/account/${data.login}/request-reset`,
             method: "POST",
+            body: { reCaptchaToken: data.captcha },
          }),
       }),
 
@@ -230,6 +248,8 @@ export const {
    useUserInfoQuery,
    useRefreshMutation,
    useRegisterMutation,
+   useCurrentUserInfoQuery,
+   useUserInfoQuery,
    useGetUserListMutation,
    useRefreshTokenMutation,
    useAdvancedUserInfoQuery,
