@@ -74,6 +74,16 @@
             "CREATED": "utworzono",
             "MODIFIED": "zmodyfikowano",
             "DELETED": "usunięto"
+         },
+         "account-list": {
+            "id": "ID",
+            "login": "Nazwa użytkownika",
+            "email": "Email",
+            "name": "Imię",
+            "surname": "Nazwisko",
+            "roles": "Poziomy dostępu",
+            "registered": "Czy zarejestrowany",
+            "active": "Czy aktywny"
          }
       }
    },

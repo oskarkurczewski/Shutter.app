@@ -15,54 +15,57 @@ import {
    useGetUserListMutation,
 } from "redux/service/api";
 import { tableHeader } from "types/ComponentTypes";
+import { useTranslation } from "react-i18next";
 
 const AccountListPage = () => {
+   const { t } = useTranslation();
+
    const [headers, setHeaders] = useState<tableHeader[]>([
       {
          id: "id",
-         label: "ID",
+         label: t("label.tables.account-list.id"),
          sortable: true,
          sort: "asc",
       },
       {
          id: "login",
-         label: "Login",
+         label: t("label.tables.account-list.login"),
          sortable: true,
          sort: null,
       },
       {
          id: "email",
-         label: "Email",
+         label: t("label.tables.account-list.email"),
          sortable: true,
          sort: null,
       },
       {
          id: "name",
-         label: "Name",
+         label: t("label.tables.account-list.name"),
          sortable: true,
          sort: null,
       },
       {
          id: "surname",
-         label: "Surname",
+         label: t("label.tables.account-list.surname"),
          sortable: true,
          sort: null,
       },
       {
          id: "roles",
-         label: "Roles",
+         label: t("label.tables.account-list.roles"),
          sortable: false,
          sort: null,
       },
       {
          id: "registered",
-         label: "Registered",
+         label: t("label.tables.account-list.registered"),
          sortable: false,
          sort: null,
       },
       {
          id: "active",
-         label: "Active",
+         label: t("label.tables.account-list.active"),
          sortable: false,
          sort: null,
       },

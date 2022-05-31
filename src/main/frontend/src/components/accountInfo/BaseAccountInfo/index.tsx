@@ -21,53 +21,55 @@ const BaseAccountInfo: React.FC<Props> = ({ login }) => {
                <tbody>
                   <tr>
                      <td>{t("label.username")}:</td>
-                     <td>{userInfo.login}</td>
+                     <td>{userInfo.data.login}</td>
                   </tr>
                   <tr>
                      <td>{t("label.name")}:</td>
-                     <td>{userInfo.name}</td>
+                     <td>{userInfo.data.name}</td>
                   </tr>
                   <tr>
                      <td>{t("label.surname")}:</td>
-                     <td>{userInfo.surname}</td>
+                     <td>{userInfo.data.surname}</td>
                   </tr>
                   <tr>
                      <td>{t("label.email")}:</td>
-                     <td>{userInfo.email}</td>
+                     <td>{userInfo.data.email}</td>
                   </tr>
                   <tr>
                      <td>{t("label.registered")}:</td>
                      <td>
-                        {userInfo.registered ? <FaCheck className="check" /> : <></>}
+                        {userInfo.data.registered ? <FaCheck className="check" /> : <></>}
                      </td>
                   </tr>
                   <tr>
                      <td>{t("label.active")}:</td>
-                     <td>{userInfo.active ? <FaCheck className="check" /> : <></>}</td>
+                     <td>
+                        {userInfo.data.active ? <FaCheck className="check" /> : <></>}
+                     </td>
                   </tr>
                   <tr>
                      <td>{t("label.created-at")}:</td>
                      <td>
-                        {userInfo.createdAt
-                           ? new Date(userInfo.createdAt).toUTCString()
+                        {userInfo.data.createdAt
+                           ? new Date(userInfo.data.createdAt).toUTCString()
                            : "-"}
                      </td>
                   </tr>
                   <tr>
                      <td>{t("label.created-by")}:</td>
-                     <td>{userInfo.createdBy ? userInfo.createdBy : "-"}</td>
+                     <td>{userInfo.data.createdBy ? userInfo.data.createdBy : "-"}</td>
                   </tr>
                   <tr>
                      <td>{t("label.last-modified-at")}:</td>
                      <td>
-                        {userInfo.createdAt
-                           ? new Date(userInfo.createdAt).toUTCString()
+                        {userInfo.data.createdAt
+                           ? new Date(userInfo.data.createdAt).toUTCString()
                            : "-"}
                      </td>
                   </tr>
                   <tr>
                      <td>{t("label.last-modified-by")}:</td>
-                     <td>{userInfo.createdBy ? userInfo.createdBy : "-"}</td>
+                     <td>{userInfo.data.createdBy ? userInfo.data.createdBy : "-"}</td>
                   </tr>
                </tbody>
             </table>
