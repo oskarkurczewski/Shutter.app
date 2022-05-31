@@ -1,16 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 
 import org.hibernate.exception.ConstraintViolationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelValue;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountListPreferencesFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountChangeLogFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountListPreferencesFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
@@ -512,7 +508,7 @@ public class AccountService {
     /**
      * Zapisuje preferencje wyświetlania listy kont użytkownika
      *
-     * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
+     * @param account    konto użytkownika, dla którego mają zostać zapisane preferencje
      * @param requestDto preferencje, które mają zostać zapisane
      */
     @RolesAllowed(listAllAccounts)
@@ -521,19 +517,20 @@ public class AccountService {
             AccountListPreferences accountListPreferences = accountListPreferencesFacade.findByAccount(account);
             savePreferences(accountListPreferences, account, requestDto);
             accountListPreferencesFacade.update(accountListPreferences);
-        } catch(NoAccountListPreferencesFound e) {
+        } catch (NoAccountListPreferencesFound e) {
             AccountListPreferences accountListPreferences = new AccountListPreferences();
             savePreferences(accountListPreferences, account, requestDto);
             accountListPreferencesFacade.persist(accountListPreferences);
         }
     }
 
+
     /**
      * Metoda pomocnicza zapisująca preferencje wyświetlania listy kont użytkownika
      *
      * @param preferences obiekt preferencji, do którego preferencje mają zostać zapisane
-     * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
-     * @param data preferencje, które mają zostać zapisane
+     * @param account     konto użytkownika, dla którego mają zostać zapisane preferencje
+     * @param data        preferencje, które mają zostać zapisane
      */
     private void savePreferences(
             AccountListPreferences preferences,
@@ -629,7 +626,7 @@ public class AccountService {
     /**
      * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
      *
-     * @param account     użytkownik
+     * @param account użytkownik
      * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
      * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
      */
@@ -668,13 +665,29 @@ public class AccountService {
     /**
      * Zwraca historię zmian dla konta
      *
-     * @param login Login użytkownika, którego historia zmian konta ma być wyszukana
+     * @param login          Login użytkownika, którego historia zmian konta ma być wyszukana
+     * @param page           numer strony
+     * @param recordsPerPage liczba rekordów na stronę
+     * @param orderBy        kolumna po której następuje sortowanie
+     * @param orderAsc       kolejność sortowania
      * @return Historia zmian konta
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getOwnAccountInfo, getEnhancedAccountInfo})
-    public List<AccountChangeLog> getAccountChangeLog(String login) throws BaseApplicationException {
-        return accountChangeLogFacade.findByLogin(login);
+    public List<AccountChangeLog> getAccountChangeLog(
+            int page,
+            int recordsPerPage,
+            String login,
+            String orderBy,
+            Boolean orderAsc
+    ) {
+        return accountChangeLogFacade.findByLogin(login, orderBy, orderAsc, recordsPerPage, page);
+    }
+
+
+    @RolesAllowed({getOwnAccountInfo, getEnhancedAccountInfo})
+    public Long getAccountLogListSize(String login) {
+        return accountChangeLogFacade.getListSize(login);
     }
 
 

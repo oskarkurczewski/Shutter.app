@@ -1,3 +1,4 @@
+import AccountChangeLog from "components/accountInfo/AccountChangeLog";
 import BaseAccountInfo from "components/accountInfo/BaseAccountInfo";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -7,8 +8,9 @@ const AccountInfoPage = () => {
    const { login } = useParams();
 
    return (
-      <div>
+      <div className="account-info-wrapper">
          <BaseAccountInfo login={login} />
+         <AccountChangeLog login={login} />
       </div>
    );
 };

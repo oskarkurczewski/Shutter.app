@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class AccountChangeLogDto {
+    private Long id;
     private Boolean registered;
     private Boolean active;
     private String email;
@@ -20,6 +21,7 @@ public class AccountChangeLogDto {
     private String changedBy;
 
     public AccountChangeLogDto(AccountChangeLog accountChangeLog) {
+        this.id = accountChangeLog.getId();
         this.registered = accountChangeLog.getRegistered();
         this.active = accountChangeLog.getActive();
         this.email = accountChangeLog.getEmail();

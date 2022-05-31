@@ -12,15 +12,17 @@ interface Props {
 const BaseAccountInfo: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
 
-   const [userInfo] = useState(useAdvancedUserInfoQuery(login).data);
-
-   console.log(userInfo);
+   const [userInfo, setUserInfo] = useState(useAdvancedUserInfoQuery(login).data);
 
    return (
       <Card className={"base-account-info-wrapper"}>
          {userInfo && (
             <table>
                <tbody>
+                  <tr>
+                     <td>{t("label.username")}:</td>
+                     <td>{userInfo.login}</td>
+                  </tr>
                   <tr>
                      <td>{t("label.name")}:</td>
                      <td>{userInfo.name}</td>

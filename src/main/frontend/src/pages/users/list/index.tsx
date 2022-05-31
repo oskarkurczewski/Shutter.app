@@ -14,9 +14,10 @@ import {
    useGetAccountListPreferencesMutation,
    useGetUserListMutation,
 } from "redux/service/api";
+import { tableHeader } from "types/ComponentTypes";
 
 const AccountListPage = () => {
-   const [headers, setHeaders] = useState([
+   const [headers, setHeaders] = useState<tableHeader[]>([
       {
          id: "id",
          label: "ID",
@@ -186,9 +187,7 @@ const AccountListPage = () => {
             <Table
                data={tableData}
                headers={headers}
-               setHeaders={(headers) => {
-                  setHeaders(headers);
-               }}
+               setHeaders={setHeaders}
                allRecords={allRecords}
                allPages={allPages}
                pageNo={params.pageNo}

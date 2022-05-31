@@ -63,7 +63,19 @@
       "last-modified-at": "Ostatnio modyfikowane",
       "last-modified-by": "Login modyfikującego",
       "created-at": "Utworzono",
-      "created-by": "Login stwórcy"
+      "created-by": "Login stwórcy",
+      "username": "Nazwa użytkownika",
+      "tables": {
+         "account-changelog": {
+            "id": "ID",
+            "changed-at": "Data modyfikacji",
+            "changed-by": "Modyfikujący",
+            "change-type": "Typ modyfikacji",
+            "CREATED": "utworzono",
+            "MODIFIED": "zmodyfikowano",
+            "DELETED": "usunięto"
+         }
+      }
    },
    "message": {
       "info": {

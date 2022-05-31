@@ -11,18 +11,13 @@ import {
 } from "react-icons/hi";
 
 import Dropdown from "../Dropdown";
+import { tableHeader } from "types/ComponentTypes";
 
-type header = {
-   id: string;
-   label: string;
-   sort: string | null;
-   sortable: boolean;
-};
 
 interface Props {
    data: (string | ReactNode)[][];
-   headers: header[];
-   setHeaders: (header: header[]) => void;
+   headers: tableHeader[];
+   setHeaders: (header: tableHeader[]) => void;
    allRecords: number;
    allPages: number;
    pageNo: number;
@@ -43,7 +38,7 @@ const Table: React.FC<Props> = ({
    setRecordsPerPage,
 }) => {
    const changeOrder = (id: string, order: string) => {
-      const newHeaders = (headers: header[]) => {
+      const newHeaders = (headers: tableHeader[]) => {
          return headers.map((header) => {
             return header.id === id
                ? { ...header, sort: order }

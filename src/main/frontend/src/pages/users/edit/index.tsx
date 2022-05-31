@@ -36,7 +36,6 @@ const EditAccountPage = () => {
    const [refresh, setRefresh] = useState(true);
 
    useEffect(() => {
-      console.log(userInfo.data);
       setFormData({
          ...formData,
          login: userInfo.data?.login,

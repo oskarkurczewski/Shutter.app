@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/account")
 public class AccountController extends AbstractController {
@@ -427,9 +426,16 @@ public class AccountController extends AbstractController {
     @GET
     @Path("/get-account-change-log")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOwnAccountChangeLog() throws BaseApplicationException {
-        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getOwnAccountChangeLog(), accountEndpoint);
-        return Response.status(Response.Status.OK).entity(accountChangeLog).build();
+    public ListResponseDto<AccountChangeLogDto> getOwnAccountChangeLog(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("columnName") @NotNull String orderBy
+    ) throws BaseApplicationException {
+        return repeat(
+                () -> accountEndpoint.getOwnAccountChangeLog(pageNo, recordsPerPage, orderBy, order),
+                accountEndpoint
+        );
     }
 
     /**
@@ -441,10 +447,14 @@ public class AccountController extends AbstractController {
      */
     @GET
     @Path("/{login}/get-account-change-log")
-    public Response getAccountChangeLog(@NotNull @Login
-                                        @PathParam("login") String login) throws BaseApplicationException {
-        List<AccountChangeLogDto> accountChangeLog = repeat(() -> accountEndpoint.getAccountChangeLog(login), accountEndpoint);
-        return Response.status(Response.Status.OK).entity(accountChangeLog).build();
+    public ListResponseDto<AccountChangeLogDto> getAccountChangeLog(
+            @NotNull @Login @PathParam("login") String login,
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("columnName") @NotNull String orderBy
+    ) throws BaseApplicationException {
+        return repeat(() -> accountEndpoint.getAccountChangeLog(login, pageNo, recordsPerPage, orderBy, order), accountEndpoint);
     }
 
 }

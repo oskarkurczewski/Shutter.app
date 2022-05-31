@@ -14,6 +14,10 @@ import {
    requestResetPasswordRequest,
    resetPasswordRequest,
    AccountListPreferencesResponse,
+   tableAccountData,
+   tableAccountChangeLogInfo,
+   getAccountChangeLogRequest,
+   getOwnAccountChangeLogRequest,
 } from "redux/types/api/accountTypes";
 import { LoginRequest, LoginResponse } from "redux/types/api/authTypes";
 import { AuthState } from "redux/types/stateTypes";
@@ -133,7 +137,7 @@ export const api = createApi({
          invalidatesTags: ["List"],
       }),
 
-      getUserList: builder.mutation<getListResponse, getListRequest>({
+      getUserList: builder.mutation<getListResponse<tableAccountData>, getListRequest>({
          query: (data) => ({
             url: "account/list",
             params: data,
@@ -190,6 +194,7 @@ export const api = createApi({
             method: "POST",
          }),
       }),
+
       getAccountListPreferences: builder.mutation<AccountListPreferencesResponse, void>({
          query: () => ({
             url: "account/list/preferences",
@@ -197,31 +202,53 @@ export const api = createApi({
          }),
          invalidatesTags: ["Preferences"],
       }),
+
+      getAccountChangeLog: builder.mutation<
+         getListResponse<tableAccountChangeLogInfo>,
+         getAccountChangeLogRequest
+      >({
+         query: (data) => ({
+            url: "account/get-account-change-log",
+            params: data,
+         }),
+      }),
+
+      getOwnAccountChangeLog: builder.mutation<
+         getListResponse<tableAccountChangeLogInfo>,
+         getOwnAccountChangeLogRequest
+      >({
+         query: (data) => ({
+            url: `account/${data.pathParam}/get-account-change-log`,
+            params: data.params,
+         }),
+      }),
    }),
 });
 
 export const {
    useLoginMutation,
-   useChangeOwnPasswordMutation,
-   useSendChangeOwnEmailLinkMutation,
-   useChangeOwnEmailMutation,
-   useChangeOwnUserDataMutation,
-   useSendTwoFACodeMutation,
-   useRegisterMutation,
    useUserInfoQuery,
-   useAdvancedUserInfoQuery,
-   useRegisterAsAdminMutation,
-   useUnblockOwnAccountMutation,
-   useGetUserListMutation,
-   useBecomePhotographerMutation,
-   useStopBeingPhotographerMutation,
    useRefreshMutation,
-   useRequestResetPasswordMutation,
-   useResetPasswordMutation,
-   useConfirmRegistrationMutation,
+   useRegisterMutation,
+   useGetUserListMutation,
    useRefreshTokenMutation,
+   useAdvancedUserInfoQuery,
+   useSendTwoFACodeMutation,
+   useResetPasswordMutation,
+   useChangeOwnEmailMutation,
+   useRegisterAsAdminMutation,
+   useChangeOwnUserDataMutation,
    useChangeAccessLevelMutation,
-   useSwitchCurrentAccessLevelMutation,
+   useUnblockOwnAccountMutation,
+   useChangeOwnPasswordMutation,
+   useBecomePhotographerMutation,
+   useGetAccountChangeLogMutation,
+   useConfirmRegistrationMutation,
+   useRequestResetPasswordMutation,
+   useStopBeingPhotographerMutation,
+   useGetOwnAccountChangeLogMutation,
    useEditAccountInfoAsAdminMutation,
+   useSendChangeOwnEmailLinkMutation,
+   useSwitchCurrentAccessLevelMutation,
    useGetAccountListPreferencesMutation,
 } = api;

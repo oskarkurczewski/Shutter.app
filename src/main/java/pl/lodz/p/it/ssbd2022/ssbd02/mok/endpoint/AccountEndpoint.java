@@ -490,15 +490,33 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca historię zmian dla aktualnego użytkownika
      *
+     * @param pageNo         numer strony
+     * @param recordsPerPage liczba rekordów na stronę
+     * @param orderBy        kolumna po której następuje sortowanie
+     * @param order          kolejność sortowania
      * @return Historia zmian konta
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getOwnAccountInfo})
-    public List<AccountChangeLogDto> getOwnAccountChangeLog() throws BaseApplicationException {
+    public ListResponseDto<AccountChangeLogDto> getOwnAccountChangeLog(
+            int pageNo,
+            int recordsPerPage,
+            String orderBy,
+            String order
+    ) throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
-        List<AccountChangeLog> accountChangeLog = accountService.getAccountChangeLog(account.getLogin());
-        return accountChangeLog.stream().map(AccountChangeLogDto::new)
-                .collect(Collectors.toList());
+        Long allRecords = accountService.getAccountLogListSize(account.getLogin());
+        return new ListResponseDto<>(
+                pageNo,
+                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                allRecords,
+                accountService
+                        .getAccountChangeLog(pageNo, recordsPerPage, account.getLogin(), orderBy, order.equals("asc"))
+                        .stream()
+                        .map(AccountChangeLogDto::new)
+                        .collect(Collectors.toList())
+        );
     }
 
     /**
@@ -509,10 +527,24 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getEnhancedAccountInfo})
-    public List<AccountChangeLogDto> getAccountChangeLog(String login) throws BaseApplicationException {
-        Account account = accountService.findByLogin(login);
-        List<AccountChangeLog> accountChangeLog = accountService.getAccountChangeLog(account.getLogin());
-        return accountChangeLog.stream().map(AccountChangeLogDto::new)
-                .collect(Collectors.toList());
+    public ListResponseDto<AccountChangeLogDto> getAccountChangeLog(
+            String login,
+            int pageNo,
+            int recordsPerPage,
+            String orderBy,
+            String order
+    ) {
+        Long allRecords = accountService.getAccountLogListSize(login);
+        return new ListResponseDto<>(
+                pageNo,
+                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                allRecords,
+                accountService
+                        .getAccountChangeLog(pageNo, recordsPerPage, login, orderBy, order.equals("asc"))
+                        .stream()
+                        .map(AccountChangeLogDto::new)
+                        .collect(Collectors.toList())
+        );
     }
 }

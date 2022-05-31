@@ -4,6 +4,13 @@ interface traceable {
    createdAt: Date;
    createdBy: string;
 }
+export interface getListResponse<T> {
+   allPages: number;
+   allRecords: number;
+   list: T[];
+   pageNo: number;
+   recordsPerPage: number;
+}
 
 export interface basicUserInfoResponse {
    email: string;
@@ -34,7 +41,7 @@ export interface registerAccountAsAdminRequest extends registerAccountRequest {
    registered: boolean;
    active: boolean;
 }
-interface tableAccountData {
+export interface tableAccountData {
    accessLevels: string[];
    email: string;
    id: number;
@@ -56,13 +63,6 @@ export interface getListRequest {
    surname?: string;
    registered?: boolean;
    active?: boolean;
-}
-export interface getListResponse {
-   allPages: number;
-   allRecords: number;
-   list: tableAccountData[];
-   pageNo: number;
-   recordsPerPage: number;
 }
 
 export interface resetPasswordRequest {
@@ -122,4 +122,36 @@ export interface AccountListPreferencesResponse {
    recordsPerPage: number;
    orderBy: string;
    orderAsc: boolean;
+}
+
+export enum ChangeType {
+   CREATED = "CREATED",
+   MODIFIED = "MODIFIED",
+   DELETED = "DELETED",
+}
+
+export interface tableAccountChangeLogInfo {
+   id: number;
+   registered: boolean;
+   active: boolean;
+   email: string;
+   login: string;
+   name: string;
+   surname: string;
+   lastLogIn: Date;
+   changedAt: Date;
+   changeType: ChangeType;
+   changedBy: string;
+}
+
+export interface getAccountChangeLogRequest {
+   pageNo: number;
+   recordsPerPage: number;
+   order: string;
+   columnName: string;
+}
+
+export interface getOwnAccountChangeLogRequest {
+   params: getAccountChangeLogRequest;
+   pathParam: string;
 }
