@@ -61,7 +61,7 @@ public class AccountChangeLogFacade extends FacadeTemplate<AccountChangeLog> {
         Root<AccountChangeLog> table = query.from(AccountChangeLog.class);
         query.select(table);
 
-        query.where(criteriaBuilder.equal(table.get("changedBy").get("login"), login));
+        query.where(criteriaBuilder.equal(table.get("account").get("login"), login));
 
         if (orderAsc) {
             query.orderBy(criteriaBuilder.asc(table.get(orderBy)));
