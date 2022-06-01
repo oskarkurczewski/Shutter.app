@@ -240,8 +240,8 @@ export const api = createApi({
          getAccountChangeLogRequest
       >({
          query: (data) => ({
-            url: "account/get-account-change-log",
-            params: data,
+            url: `account/${data.pathParam}/get-account-change-log`,
+            params: data.params,
          }),
       }),
 
@@ -250,8 +250,8 @@ export const api = createApi({
          getOwnAccountChangeLogRequest
       >({
          query: (data) => ({
-            url: `account/${data.pathParam}/get-account-change-log`,
-            params: data.params,
+            url: `account/get-account-change-log`,
+            params: data,
          }),
       }),
    }),
