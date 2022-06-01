@@ -83,7 +83,7 @@ public class AccountChangeLogFacade extends FacadeTemplate<AccountChangeLog> {
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<AccountChangeLog> table = query.from(AccountChangeLog.class);
         query.select(criteriaBuilder.count(table));
-        query.where(criteriaBuilder.equal(table.get("changedBy").get("login"), login));
+        query.where(criteriaBuilder.equal(table.get("account").get("login"), login));
 
         return em.createQuery(query).getSingleResult();
     }

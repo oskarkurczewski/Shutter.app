@@ -3,7 +3,10 @@ import Table from "components/shared/Table";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetAccountChangeLogMutation } from "redux/service/api";
-import { getAccountChangeLogRequest } from "redux/types/api/accountTypes";
+import {
+   getAccountChangeLogRequest,
+   getOwnAccountChangeLogRequest,
+} from "redux/types/api/accountTypes";
 import { tableHeader } from "types/ComponentTypes";
 import "./style.scss";
 
@@ -15,7 +18,7 @@ const AccountChangeLog: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
    const [getAccountChangeLogMutation, getAccountChangeLogMutationState] =
       useGetAccountChangeLogMutation();
-   const [params, setParams] = useState<getAccountChangeLogRequest>({
+   const [params, setParams] = useState<getOwnAccountChangeLogRequest>({
       pageNo: 1,
       recordsPerPage: 25,
       columnName: "id",
@@ -23,7 +26,7 @@ const AccountChangeLog: React.FC<Props> = ({ login }) => {
    });
    const [tableData, setTableData] = useState([]);
    useEffect(() => {
-      getAccountChangeLogMutation(params);
+      getAccountChangeLogMutation({ params: params, pathParam: login });
    }, [params]);
 
    useEffect(() => {

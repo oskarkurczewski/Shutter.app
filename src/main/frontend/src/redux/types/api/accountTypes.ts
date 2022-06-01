@@ -166,14 +166,14 @@ export interface tableAccountChangeLogInfo {
    changedBy: string;
 }
 
-export interface getAccountChangeLogRequest {
+export interface getOwnAccountChangeLogRequest {
    pageNo: number;
    recordsPerPage: number;
    order: string;
    columnName: string;
 }
 
-export interface getOwnAccountChangeLogRequest {
-   params: getAccountChangeLogRequest;
+export interface getAccountChangeLogRequest {
+   params: getOwnAccountChangeLogRequest;
    pathParam: string;
 }
