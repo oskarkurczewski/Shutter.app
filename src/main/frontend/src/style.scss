@@ -1,4 +1,4 @@
-@import "./variables.scss";
+@use "variables.scss" as variables;
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap");
 
 * {
@@ -15,7 +15,7 @@ h5,
 h6,
 p,
 a {
-   color: $gray-200;
+   color: variables.$gray-200;
 }
 
 a {
@@ -27,7 +27,7 @@ html {
 }
 
 body {
-   background-color: $blue-gray-100;
+   background-color: variables.$blue-gray-100;
    font-family: "Roboto", sans-serif;
    height: 100vh;
 }
@@ -35,33 +35,33 @@ body {
 // Typography
 html {
    .section-title {
-      font-size: calc($scale-1 * 1rem);
+      font-size: calc(variables.$scale-1 * 1rem);
       font-weight: bold;
       letter-spacing: 1%;
       font-family: "Open Sans", sans-serif;
       text-transform: capitalize;
-      color: $gray-300;
+      color: variables.$gray-300;
    }
 
    .category-title {
-      font-size: calc($scale-2 * 1rem);
+      font-size: calc(variables.$scale-2 * 1rem);
       font-weight: bold;
       letter-spacing: 2.5%;
       font-family: "Open Sans", sans-serif;
    }
 
    h3 {
-      font-size: calc($scale-3 * 1rem);
+      font-size: calc(variables.$scale-3 * 1rem);
       font-family: "Open Sans", sans-serif;
    }
 
    h2 {
-      font-size: calc($scale-4 * 1rem);
+      font-size: calc(variables.$scale-4 * 1rem);
       font-family: "Open Sans", sans-serif;
    }
 
    h1 {
-      font-size: calc($scale-5 * 1rem);
+      font-size: calc(variables.$scale-5 * 1rem);
       font-family: "Open Sans", sans-serif;
    }
 
@@ -84,16 +84,16 @@ html {
    -webkit-user-select: none; /* Safari */
    -moz-user-select: none; /* Firefox */
    -ms-user-select: none; /* IE10+/Edge */
-   color: $gray-200;
+   color: variables.$gray-200;
 }
 
 // RWD
 html {
-   @include sm {
+   @include variables.sm {
       font-size: 12px;
    }
 
-   @include md {
+   @include variables.md {
       font-size: 16px;
    }
 }

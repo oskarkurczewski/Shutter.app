@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 #root {
    display: grid;
@@ -10,7 +10,7 @@
 }
 
 .layout-bar {
-   background-color: $white;
+   background-color: variables.$white;
    box-shadow: 0px 4px 10px 0px #00000026;
    display: flex;
    flex-direction: column;

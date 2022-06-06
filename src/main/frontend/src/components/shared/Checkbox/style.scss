@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 div.checkbox-wrapper {
    display: flex;
@@ -7,7 +7,7 @@ div.checkbox-wrapper {
 
    input[type="checkbox"] {
       appearance: none;
-      border: $gray-200 2px solid;
+      border: variables.$gray-200 2px solid;
       border-radius: 5px;
       padding: 0.5rem;
 
@@ -21,7 +21,7 @@ div.checkbox-wrapper {
    p.required {
       &::after {
          content: "*";
-         color: $red-200;
+         color: variables.$red-200;
          margin-left: 2px;
       }
    }

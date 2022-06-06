@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 section.register-page-wrapper {
    display: flex;
@@ -60,7 +60,7 @@ section.register-page-wrapper {
                padding: 1rem 0;
 
                a {
-                  color: $blue-400;
+                  color: variables.$blue-400;
                   font-weight: bold;
                }
             }

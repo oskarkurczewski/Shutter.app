@@ -1,20 +1,18 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 .dropdown-wrapper {
    p.label {
       margin-bottom: 5px;
-      color: $gray-300;
+      color: variables.$gray-300;
    }
    select {
       font-family: "Open Sans", sans-serif;
-      color: $gray-300;
+      color: variables.$gray-300;
       height: 25px;
       border-radius: 50px;
-      border: $gray-100 2px solid;
+      border: variables.$gray-100 2px solid;
       font-weight: bold;
       font-size: 14px;
       padding-left: 4px;
-      // display: flex;
-      // align-items: center;
    }
 }

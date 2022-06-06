@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 section.settings-page-wrapper {
    display: flex;
@@ -14,7 +14,7 @@ section.settings-page-wrapper {
 
       p.category-title {
          margin-bottom: 2rem;
-         color: $gray-300;
+         color: variables.$gray-300;
       }
 
       div.links {
@@ -27,7 +27,7 @@ section.settings-page-wrapper {
             align-items: center;
             gap: 5px;
             padding: 10px 7px;
-            color: $gray-200;
+            color: variables.$gray-200;
             border-radius: 4px;
             transition: background-color 150ms ease-in-out;
 
@@ -37,11 +37,11 @@ section.settings-page-wrapper {
 
             &.active,
             &:hover {
-               background-color: $purple-100-transparent;
-               color: $purple-100;
+               background-color: variables.$purple-100-transparent;
+               color: variables.$purple-100;
 
                p {
-                  color: $purple-100;
+                  color: variables.$purple-100;
                }
             }
          }
@@ -62,7 +62,7 @@ section.settings-page-wrapper {
 
          p.category-title {
             margin-bottom: 10px;
-            color: $gray-300;
+            color: variables.$gray-300;
          }
 
          & > div.content {

@@ -2,16 +2,20 @@
    display: flex;
    flex-direction: column;
    gap: 2rem;
+
    .table-card {
       padding: 1rem;
+
       .actions {
          display: flex;
          align-items: center;
          justify-content: center;
          gap: 0.5rem;
+
          .edit > svg {
             font-size: 20px;
          }
+
          .info > svg {
             font-size: 18px;
          }

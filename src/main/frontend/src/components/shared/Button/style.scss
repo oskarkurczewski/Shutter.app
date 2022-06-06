@@ -1,25 +1,25 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 .button-wrapper {
-   background-color: $purple-100;
-   color: $white;
+   background-color: variables.$purple-100;
+   color: variables.$white;
    display: flex;
    align-items: center;
    padding: 0.66rem;
    outline: none;
    border: none;
    border-radius: 7px;
-   box-shadow: $shadow-elevated;
+   box-shadow: variables.$shadow-elevated;
    text-transform: uppercase;
    user-select: none;
    cursor: pointer;
 
    span {
-      color: $white;
+      color: variables.$white;
    }
 
    p {
-      color: $white;
+      color: variables.$white;
       font-weight: 600;
       padding: 0 0.66rem;
    }

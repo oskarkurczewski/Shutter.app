@@ -1,16 +1,18 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 section.dashboard-page-wrapper {
    margin: 2rem auto;
    width: 50rem;
+
    .card-wrapper {
-      padding: calc($scale-1 * 1rem);
+      padding: calc(variables.$scale-1 * 1rem);
       display: flex;
       flex-direction: column;
 
       .header {
          display: flex;
          justify-content: space-between;
+
          .button-wrapper {
             width: 9rem;
             height: 3rem;
@@ -19,11 +21,13 @@ section.dashboard-page-wrapper {
 
       .roles {
          margin-top: 2rem;
+
          .roles-title {
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
          }
+
          .roles-list {
             margin-left: 1.3rem;
          }

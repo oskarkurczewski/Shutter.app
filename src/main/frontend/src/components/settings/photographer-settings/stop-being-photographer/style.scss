@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 .stop-being-photographer-wrapper {
    .buttons {
@@ -7,7 +7,7 @@
       justify-content: space-between;
 
       .red-button {
-         background-color: $red-200;
+         background-color: variables.$red-200;
       }
 
       .button-wrapper {

@@ -1,3 +1,5 @@
+@use "variables.scss" as variables;
+
 .user-filter-wrapper {
    display: flex;
    flex-direction: column;

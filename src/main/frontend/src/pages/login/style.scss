@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 section.login-page-wrapper {
    display: flex;
@@ -14,7 +14,7 @@ section.login-page-wrapper {
       flex-direction: row;
 
       .aside {
-         background-color: $purple-100;
+         background-color: variables.$purple-100;
          padding: 3rem 2rem;
          padding-top: 5rem;
          gap: 2rem;
@@ -25,7 +25,7 @@ section.login-page-wrapper {
          align-items: center;
 
          img {
-            fill: $white;
+            fill: variables.$white;
             filter: invert(1);
             width: 100px;
          }
@@ -36,15 +36,15 @@ section.login-page-wrapper {
             gap: 3rem;
 
             * {
-               color: $white;
+               color: variables.$white;
             }
          }
 
          .button-wrapper {
-            background-color: $white;
+            background-color: variables.$white;
 
             p {
-               color: $purple-100;
+               color: variables.$purple-100;
             }
          }
       }
@@ -69,7 +69,7 @@ section.login-page-wrapper {
             gap: 2rem;
 
             a {
-               color: $blue-400;
+               color: variables.$blue-400;
                font-weight: bold;
             }
          }

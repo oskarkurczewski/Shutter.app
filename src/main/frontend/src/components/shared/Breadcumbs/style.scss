@@ -1,15 +1,15 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 div.breadcumbs-wrapper {
    display: flex;
    align-items: center;
 
    svg {
-      color: $gray-300;
+      color: variables.$gray-300;
       cursor: pointer;
    }
 
    a {
-      color: $gray-300;
+      color: variables.$gray-300;
    }
 }

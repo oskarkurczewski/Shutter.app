@@ -1,14 +1,14 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 div.text-input-wrapper {
    p.label {
       margin-bottom: 5px;
-      color: $gray-300;
+      color: variables.$gray-300;
 
       &.required {
          &::after {
             content: "*";
-            color: $red-200;
+            color: variables.$red-200;
             margin-left: 2px;
          }
       }
@@ -18,26 +18,26 @@ div.text-input-wrapper {
       display: flex;
       border-radius: 10px;
       overflow: hidden;
-      border-bottom: $shadow-elevated;
+      border-bottom: variables.$shadow-elevated;
       height: 43px;
 
       span,
       input {
          padding: 0.5rem;
-         font-size: $scale-1;
+         font-size: variables.$scale-1;
       }
 
       span {
-         background-color: $blue-gray-200;
+         background-color: variables.$blue-gray-200;
       }
 
       input {
-         background-color: $blue-gray-100;
+         background-color: variables.$blue-gray-100;
          border: none;
          outline: none;
          padding-left: 1rem;
          font-weight: bold;
-         color: $gray-300;
+         color: variables.$gray-300;
          flex-grow: 1;
       }
    }

@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 div.validation-box-wrapper {
    padding-top: 45px;
@@ -22,24 +22,24 @@ div.validation-box-wrapper {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: $gray-200;
+            background-color: variables.$gray-200;
          }
 
          &.valid {
             div.dot {
-               background-color: $green-300;
+               background-color: variables.$green-300;
             }
             p.label {
-               color: $green-300;
+               color: variables.$green-300;
             }
          }
 
          &.invalid {
             div.dot {
-               background-color: $red-300;
+               background-color: variables.$red-300;
             }
             p.label {
-               color: $red-300;
+               color: variables.$red-300;
             }
          }
       }

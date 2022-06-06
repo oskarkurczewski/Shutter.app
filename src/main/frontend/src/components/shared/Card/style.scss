@@ -1,8 +1,8 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 div.card-wrapper {
    padding: 20px;
    border-radius: 10px;
-   box-shadow: $shadow-card;
-   background-color: $white;
+   box-shadow: variables.$shadow-card;
+   background-color: variables.$white;
 }

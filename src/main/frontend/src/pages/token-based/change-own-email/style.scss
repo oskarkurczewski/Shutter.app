@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 .change-own-email-wrapper {
    padding: 2rem;

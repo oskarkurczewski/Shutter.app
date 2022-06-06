@@ -1,4 +1,4 @@
-@import "variables.scss";
+@use "variables.scss" as variables;
 
 .layout-bar.navbar {
    position: fixed;
@@ -21,9 +21,9 @@
    }
 
    .expand-button-wrapper {
-      color: $white;
+      color: variables.$white;
       position: absolute;
-      background-color: $gray-300;
+      background-color: variables.$gray-300;
       height: 30px;
       width: 30px;
       display: flex;
@@ -45,7 +45,7 @@
    .logo-container {
       padding-top: 30px;
       padding-bottom: 40px;
-      border-bottom: 1px solid $gray-100;
+      border-bottom: 1px solid variables.$gray-100;
       width: 100%;
       display: flex;
       justify-content: center;
@@ -61,7 +61,7 @@
          row-gap: 10px;
 
          p {
-            color: $purple-100;
+            color: variables.$purple-100;
             text-transform: uppercase;
          }
       }
@@ -69,7 +69,7 @@
       .navbar-logo {
          height: 60px;
          width: 60px;
-         color: $purple-100;
+         color: variables.$purple-100;
       }
    }
 
