@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface Props {
    id?: string;
@@ -9,7 +9,7 @@ interface Props {
 
 const Card: React.FC<Props> = ({ id, children, className }) => {
    return (
-      <div id={id} className={`card-wrapper ${className ? className : ""}`}>
+      <div id={id} className={`${styles.card_wrapper} ${className ? className : ""}`}>
          {children}
       </div>
    );

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import { Link, useLocation } from "react-router-dom";
 import ClientButtonList from "../button-list/client";
 import BarButton from "../bar-button";
@@ -48,19 +48,23 @@ const Navbar = () => {
 
    return (
       <div
-         className={`layout-bar navbar ${
-            expanded && "expanded"
+         className={`${styles.layout_bar_navbar} ${
+            expanded && styles.expanded
          } ${accessLevel.toLowerCase()}`}
       >
-         <div className="logo-container">
-            <Link to="/" className="logo-wrapper">
-               <img src="/icons/logo.svg" alt="shutter logo" className="navbar-logo" />
+         <div className={styles.logo_container}>
+            <Link to="/" className={styles.logo_wrapper}>
+               <img
+                  src="/icons/logo.svg"
+                  alt="shutter logo"
+                  className={styles.navbar_logo}
+               />
                {expanded && <p className="section-title">{t("navbar.title")}</p>}
             </Link>
          </div>
-         <div className="bar-button-list-wrapper">
-            <div className="bar-button-wrapper">{btn_list}</div>
-            <div className="bar-button-wrapper">
+         <div className={styles.bar_button_list_wrapper}>
+            <div className={styles.bar_button_wrapper}>{btn_list}</div>
+            <div className={styles.bar_button_wrapper}>
                {accessLevel === AccessLevel.GUEST ? (
                   <BarButton
                      to="login"
@@ -80,7 +84,10 @@ const Navbar = () => {
                )}
             </div>
          </div>
-         <div className="expand-button-wrapper" onClick={() => setExpanded(!expanded)}>
+         <div
+            className={styles.expand_button_wrapper}
+            onClick={() => setExpanded(!expanded)}
+         >
             <MdKeyboardArrowRight />
          </div>
       </div>

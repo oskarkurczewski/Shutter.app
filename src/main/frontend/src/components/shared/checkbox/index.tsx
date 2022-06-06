@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface Props {
    children?: string;
@@ -17,7 +17,7 @@ const Checkbox: React.FC<Props> = ({
    onChange,
 }) => {
    return (
-      <div className={`checkbox-wrapper ${className ? className : ""}`}>
+      <div className={`${styles.checkbox_wrapper} ${className ? className : ""}`}>
          <input type="checkbox" checked={value} onChange={onChange} />
          <p className={`label ${required && "required"}`}>{children}</p>
       </div>

@@ -1,4 +1,4 @@
-import "./style.scss";
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import Card from "components/shared/card";
 import TextInput from "components/shared/text-input";
@@ -21,8 +21,8 @@ const ResetPasswordPage = () => {
    };
 
    return (
-      <section className="reset-password-page-wrapper">
-         <Card>
+      <section className={styles.reset_password_page_wrapper}>
+         <Card className={styles.card_wrapper}>
             <form>
                <p className="category-title">{t("label.reset-password")}</p>
                <p>{t("message.info.password-reset-procedure")}</p>
@@ -33,7 +33,7 @@ const ResetPasswordPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                />
-               <div className="footer">
+               <div className={styles.footer}>
                   <Button onClick={(e) => onSubmit(e)}>
                      {t("label.reset-password")}
                   </Button>

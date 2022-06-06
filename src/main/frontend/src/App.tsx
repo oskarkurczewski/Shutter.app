@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style.scss";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DashboardPage from "pages/dashboard";
 import PageLayout from "pages/layout";
 import Homepage from "pages/homepage";
@@ -10,14 +10,14 @@ import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { login, logout } from "redux/slices/authSlice";
 import ProtectedRoute from "components/routes/protected-route";
 import { AccessLevel } from "types/AccessLevel";
-import RegisterPage from "pages/register";
+import RegisterPage from "pages/auth/register";
 import CreateAccountPage from "pages/users/create";
 import AccountListPage from "pages/users/list";
 import EditAccountPage from "pages/users/edit";
 import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
 import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
-import LoginPage from "pages/login";
+import LoginPage from "pages/auth/login";
 import Button from "components/shared/button";
 import { push, remove } from "redux/slices/toastSlice";
 import { useRefreshTokenMutation } from "redux/service/api";
@@ -102,24 +102,6 @@ function App() {
                   />
 
                   <Route
-                     path="/confirm-registration/:token"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                           <ConfirmRegistrationPage />
-                        </ProtectedRoute>
-                     }
-                  />
-
-                  <Route
-                     path="password-reset/:token"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                           <ResetPasswordPage />
-                        </ProtectedRoute>
-                     }
-                  />
-
-                  <Route
                      path="request-reset-password"
                      element={
                         <ProtectedRoute roles={[AccessLevel.GUEST]}>
@@ -190,13 +172,35 @@ function App() {
 
                   {/* Token-based routes */}
                   <Route
-                     path="unblock-account/:token"
-                     element={<UnblockOwnAccountPage />}
+                     path="change-own-email/:token"
+                     element={<ChangeOwnEmailPage />}
                   />
 
                   <Route
-                     path="change-own-email/:token"
-                     element={<ChangeOwnEmailPage />}
+                     path="unblock-account/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <UnblockOwnAccountPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="/confirm-registration/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <ConfirmRegistrationPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="password-reset/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <ResetPasswordPage />
+                        </ProtectedRoute>
+                     }
                   />
                </Route>
             </Routes>

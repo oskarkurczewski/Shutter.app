@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface Props {
    children: string;
@@ -20,7 +20,7 @@ const Button: React.FC<Props> = ({
 }) => {
    return (
       <button
-         className={`button-wrapper ${className ? className : ""}`}
+         className={`${styles.button_wrapper} ${className ? className : ""}`}
          onClick={(e) => onClick(e)}
          title={title}
          disabled={disabled}

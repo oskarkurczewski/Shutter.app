@@ -1,0 +1,17 @@
+@use "variables.scss" as variables;
+
+.stop_being_photographer_wrapper {
+   .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .red_button {
+         background-color: variables.$red-200;
+      }
+
+      .button_wrapper {
+         margin-top: 20px;
+      }
+   }
+}

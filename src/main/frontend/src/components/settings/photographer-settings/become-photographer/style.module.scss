@@ -1,0 +1,11 @@
+.become_photographer_wrapper {
+   .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .button_wrapper {
+         margin-top: 20px;
+      }
+   }
+}

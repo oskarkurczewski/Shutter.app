@@ -1,3 +1,4 @@
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import Card from "components/shared/card";
 import Checkbox from "components/shared/checkbox";
@@ -6,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useRegisterAsAdminMutation } from "redux/service/api";
-import "./style.scss";
 
 const CreateAccountPage = () => {
    const { t } = useTranslation();
@@ -25,7 +25,7 @@ const CreateAccountPage = () => {
 
    const [emailCheck, setEmailCheck] = useState(false);
    const [passwordCheck, setPasswordCheck] = useState(false);
-   const [mutation, { isLoading, isError, isSuccess }] = useRegisterAsAdminMutation();
+   const [mutation, { isError, isSuccess }] = useRegisterAsAdminMutation();
 
    useEffect(() => {
       setEmailCheck(formData.email == formData.email2);
@@ -39,8 +39,8 @@ const CreateAccountPage = () => {
    const navigate = useNavigate();
 
    return (
-      <div className="create-account-page-wrapper">
-         <Card className="card">
+      <div className={styles.create_account_page_wrapper}>
+         <Card className={styles.card_wrapper}>
             <div>
                <TextInput
                   value={formData.login}
@@ -99,7 +99,7 @@ const CreateAccountPage = () => {
                   type="email"
                />
                {!emailCheck && (
-                  <p className="error-message">
+                  <p className={styles.error_message}>
                      {t("message.error.equality-error-email")}
                   </p>
                )}
@@ -170,7 +170,9 @@ const CreateAccountPage = () => {
                   {t("label.create-account")}
                </Button>
                {isError && (
-                  <p className="error-message">{t("message.error.create-account")}</p>
+                  <p className={styles.error_message}>
+                     {t("message.error.create-account")}
+                  </p>
                )}
             </div>
          </Card>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { ReactNode } from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
 import SquareButton from "../square-button";
 import {
@@ -49,14 +49,13 @@ const Table: React.FC<Props> = ({
    };
 
    return (
-      <div className="table-wrapper">
-         <header></header>
-         <table className="table">
+      <div className={styles.table_wrapper}>
+         <table>
             <tbody>
-               <tr className="table-header">
+               <tr className={styles.table_header}>
                   {headers.map((header, index) => (
                      <th key={header.id}>
-                        <div className="cell-wrapper">
+                        <div className={styles.cell_wrapper}>
                            <div className="label">{header.label}</div>
                            <div>
                               {header.sortable && (
@@ -66,7 +65,7 @@ const Table: React.FC<Props> = ({
                                     onKeyDown={() => {
                                        return;
                                     }}
-                                    className={`sort ${header.sort}`}
+                                    className={`${styles.sort} ${header.sort}`}
                                     onClick={() => {
                                        switch (header.sort) {
                                           case "desc":
@@ -82,19 +81,19 @@ const Table: React.FC<Props> = ({
                                        }
                                     }}
                                  >
-                                    <VscTriangleUp className="up" />
-                                    <VscTriangleDown className="down" />
+                                    <VscTriangleUp className={styles.up} />
+                                    <VscTriangleDown className={styles.down} />
                                  </div>
                               )}
                               {/* <div className="drag" /> */}
-                              <div className="separator" />
+                              <div className={styles.separator} />
                            </div>
                         </div>
                      </th>
                   ))}
                </tr>
                {data.map((row, rowIndex) => (
-                  <tr key={rowIndex} className="table-row">
+                  <tr key={rowIndex} className={styles.table_row}>
                      {row.map((item, columnIndex) => (
                         <td key={`${rowIndex}.${columnIndex}`}>{item}</td>
                      ))}
@@ -102,11 +101,11 @@ const Table: React.FC<Props> = ({
                ))}
             </tbody>
          </table>
-         <footer className="pages">
-            <div className="pages-wrapper">
-               <div className="all-records">{allRecords} wyników</div>
-               <div className="line" />
-               <div className="change-page-buttons">
+         <div className={styles.pages}>
+            <div className={styles.pages_wrapper}>
+               <div className={styles.all_records}>{allRecords} wyników</div>
+               <div className={styles.line} />
+               <div className={styles.change_page_buttons}>
                   <SquareButton
                      onClick={() => {
                         setPageNo(1);
@@ -141,7 +140,7 @@ const Table: React.FC<Props> = ({
                      <HiChevronDoubleRight />
                   </SquareButton>
                </div>
-               <div className="change-records-per-page">
+               <div>
                   <Dropdown
                      values={[10, 25, 50, 100]}
                      name="recordsPerPage"
@@ -153,7 +152,7 @@ const Table: React.FC<Props> = ({
                   />
                </div>
             </div>
-         </footer>
+         </div>
       </div>
    );
 };

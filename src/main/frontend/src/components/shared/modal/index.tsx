@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import Button from "../button";
 import Card from "../card";
 import ModalRoot from "./ModalRoot";
@@ -42,23 +42,24 @@ const Modal: React.FC<Props> = ({
 
    return (
       <ModalRoot>
-         <div className="modal-backdrop">
-            <Card className={`modal-wrapper ${className ? className : ""}`}>
+         <div className={styles.modal_backdrop}>
+            <Card className={`${styles.modal_wrapper} ${className && className}`}>
                {title && (
-                  <div className="modal-header">
+                  <div className={styles.modal_header}>
                      <p className="category-title">{title}</p>
                   </div>
                )}
-               <div className="modal-content">{children}</div>
-               <div className="modal-footer">
+               <div>{children}</div>
+               <div className={styles.modal_footer}>
                   {type === "confirm" && (
-                     <Button className="cancel" onClick={() => onCancel && onCancel()}>
+                     <Button
+                        className={styles.cancel}
+                        onClick={() => onCancel && onCancel()}
+                     >
                         {t("label.cancel")}
                      </Button>
                   )}
-                  <Button className="submit" onClick={() => onSubmit()}>
-                     {t("label.submit")}
-                  </Button>
+                  <Button onClick={() => onSubmit()}>{t("label.submit")}</Button>
                </div>
             </Card>
          </div>

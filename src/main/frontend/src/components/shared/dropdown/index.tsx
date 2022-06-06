@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface Props {
    values: string[] | number[] | boolean[];
@@ -19,7 +19,7 @@ const Dropdown: React.FC<Props> = ({
    selectedValue,
 }) => {
    return (
-      <div className="dropdown-wrapper">
+      <div className={styles.dropdown_wrapper}>
          {children && <p className="label">{children}</p>}
          <select
             name={name}

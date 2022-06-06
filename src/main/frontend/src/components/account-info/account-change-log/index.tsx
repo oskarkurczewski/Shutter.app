@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useGetAccountChangeLogMutation } from "redux/service/api";
 import { getOwnAccountChangeLogRequest } from "redux/types/api/accountTypes";
 import { tableHeader } from "types/ComponentTypes";
-import "./style.scss";
 
 interface Props {
    login: string;

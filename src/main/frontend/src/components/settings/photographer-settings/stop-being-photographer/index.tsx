@@ -1,4 +1,4 @@
-import "./style.scss";
+import styles from "./style.module.scss";
 import React, { useEffect } from "react";
 import Card from "components/shared/card";
 import Button from "components/shared/button";
@@ -24,14 +24,14 @@ const StopBeingPhotographer = () => {
    }, [refreshMutationState.isSuccess]);
 
    return (
-      <Card id="photographer-settings" className="stop-being-photographer-wrapper">
+      <Card id="photographer-settings" className={styles.stop_being_photographer_wrapper}>
          <p className="category-title">{t("label.photographer-settings")}</p>
          <div className="content">
             <p>{t("message.info.photographer-settings-general")}</p>
             <p>{t("message.info.photographer-settings-warning")}</p>
-            <div className="buttons">
+            <div className={styles.buttons}>
                <Button
-                  className="red-button"
+                  className={`${styles.red_button} ${styles.button_wrapper}`}
                   onClick={async () => {
                      await stopBeingPhotographerMutation({});
                      refreshMutation({});

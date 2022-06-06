@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import Card from "components/shared/card";
 import { useParams } from "react-router-dom";
 import { useConfirmRegistrationMutation } from "redux/service/api";
@@ -18,8 +18,8 @@ const ConfirmRegistrationPage = () => {
    }, []);
 
    return (
-      <section className="confirm-registration-page-wrapper">
-         <Card>
+      <section className={styles.confirm_registration_page_wrapper}>
+         <Card className={styles.card_wrapper}>
             <p className="category-title">{t("label.register-account")}</p>
             {(() => {
                if (isLoading) {

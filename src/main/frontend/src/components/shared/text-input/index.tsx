@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface TextInputProps {
    icon?: string;
@@ -27,7 +27,7 @@ const TextInput = ({
    disabled,
 }: TextInputProps) => {
    return (
-      <div className={`text-input-wrapper ${className ? className : ""}`}>
+      <div className={`${styles.text_input_wrapper} ${className ? className : ""}`}>
          {label && <p className={`label ${required && "required"}`}>{label}</p>}
          <div>
             {icon && <span className="material-icons">{icon}</span>}

@@ -1,3 +1,4 @@
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import Card from "components/shared/card";
 import Checkbox from "components/shared/checkbox";
@@ -12,7 +13,6 @@ import {
    useChangeAccessLevelMutation,
    useEditAccountInfoAsAdminMutation,
 } from "redux/service/api";
-import "./style.scss";
 
 const EditAccountPage = () => {
    const { login } = useParams();
@@ -68,8 +68,8 @@ const EditAccountPage = () => {
    const navigate = useNavigate();
 
    return (
-      <div className="create-account-page-wrapper">
-         <Card className="card">
+      <div className={styles.create_account_page_wrapper}>
+         <Card className={styles.card_wrapper}>
             <div>
                <TextInput
                   value={formData.login}
@@ -81,14 +81,14 @@ const EditAccountPage = () => {
                   disabled
                />
             </div>
-            <div className="access-levels-wrapper">
-               <div className="access-levels">
+            <div className={styles.access_levels_wrapper}>
+               <div className={styles.access_levels}>
                   {allRoles &&
                      allRoles.map((accessLevel) => {
                         return <p key={accessLevel.name}>{accessLevel.name}</p>;
                      })}
                </div>
-               <div className="buttons">
+               <div className={styles.buttons}>
                   <SquareButton
                      onClick={() => {
                         accessLevelMutation({
@@ -159,7 +159,9 @@ const EditAccountPage = () => {
                   type="email"
                />
                {!emailCheck && (
-                  <p className="error-message">Adresy email różnią się od siebie</p>
+                  <p className={styles.error_message}>
+                     Adresy email różnią się od siebie
+                  </p>
                )}
             </div>
 
@@ -202,11 +204,11 @@ const EditAccountPage = () => {
                   Zapisz
                </Button>
                {infoMutationState.isError && (
-                  <p className="error-message">Nie można zapisać edycji</p>
+                  <p className={styles.error_message}>Nie można zapisać edycji</p>
                )}
             </div>
          </Card>
-         <Card className="card">
+         <Card className={styles.card_wrapper}>
             <Dropdown
                values={["MODERATOR", "PHOTOGRAPHER", "CLIENT"]}
                selectedValue={selectedRole}

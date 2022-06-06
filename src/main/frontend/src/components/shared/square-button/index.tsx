@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface Props {
    children?: React.ReactNode | string | number;
@@ -15,7 +15,10 @@ const SquareButton: React.FC<Props> = ({
    title,
 }) => {
    return (
-      <div className={`square-button-wrapper ${!onClick && "inactive"}`} title={title}>
+      <div
+         className={`${styles.square_button_wrapper} ${!onClick && styles.inactive}`}
+         title={title}
+      >
          <button disabled={disabled} onClick={onClick}>
             {children}
          </button>

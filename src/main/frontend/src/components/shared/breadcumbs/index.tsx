@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -20,8 +20,8 @@ const Breadcumbs = () => {
       });
 
    return (
-      <div className="breadcumbs-wrapper">
-         {/* <BsFillCaretLeftFill onClick={() => navigate(-1)} />
+      <div className={styles.breadcumbs_wrapper}>
+         <BsFillCaretLeftFill onClick={() => navigate(-1)} />
          {crumbs.map((crumb, index) => (
             <>
                <Link to={crumb.fullURL} key={index}>
@@ -29,7 +29,7 @@ const Breadcumbs = () => {
                </Link>
                <span>/</span>
             </>
-         ))} */}
+         ))}
       </div>
    );
 };

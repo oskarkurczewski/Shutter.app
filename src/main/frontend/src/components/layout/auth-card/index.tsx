@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
+import styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
-import "./style.scss";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useSwitchCurrentAccessLevelMutation, useUserInfoQuery } from "redux/service/api";
 import { AccessLevel } from "types/AccessLevel";
-import Button from "components/shared/button";
 import { setAccessLevel, setUserInfo } from "redux/slices/authSlice";
 
 interface Props {
@@ -41,11 +40,11 @@ const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
    const { token, exp } = useAppSelector((state) => state.auth);
 
    return (
-      <div className="auth-card-wrapper">
+      <div className={styles.auth_card_wrapper}>
          <img src="/images/auth-image.png" alt="user sidebar" />
-         <div className="auth-card-data-wrapper">
-            <img src="/images/avatar.png" alt="user" className="auth-card-photo" />
-            <div className="auth-label-wrapper">
+         <div className={styles.data_wrapper}>
+            <img src="/images/avatar.png" alt="user" className={styles.auth_card_photo} />
+            <div className={styles.label_wrapper}>
                <p className="label">{selectedAccessLevel}</p>
                <p className="label-bold">{username ? username : t("auth.notloggedin")}</p>
             </div>

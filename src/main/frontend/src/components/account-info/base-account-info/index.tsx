@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaCheck } from "react-icons/fa";
 import { useAdvancedUserInfoQuery } from "redux/service/api";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface Props {
    login: string;
@@ -15,7 +15,7 @@ const BaseAccountInfo: React.FC<Props> = ({ login }) => {
    const [userInfo, setUserInfo] = useState(useAdvancedUserInfoQuery(login).data);
 
    return (
-      <Card className={"base-account-info-wrapper"}>
+      <Card className={styles.base_account_info_wrapper}>
          {userInfo && (
             <table>
                <tbody>

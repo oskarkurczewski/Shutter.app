@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import "./style.scss";
+import styles from "./style.module.scss";
 
 interface Props {
    icon: JSX.Element;
@@ -15,9 +15,9 @@ const BarButton: FC<Props> = ({ to, icon, active, style, text, expanded }) => {
    return (
       <Link
          to={to}
-         className={`bar-button label-bold ${active && "bar-button-active"} ${
-            expanded && "expanded"
-         }`}
+         className={`${styles.bar_button} label-bold ${
+            active && styles.bar_button_active
+         } ${expanded && styles.expanded}`}
          style={style}
       >
          {icon}

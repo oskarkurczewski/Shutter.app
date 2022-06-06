@@ -1,7 +1,5 @@
 import React from "react";
-import "./style.scss";
-import Card from "components/shared/card";
-import Button from "components/shared/button";
+import styles from "./style.module.scss";
 import { HiCamera } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
@@ -18,7 +16,6 @@ import { useTranslation } from "react-i18next";
 
 const SettingsPage: React.FC = () => {
    const { t } = useTranslation();
-
    const location = useLocation();
 
    const roles = useAppSelector((state) => state.auth.roles);
@@ -47,15 +44,15 @@ const SettingsPage: React.FC = () => {
    ];
 
    return (
-      <section className="settings-page-wrapper">
-         <div className="nav">
+      <section className={styles.settings_page_wrapper}>
+         <div className={styles.nav}>
             <p className="category-title">{t("label.settings-short")}</p>
-            <div className="links">
+            <div className={styles.links}>
                {sections.map((section, index) => (
                   <a
                      key={index}
                      href={`#${section.id}`}
-                     className={location.hash.includes(section.id) ? "active" : ""}
+                     className={location.hash.includes(section.id) && styles.active}
                   >
                      {section.icon}
                      <p className="label-bold">{section.label}</p>
@@ -63,8 +60,7 @@ const SettingsPage: React.FC = () => {
                ))}
             </div>
          </div>
-         <div className="content">
-            {/* poszczególne sekcje powinny być w osobnych komponentach (można podpiąć je potem pod tablicę `sections` aby później wywołać je tutaj iterując po `sections`) */}
+         <div className={styles.content}>
             <MainSettings />
             <ChangeEmail />
             <ChangePassword />

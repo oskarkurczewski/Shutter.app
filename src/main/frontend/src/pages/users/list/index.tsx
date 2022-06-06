@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import Card from "components/shared/card";
 import Table from "components/shared/table";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -159,14 +159,14 @@ const AccountListPage = () => {
          </>,
          item.isActive ? <FaCheck className="check" /> : <></>,
          item.isRegistered ? <FaCheck className="check" /> : <></>,
-         <div key={item.login} className="actions">
+         <div key={item.login} className={styles.actions}>
             <Link to={`/users/${item.login}/edit`}>
-               <div role="button" className="edit">
+               <div role="button" className={styles.edit}>
                   <FaEdit />
                </div>
             </Link>
             <Link to={`/users/${item.login}/info`}>
-               <div role="button" className="info">
+               <div role="button" className={styles.info}>
                   <FaAngleRight />
                </div>
             </Link>
@@ -185,9 +185,9 @@ const AccountListPage = () => {
    };
 
    return (
-      <div className="account-list-page-wrapper">
+      <div className={styles.account_list_page_wrapper}>
          <ListUsersFilter query={query} setQuery={setQuery} />
-         <Card className="table-card">
+         <Card className={styles.table_card}>
             <Table
                data={tableData}
                headers={headers}

@@ -1,0 +1,69 @@
+@use "variables.scss" as variables;
+
+.register_page_wrapper {
+   display: flex;
+   flex-grow: 1;
+   align-items: center;
+   justify-content: flex-end;
+
+   div.form_wrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+
+      div.validation_card {
+         width: 500px;
+      }
+
+      div.register_card {
+         display: flex;
+         flex-direction: column;
+         flex-grow: 1;
+         gap: 1.5rem;
+         overflow: hidden;
+
+         form {
+            padding-top: 25px;
+            padding-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+            div.inputs_wrapper {
+               display: flex;
+               gap: 1rem;
+
+               div.column {
+                  display: flex;
+                  flex-grow: 1;
+                  flex-direction: column;
+                  gap: 1.5rem;
+
+                  div.text_input_wrapper {
+                     width: 350px;
+                  }
+               }
+            }
+
+            div.checkboxes_wrapper {
+               display: flex;
+               flex-direction: column;
+               gap: 10px;
+            }
+
+            div.footer {
+               display: flex;
+               align-items: center;
+               justify-content: flex-end;
+               gap: 2rem;
+               padding: 1rem 0;
+
+               a {
+                  color: variables.$blue-400;
+                  font-weight: bold;
+               }
+            }
+         }
+      }
+   }
+}

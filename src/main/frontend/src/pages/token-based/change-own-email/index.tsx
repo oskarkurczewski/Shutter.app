@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import Card from "components/shared/card";
 import TextInput from "components/shared/text-input";
@@ -31,7 +31,7 @@ const ChangeOwnEmailPage = () => {
    };
 
    return (
-      <Card className="change-own-email-wrapper">
+      <Card className={styles.change_own_email_wrapper}>
          <p className="category-title">{t("label.email-change")}</p>
 
          <TextInput

@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
@@ -9,7 +9,7 @@ const DashboardPage = () => {
    const { token } = useAppSelector((state) => state.auth);
 
    return (
-      <section className="dashboard-page-wrapper">
+      <section className={styles.dashboard_page_wrapper}>
          {token && (
             <Button
                onClick={() => {

@@ -1,4 +1,4 @@
-import "./style.scss";
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import Card from "components/shared/card";
 import TextInput from "components/shared/text-input";
@@ -24,8 +24,8 @@ const RequestResetPasswordPage = () => {
    };
 
    return (
-      <section className="reset-password-page-wrapper">
-         <Card>
+      <section className={styles.reset_password_page_wrapper}>
+         <Card className={styles.card_wrapper}>
             <form>
                <p className="category-title">{t("label.dont-remember-password")}</p>
                <p>{t("message.info.email-instruction")}</p>
@@ -41,7 +41,7 @@ const RequestResetPasswordPage = () => {
                   ref={recaptchaRef}
                   sitekey="6LcOjh4gAAAAAJRdv-oKWqqj8565Bz6Y3QlmJv5L"
                />
-               <div className="footer">
+               <div className={styles.footer}>
                   <Button onClick={(e) => onSubmit(e)}>
                      {t("message.info.send-email-message")}
                   </Button>

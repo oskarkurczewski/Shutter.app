@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import Card from "../../shared/card";
 import TextInput from "../../shared/text-input";
 import Button from "../../shared/button";
@@ -15,7 +15,6 @@ interface Props {
 
 const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
    const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
-   const [basicSearchValue, setBasicSearchValue] = useState("");
 
    // TODO: change to custom hooks
    const [login, setLogin] = useState("");
@@ -45,10 +44,10 @@ const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
    };
 
    return (
-      <div className="user-filter-wrapper">
-         <Card className="filters">
+      <div className={styles.user_filter_wrapper}>
+         <Card className={styles.filter}>
             {isAdvancedSearch ? (
-               <div className="filters-wrapper-advanced">
+               <div className={styles.filters_wrapper_advanced}>
                   <FilterTextInput
                      label="login"
                      isActive={loginIsActive}
@@ -95,7 +94,7 @@ const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
                   />
                </div>
             ) : (
-               <div className="filters-wrapper-basic">
+               <div className={styles.filters_wrapper_basic}>
                   <TextInput
                      value={query}
                      placeholder="szukaj"
@@ -105,10 +104,10 @@ const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
                   />
                </div>
             )}
-            <div className="buttons">
+            <div className={styles.buttons}>
                <Button
                   onClick={isAdvancedSearch ? submitAdvancedSearch : submitBasicSearch}
-                  className="search-button"
+                  className={styles.search_button}
                   title="Search"
                >
                   Szukaj

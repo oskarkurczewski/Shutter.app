@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./style.scss";
+import styles from "./style.module.scss";
 import Card from "components/shared/card";
 import { useParams } from "react-router-dom";
 import { useUnblockOwnAccountMutation } from "redux/service/api";
@@ -18,7 +18,7 @@ const UnblockOwnAccountPage = () => {
    }, []);
 
    return (
-      <Card className="unblock-own-account-wrapper">
+      <Card className={styles.unblock_own_account_wrapper}>
          <p className="category-title">{t("label.unblock-account")}</p>
          {(() => {
             if (isLoading) {
