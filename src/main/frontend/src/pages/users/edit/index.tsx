@@ -1,9 +1,9 @@
-import Button from "components/shared/Button";
-import Card from "components/shared/Card";
-import Checkbox from "components/shared/Checkbox";
-import Dropdown from "components/shared/Dropdown";
-import SquareButton from "components/shared/SquareButton";
-import TextInput from "components/shared/TextInput";
+import Button from "components/shared/button";
+import Card from "components/shared/card";
+import Checkbox from "components/shared/checkbox";
+import Dropdown from "components/shared/dropdown";
+import SquareButton from "components/shared/square-button";
+import TextInput from "components/shared/text-input";
 import React, { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";

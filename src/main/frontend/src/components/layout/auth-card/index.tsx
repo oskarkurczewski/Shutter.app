@@ -4,7 +4,7 @@ import "./style.scss";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useSwitchCurrentAccessLevelMutation, useUserInfoQuery } from "redux/service/api";
 import { AccessLevel } from "types/AccessLevel";
-import Button from "components/shared/Button";
+import Button from "components/shared/button";
 import { setAccessLevel, setUserInfo } from "redux/slices/authSlice";
 
 interface Props {

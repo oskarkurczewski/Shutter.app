@@ -1,12 +1,9 @@
-import Card from "components/shared/Card";
-import Table from "components/shared/Table";
+import Card from "components/shared/card";
+import Table from "components/shared/table";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetAccountChangeLogMutation } from "redux/service/api";
-import {
-   getAccountChangeLogRequest,
-   getOwnAccountChangeLogRequest,
-} from "redux/types/api/accountTypes";
+import { getOwnAccountChangeLogRequest } from "redux/types/api/accountTypes";
 import { tableHeader } from "types/ComponentTypes";
 import "./style.scss";
 

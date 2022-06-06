@@ -1,4 +1,4 @@
-import Card from "components/shared/Card";
+import Card from "components/shared/card";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaCheck } from "react-icons/fa";

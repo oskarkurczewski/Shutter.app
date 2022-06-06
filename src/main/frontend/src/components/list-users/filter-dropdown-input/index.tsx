@@ -1,5 +1,5 @@
-import Checkbox from "components/shared/Checkbox";
-import Dropdown from "components/shared/Dropdown";
+import Checkbox from "components/shared/checkbox";
+import Dropdown from "components/shared/dropdown";
 import React from "react";
 
 interface DropdownInputProps {

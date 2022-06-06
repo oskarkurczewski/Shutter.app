@@ -1,7 +1,7 @@
 import "./style.scss";
-import Button from "components/shared/Button";
-import Card from "components/shared/Card";
-import TextInput from "components/shared/TextInput";
+import Button from "components/shared/button";
+import Card from "components/shared/card";
+import TextInput from "components/shared/text-input";
 import React, { useRef, useState } from "react";
 import { useRequestResetPasswordMutation } from "redux/service/api";
 import { useTranslation } from "react-i18next";

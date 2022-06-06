@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.scss";
-import Button from "components/shared/Button";
+import Button from "components/shared/button";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
 

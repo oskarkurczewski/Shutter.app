@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import Button from "components/shared/Button";
+import Button from "components/shared/button";
 import React, { FC } from "react";
 import { useAppDispatch } from "redux/hooks";
 import { remove } from "redux/slices/toastSlice";

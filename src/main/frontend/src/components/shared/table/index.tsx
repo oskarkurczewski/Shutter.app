@@ -2,7 +2,7 @@
 import React, { ReactNode } from "react";
 import "./style.scss";
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
-import SquareButton from "../SquareButton";
+import SquareButton from "../square-button";
 import {
    HiChevronDoubleLeft,
    HiChevronDoubleRight,
@@ -10,9 +10,8 @@ import {
    HiChevronRight,
 } from "react-icons/hi";
 
-import Dropdown from "../Dropdown";
+import Dropdown from "../dropdown";
 import { tableHeader } from "types/ComponentTypes";
-
 
 interface Props {
    data: (string | ReactNode)[][];

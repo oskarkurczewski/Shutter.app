@@ -18,7 +18,7 @@ import SettingsPage from "pages/settings";
 import ResetPasswordPage from "pages/reset-password";
 import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
 import LoginPage from "pages/login";
-import Button from "components/shared/Button";
+import Button from "components/shared/button";
 import { push, remove } from "redux/slices/toastSlice";
 import { useRefreshTokenMutation } from "redux/service/api";
 import RequestResetPasswordPage from "pages/request-reset-password";

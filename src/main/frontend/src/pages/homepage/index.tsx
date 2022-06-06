@@ -1,4 +1,4 @@
-import Button from "components/shared/Button";
+import Button from "components/shared/button";
 import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { useAppSelector } from "redux/hooks";

@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.scss";
-import Card from "components/shared/Card";
-import Button from "components/shared/Button";
+import Card from "components/shared/card";
+import Button from "components/shared/button";
 import { HiCamera } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";

@@ -1,5 +1,5 @@
-import Checkbox from "components/shared/Checkbox";
-import TextInput from "components/shared/TextInput";
+import Checkbox from "components/shared/checkbox";
+import TextInput from "components/shared/text-input";
 import React from "react";
 
 interface TextInputProps {

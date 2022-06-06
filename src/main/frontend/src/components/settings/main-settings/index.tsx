@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Card from "components/shared/Card";
-import TextInput from "components/shared/TextInput";
-import Button from "components/shared/Button";
+import Card from "components/shared/card";
+import TextInput from "components/shared/text-input";
+import Button from "components/shared/button";
 import { useChangeOwnUserDataMutation, useCurrentUserInfoQuery } from "redux/service/api";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "redux/hooks";

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./style.scss";
-import Card from "../../shared/Card";
-import TextInput from "../../shared/TextInput";
-import Button from "../../shared/Button";
-import SquareButton from "components/shared/SquareButton";
+import Card from "../../shared/card";
+import TextInput from "../../shared/text-input";
+import Button from "../../shared/button";
+import SquareButton from "components/shared/square-button";
 import { FaSearchMinus, FaSearchPlus } from "react-icons/fa";
-import FilterDropdownInput from "../FilterDropdownInput";
-import FilterTextInput from "../FilterTextInput";
+import FilterDropdownInput from "../filter-dropdown-input";
+import FilterTextInput from "../filter-text-input";
 
 interface Props {
    query: string;

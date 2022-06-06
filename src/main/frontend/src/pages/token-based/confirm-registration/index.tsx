@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./style.scss";
-import Card from "components/shared/Card";
+import Card from "components/shared/card";
 import { useParams } from "react-router-dom";
 import { useConfirmRegistrationMutation } from "redux/service/api";
 import { useTranslation } from "react-i18next";

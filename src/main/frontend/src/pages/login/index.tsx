@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from "react";
 import "./style.scss";
-import Card from "components/shared/Card";
-import TextInput from "components/shared/TextInput";
-import Checkbox from "components/shared/Checkbox";
-import Button from "components/shared/Button";
+import Card from "components/shared/card";
+import TextInput from "components/shared/text-input";
+import Checkbox from "components/shared/checkbox";
+import Button from "components/shared/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "redux/hooks";
 import { getLoginPayload } from "util/loginUtil";

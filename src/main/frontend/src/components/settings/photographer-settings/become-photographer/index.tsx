@@ -1,7 +1,7 @@
 import "./style.scss";
 import React, { useEffect } from "react";
-import Card from "components/shared/Card";
-import Button from "components/shared/Button";
+import Card from "components/shared/card";
+import Button from "components/shared/button";
 import { useBecomePhotographerMutation, useRefreshMutation } from "redux/service/api";
 import { refreshToken } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";

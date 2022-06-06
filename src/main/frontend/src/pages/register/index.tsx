@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./style.scss";
-import Button from "components/shared/Button";
-import Card from "components/shared/Card";
-import Checkbox from "components/shared/Checkbox";
-import TextInput from "components/shared/TextInput";
-import ValidationBox from "components/shared/ValidationBox";
+import Button from "components/shared/button";
+import Card from "components/shared/card";
+import Checkbox from "components/shared/checkbox";
+import TextInput from "components/shared/text-input";
+import ValidationBox from "components/shared/validation-box";
 import { Link } from "react-router-dom";
 import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/api";
-import Form from "components/shared/Form";
+import Form from "components/shared/form";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 

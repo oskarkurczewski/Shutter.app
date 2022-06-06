@@ -1,5 +1,5 @@
-import Button from "components/shared/Button";
-import Card from "components/shared/Card";
+import Button from "components/shared/button";
+import Card from "components/shared/card";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSendChangeOwnEmailLinkMutation } from "redux/service/api";
