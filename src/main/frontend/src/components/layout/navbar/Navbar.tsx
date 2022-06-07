@@ -3,15 +3,15 @@
 import React, { useState } from "react";
 import styles from "./Navbar.module.scss";
 import { Link, useLocation } from "react-router-dom";
-import ClientButtonList from "../button-list/client/ClientButtonList";
+import ClientButtonList from "../button-list/ClientButtonList";
 import BarButton from "../bar-button/BarButton";
 import { RiLogoutBoxRLine, RiLoginBoxLine } from "react-icons/ri";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { AccessLevel } from "types/AccessLevel";
-import GuestButtonList from "../button-list/guest/GuestButtonList";
-import AdministratorButtonList from "../button-list/administrator/AdministratorButtonList";
-import ModeratorButtonList from "../button-list/moderator/ModeratorButtonList";
-import PhotographerButtonList from "../button-list/photographer/PhotographerButtonList";
+import GuestButtonList from "../button-list/GuestButtonList";
+import AdministratorButtonList from "../button-list/AdministratorButtonList";
+import ModeratorButtonList from "../button-list/ModeratorButtonList";
+import PhotographerButtonList from "../button-list/PhotographerButtonList";
 import { useAppSelector } from "redux/hooks";
 import { useTranslation } from "react-i18next";
 
