@@ -6,7 +6,7 @@
 
     <groupId>pl.lodz.p.it.ssbd2022</groupId>
     <artifactId>ssbd02</artifactId>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
     <name>ssbd02</name>
     <packaging>war</packaging>
 
