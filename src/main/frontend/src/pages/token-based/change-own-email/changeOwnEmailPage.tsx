@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styles from "./changeOwnEmailPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { useParams } from "react-router-dom";
-import { useChangeOwnEmailMutation } from "redux/service/userSettingsService";
 import { useTranslation } from "react-i18next";
+import { useChangeEmailMutation } from "redux/service/tokenBasedService";
 
 export const ChangeOwnEmailPage = () => {
    const { t } = useTranslation();
@@ -14,13 +14,13 @@ export const ChangeOwnEmailPage = () => {
 
    const { token } = useParams();
 
-   const [unblockOwnAccountMutation, { isLoading, isSuccess, isError }] =
-      useChangeOwnEmailMutation();
+   const [changeEmailMutation, { isLoading, isSuccess, isError }] =
+      useChangeEmailMutation();
 
    const onSubmit = () => {
       setEqualityError(false);
       if (newEmail == confirmEmail) {
-         return unblockOwnAccountMutation({
+         return changeEmailMutation({
             newEmail,
             token,
          });

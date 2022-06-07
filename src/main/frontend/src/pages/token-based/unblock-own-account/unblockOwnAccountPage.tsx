@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./unblockOwnAccountPage.module.scss";
 import { useParams } from "react-router-dom";
 import { Card } from "components/shared";
-import { useUnblockOwnAccountMutation } from "redux/service/tokenBasedService";
+import { useUnblockAccountMutation } from "redux/service/tokenBasedService";
 import { useTranslation } from "react-i18next";
 
 export const UnblockOwnAccountPage = () => {
@@ -11,7 +11,7 @@ export const UnblockOwnAccountPage = () => {
    const { token } = useParams();
 
    const [unblockOwnAccountMutation, { isLoading, isSuccess, isError }] =
-      useUnblockOwnAccountMutation();
+      useUnblockAccountMutation();
 
    useEffect(() => {
       unblockOwnAccountMutation(token);

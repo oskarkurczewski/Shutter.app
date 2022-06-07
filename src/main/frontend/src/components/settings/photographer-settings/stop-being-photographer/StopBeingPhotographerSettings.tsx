@@ -12,16 +12,16 @@ export const StopBeingPhotographerSettings = () => {
    const { t } = useTranslation();
 
    const [stopBeingPhotographerMutation] = useStopBeingPhotographerMutation();
-   const [refreshMutation, refreshMutationState] = useRefreshTokenMutation();
+   const [refreshTokenMutation, refreshTokenMutationState] = useRefreshTokenMutation();
    const dispatch = useAppDispatch();
 
    useEffect(() => {
-      if (refreshMutationState.isSuccess) {
-         const userData = refreshToken(refreshMutationState.data.token);
+      if (refreshTokenMutationState.isSuccess) {
+         const userData = refreshToken(refreshTokenMutationState.data.token);
 
          dispatch(login(userData));
       }
-   }, [refreshMutationState.isSuccess]);
+   }, [refreshTokenMutationState.isSuccess]);
 
    return (
       <Card id="photographer-settings" className={styles.card_wrapper}>
@@ -35,8 +35,8 @@ export const StopBeingPhotographerSettings = () => {
                <Button
                   className={`${styles.red_button} ${styles.button_wrapper}`}
                   onClick={async () => {
-                     await stopBeingPhotographerMutation({});
-                     refreshMutation({});
+                     await stopBeingPhotographerMutation();
+                     refreshTokenMutation();
                   }}
                >
                   {t("label.hide-photographer")}

@@ -1,41 +1,32 @@
 import { api } from "./api";
 import {
-   getListResponse,
-   changeOwnEmailRequest,
    changeOwnPasswordRequest,
    changeOwnUserDataRequest,
    requestResetPasswordRequest,
    tableAccountChangeLogInfo,
    getOwnAccountChangeLogRequest,
 } from "redux/types/api/accountTypes";
+import { EtagData, getListResponse } from "redux/types/api/dataTypes";
 
 const UserSettingsService = api.injectEndpoints({
    endpoints: (builder) => ({
-      changeOwnUserData: builder.mutation<unknown, changeOwnUserDataRequest>({
-         query: ({ body, etag }) => ({
+      changeUserData: builder.mutation<void, EtagData<changeOwnUserDataRequest>>({
+         query: ({ data, etag }) => ({
             url: "account/editOwnAccountInfo",
             method: "PUT",
-            body: { ...body, version: etag.version },
+            body: { ...data, version: etag.version },
             headers: { "If-Match": etag.etag },
          }),
       }),
 
-      sendChangeOwnEmailLink: builder.mutation<unknown, unknown>({
+      sendChangeEmailLink: builder.mutation<void, void>({
          query: () => ({
             url: "account/request-email-update",
             method: "POST",
          }),
       }),
 
-      changeOwnEmail: builder.mutation<unknown, changeOwnEmailRequest>({
-         query: (data) => ({
-            url: "account/verify-email-update",
-            method: "POST",
-            body: data,
-         }),
-      }),
-
-      changeOwnPassword: builder.mutation<unknown, changeOwnPasswordRequest>({
+      changePassword: builder.mutation<void, changeOwnPasswordRequest>({
          query: (data) => ({
             url: "account/change-password",
             method: "PUT",
@@ -43,21 +34,21 @@ const UserSettingsService = api.injectEndpoints({
          }),
       }),
 
-      becomePhotographer: builder.mutation<unknown, unknown>({
-         query: (data) => ({
+      becomePhotographer: builder.mutation<void, void>({
+         query: () => ({
             url: "/account/become-photographer",
             method: "POST",
          }),
       }),
 
-      stopBeingPhotographer: builder.mutation<unknown, unknown>({
-         query: (data) => ({
+      stopBeingPhotographer: builder.mutation<void, void>({
+         query: () => ({
             url: "/account/stop-being-photographer",
             method: "POST",
          }),
       }),
 
-      requestResetPassword: builder.mutation<unknown, requestResetPasswordRequest>({
+      sendResetPasswordLink: builder.mutation<void, requestResetPasswordRequest>({
          query: (data) => ({
             url: `/account/${data.login}/request-reset`,
             method: "POST",
@@ -78,12 +69,11 @@ const UserSettingsService = api.injectEndpoints({
 });
 
 export const {
-   useChangeOwnEmailMutation,
-   useChangeOwnUserDataMutation,
-   useChangeOwnPasswordMutation,
+   useChangeUserDataMutation,
+   useChangePasswordMutation,
    useBecomePhotographerMutation,
-   useRequestResetPasswordMutation,
+   useSendResetPasswordLinkMutation,
    useStopBeingPhotographerMutation,
    useGetOwnAccountChangeLogMutation,
-   useSendChangeOwnEmailLinkMutation,
+   useSendChangeEmailLinkMutation,
 } = UserSettingsService;

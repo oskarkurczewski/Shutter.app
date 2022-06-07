@@ -3,7 +3,7 @@ import styles from "./AuthCard.module.scss";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useSwitchCurrentAccessLevelMutation } from "redux/service/authService";
-import { useUserInfoQuery } from "redux/service/usersManagementService";
+import { useGetUserInfoQuery } from "redux/service/usersManagementService";
 import { AccessLevel } from "types/AccessLevel";
 import { setAccessLevel, setUserInfo } from "redux/slices/authSlice";
 
@@ -18,7 +18,7 @@ export const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
       (state) => state.auth
    );
    const [currentRole, setCurrentRole] = useState(null);
-   const { data } = useUserInfoQuery(username);
+   const { data } = useGetUserInfoQuery(username);
 
    const [mutation, mutationState] = useSwitchCurrentAccessLevelMutation();
    const dispatch = useAppDispatch();

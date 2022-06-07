@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styles from "./requestResetPasswordPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
-import { useRequestResetPasswordMutation } from "redux/service/userSettingsService";
+import { useSendResetPasswordLinkMutation } from "redux/service/userSettingsService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -12,7 +12,7 @@ export const RequestResetPasswordPage = () => {
 
    const [login, setLogin] = useState<string>("");
    const [requestResetPasswordMutation, { isLoading, isSuccess, isError }] =
-      useRequestResetPasswordMutation();
+      useSendResetPasswordLinkMutation();
 
    const onSubmit = async (e) => {
       e.preventDefault();

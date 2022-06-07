@@ -11,9 +11,9 @@ import {
    TextInput,
 } from "components/shared";
 import {
-   useAdvancedUserInfoQuery,
+   useGetAdvancedUserInfoQuery,
    useChangeAccessLevelMutation,
-   useEditAccountInfoAsAdminMutation,
+   useChangeAccountInfoMutation,
 } from "redux/service/usersManagementService";
 
 export const EditUserAccountPage = () => {
@@ -35,10 +35,10 @@ export const EditUserAccountPage = () => {
    const [emailCheck, setEmailCheck] = useState(false);
    const [selectedRole, setSelectedRole] = useState("CLIENT");
 
-   const { data: userInfoData } = useAdvancedUserInfoQuery(login);
-   const { data: userRolesData } = useAdvancedUserInfoQuery(login);
+   const { data: userInfoData } = useGetAdvancedUserInfoQuery(login);
+   const { data: userRolesData } = useGetAdvancedUserInfoQuery(login);
 
-   const [infoMutation, infoMutationState] = useEditAccountInfoAsAdminMutation();
+   const [infoMutation, infoMutationState] = useChangeAccountInfoMutation();
    const [accessLevelMutation, accessLevelMutationState] = useChangeAccessLevelMutation();
 
    useEffect(() => {
@@ -196,10 +196,7 @@ export const EditUserAccountPage = () => {
                               name: formData.name,
                               surname: formData.surname,
                            },
-                           etag: {
-                              version: userInfoData.data.version,
-                              etag: userInfoData.etag,
-                           },
+                           etag: userInfoData.etag,
                         });
                   }}
                >

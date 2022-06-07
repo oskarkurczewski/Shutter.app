@@ -4,33 +4,36 @@ import {
    basicUserInfoResponse,
    changeAccessLevelRequest,
    getAdvancedUserListRequest,
-   getListResponse,
-   registerAccountAsAdminRequest,
-   editAccountInfoAsAdminRequest,
+   changeAccountInfoAsAdminRequest,
+   createAccountRequest,
    AccountListPreferencesResponse,
    tableAccountData,
    tableAccountChangeLogInfo,
    getAccountChangeLogRequest,
    getBasicUserListRequest,
-} from "redux/types/api/accountTypes";
+} from "redux/types/api";
+import { EtagData, getListResponse } from "redux/types/api/dataTypes";
 
 const UsersManagementService = api.injectEndpoints({
    endpoints: (builder) => ({
-      userInfo: builder.query<basicUserInfoResponse, string>({
+      getUserInfo: builder.query<basicUserInfoResponse, string>({
          query: (login) => ({ url: `account/${login}/info` }),
       }),
 
-      advancedUserInfo: builder.query<
-         { data: advancedUserInfoResponse; etag: string },
-         string
-      >({
+      getAdvancedUserInfo: builder.query<EtagData<advancedUserInfoResponse>, string>({
          query: (login) => ({ url: `account/${login}/detailed-info` }),
          transformResponse(data: advancedUserInfoResponse, meta) {
-            return { data, etag: meta.response.headers.get("etag") };
+            return {
+               data,
+               etag: {
+                  etag: meta.response.headers.get("etag"),
+                  version: data.version,
+               },
+            };
          },
       }),
 
-      registerAsAdmin: builder.mutation<unknown, registerAccountAsAdminRequest>({
+      createAccount: builder.mutation<void, createAccountRequest>({
          query: (data) => ({
             url: "account/register",
             method: "POST",
@@ -38,7 +41,7 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
-      editAccountInfoAsAdmin: builder.mutation<unknown, editAccountInfoAsAdminRequest>({
+      changeAccountInfo: builder.mutation<void, changeAccountInfoAsAdminRequest>({
          query: ({ body, etag }) => ({
             url: `account/${body.login}/editAccountInfo`,
             method: "PUT",
@@ -46,16 +49,6 @@ const UsersManagementService = api.injectEndpoints({
             headers: { "If-Match": etag.etag },
          }),
          invalidatesTags: ["List"],
-      }),
-
-      getAdvancedUserList: builder.mutation<
-         getListResponse<tableAccountData>,
-         getAdvancedUserListRequest
-      >({
-         query: (data) => ({
-            url: "account/list",
-            params: data,
-         }),
       }),
 
       getBasicUserList: builder.mutation<
@@ -68,7 +61,17 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
-      changeAccessLevel: builder.mutation<unknown, changeAccessLevelRequest>({
+      getAdvancedUserList: builder.mutation<
+         getListResponse<tableAccountData>,
+         getAdvancedUserListRequest
+      >({
+         query: (data) => ({
+            url: "account/list",
+            params: data,
+         }),
+      }),
+
+      changeAccessLevel: builder.mutation<void, changeAccessLevelRequest>({
          query: ({ params, body }) => ({
             url: `account/${params.login}/accessLevel`,
             method: "POST",
@@ -97,13 +100,13 @@ const UsersManagementService = api.injectEndpoints({
 });
 
 export const {
-   useUserInfoQuery,
+   useGetUserInfoQuery,
    useGetAdvancedUserListMutation,
-   useAdvancedUserInfoQuery,
-   useRegisterAsAdminMutation,
+   useGetAdvancedUserInfoQuery,
+   useCreateAccountMutation,
    useChangeAccessLevelMutation,
    useGetAccountChangeLogMutation,
-   useEditAccountInfoAsAdminMutation,
+   useChangeAccountInfoMutation,
    useGetAccountListPreferencesMutation,
    useGetBasicUserListMutation,
 } = UsersManagementService;

@@ -1,15 +1,16 @@
 import { api } from "./api";
 import {
-   registerAccountRequest,
+   registerRequest,
    LoginRequest,
-   LoginResponse,
+   TokenResponse,
    basicUserInfoResponse,
 } from "redux/types/api";
 import { AccessLevel } from "types/AccessLevel";
+import { EtagData } from "redux/types/api/dataTypes";
 
 const AuthService = api.injectEndpoints({
    endpoints: (builder) => ({
-      login: builder.mutation<LoginResponse, LoginRequest>({
+      login: builder.mutation<TokenResponse, LoginRequest>({
          query: (credentials) => ({
             url: "auth/login",
             method: "POST",
@@ -17,21 +18,21 @@ const AuthService = api.injectEndpoints({
          }),
       }),
 
-      refreshToken: builder.mutation<LoginResponse, object>({
+      refreshToken: builder.mutation<TokenResponse, void>({
          query: () => ({
             url: "auth/refresh",
             method: "POST",
          }),
       }),
 
-      sendTwoFACode: builder.mutation<unknown, string>({
+      sendTwoFACode: builder.mutation<void, string>({
          query: (login) => ({
             url: `account/${login}/request-2fa-code`,
             method: "POST",
          }),
       }),
 
-      register: builder.mutation<unknown, registerAccountRequest>({
+      register: builder.mutation<void, registerRequest>({
          query: (data) => ({
             url: "account/register",
             method: "POST",
@@ -39,20 +40,23 @@ const AuthService = api.injectEndpoints({
          }),
       }),
 
-      switchCurrentAccessLevel: builder.mutation<unknown, AccessLevel>({
+      switchCurrentAccessLevel: builder.mutation<void, AccessLevel>({
          query: (group) => ({
             url: `auth/change-group/${group}`,
             method: "POST",
          }),
       }),
 
-      currentUserInfo: builder.query<
-         { data: basicUserInfoResponse; etag: string },
-         unknown
-      >({
+      getUserInfo: builder.query<EtagData<basicUserInfoResponse>, void>({
          query: () => ({ url: `account/info` }),
          transformResponse(data: basicUserInfoResponse, meta) {
-            return { data, etag: meta.response.headers.get("etag") };
+            return {
+               data,
+               etag: {
+                  etag: meta.response.headers.get("etag"),
+                  version: data.version,
+               },
+            };
          },
       }),
    }),
@@ -64,5 +68,5 @@ export const {
    useRefreshTokenMutation,
    useSendTwoFACodeMutation,
    useSwitchCurrentAccessLevelMutation,
-   useCurrentUserInfoQuery,
+   useGetUserInfoQuery,
 } = AuthService;

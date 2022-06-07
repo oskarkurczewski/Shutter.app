@@ -42,7 +42,7 @@ function App() {
             onClick={async (e) => {
                e.preventDefault();
                try {
-                  const token = await refreshToken({}).unwrap();
+                  const token = await refreshToken().unwrap();
                   localStorage.setItem("token", token.token);
                   dispatch(login(getLoginPayload()));
                   dispatch(remove("refreshToken"));
@@ -204,7 +204,5 @@ function App() {
       </Suspense>
    );
 }
-
-export const apiUrl = "https://studapp.it.p.lodz.pl:8002/api";
 
 export default App;

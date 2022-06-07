@@ -2,13 +2,12 @@ import React from "react";
 import styles from "./ChangeEmailSettings.module.scss";
 import { Button, Card } from "components/shared";
 import { useTranslation } from "react-i18next";
-import { useSendChangeOwnEmailLinkMutation } from "redux/service/userSettingsService";
+import { useSendChangeEmailLinkMutation } from "redux/service/userSettingsService";
 
 export const ChangeEmailSettings = () => {
    const { t } = useTranslation();
 
-   const [mutation, { isLoading, isError, isSuccess }] =
-      useSendChangeOwnEmailLinkMutation();
+   const [mutation, { isLoading, isError, isSuccess }] = useSendChangeEmailLinkMutation();
 
    return (
       <Card id="change-email" className={styles.card_wrapper}>
@@ -16,7 +15,7 @@ export const ChangeEmailSettings = () => {
          <p>{t("message.change.email")}</p>
          <Button
             onClick={() => {
-               mutation({});
+               mutation();
             }}
          >
             {t("message.send.link")}

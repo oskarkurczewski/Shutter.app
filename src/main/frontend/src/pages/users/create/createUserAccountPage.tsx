@@ -3,7 +3,7 @@ import styles from "./createUserAccountPage.module.scss";
 import { Button, Card, Checkbox, TextInput } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useRegisterAsAdminMutation } from "redux/service/usersManagementService";
+import { useCreateAccountMutation } from "redux/service/usersManagementService";
 
 export const CreateUserAccountPage = () => {
    const { t } = useTranslation();
@@ -22,7 +22,7 @@ export const CreateUserAccountPage = () => {
 
    const [emailCheck, setEmailCheck] = useState(false);
    const [passwordCheck, setPasswordCheck] = useState(false);
-   const [mutation, { isError, isSuccess }] = useRegisterAsAdminMutation();
+   const [mutation, { isError, isSuccess }] = useCreateAccountMutation();
 
    useEffect(() => {
       setEmailCheck(formData.email == formData.email2);

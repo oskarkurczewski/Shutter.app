@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./MainSettings.module.scss";
 import { Button, TextInput, Card } from "components/shared";
-import { useChangeOwnUserDataMutation } from "redux/service/userSettingsService";
-import { useCurrentUserInfoQuery } from "redux/service/authService";
+import { useChangeUserDataMutation } from "redux/service/userSettingsService";
+import { useGetUserInfoQuery } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "redux/hooks";
 
@@ -13,8 +13,10 @@ export const MainSettings = () => {
    const [surname, setSurname] = useState("");
 
    const { username } = useAppSelector((state) => state.auth);
-   const [mutation, { isLoading, isError, isSuccess }] = useChangeOwnUserDataMutation();
-   const { data } = useCurrentUserInfoQuery({});
+   const [mutation, { isLoading, isError, isSuccess }] = useChangeUserDataMutation();
+   const {
+      data: { data, etag },
+   } = useGetUserInfoQuery();
 
    return (
       <Card id="main-settings" className={styles.card_wrapper}>
@@ -46,8 +48,8 @@ export const MainSettings = () => {
          <Button
             onClick={() => {
                mutation({
-                  body: { name, surname, login: username },
-                  etag: { etag: data.etag, version: data.data.version },
+                  data: { name: data.name, surname: data.surname, login: username },
+                  etag,
                });
             }}
          >

@@ -23,12 +23,10 @@ export const Breadcumbs = () => {
       <div className={styles.breadcumbs_wrapper}>
          <BsFillCaretLeftFill onClick={() => navigate(-1)} />
          {crumbs.map((crumb, index) => (
-            <>
-               <Link to={crumb.fullURL} key={index}>
-                  {crumb.url}
-               </Link>
+            <React.Fragment key={index}>
+               <Link to={crumb.fullURL}>{crumb.url}</Link>
                <span>/</span>
-            </>
+            </React.Fragment>
          ))}
       </div>
    );

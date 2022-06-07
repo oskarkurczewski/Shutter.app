@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./ChangePasswordSettings.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { useTranslation } from "react-i18next";
-import { useChangeOwnPasswordMutation } from "redux/service/userSettingsService";
+import { useChangePasswordMutation } from "redux/service/userSettingsService";
 
 export const ChangePasswordSettings = () => {
    const { t } = useTranslation();
@@ -14,7 +14,7 @@ export const ChangePasswordSettings = () => {
    const [equalityError, setEqualityError] = useState(false);
 
    const [mutation, { isLoading, isError, isSuccess, error }] =
-      useChangeOwnPasswordMutation();
+      useChangePasswordMutation();
 
    const onSubmit = () => {
       setEqualityError(false);

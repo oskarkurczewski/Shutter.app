@@ -12,16 +12,16 @@ export const BecomePhotographerSettings = () => {
    const { t } = useTranslation();
 
    const [becomePhotographerMutation] = useBecomePhotographerMutation();
-   const [refreshMutation, refreshMutationState] = useRefreshTokenMutation();
+   const [refreshTokenMutation, refreshTokenMutationState] = useRefreshTokenMutation();
    const dispatch = useAppDispatch();
 
    useEffect(() => {
-      if (refreshMutationState.isSuccess) {
-         const userData = refreshToken(refreshMutationState.data.token);
+      if (refreshTokenMutationState.isSuccess) {
+         const userData = refreshToken(refreshTokenMutationState.data.token);
 
          dispatch(login(userData));
       }
-   }, [refreshMutationState.isSuccess]);
+   }, [refreshTokenMutationState.isSuccess]);
 
    return (
       <Card id="photographer-settings" className={styles.card_wrapper}>
@@ -34,8 +34,8 @@ export const BecomePhotographerSettings = () => {
                <Button
                   className={styles.button_wrapper}
                   onClick={async () => {
-                     await becomePhotographerMutation({});
-                     refreshMutation({});
+                     await becomePhotographerMutation();
+                     refreshTokenMutation();
                   }}
                >
                   {t("label.become-photographer")}
