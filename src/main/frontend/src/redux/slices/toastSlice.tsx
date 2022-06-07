@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import Toast, { ToastType } from "components/layout/toast";
+import Toast, { ToastType } from "components/layout/toast/Toast";
 
 interface ToastHandlerState {
    stack: ToastType[];
