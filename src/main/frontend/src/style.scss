@@ -32,6 +32,15 @@ body {
    height: 100vh;
 }
 
+#root {
+   display: grid;
+   grid-template-columns: 80px auto 380px;
+   grid-template-rows: auto;
+   grid-template-areas: ". main sidebar";
+   height: 100%;
+   width: 100%;
+}
+
 // Typography
 html {
    .section-title {

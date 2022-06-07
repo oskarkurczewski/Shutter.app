@@ -28,7 +28,7 @@ const TextInput = ({
 }: TextInputProps) => {
    return (
       <div className={`${styles.text_input_wrapper} ${className ? className : ""}`}>
-         {label && <p className={`label ${required && "required"}`}>{label}</p>}
+         {label && <p className={`label ${required && styles.required}`}>{label}</p>}
          <div>
             {icon && <span className="material-icons">{icon}</span>}
             <input

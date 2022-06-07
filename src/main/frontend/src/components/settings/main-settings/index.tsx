@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import styles from "./style.module.scss";
 import Card from "components/shared/card";
 import TextInput from "components/shared/text-input";
 import Button from "components/shared/button";
@@ -17,10 +18,12 @@ const MainSettings = () => {
    const { data } = useCurrentUserInfoQuery({});
 
    return (
-      <Card id="main-settings">
-         <p className="category-title">{t("label.settings")}</p>
+      <Card id="main-settings" className={styles.card_wrapper}>
+         <p className={`category-title ${styles.category_title}`}>
+            {t("label.settings")}
+         </p>
          <p>{t("message.info.main-settings")}</p>
-         <div className="row">
+         <div className={styles.row}>
             <TextInput
                label={t("label.first-name")}
                placeholder={t("label.first-name")}

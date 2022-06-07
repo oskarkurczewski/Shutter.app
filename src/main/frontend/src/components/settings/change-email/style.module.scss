@@ -6,23 +6,13 @@
    gap: 1rem;
    align-items: flex-start;
 
-   .buttons {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      .red_button {
-         background-color: variables.$red-200;
-      }
-
-      .button_wrapper {
-         margin-top: 20px;
-      }
-   }
-
    p.category_title {
       margin-bottom: 10px;
       color: variables.$gray-300;
+   }
+
+   & > div.content {
+      padding: 20px;
    }
 
    .row {

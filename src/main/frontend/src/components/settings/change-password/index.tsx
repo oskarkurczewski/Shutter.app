@@ -1,7 +1,8 @@
+import React, { useState } from "react";
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import Card from "components/shared/card";
 import TextInput from "components/shared/text-input";
-import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useChangeOwnPasswordMutation } from "redux/service/api";
 
@@ -29,10 +30,12 @@ const ChangePassword = () => {
    };
 
    return (
-      <Card id="change-password">
-         <p className="category-title">{t("label.password")}</p>
+      <Card id="change-password" className={styles.card_wrapper}>
+         <p className={`category-title ${styles.category_title}`}>
+            {t("label.password")}
+         </p>
          <p>{t("message.change.password")}</p>
-         <div className="row">
+         <div className={styles.row}>
             <TextInput
                label={t("label.current-password")}
                placeholder={t("label.password")}
@@ -42,7 +45,7 @@ const ChangePassword = () => {
                onChange={(e) => setOldPassword(e.target.value)}
             />
          </div>
-         <div className="row">
+         <div className={styles.row}>
             <TextInput
                label={t("label.password")}
                placeholder={t("label.password")}

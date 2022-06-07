@@ -64,7 +64,7 @@ const SettingsPage: React.FC = () => {
             <MainSettings />
             <ChangeEmail />
             <ChangePassword />
-            {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
+            {!roles.includes(AccessLevel.PHOTOGRAPHER) ? (
                <StopBeingPhotographer />
             ) : (
                <BecomePhotographer />

@@ -12,7 +12,7 @@ section.settings_page_wrapper {
       position: sticky;
       top: 30px;
 
-      p {
+      & > p {
          margin-bottom: 2rem;
          color: variables.$gray-300;
       }

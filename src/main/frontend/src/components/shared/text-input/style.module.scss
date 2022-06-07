@@ -1,7 +1,7 @@
 @use "variables.scss" as variables;
 
 div.text_input_wrapper {
-   p.label {
+   p {
       margin-bottom: 5px;
       color: variables.$gray-300;
 
@@ -18,7 +18,7 @@ div.text_input_wrapper {
       display: flex;
       border-radius: 10px;
       overflow: hidden;
-      border-bottom: variables.$shadow-elevated;
+      box-shadow: variables.$shadow-elevated;
       height: 43px;
 
       span,

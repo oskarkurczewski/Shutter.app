@@ -45,7 +45,7 @@ const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
 
    return (
       <div className={styles.user_filter_wrapper}>
-         <Card className={styles.filter}>
+         <Card className={styles.filters}>
             {isAdvancedSearch ? (
                <div className={styles.filters_wrapper_advanced}>
                   <FilterTextInput

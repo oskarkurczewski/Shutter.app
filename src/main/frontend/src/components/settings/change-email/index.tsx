@@ -1,6 +1,7 @@
+import React from "react";
+import styles from "./style.module.scss";
 import Button from "components/shared/button";
 import Card from "components/shared/card";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSendChangeOwnEmailLinkMutation } from "redux/service/api";
 
@@ -11,8 +12,8 @@ const ChangeEmail = () => {
       useSendChangeOwnEmailLinkMutation();
 
    return (
-      <Card id="change-email">
-         <p className="category-title">{t("label.email")}</p>
+      <Card id="change-email" className={styles.card_wrapper}>
+         <p className={`category-title ${styles.category_title}`}>{t("label.email")}</p>
          <p>{t("message.change.email")}</p>
          <Button
             onClick={() => {

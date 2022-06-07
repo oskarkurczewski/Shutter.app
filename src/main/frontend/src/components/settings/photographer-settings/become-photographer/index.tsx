@@ -1,5 +1,5 @@
-import styles from "./style.module.scss";
 import React, { useEffect } from "react";
+import styles from "./style.module.scss";
 import Card from "components/shared/card";
 import Button from "components/shared/button";
 import { useBecomePhotographerMutation, useRefreshMutation } from "redux/service/api";
@@ -24,8 +24,10 @@ const BecomePhotographer = () => {
    }, [refreshMutationState.isSuccess]);
 
    return (
-      <Card id="photographer-settings" className={styles.become_photographer_wrapper}>
-         <p className="category-title">{t("label.photographer-settings")}</p>
+      <Card id="photographer-settings" className={styles.card_wrapper}>
+         <p className={`category-title ${styles.category_title}`}>
+            {t("label.photographer-settings")}
+         </p>
          <div className="content">
             <p>{t("message.info.photographer-settings")}</p>
             <div className={styles.buttons}>
