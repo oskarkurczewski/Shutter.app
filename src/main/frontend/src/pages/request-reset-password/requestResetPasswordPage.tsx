@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styles from "./requestResetPasswordPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
-import { useRequestResetPasswordMutation } from "redux/service/api";
+import { useRequestResetPasswordMutation } from "redux/service/userSettingsService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 

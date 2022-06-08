@@ -10,7 +10,7 @@ import {
 } from "components/shared";
 import { Link } from "react-router-dom";
 import { validateFields } from "./validation";
-import { useRegisterMutation } from "redux/service/api";
+import { useRegisterMutation } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 

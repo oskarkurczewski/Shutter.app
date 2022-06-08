@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./changeOwnEmailPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { useParams } from "react-router-dom";
-import { useChangeOwnEmailMutation } from "redux/service/api";
+import { useChangeOwnEmailMutation } from "redux/service/userSettingsService";
 import { useTranslation } from "react-i18next";
 
 export const ChangeOwnEmailPage = () => {

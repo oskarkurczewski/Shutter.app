@@ -3,7 +3,7 @@ import styles from "./BaseAccountInfo.module.scss";
 import { Card } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { FaCheck } from "react-icons/fa";
-import { useAdvancedUserInfoQuery } from "redux/service/api";
+import { useAdvancedUserInfoQuery } from "redux/service/usersManagementService";
 
 interface Props {
    login: string;

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./editUserAccountPage.module.scss";
+import { useNavigate, useParams } from "react-router-dom";
+import { FaMinus, FaPlus } from "react-icons/fa";
 import {
    Button,
    Card,
@@ -8,13 +10,11 @@ import {
    SquareButton,
    TextInput,
 } from "components/shared";
-import { FaMinus, FaPlus } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
 import {
    useAdvancedUserInfoQuery,
    useChangeAccessLevelMutation,
    useEditAccountInfoAsAdminMutation,
-} from "redux/service/api";
+} from "redux/service/usersManagementService";
 
 export const EditUserAccountPage = () => {
    const { login } = useParams();

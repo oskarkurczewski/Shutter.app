@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "./MainSettings.module.scss";
 import { Button, TextInput, Card } from "components/shared";
-import { useChangeOwnUserDataMutation, useCurrentUserInfoQuery } from "redux/service/api";
+import { useChangeOwnUserDataMutation } from "redux/service/userSettingsService";
+import { useCurrentUserInfoQuery } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "redux/hooks";
 

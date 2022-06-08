@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import styles from "./loginPage.module.scss";
 import { useAppDispatch } from "redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation, useSendTwoFACodeMutation } from "redux/service/api";
+import { useLoginMutation, useSendTwoFACodeMutation } from "redux/service/authService";
 import { login } from "redux/slices/authSlice";
 import { LoginRequest } from "redux/types/api/authTypes";
 import { useTranslation } from "react-i18next";

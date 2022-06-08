@@ -3,7 +3,7 @@ import styles from "./createUserAccountPage.module.scss";
 import { Button, Card, Checkbox, TextInput } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useRegisterAsAdminMutation } from "redux/service/api";
+import { useRegisterAsAdminMutation } from "redux/service/usersManagementService";
 
 export const CreateUserAccountPage = () => {
    const { t } = useTranslation();

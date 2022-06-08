@@ -1,7 +1,8 @@
 import styles from "./StopBeingPhotographerSettings.module.scss";
 import React, { useEffect } from "react";
 import { Button, Card } from "components/shared";
-import { useStopBeingPhotographerMutation, useRefreshMutation } from "redux/service/api";
+import { useStopBeingPhotographerMutation } from "redux/service/userSettingsService";
+import { useRefreshTokenMutation } from "redux/service/authService";
 import { refreshToken } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
 import { useAppDispatch } from "redux/hooks";
@@ -11,7 +12,7 @@ export const StopBeingPhotographerSettings = () => {
    const { t } = useTranslation();
 
    const [stopBeingPhotographerMutation] = useStopBeingPhotographerMutation();
-   const [refreshMutation, refreshMutationState] = useRefreshMutation();
+   const [refreshMutation, refreshMutationState] = useRefreshTokenMutation();
    const dispatch = useAppDispatch();
 
    useEffect(() => {

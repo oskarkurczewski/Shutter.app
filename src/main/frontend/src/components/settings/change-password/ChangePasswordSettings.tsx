@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./ChangePasswordSettings.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { useTranslation } from "react-i18next";
-import { useChangeOwnPasswordMutation } from "redux/service/api";
+import { useChangeOwnPasswordMutation } from "redux/service/userSettingsService";
 
 export const ChangePasswordSettings = () => {
    const { t } = useTranslation();

@@ -7,7 +7,7 @@ import {
    useGetAccountListPreferencesMutation,
    useGetAdvancedUserListMutation,
    useGetBasicUserListMutation,
-} from "redux/service/api";
+} from "redux/service/usersManagementService";
 import { tableHeader } from "types/ComponentTypes";
 import { useTranslation } from "react-i18next";
 import { ListUsersFilter } from "components/list-users";

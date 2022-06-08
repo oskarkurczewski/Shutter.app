@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, Table } from "components/shared";
 import { useTranslation } from "react-i18next";
-import { useGetAccountChangeLogMutation } from "redux/service/api";
-import { getOwnAccountChangeLogRequest } from "redux/types/api/accountTypes";
+import { useGetAccountChangeLogMutation } from "redux/service/usersManagementService";
+import { getOwnAccountChangeLogRequest } from "redux/types/api";
 import { tableHeader } from "types/ComponentTypes";
 
 interface Props {

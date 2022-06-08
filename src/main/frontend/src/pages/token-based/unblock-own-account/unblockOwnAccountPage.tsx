@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import styles from "./unblockOwnAccountPage.module.scss";
-import { Card } from "components/shared";
 import { useParams } from "react-router-dom";
-import { useUnblockOwnAccountMutation } from "redux/service/api";
+import { Card } from "components/shared";
+import { useUnblockOwnAccountMutation } from "redux/service/tokenBasedService";
 import { useTranslation } from "react-i18next";
 
 export const UnblockOwnAccountPage = () => {

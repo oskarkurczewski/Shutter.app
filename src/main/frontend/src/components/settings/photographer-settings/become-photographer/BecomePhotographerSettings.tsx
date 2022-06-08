@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import styles from "./BecomePhotographerSettings.module.scss";
 import { Button, Card } from "components/shared";
-import { useBecomePhotographerMutation, useRefreshMutation } from "redux/service/api";
+import { useRefreshTokenMutation } from "redux/service/authService";
+import { useBecomePhotographerMutation } from "redux/service/userSettingsService";
 import { refreshToken } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
 import { useAppDispatch } from "redux/hooks";
@@ -11,7 +12,7 @@ export const BecomePhotographerSettings = () => {
    const { t } = useTranslation();
 
    const [becomePhotographerMutation] = useBecomePhotographerMutation();
-   const [refreshMutation, refreshMutationState] = useRefreshMutation();
+   const [refreshMutation, refreshMutationState] = useRefreshTokenMutation();
    const dispatch = useAppDispatch();
 
    useEffect(() => {

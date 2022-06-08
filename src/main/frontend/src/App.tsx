@@ -10,14 +10,14 @@ import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { AccessLevel } from "types/AccessLevel";
 import { login, logout } from "redux/slices/authSlice";
 import { push, remove } from "redux/slices/toastSlice";
-import { useRefreshTokenMutation } from "redux/service/api";
+import { useRefreshTokenMutation } from "redux/service/authService";
 
 import { DashboardPage } from "pages/dashboard";
 import { HomePage } from "pages/home";
 import { NotFoundPage } from "pages/not-found";
 import { RegisterPage, LoginPage } from "pages/auth";
 import { SettingsPage } from "pages/settings";
-import { ResetPasswordPage } from "pages/reset-password";
+import { ResetPasswordPage } from "pages/token-based/reset-password";
 import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";

@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import styles from "./AuthCard.module.scss";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { useSwitchCurrentAccessLevelMutation, useUserInfoQuery } from "redux/service/api";
+import { useSwitchCurrentAccessLevelMutation } from "redux/service/authService";
+import { useUserInfoQuery } from "redux/service/usersManagementService";
 import { AccessLevel } from "types/AccessLevel";
 import { setAccessLevel, setUserInfo } from "redux/slices/authSlice";
 

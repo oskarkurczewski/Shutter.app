@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./resetPasswordPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
-import { useResetPasswordMutation } from "redux/service/api";
+import { useResetPasswordMutation } from "redux/service/tokenBasedService";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
