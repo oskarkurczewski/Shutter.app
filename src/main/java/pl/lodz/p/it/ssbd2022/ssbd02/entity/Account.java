@@ -97,6 +97,13 @@ public class Account extends ManagedEntity {
     @Column(name = "last_login", nullable = false)
     private LocalDateTime lastLogIn;
 
+    @Column(name = "last_failed_login")
+    private LocalDateTime lastFailedLogInAttempt;
+
+    @Size(max = 64)
+    @Column(name = "last_failed_login_ip")
+    private String lastFailedLoginIp;
+
     /**
      * Lista reprezentująca poziomy dostępu danego konta
      */
