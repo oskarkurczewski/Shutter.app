@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountListPreferencesFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -56,6 +57,9 @@ public class AccountService {
 
     @Inject
     private AccountChangeLogFacade accountChangeLogFacade;
+
+    @Inject
+    private ConfigLoader configLoader;
 
     /**
      * Odnajduje konto użytkownika o podanym loginie
@@ -580,7 +584,7 @@ public class AccountService {
         failedAttempts++;
         account.setFailedLogInAttempts(failedAttempts);
 
-        if (failedAttempts >= 3) {
+        if (failedAttempts >= configLoader.getAllowedFailedAttempts()) {
             account.setActive(false);
             account.setFailedLogInAttempts(0);
             emailService.sendAccountBlockedDueToToManyLogInAttemptsEmail(account.getEmail(), account.getLocale());
