@@ -3,18 +3,20 @@ import styles from "./settingsPage.module.scss";
 import { HiCamera } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
-import BecomePhotographer from "components/settings/photographer-settings/become-photographer/BecomePhotographerSettings";
-import StopBeingPhotographer from "components/settings/photographer-settings/stop-being-photographer/StopBeingPhotographerSettings";
+import {
+   BecomePhotographerSettings,
+   StopBeingPhotographerSettings,
+   MainSettings,
+   ChangeEmailSettings,
+   ChangePasswordSettings,
+} from "components/settings";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
-import MainSettings from "components/settings/main-settings/MainSettings";
-import ChangeEmail from "components/settings/change-email/ChangeEmailSettings";
-import ChangePassword from "components/settings/change-password/ChangePasswordSettings";
 import { BsKeyFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
-const SettingsPage: React.FC = () => {
+export const SettingsPage: React.FC = () => {
    const { t } = useTranslation();
    const location = useLocation();
 
@@ -62,16 +64,14 @@ const SettingsPage: React.FC = () => {
          </div>
          <div className={styles.content}>
             <MainSettings />
-            <ChangeEmail />
-            <ChangePassword />
-            {!roles.includes(AccessLevel.PHOTOGRAPHER) ? (
-               <StopBeingPhotographer />
+            <ChangeEmailSettings />
+            <ChangePasswordSettings />
+            {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
+               <StopBeingPhotographerSettings />
             ) : (
-               <BecomePhotographer />
+               <BecomePhotographerSettings />
             )}
          </div>
       </section>
    );
 };
-
-export default SettingsPage;

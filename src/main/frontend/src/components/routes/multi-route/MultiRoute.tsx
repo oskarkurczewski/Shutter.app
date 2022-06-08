@@ -11,7 +11,7 @@ interface Props {
    routes: Route;
 }
 
-const MultiRoute = ({ routes }: Props) => {
+export const MultiRoute = ({ routes }: Props) => {
    const navigate = useNavigate();
    const level = useAppSelector((state) => state.auth.accessLevel);
 

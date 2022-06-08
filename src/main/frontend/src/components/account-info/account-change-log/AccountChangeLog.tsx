@@ -1,6 +1,5 @@
-import Card from "components/shared/card/Card";
-import Table from "components/shared/table/Table";
 import React, { useEffect, useState } from "react";
+import { Card, Table } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useGetAccountChangeLogMutation } from "redux/service/api";
 import { getOwnAccountChangeLogRequest } from "redux/types/api/accountTypes";
@@ -10,7 +9,7 @@ interface Props {
    login: string;
 }
 
-const AccountChangeLog: React.FC<Props> = ({ login }) => {
+export const AccountChangeLog: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
    const [getAccountChangeLogMutation, getAccountChangeLogMutationState] =
       useGetAccountChangeLogMutation();
@@ -80,5 +79,3 @@ const AccountChangeLog: React.FC<Props> = ({ login }) => {
       </Card>
    );
 };
-
-export default AccountChangeLog;

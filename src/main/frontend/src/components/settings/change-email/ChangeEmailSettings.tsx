@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./ChangeEmailSettings.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
+import { Button, Card } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useSendChangeOwnEmailLinkMutation } from "redux/service/api";
 
-const ChangeEmailSettings = () => {
+export const ChangeEmailSettings = () => {
    const { t } = useTranslation();
 
    const [mutation, { isLoading, isError, isSuccess }] =
@@ -29,5 +28,3 @@ const ChangeEmailSettings = () => {
       </Card>
    );
 };
-
-export default ChangeEmailSettings;

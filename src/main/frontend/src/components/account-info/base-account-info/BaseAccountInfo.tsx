@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./BaseAccountInfo.module.scss";
-import Card from "components/shared/card/Card";
+import { Card } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { FaCheck } from "react-icons/fa";
 import { useAdvancedUserInfoQuery } from "redux/service/api";
@@ -9,7 +9,7 @@ interface Props {
    login: string;
 }
 
-const BaseAccountInfo: React.FC<Props> = ({ login }) => {
+export const BaseAccountInfo: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
 
    const [userInfo, setUserInfo] = useState(useAdvancedUserInfoQuery(login).data);
@@ -77,5 +77,3 @@ const BaseAccountInfo: React.FC<Props> = ({ login }) => {
       </Card>
    );
 };
-
-export default BaseAccountInfo;

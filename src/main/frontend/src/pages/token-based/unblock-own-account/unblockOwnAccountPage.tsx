@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import styles from "./unblockOwnAccountPage.module.scss";
-import Card from "components/shared/card/Card";
+import { Card } from "components/shared";
 import { useParams } from "react-router-dom";
 import { useUnblockOwnAccountMutation } from "redux/service/api";
 import { useTranslation } from "react-i18next";
 
-const UnblockOwnAccountPage = () => {
+export const UnblockOwnAccountPage = () => {
    const { t } = useTranslation();
 
    const { token } = useParams();
@@ -34,5 +34,3 @@ const UnblockOwnAccountPage = () => {
       </Card>
    );
 };
-
-export default UnblockOwnAccountPage;

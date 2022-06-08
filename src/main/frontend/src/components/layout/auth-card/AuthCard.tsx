@@ -12,7 +12,7 @@ interface Props {
    selectedAccessLevel: AccessLevel;
 }
 
-const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
+export const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
    const { roles, accessLevel, name, surname, email } = useAppSelector(
       (state) => state.auth
    );
@@ -85,5 +85,3 @@ const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
       </div>
    );
 };
-
-export default AuthCard;

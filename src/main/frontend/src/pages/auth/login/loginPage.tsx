@@ -1,17 +1,15 @@
 import React, { ChangeEvent, useState } from "react";
 import styles from "./loginPage.module.scss";
-import Card from "components/shared/card/Card";
-import TextInput from "components/shared/text-input/TextInput";
-import Button from "components/shared/button/Button";
-import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "redux/hooks";
-import { getLoginPayload } from "util/loginUtil";
-import { login } from "redux/slices/authSlice";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation, useSendTwoFACodeMutation } from "redux/service/api";
+import { login } from "redux/slices/authSlice";
 import { LoginRequest } from "redux/types/api/authTypes";
 import { useTranslation } from "react-i18next";
+import { Button, Card, TextInput } from "components/shared";
+import { getLoginPayload } from "util/loginUtil";
 
-const LoginPage: React.FC = () => {
+export const LoginPage: React.FC = () => {
    const { t } = useTranslation();
 
    const navigate = useNavigate();
@@ -118,5 +116,3 @@ const LoginPage: React.FC = () => {
       </section>
    );
 };
-
-export default LoginPage;

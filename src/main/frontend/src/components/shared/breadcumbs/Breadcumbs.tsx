@@ -3,7 +3,7 @@ import styles from "./Breadcumbs.module.scss";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const Breadcumbs = () => {
+export const Breadcumbs = () => {
    const location = useLocation();
    const navigate = useNavigate();
 
@@ -33,5 +33,3 @@ const Breadcumbs = () => {
       </div>
    );
 };
-
-export default Breadcumbs;

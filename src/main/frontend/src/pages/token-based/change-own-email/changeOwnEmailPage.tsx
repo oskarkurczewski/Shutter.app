@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import styles from "./changeOwnEmailPage.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
-import TextInput from "components/shared/text-input/TextInput";
+import { Button, Card, TextInput } from "components/shared";
 import { useParams } from "react-router-dom";
 import { useChangeOwnEmailMutation } from "redux/service/api";
 import { useTranslation } from "react-i18next";
 
-const ChangeOwnEmailPage = () => {
+export const ChangeOwnEmailPage = () => {
    const { t } = useTranslation();
 
    const [newEmail, setNewEmail] = useState("");
@@ -68,5 +66,3 @@ const ChangeOwnEmailPage = () => {
       </Card>
    );
 };
-
-export default ChangeOwnEmailPage;

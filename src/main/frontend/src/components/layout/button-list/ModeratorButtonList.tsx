@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import BarButton from "components/layout/bar-button/BarButton";
+import { BarButton } from "components/layout";
 import { MdError, MdSpaceDashboard } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { HiUsers } from "react-icons/hi";
@@ -10,7 +10,7 @@ interface Props {
    expanded?: boolean;
 }
 
-const ModeratorButtonList: FC<Props> = ({ path, expanded }) => {
+export const ModeratorButtonList: FC<Props> = ({ path, expanded }) => {
    const { t } = useTranslation();
 
    const arr = [
@@ -35,5 +35,3 @@ const ModeratorButtonList: FC<Props> = ({ path, expanded }) => {
       </>
    );
 };
-
-export default ModeratorButtonList;

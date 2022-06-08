@@ -1,30 +1,26 @@
 import React, { Suspense, useEffect } from "react";
 import "./style.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DashboardPage from "pages/dashboard/dashboardPage";
-import PageLayout from "layout/Layout";
-import Homepage from "pages/home/homePage";
-import NotFound404 from "pages/not-found/notFoundPage";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
+
+import { ProtectedRoute } from "components/routes";
+import { PageLayout } from "layout";
+import { Button } from "components/shared";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
-import { login, logout } from "redux/slices/authSlice";
-import ProtectedRoute from "components/routes/protected-route/ProtectedRoute";
 import { AccessLevel } from "types/AccessLevel";
-import RegisterPage from "pages/auth/register/registerPage";
-import CreateAccountPage from "pages/users/create/createUserAccountPage";
-import AccountListPage from "pages/users/list/userAccountListPage";
-import EditAccountPage from "pages/users/edit/editUserAccountPage";
-import SettingsPage from "pages/settings/settingsPage";
-import ResetPasswordPage from "pages/reset-password/resetPasswordPage";
-import UnblockOwnAccountPage from "pages/token-based/unblock-own-account/unblockOwnAccountPage";
-import LoginPage from "pages/auth/login/loginPage";
-import Button from "components/shared/button/Button";
+import { login, logout } from "redux/slices/authSlice";
 import { push, remove } from "redux/slices/toastSlice";
 import { useRefreshTokenMutation } from "redux/service/api";
-import RequestResetPasswordPage from "pages/request-reset-password/requestResetPasswordPage";
-import ConfirmRegistrationPage from "pages/token-based/confirm-registration/confirmRegistrationPage";
-import ChangeOwnEmailPage from "pages/token-based/change-own-email/changeOwnEmailPage";
-import AccountInfoPage from "pages/users/info/userAccountInfoPage";
+
+import { DashboardPage } from "pages/dashboard";
+import { HomePage } from "pages/home";
+import { NotFoundPage } from "pages/not-found";
+import { RegisterPage, LoginPage } from "pages/auth";
+import { SettingsPage } from "pages/settings";
+import { ResetPasswordPage } from "pages/reset-password";
+import { RequestResetPasswordPage } from "pages/request-reset-password";
+import * as UserPages from "pages/users";
+import * as TokenBased from "pages/token-based";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -78,10 +74,10 @@ function App() {
       <Suspense fallback="loading...">
          <BrowserRouter>
             <Routes>
-               <Route path="*" element={<NotFound404 />} />
+               <Route path="*" element={<NotFoundPage />} />
 
                <Route element={<PageLayout />}>
-                  <Route path="" element={<Homepage />} />
+                  <Route path="" element={<HomePage />} />
 
                   <Route
                      path="login"
@@ -133,7 +129,7 @@ function App() {
                            <ProtectedRoute
                               roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
                            >
-                              <AccountListPage />
+                              <UserPages.UserAccountListPage />
                            </ProtectedRoute>
                         }
                      />
@@ -142,7 +138,7 @@ function App() {
                         path="create"
                         element={
                            <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                              <CreateAccountPage />
+                              <UserPages.CreateUserAccountPage />
                            </ProtectedRoute>
                         }
                      />
@@ -151,7 +147,7 @@ function App() {
                         path=":login/edit"
                         element={
                            <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                              <EditAccountPage />
+                              <UserPages.EditUserAccountPage />
                            </ProtectedRoute>
                         }
                      />
@@ -162,7 +158,7 @@ function App() {
                            <ProtectedRoute
                               roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
                            >
-                              <AccountInfoPage />
+                              <UserPages.UserAccountInfoPage />
                            </ProtectedRoute>
                         }
                      />
@@ -173,14 +169,14 @@ function App() {
                   {/* Token-based routes */}
                   <Route
                      path="change-own-email/:token"
-                     element={<ChangeOwnEmailPage />}
+                     element={<TokenBased.ChangeOwnEmailPage />}
                   />
 
                   <Route
                      path="unblock-account/:token"
                      element={
                         <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                           <UnblockOwnAccountPage />
+                           <TokenBased.UnblockOwnAccountPage />
                         </ProtectedRoute>
                      }
                   />
@@ -189,7 +185,7 @@ function App() {
                      path="/confirm-registration/:token"
                      element={
                         <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                           <ConfirmRegistrationPage />
+                           <TokenBased.ConfirmRegistrationPage />
                         </ProtectedRoute>
                      }
                   />

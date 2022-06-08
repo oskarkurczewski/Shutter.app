@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import styles from "./ChangePasswordSettings.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
-import TextInput from "components/shared/text-input/TextInput";
+import { Button, Card, TextInput } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useChangeOwnPasswordMutation } from "redux/service/api";
 
-const ChangePasswordSettings = () => {
+export const ChangePasswordSettings = () => {
    const { t } = useTranslation();
 
    const [oldPassword, setOldPassword] = useState("");
@@ -94,5 +92,3 @@ const ChangePasswordSettings = () => {
       </Card>
    );
 };
-
-export default ChangePasswordSettings;

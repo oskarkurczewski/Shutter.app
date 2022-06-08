@@ -1,6 +1,5 @@
-import Checkbox from "components/shared/checkbox/Checkbox";
-import Dropdown from "components/shared/dropdown/Dropdown";
 import React from "react";
+import { Checkbox, Dropdown } from "components/shared";
 
 interface DropdownInputProps {
    label: string;
@@ -11,7 +10,7 @@ interface DropdownInputProps {
    possibleValues: string[];
 }
 
-const FilterDropdownInput: React.FC<DropdownInputProps> = ({
+export const FilterDropdownInput: React.FC<DropdownInputProps> = ({
    label,
    isActive,
    setIsActive,
@@ -41,5 +40,3 @@ const FilterDropdownInput: React.FC<DropdownInputProps> = ({
       </div>
    );
 };
-
-export default FilterDropdownInput;

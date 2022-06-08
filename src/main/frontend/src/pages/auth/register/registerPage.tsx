@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./registerPage.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
-import Checkbox from "components/shared/checkbox/Checkbox";
-import TextInput from "components/shared/text-input/TextInput";
-import ValidationBox from "components/shared/validation-box/ValidationBox";
+import {
+   Button,
+   Card,
+   Checkbox,
+   TextInput,
+   ValidationBox,
+   Form,
+} from "components/shared";
 import { Link } from "react-router-dom";
 import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/api";
-import Form from "components/shared/form/Form";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const RegisterPage = () => {
+export const RegisterPage = () => {
    const { t } = useTranslation();
 
    const recaptchaRef = useRef(null);
@@ -168,5 +170,3 @@ const RegisterPage = () => {
       </section>
    );
 };
-
-export default RegisterPage;

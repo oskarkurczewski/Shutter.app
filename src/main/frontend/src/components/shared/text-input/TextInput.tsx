@@ -14,7 +14,7 @@ interface TextInputProps {
    disabled?: boolean;
 }
 
-const TextInput = ({
+export const TextInput = ({
    icon,
    type,
    label,
@@ -43,5 +43,3 @@ const TextInput = ({
       </div>
    );
 };
-
-export default TextInput;

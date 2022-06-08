@@ -8,7 +8,7 @@ interface Props {
    title?: string;
 }
 
-const SquareButton: React.FC<Props> = ({
+export const SquareButton: React.FC<Props> = ({
    children,
    disabled = false,
    onClick,
@@ -25,5 +25,3 @@ const SquareButton: React.FC<Props> = ({
       </div>
    );
 };
-
-export default SquareButton;

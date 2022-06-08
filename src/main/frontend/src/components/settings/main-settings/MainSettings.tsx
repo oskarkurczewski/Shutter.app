@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import styles from "./MainSettings.module.scss";
-import Card from "components/shared/card/Card";
-import TextInput from "components/shared/text-input/TextInput";
-import Button from "components/shared/button/Button";
+import { Button, TextInput, Card } from "components/shared";
 import { useChangeOwnUserDataMutation, useCurrentUserInfoQuery } from "redux/service/api";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "redux/hooks";
 
-const MainSettings = () => {
+export const MainSettings = () => {
    const { t } = useTranslation();
 
    const [name, setName] = useState("");
@@ -57,5 +55,3 @@ const MainSettings = () => {
       </Card>
    );
 };
-
-export default MainSettings;

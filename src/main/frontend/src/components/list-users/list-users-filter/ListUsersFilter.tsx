@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import styles from "./ListUsersFilter.module.scss";
-import Card from "../../shared/card/Card";
-import TextInput from "../../shared/text-input/TextInput";
-import Button from "../../shared/button/Button";
-import SquareButton from "components/shared/square-button/SquareButton";
+import { Card, TextInput, SquareButton, Button } from "components/shared";
+import { FilterDropdownInput, FilterTextInput } from "components/list-users";
 import { FaSearchMinus, FaSearchPlus } from "react-icons/fa";
-import FilterDropdownInput from "../filter-dropdown-input/FilterDropdownInput";
-import FilterTextInput from "../filter-text-input/FilterTextInput";
 
 interface Props {
    query: string;
    setQuery: (q: string) => void;
 }
 
-const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
+export const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
    const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
    // TODO: change to custom hooks
@@ -125,5 +121,3 @@ const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
       </div>
    );
 };
-
-export default ListUsersFilter;

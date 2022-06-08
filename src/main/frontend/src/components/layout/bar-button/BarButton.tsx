@@ -11,7 +11,7 @@ interface Props {
    expanded: boolean;
 }
 
-const BarButton: FC<Props> = ({ to, icon, active, style, text, expanded }) => {
+export const BarButton: FC<Props> = ({ to, icon, active, style, text, expanded }) => {
    return (
       <Link
          to={to}
@@ -25,5 +25,3 @@ const BarButton: FC<Props> = ({ to, icon, active, style, text, expanded }) => {
       </Link>
    );
 };
-
-export default BarButton;

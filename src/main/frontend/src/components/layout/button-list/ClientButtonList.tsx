@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import BarButton from "components/layout/bar-button/BarButton";
+import { BarButton } from "components/layout";
 import { BsFillCameraFill } from "react-icons/bs";
 import { MdSpaceDashboard } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
@@ -11,7 +11,7 @@ interface Props {
    expanded?: boolean;
 }
 
-const ClientButtonList: FC<Props> = ({ path, expanded }) => {
+export const ClientButtonList: FC<Props> = ({ path, expanded }) => {
    const { t } = useTranslation();
 
    const arr = [
@@ -44,5 +44,3 @@ const ClientButtonList: FC<Props> = ({ path, expanded }) => {
       </>
    );
 };
-
-export default ClientButtonList;

@@ -8,7 +8,7 @@ interface Props {
    children: React.ReactNode;
 }
 
-const ProtectedRoute = ({ roles, children }: Props) => {
+export const ProtectedRoute = ({ roles, children }: Props) => {
    const navigate = useNavigate();
    const level = useAppSelector((state) => state.auth.accessLevel);
 
@@ -20,5 +20,3 @@ const ProtectedRoute = ({ roles, children }: Props) => {
 
    return <>{children}</>;
 };
-
-export default ProtectedRoute;

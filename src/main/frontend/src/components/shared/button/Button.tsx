@@ -10,7 +10,7 @@ interface Props {
    disabled?: boolean;
 }
 
-const Button: React.FC<Props> = ({
+export const Button: React.FC<Props> = ({
    children,
    className,
    icon,
@@ -30,5 +30,3 @@ const Button: React.FC<Props> = ({
       </button>
    );
 };
-
-export default Button;

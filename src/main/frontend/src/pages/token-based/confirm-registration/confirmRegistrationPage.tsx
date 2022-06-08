@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import styles from "./confirmRegistrationPage.module.scss";
-import Card from "components/shared/card/Card";
+import { Card } from "components/shared";
 import { useParams } from "react-router-dom";
 import { useConfirmRegistrationMutation } from "redux/service/api";
 import { useTranslation } from "react-i18next";
 
-const ConfirmRegistrationPage = () => {
+export const ConfirmRegistrationPage = () => {
    const { t } = useTranslation();
 
    const { token } = useParams();
@@ -36,5 +36,3 @@ const ConfirmRegistrationPage = () => {
       </section>
    );
 };
-
-export default ConfirmRegistrationPage;

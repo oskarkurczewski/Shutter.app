@@ -12,7 +12,7 @@ export interface ToastType {
    content?: JSX.Element;
 }
 
-const Toast: React.FC<ToastType> = ({ label, name, text, content }) => {
+export const Toast: React.FC<ToastType> = ({ label, name, text, content }) => {
    const dispatch = useAppDispatch();
 
    return (
@@ -27,5 +27,3 @@ const Toast: React.FC<ToastType> = ({ label, name, text, content }) => {
       </div>
    );
 };
-
-export default Toast;

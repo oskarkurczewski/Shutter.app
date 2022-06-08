@@ -1,10 +1,10 @@
 import React from "react";
-import Button from "components/shared/button/Button";
+import { Button } from "components/shared";
 import { useAppDispatch } from "redux/hooks";
 import { useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
 
-const HomePage = () => {
+export const HomePage = () => {
    const { token } = useAppSelector((state) => state.auth);
    const dispatch = useAppDispatch();
 
@@ -22,5 +22,3 @@ const HomePage = () => {
       </div>
    );
 };
-
-export default HomePage;

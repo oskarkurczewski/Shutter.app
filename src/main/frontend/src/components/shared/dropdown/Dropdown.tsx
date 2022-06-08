@@ -10,7 +10,7 @@ interface Props {
    children?: string;
 }
 
-const Dropdown: React.FC<Props> = ({
+export const Dropdown: React.FC<Props> = ({
    children,
    values,
    onChange,
@@ -40,5 +40,3 @@ const Dropdown: React.FC<Props> = ({
       </div>
    );
 };
-
-export default Dropdown;

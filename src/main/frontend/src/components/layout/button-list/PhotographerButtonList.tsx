@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import BarButton from "components/layout/bar-button/BarButton";
+import { BarButton } from "components/layout";
 import { BsFillCameraFill } from "react-icons/bs";
 import { MdSpaceDashboard } from "react-icons/md";
 import { IoSettingsSharp, IoCalendarSharp } from "react-icons/io5";
@@ -10,7 +10,7 @@ interface Props {
    expanded?: boolean;
 }
 
-const PhotographerButtonList: FC<Props> = ({ path, expanded }) => {
+export const PhotographerButtonList: FC<Props> = ({ path, expanded }) => {
    const { t } = useTranslation();
 
    const arr = [
@@ -43,5 +43,3 @@ const PhotographerButtonList: FC<Props> = ({ path, expanded }) => {
       </>
    );
 };
-
-export default PhotographerButtonList;

@@ -2,9 +2,9 @@ import React from "react";
 import styles from "./Sidebar.module.scss";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
-import AuthCard from "../auth-card/AuthCard";
+import { AuthCard } from "components/layout";
 
-const Sidebar = () => {
+export const Sidebar = () => {
    const auth = useAppSelector((state) => state.auth);
 
    const selectedAccessLevel = localStorage.getItem("accessLevel");
@@ -19,5 +19,3 @@ const Sidebar = () => {
       </div>
    );
 };
-
-export default Sidebar;

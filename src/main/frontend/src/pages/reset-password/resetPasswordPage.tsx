@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import styles from "./resetPasswordPage.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
-import TextInput from "components/shared/text-input/TextInput";
+import { Button, Card, TextInput } from "components/shared";
 import { useResetPasswordMutation } from "redux/service/api";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const ResetPasswordPage = () => {
+export const ResetPasswordPage = () => {
    const { t } = useTranslation();
 
    const { token } = useParams();
@@ -65,5 +63,3 @@ const ResetPasswordPage = () => {
       </section>
    );
 };
-
-export default ResetPasswordPage;

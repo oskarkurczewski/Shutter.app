@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import styles from "./BecomePhotographerSettings.module.scss";
-import Card from "components/shared/card/Card";
-import Button from "components/shared/button/Button";
+import { Button, Card } from "components/shared";
 import { useBecomePhotographerMutation, useRefreshMutation } from "redux/service/api";
 import { refreshToken } from "util/loginUtil";
 import { login } from "redux/slices/authSlice";
 import { useAppDispatch } from "redux/hooks";
 import { useTranslation } from "react-i18next";
 
-const BecomePhotographerSettings = () => {
+export const BecomePhotographerSettings = () => {
    const { t } = useTranslation();
 
    const [becomePhotographerMutation] = useBecomePhotographerMutation();
@@ -45,5 +44,3 @@ const BecomePhotographerSettings = () => {
       </Card>
    );
 };
-
-export default BecomePhotographerSettings;

@@ -7,7 +7,7 @@ interface Props {
    children: JSX.Element | JSX.Element[];
 }
 
-const ModalRoot: React.FC<Props> = ({ children }) => {
+export const ModalRoot: React.FC<Props> = ({ children }) => {
    const elRef = useRef(document.createElement("div"));
 
    useEffect(() => {
@@ -19,5 +19,3 @@ const ModalRoot: React.FC<Props> = ({ children }) => {
 
    return createPortal(<>{children}</>, elRef.current);
 };
-
-export default ModalRoot;

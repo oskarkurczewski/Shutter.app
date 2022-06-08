@@ -1,10 +1,9 @@
 import React from "react";
 import styles from "./userAccountInfoPage.module.scss";
-import AccountChangeLog from "components/account-info/account-change-log/AccountChangeLog";
-import BaseAccountInfo from "components/account-info/base-account-info/BaseAccountInfo";
+import { AccountChangeLog, BaseAccountInfo } from "components/account-info";
 import { useParams } from "react-router-dom";
 
-const UserAccountInfoPage = () => {
+export const UserAccountInfoPage = () => {
    const { login } = useParams();
 
    return (
@@ -14,5 +13,3 @@ const UserAccountInfoPage = () => {
       </div>
    );
 };
-
-export default UserAccountInfoPage;

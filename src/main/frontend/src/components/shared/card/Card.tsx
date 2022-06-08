@@ -7,12 +7,10 @@ interface Props {
    children: JSX.Element | JSX.Element[];
 }
 
-const Card: React.FC<Props> = ({ id, children, className }) => {
+export const Card: React.FC<Props> = ({ id, children, className }) => {
    return (
       <div id={id} className={`${styles.card_wrapper} ${className ? className : ""}`}>
          {children}
       </div>
    );
 };
-
-export default Card;

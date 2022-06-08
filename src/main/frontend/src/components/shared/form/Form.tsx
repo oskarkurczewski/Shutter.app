@@ -9,7 +9,7 @@ interface Props {
    className?: string;
 }
 
-const Form: React.FC<Props> = ({ onSubmit, children, isLoading, className }) => {
+export const Form: React.FC<Props> = ({ onSubmit, children, isLoading, className }) => {
    const { t } = useTranslation();
 
    return (
@@ -26,5 +26,3 @@ const Form: React.FC<Props> = ({ onSubmit, children, isLoading, className }) => 
       </form>
    );
 };
-
-export default Form;

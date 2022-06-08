@@ -1,6 +1,5 @@
 import React, { FC } from "react";
-import BarButton from "components/layout/bar-button/BarButton";
-// import { BsFillCameraFill } from "react-icons/bs";
+import { BarButton } from "components/layout";
 import { MdSpaceDashboard } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
@@ -9,12 +8,11 @@ interface Props {
    expanded?: boolean;
 }
 
-const GuestButtonList: FC<Props> = ({ path, expanded }) => {
+export const GuestButtonList: FC<Props> = ({ path, expanded }) => {
    const { t } = useTranslation();
 
    const arr = [
       { to: "/", icon: <MdSpaceDashboard />, text: t("navbar.buttons.homepage") },
-      // { to: "/photographers", icon: <BsFillCameraFill />, text: "fotografowie" },
    ];
 
    return (
@@ -32,5 +30,3 @@ const GuestButtonList: FC<Props> = ({ path, expanded }) => {
       </>
    );
 };
-
-export default GuestButtonList;

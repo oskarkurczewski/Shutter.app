@@ -9,7 +9,7 @@ interface Props {
    onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const Checkbox: React.FC<Props> = ({
+export const Checkbox: React.FC<Props> = ({
    className,
    children,
    required,
@@ -23,5 +23,3 @@ const Checkbox: React.FC<Props> = ({
       </div>
    );
 };
-
-export default Checkbox;

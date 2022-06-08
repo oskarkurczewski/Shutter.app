@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./dashboardPage.module.scss";
-import Button from "components/shared/button/Button";
+import { Button } from "components/shared";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
 
-const DashboardPage = () => {
+export const DashboardPage = () => {
    const dispatch = useAppDispatch();
    const { token } = useAppSelector((state) => state.auth);
 
@@ -22,5 +22,3 @@ const DashboardPage = () => {
       </section>
    );
 };
-
-export default DashboardPage;

@@ -1,13 +1,11 @@
 import React, { useRef, useState } from "react";
 import styles from "./requestResetPasswordPage.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
-import TextInput from "components/shared/text-input/TextInput";
+import { Button, Card, TextInput } from "components/shared";
 import { useRequestResetPasswordMutation } from "redux/service/api";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const RequestResetPasswordPage = () => {
+export const RequestResetPasswordPage = () => {
    const { t } = useTranslation();
 
    const recaptchaRef = useRef(null);

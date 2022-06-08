@@ -1,9 +1,9 @@
 import React from "react";
 import { useAppSelector } from "redux/hooks";
-import Toast from "../toast/Toast";
+import { Toast } from "components/layout";
 import styles from "./ToastHandler.module.scss";
 
-const ToastHandler = () => {
+export const ToastHandler = () => {
    const toasters = useAppSelector((state) => state.toast.stack);
 
    return (
@@ -14,5 +14,3 @@ const ToastHandler = () => {
       </div>
    );
 };
-
-export default ToastHandler;

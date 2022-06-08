@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./Modal.module.scss";
-import Button from "../button/Button";
-import Card from "../card/Card";
-import ModalRoot from "./ModalRoot";
+import { Button, Card } from "components/shared";
+import { ModalRoot } from "./ModalRoot";
 import { useTranslation } from "react-i18next";
 
 type Props =
@@ -25,7 +24,7 @@ type Props =
         children: JSX.Element | JSX.Element[];
      };
 
-const Modal: React.FC<Props> = ({
+export const Modal: React.FC<Props> = ({
    className,
    children,
    type = "info",
@@ -66,5 +65,3 @@ const Modal: React.FC<Props> = ({
       </ModalRoot>
    );
 };
-
-export default Modal;

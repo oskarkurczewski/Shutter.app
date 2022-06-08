@@ -1,6 +1,5 @@
-import Checkbox from "components/shared/checkbox/Checkbox";
-import TextInput from "components/shared/text-input/TextInput";
 import React from "react";
+import { Checkbox, TextInput } from "components/shared";
 
 interface TextInputProps {
    label: string;
@@ -10,7 +9,7 @@ interface TextInputProps {
    setValue: (value: string) => void;
 }
 
-const FilterTextInput: React.FC<TextInputProps> = ({
+export const FilterTextInput: React.FC<TextInputProps> = ({
    label,
    isActive,
    setIsActive,
@@ -36,5 +35,3 @@ const FilterTextInput: React.FC<TextInputProps> = ({
       </div>
    );
 };
-
-export default FilterTextInput;

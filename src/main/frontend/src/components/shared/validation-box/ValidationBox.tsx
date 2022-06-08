@@ -1,6 +1,6 @@
 import React from "react";
-import Card from "../card/Card";
 import styles from "./ValidationBox.module.scss";
+import { Card } from "components/shared";
 
 type Validator = {
    label: string;
@@ -12,7 +12,7 @@ interface Props {
    className?: string;
 }
 
-const ValidationBox: React.FC<Props> = ({ data, className }) => {
+export const ValidationBox: React.FC<Props> = ({ data, className }) => {
    return (
       <Card className={`${styles.validation_box_wrapper} ${className && className}`}>
          {data.map((section, index) => (
@@ -34,5 +34,3 @@ const ValidationBox: React.FC<Props> = ({ data, className }) => {
       </Card>
    );
 };
-
-export default ValidationBox;

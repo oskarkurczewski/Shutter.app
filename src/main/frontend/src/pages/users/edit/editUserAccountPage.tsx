@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "./editUserAccountPage.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
-import Checkbox from "components/shared/checkbox/Checkbox";
-import Dropdown from "components/shared/dropdown/Dropdown";
-import SquareButton from "components/shared/square-button/SquareButton";
-import TextInput from "components/shared/text-input/TextInput";
+import {
+   Button,
+   Card,
+   Checkbox,
+   Dropdown,
+   SquareButton,
+   TextInput,
+} from "components/shared";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -14,7 +16,7 @@ import {
    useEditAccountInfoAsAdminMutation,
 } from "redux/service/api";
 
-const EditUserAccountPage = () => {
+export const EditUserAccountPage = () => {
    const { login } = useParams();
 
    const [formData, setFormData] = useState({
@@ -224,5 +226,3 @@ const EditUserAccountPage = () => {
       </div>
    );
 };
-
-export default EditUserAccountPage;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./userAccountListPage.module.scss";
-import Card from "components/shared/card/Card";
-import Table from "components/shared/table/Table";
+import { Card, Table } from "components/shared";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaAngleRight, FaCheck, FaEdit } from "react-icons/fa";
 import {
@@ -11,9 +10,9 @@ import {
 } from "redux/service/api";
 import { tableHeader } from "types/ComponentTypes";
 import { useTranslation } from "react-i18next";
-import ListUsersFilter from "components/list-users/list-users-filter/ListUsersFilter";
+import { ListUsersFilter } from "components/list-users";
 
-const UserAccountListPage = () => {
+export const UserAccountListPage = () => {
    const { t } = useTranslation();
 
    const [headers, setHeaders] = useState<tableHeader[]>([
@@ -205,5 +204,3 @@ const UserAccountListPage = () => {
       </div>
    );
 };
-
-export default UserAccountListPage;

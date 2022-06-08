@@ -2,7 +2,6 @@
 import React, { ReactNode } from "react";
 import styles from "./Table.module.scss";
 import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
-import SquareButton from "../square-button/SquareButton";
 import {
    HiChevronDoubleLeft,
    HiChevronDoubleRight,
@@ -10,7 +9,7 @@ import {
    HiChevronRight,
 } from "react-icons/hi";
 
-import Dropdown from "../dropdown/Dropdown";
+import { Dropdown, SquareButton } from "components/shared";
 import { tableHeader } from "types/ComponentTypes";
 
 interface Props {
@@ -25,7 +24,7 @@ interface Props {
    setRecordsPerPage: (number: number) => void;
 }
 
-const Table: React.FC<Props> = ({
+export const Table: React.FC<Props> = ({
    data,
    headers,
    setHeaders,
@@ -156,5 +155,3 @@ const Table: React.FC<Props> = ({
       </div>
    );
 };
-
-export default Table;

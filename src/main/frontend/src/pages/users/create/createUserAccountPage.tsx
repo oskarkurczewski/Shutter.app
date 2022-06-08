@@ -1,14 +1,11 @@
-import styles from "./createUserAccountPage.module.scss";
-import Button from "components/shared/button/Button";
-import Card from "components/shared/card/Card";
-import Checkbox from "components/shared/checkbox/Checkbox";
-import TextInput from "components/shared/text-input/TextInput";
 import React, { useEffect, useState } from "react";
+import styles from "./createUserAccountPage.module.scss";
+import { Button, Card, Checkbox, TextInput } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useRegisterAsAdminMutation } from "redux/service/api";
 
-const CreateUserAccountPage = () => {
+export const CreateUserAccountPage = () => {
    const { t } = useTranslation();
 
    const [formData, setFormData] = useState({
@@ -179,5 +176,3 @@ const CreateUserAccountPage = () => {
       </div>
    );
 };
-
-export default CreateUserAccountPage;
