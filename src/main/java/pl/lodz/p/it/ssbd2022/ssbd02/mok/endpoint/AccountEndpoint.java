@@ -390,9 +390,9 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
-    public void registerFailedLogInAttempt(String login) throws BaseApplicationException {
+    public void registerFailedLogInAttempt(String login, String ipAddress) throws BaseApplicationException {
         Account account = accountService.findByLogin(login);
-        accountService.registerFailedLogInAttempt(account);
+        accountService.registerFailedLogInAttempt(account, ipAddress);
     }
 
     /**
