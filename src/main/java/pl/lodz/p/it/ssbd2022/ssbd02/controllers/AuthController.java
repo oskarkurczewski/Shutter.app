@@ -78,7 +78,7 @@ public class AuthController {
         String secret = accountEndpoint.getSecret(data.getLogin());
 
         if (validationResult.getStatus() != CredentialValidationResult.Status.VALID) {
-            accountEndpoint.registerFailedLogInAttempt(data.getLogin());
+            accountEndpoint.registerFailedLogInAttempt(data.getLogin(), httpServletRequest.getRemoteAddr());
             throw ExceptionFactory.badJWTTokenException();
         }
 
@@ -87,7 +87,7 @@ public class AuthController {
                 accountEndpoint.reguest2faCode(data.getLogin());
                 throw ExceptionFactory.twoFARequiredException();
             } else if (!oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
-                accountEndpoint.registerFailedLogInAttempt(data.getLogin());
+                accountEndpoint.registerFailedLogInAttempt(data.getLogin(), httpServletRequest.getRemoteAddr());
                 throw ExceptionFactory.badJWTTokenException();
             }
         }

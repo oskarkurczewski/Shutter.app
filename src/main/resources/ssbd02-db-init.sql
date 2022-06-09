@@ -43,7 +43,9 @@ CREATE TABLE public.account
     created_at    timestamp,
     secret        character varying(36),
     modified_by   bigint,
-    modified_at   timestamp
+    modified_at   timestamp,
+    last_failed_login timestamp,
+    last_failed_login_ip varchar(64)
 );
 
 ALTER TABLE public.account OWNER TO ssbd02admin;

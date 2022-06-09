@@ -21,6 +21,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -570,7 +571,9 @@ public class AccountService {
      * @param account Konto, dla którego należy zarejestrować nieudaną operację logowania
      */
     @PermitAll
-    public void registerFailedLogInAttempt(Account account) {
+    public void registerFailedLogInAttempt(Account account, String ipAddress) {
+        account.setLastFailedLogInAttempt(LocalDateTime.now());
+        account.setLastFailedLoginIp(ipAddress);
         if (!account.getActive() || !account.getRegistered()) return;
 
         Integer failedAttempts = account.getFailedLogInAttempts();
