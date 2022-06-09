@@ -1,30 +1,26 @@
 import React, { Suspense, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./style.scss";
-import DashboardPage from "pages/dashboard";
-import PageLayout from "pages/layout";
-import Homepage from "pages/homepage";
-import NotFound404 from "pages/not-found";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
+
+import { ProtectedRoute } from "components/routes";
+import { PageLayout } from "layout";
+import { Button } from "components/shared";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
-import { login, logout } from "redux/slices/authSlice";
-import ProtectedRoute from "components/routes/protected-route";
 import { AccessLevel } from "types/AccessLevel";
-import RegisterPage from "pages/register";
-import CreateAccountPage from "pages/users/create";
-import AccountListPage from "pages/users/list";
-import EditAccountPage from "pages/users/edit";
-import SettingsPage from "pages/settings";
-import ResetPasswordPage from "pages/reset-password";
-import UnblockOwnAccountPage from "pages/token-based/unblock-own-account";
-import LoginPage from "pages/login";
-import Button from "components/shared/Button";
+import { login, logout } from "redux/slices/authSlice";
 import { push, remove } from "redux/slices/toastSlice";
-import { useRefreshTokenMutation } from "redux/service/api";
-import RequestResetPasswordPage from "pages/request-reset-password";
-import ConfirmRegistrationPage from "pages/token-based/confirm-registration";
-import ChangeOwnEmailPage from "pages/token-based/change-own-email";
-import AccountInfoPage from "pages/users/info";
+import { useRefreshTokenMutation } from "redux/service/authService";
+
+import { DashboardPage } from "pages/dashboard";
+import { HomePage } from "pages/home";
+import { NotFoundPage } from "pages/not-found";
+import { RegisterPage, LoginPage } from "pages/auth";
+import { SettingsPage } from "pages/settings";
+import { ResetPasswordPage } from "pages/token-based/reset-password";
+import { RequestResetPasswordPage } from "pages/request-reset-password";
+import * as UserPages from "pages/users";
+import * as TokenBased from "pages/token-based";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -46,7 +42,7 @@ function App() {
             onClick={async (e) => {
                e.preventDefault();
                try {
-                  const token = await refreshToken({}).unwrap();
+                  const token = await refreshToken().unwrap();
                   localStorage.setItem("token", token.token);
                   dispatch(login(getLoginPayload()));
                   dispatch(remove("refreshToken"));
@@ -78,10 +74,10 @@ function App() {
       <Suspense fallback="loading...">
          <BrowserRouter>
             <Routes>
-               <Route path="*" element={<NotFound404 />} />
+               <Route path="*" element={<NotFoundPage />} />
 
                <Route element={<PageLayout />}>
-                  <Route path="" element={<Homepage />} />
+                  <Route path="" element={<HomePage />} />
 
                   <Route
                      path="login"
@@ -97,24 +93,6 @@ function App() {
                      element={
                         <ProtectedRoute roles={[AccessLevel.GUEST]}>
                            <RegisterPage />
-                        </ProtectedRoute>
-                     }
-                  />
-
-                  <Route
-                     path="/confirm-registration/:token"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                           <ConfirmRegistrationPage />
-                        </ProtectedRoute>
-                     }
-                  />
-
-                  <Route
-                     path="password-reset/:token"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                           <ResetPasswordPage />
                         </ProtectedRoute>
                      }
                   />
@@ -151,7 +129,7 @@ function App() {
                            <ProtectedRoute
                               roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
                            >
-                              <AccountListPage />
+                              <UserPages.UserAccountListPage />
                            </ProtectedRoute>
                         }
                      />
@@ -160,7 +138,7 @@ function App() {
                         path="create"
                         element={
                            <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                              <CreateAccountPage />
+                              <UserPages.CreateUserAccountPage />
                            </ProtectedRoute>
                         }
                      />
@@ -169,7 +147,7 @@ function App() {
                         path=":login/edit"
                         element={
                            <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                              <EditAccountPage />
+                              <UserPages.EditUserAccountPage />
                            </ProtectedRoute>
                         }
                      />
@@ -180,7 +158,7 @@ function App() {
                            <ProtectedRoute
                               roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
                            >
-                              <AccountInfoPage />
+                              <UserPages.UserAccountInfoPage />
                            </ProtectedRoute>
                         }
                      />
@@ -190,13 +168,35 @@ function App() {
 
                   {/* Token-based routes */}
                   <Route
-                     path="unblock-account/:token"
-                     element={<UnblockOwnAccountPage />}
+                     path="change-own-email/:token"
+                     element={<TokenBased.ChangeOwnEmailPage />}
                   />
 
                   <Route
-                     path="change-own-email/:token"
-                     element={<ChangeOwnEmailPage />}
+                     path="unblock-account/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <TokenBased.UnblockOwnAccountPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="/confirm-registration/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <TokenBased.ConfirmRegistrationPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path="password-reset/:token"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                           <ResetPasswordPage />
+                        </ProtectedRoute>
+                     }
                   />
                </Route>
             </Routes>
@@ -204,7 +204,5 @@ function App() {
       </Suspense>
    );
 }
-
-export const apiUrl = "https://studapp.it.p.lodz.pl:8002/api";
 
 export default App;

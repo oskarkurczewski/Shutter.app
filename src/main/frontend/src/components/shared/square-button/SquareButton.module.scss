@@ -1,0 +1,56 @@
+@use "variables.scss" as variables;
+
+.square_button_wrapper {
+   height: 38px;
+   aspect-ratio: 1;
+
+   button {
+      color: variables.$gray-200;
+      height: 100%;
+      width: 100%;
+      border-radius: 6px;
+      border: none;
+      background-color: variables.$blue-gray-100;
+      box-shadow: variables.$shadow-elevated;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+
+      &:not(:disabled) {
+         cursor: pointer;
+      }
+
+      svg {
+         font-size: 20px;
+      }
+
+      &:hover {
+         background-color: variables.$blue-gray-200;
+      }
+
+      &:active {
+         transform: translateY(4px);
+         box-shadow: none;
+      }
+
+      &:disabled {
+         color: variables.$gray-100;
+         &:hover {
+            background-color: variables.$blue-gray-100;
+         }
+
+         &:active {
+            transform: none;
+            box-shadow: variables.$shadow-elevated;
+         }
+      }
+   }
+
+   &.inactive {
+      button:disabled {
+         color: variables.$gray-200;
+      }
+   }
+}

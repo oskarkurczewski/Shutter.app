@@ -1,0 +1,39 @@
+@use "variables.scss" as variables;
+
+.user_filter_wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+
+   .filters {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+
+      .filters_wrapper_advanced {
+         padding: 0.5rem 1rem;
+         display: grid;
+         grid-template-rows: 1fr 1fr;
+         grid-auto-flow: column;
+         gap: 2rem;
+
+         .filter {
+            display: flex;
+            gap: 1rem;
+         }
+      }
+
+      .filters_wrapper_basic {
+         display: flex;
+      }
+
+      .buttons {
+         display: flex;
+         gap: 0.5rem;
+
+         .search_button {
+            align-self: flex-end;
+         }
+      }
+   }
+}
