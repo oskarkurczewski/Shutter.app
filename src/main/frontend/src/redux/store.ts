@@ -4,7 +4,11 @@ import { api } from "./service/api";
 import toastSlice from "./slices/toastSlice";
 
 export const store = configureStore({
-   reducer: { [api.reducerPath]: api.reducer, auth: authSlice, toast: toastSlice },
+   reducer: {
+      [api.reducerPath]: api.reducer,
+      auth: authSlice,
+      toast: toastSlice,
+   },
    middleware: (getDefaultMiddleWare) =>
       getDefaultMiddleWare({
          serializableCheck: {

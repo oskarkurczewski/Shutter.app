@@ -1,15 +1,10 @@
+import { etag } from "./dataTypes";
+
 interface traceable {
    modifiedAt: Date;
    modifiedBy: string;
    createdAt: Date;
    createdBy: string;
-}
-export interface getListResponse<T> {
-   allPages: number;
-   allRecords: number;
-   list: T[];
-   pageNo: number;
-   recordsPerPage: number;
 }
 
 export interface basicUserInfoResponse {
@@ -31,24 +26,6 @@ interface accessLevel extends traceable {
    name: string;
 }
 
-export interface registerAccountRequest {
-   login: string;
-   password: string;
-   email: string;
-   name: string;
-   surname: string;
-   reCaptchaToken: string;
-}
-
-export interface registerAccountAsAdminRequest {
-   login: string;
-   password: string;
-   email: string;
-   name: string;
-   surname: string;
-   registered: boolean;
-   active: boolean;
-}
 export interface tableAccountData {
    accessLevels: string[];
    email: string;
@@ -92,12 +69,9 @@ export interface requestResetPasswordRequest {
 }
 
 export interface changeOwnUserDataRequest {
-   body: {
-      login: string;
-      name: string;
-      surname: string;
-   };
-   etag: etagData;
+   login: string;
+   name: string;
+   surname: string;
 }
 
 export interface changeOwnPasswordRequest {
@@ -124,19 +98,14 @@ export interface changeAccessLevelRequest {
    body: changeAccessLevelRequestBody;
 }
 
-export interface editAccountInfoAsAdminRequest {
+export interface changeAccountInfoAsAdminRequest {
    body: {
       email: string;
       name: string;
       surname: string;
       login: string;
    };
-   etag: etagData;
-}
-
-export interface etagData {
-   version: number;
-   etag: string;
+   etag: etag;
 }
 
 export interface AccountListPreferencesResponse {

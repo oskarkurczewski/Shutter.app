@@ -1,0 +1,4 @@
+export * from "./change-email";
+export * from "./change-password";
+export * from "./main-settings";
+export * from "./photographer-settings";

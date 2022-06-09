@@ -1,0 +1,19 @@
+@use "variables.scss" as variables;
+
+div.breadcumbs_wrapper {
+   display: flex;
+   align-items: center;
+
+   svg {
+      color: variables.$gray-300;
+      cursor: pointer;
+   }
+
+   a {
+      color: variables.$gray-300;
+   }
+
+   span {
+      padding: 0 5px;
+   }
+}

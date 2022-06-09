@@ -1,0 +1,38 @@
+@use "variables.scss" as variables;
+
+.create_account_page_wrapper {
+   display: flex;
+   flex-direction: row;
+   align-items: flex-start;
+   justify-content: center;
+   width: 100%;
+   gap: 1rem;
+
+   .card_wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+
+      .error_message {
+         font-size: 0.7em;
+         color: variables.$red-200;
+      }
+
+      .access_levels_wrapper {
+         display: flex;
+         justify-content: space-between;
+
+         .access_levels {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.9em;
+            justify-content: center;
+         }
+         .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+         }
+      }
+   }
+}
