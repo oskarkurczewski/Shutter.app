@@ -26,11 +26,11 @@ export const StopBeingPhotographerSettings = () => {
    return (
       <Card id="photographer-settings" className={styles.card_wrapper}>
          <p className={`category-title ${styles.category_title}`}>
-            {t("label.photographer-settings")}
+            {t("settings_page.photographer_settings.title")}
          </p>
          <div className="content">
-            <p>{t("message.info.photographer-settings-general")}</p>
-            <p>{t("message.info.photographer-settings-warning")}</p>
+            <p>{t("settings_page.photographer_settings.details_message")}</p>
+            <p>{t("settings_page.photographer_settings.warning_message")}</p>
             <div className={styles.buttons}>
                <Button
                   className={`${styles.red_button} ${styles.button_wrapper}`}
@@ -39,7 +39,7 @@ export const StopBeingPhotographerSettings = () => {
                      refreshTokenMutation();
                   }}
                >
-                  {t("label.hide-photographer")}
+                  {t("settings_page.photographer_settings.resign_confirm")}
                </Button>
             </div>
          </div>

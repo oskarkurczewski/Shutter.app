@@ -4,6 +4,7 @@
          "login": "Login",
          "password": "Hasło",
          "repeat_password": "Powtórz hasło",
+         "current_password": "Bieżące hasło",
          "2fa_code": "Kod uwierzytelniania",
          "first_name": "Imię",
          "second_name": "Nazwisko",
@@ -115,5 +116,30 @@
    },
    "create_user_account_page": {
       "create_account": "Utwórz konto"
+   },
+   "settings_page": {
+      "title": "Ustawienia",
+      "main_settings": {
+         "title": "Ustawienia główne",
+         "confirm": "Zatwierdź"
+      },
+      "email_settings": {
+         "title": "Zmień adres email",
+         "details_message": "W przypadku chęci zmiany adresu email zostanie wysłany odpowiedni link na twój aktualny adres email.",
+         "send_link": "Wyślij link"
+      },
+      "password_settings": {
+         "title": "Zmień hasło",
+         "details_message": "W celu zmiany hasła podaj hasło bieżące oraz nowe.",
+         "confirm": "Zatwierdź"
+      },
+      "photographer_settings": {
+         "title": "Ustawienia fotografa",
+         "details_message": "W każdej chwili możesz edytować widoczność swojego profilu fotografa.",
+         "warning_message": "Uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu fotografa.",
+         "become_message": "W każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania rezerwacjami.",
+         "resign_confirm": "Przestań być fotografem",
+         "become_confirm": "Zostań fotografem"
+      }
    }
 }

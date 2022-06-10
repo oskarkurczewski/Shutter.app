@@ -14,7 +14,7 @@ interface Props {
 
 export const ValidationBox: React.FC<Props> = ({ data, className }) => {
    return (
-      <Card className={`${styles.validation_box_wrapper} ${className && className}`}>
+      <Card className={`${styles.validation_box_wrapper} ${className ? className : ""}`}>
          {data.map((section, index) => (
             <div className={styles.section} key={`section-${index}`}>
                {section.map((validator, validatorIndex) => (

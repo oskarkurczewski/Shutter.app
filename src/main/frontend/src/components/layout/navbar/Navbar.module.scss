@@ -15,10 +15,10 @@
    align-items: center;
 
    &.expanded {
-      width: 240px;
+      width: 260px;
 
       .expand_button_wrapper {
-         left: 228px;
+         left: 248px;
          transition: left 1s;
 
          svg {
@@ -70,6 +70,7 @@
          p {
             color: variables.$purple-100;
             text-transform: uppercase;
+            transition: opacity 0.5s;
          }
       }
 
@@ -77,6 +78,10 @@
          height: 60px;
          width: 60px;
          color: variables.$purple-100;
+      }
+
+      .hide_text {
+         opacity: 0;
       }
    }
 
