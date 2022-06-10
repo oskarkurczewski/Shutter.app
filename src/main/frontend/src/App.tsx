@@ -108,7 +108,7 @@ function App() {
                   />
 
                   <Route
-                     path=":photographer/profile"
+                     path=":login/profile"
                      element={
                         <ProtectedRoute
                            roles={[

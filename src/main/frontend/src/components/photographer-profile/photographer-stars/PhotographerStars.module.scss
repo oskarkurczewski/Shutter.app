@@ -10,4 +10,10 @@
    padding: 7px 10px;
    font-size: 14px;
    gap: 5px;
+
+   ul {
+      list-style-type: none;
+      display: flex;
+      gap: 3px;
+   }
 }
