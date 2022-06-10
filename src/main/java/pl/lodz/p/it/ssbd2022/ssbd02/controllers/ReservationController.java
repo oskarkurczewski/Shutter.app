@@ -3,10 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeExcpetion;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.CreateReservationDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.PhotographerListEntryDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.ReservationListEntryDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.TimePeriodDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
 
 import javax.inject.Inject;
@@ -72,7 +69,7 @@ public class ReservationController extends AbstractController {
     @GET
     @Path("/photographers")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PhotographerListEntryDto> listPhotographers(
+    public MorListResponseDto<PhotographerListEntryDto> listPhotographers(
             @QueryParam("pageNo") @DefaultValue("1") Integer page,
             @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage
     ) throws BaseApplicationException {

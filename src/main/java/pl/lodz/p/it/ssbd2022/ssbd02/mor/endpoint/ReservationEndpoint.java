@@ -58,10 +58,17 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
-    public List<PhotographerListEntryDto> listPhotographers(int page, int recordsPerPage) throws BaseApplicationException {
-       return reservationService.listPhotographers(page, recordsPerPage).stream()
-               .map(PhotographerListEntryDto::new)
-               .collect(Collectors.toList());
+    public MorListResponseDto<PhotographerListEntryDto> listPhotographers(int page, int recordsPerPage) throws BaseApplicationException {
+        Long photographerCount = reservationService.countPhotographers();
+        return new MorListResponseDto(
+                page,
+                (int) Math.ceil(photographerCount.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                photographerCount,
+                reservationService.listPhotographers(page, recordsPerPage).stream()
+                        .map(PhotographerListEntryDto::new)
+                        .collect(Collectors.toList())
+        );
     }
 
     @PermitAll

@@ -14,6 +14,8 @@ public class PhotographerListEntryDto {
     @NotNull
     private final String login;
     @NotNull
+    private final String email;
+    @NotNull
     private final String name;
     @NotNull
     private final String surname;
@@ -31,6 +33,7 @@ public class PhotographerListEntryDto {
     public PhotographerListEntryDto(PhotographerInfo pInfo) {
         Account photographerAccountInfo = pInfo.getAccount();
         this.login = photographerAccountInfo.getLogin();
+        this.email = photographerAccountInfo.getEmail();
         this.name = photographerAccountInfo.getName();
         this.surname = photographerAccountInfo.getSurname();
         this.score = pInfo.getScore();

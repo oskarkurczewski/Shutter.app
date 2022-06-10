@@ -30,6 +30,10 @@ import java.util.Objects;
                 name = "photographer_info.findAllWithVisibility",
                 query = "SELECT p FROM PhotographerInfo p WHERE p.visible=:visibility"
         ),
+        @NamedQuery(
+                name = "photographer_info.countAllWithVisibility",
+                query = "SELECT COUNT(*) FROM PhotographerInfo p WHERE p.visible=:visibility"
+        ),
 })
 public class PhotographerInfo extends ManagedEntity {
 

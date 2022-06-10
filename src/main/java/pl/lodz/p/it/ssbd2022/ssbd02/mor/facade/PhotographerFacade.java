@@ -68,4 +68,33 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
+
+    /**
+     * Metoda pozwalająca na uzyskanie liczby wszystkich aktywnych fotografów o podanej widoczności
+     *
+     * @param visibility widoczność fotografa, po jakiej ma być poprowadzone wyszukiwanie
+     * @return liczba aktywnych fotografów obecnych systemie
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public Long countAllPhotographersWithVisibility(Boolean visibility)
+            throws BaseApplicationException {
+        TypedQuery<Long> query = getEm().createNamedQuery(
+                "photographer_info.countAllWithVisibility",
+                Long.class
+        );
+        query.setParameter("visibility", visibility);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noPhotographerFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
 }
