@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -20,7 +21,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getEnhancedPhotographerInfo;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getOwnPhotographerInfo;
 
 @Stateful
 @Interceptors({LoggingInterceptor.class})
@@ -45,9 +47,10 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                                     niebędący ani administratorem, ani moderatorem
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
+     * @PermitAll jest potrzebny ponieważ niezalogowany użytkownik może wyświetlić wizytówkę fotografa
      * @see BasePhotographerInfoDto
      */
-    @RolesAllowed(getPhotographerInfo)
+    @PermitAll
     public BasePhotographerInfoDto getPhotographerInfo(String login) throws BaseApplicationException {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
         return new BasePhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
