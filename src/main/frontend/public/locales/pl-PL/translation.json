@@ -88,5 +88,26 @@
          "processing_unchecked": "Należy zaakceptować zgodę na przetwarzanie danych osobowych",
          "tos_unchecked": "Należy zaakceptować regulamin"
       }
+   },
+   "user_account_list_page": {
+      "id": "Id",
+      "login": "Login",
+      "email": "Email",
+      "first_name": "Imię",
+      "second_name": "Nazwisko",
+      "access_level": "Poziom dostępu",
+      "registered": "Zarejestrowany",
+      "active": "Aktywny",
+      "actions": "Akcje",
+      "filter": {
+         "active": "Aktywny",
+         "not_active": "Nieaktywny",
+         "registered": "Zarejestrowany",
+         "not_registered": "Niezarejestrowany",
+         "search": "Szukaj",
+         "placeholder": "Imię i nazwisko",
+         "basic_search": "Podstawowe wyszukiwanie",
+         "advanced_search": "Rozszerzone wyszukiwanie"
+      }
    }
 }
