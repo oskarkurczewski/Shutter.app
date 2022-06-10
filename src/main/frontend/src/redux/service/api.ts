@@ -5,7 +5,6 @@ export const api = createApi({
    reducerPath: "tokenBasedService",
    baseQuery: fetchBaseQuery({
       baseUrl: "https://studapp.it.p.lodz.pl:8402/api/",
-      baseUrl: "https://localhost:8402/api/",
       prepareHeaders: (headers, { getState }) => {
          const token = (getState() as RootState).auth.token;
          if (token) {
