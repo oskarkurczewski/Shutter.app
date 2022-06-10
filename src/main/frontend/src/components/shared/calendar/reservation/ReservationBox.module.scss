@@ -1,8 +1,45 @@
 @use "variables.scss" as variables;
 
-.reservation {
+.reservation_wrapper {
    position: absolute;
    width: 100%;
-   border-radius: 5px;
-   background-color: variables.$purple-100;
+
+   .reservation {
+      width: 100%;
+      border-radius: 5px;
+      background-color: variables.$purple-100;
+      transition: box-shadow 200ms ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+         box-shadow: 0 0 0.5rem variables.$purple-100;
+      }
+   }
+
+   .reservation_info_wrapper {
+      position: absolute;
+      width: 250px;
+      top: -20px;
+      padding: 1rem;
+      border-radius: 10px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 10;
+      background-color: variables.$gray-300;
+      cursor: auto;
+
+      p {
+         color: variables.$white;
+      }
+
+      div {
+         display: flex;
+         flex-direction: column;
+         flex-grow: 1;
+         flex-shrink: 0;
+         width: fit-content;
+      }
+   }
 }
