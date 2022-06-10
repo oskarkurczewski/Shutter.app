@@ -3,7 +3,12 @@
       "label": {
          "login": "Login",
          "password": "Hasło",
-         "2fa_code": "Kod uwierzytelniania"
+         "repeat_password": "Powtórz hasło",
+         "2fa_code": "Kod uwierzytelniania",
+         "first_name": "Imię",
+         "second_name": "Nazwisko",
+         "email": "Adres email",
+         "email_short": "Email"
       }
    },
    "exception": {
@@ -64,5 +69,24 @@
       "sign_up": "Zarejestruj się",
       "inviting_message": "Załóż je teraz, to zupełnie darmowe!",
       "not_user_message": "Nie masz jeszcze konta?"
+   },
+   "register_page": {
+      "form_title": "Rejestracja",
+      "processing_message": "Wyrażam zgodę na przetwarzanie moich danych osobowych.",
+      "tos_message": "Potwierdzam, że zapoznałem się z regulaminem.",
+      "sign_in": "Zaloguj się",
+      "sign_up": "Zarejestruj się",
+      "validation": {
+         "login_min": "Login musi mieć przynajmniej 3 znaki",
+         "login_max": "Login nie może mieć więcej niż 15 znaków",
+         "email_format": "Adres email musi mieć poprawny format",
+         "password_min": "Hasło musi mieć przynajmniej 8 znaków",
+         "password_max": "Hasło nie może mieć więcej niż 64 znaki",
+         "password_match": "Hasła muszą być ze sobą zgodne",
+         "first_name_empty": "Pole imię nie może być puste",
+         "second_name_empty": "Pole nazwisko nie może być puste",
+         "processing_unchecked": "Należy zaakceptować zgodę na przetwarzanie danych osobowych",
+         "tos_unchecked": "Należy zaakceptować regulamin"
+      }
    }
 }
