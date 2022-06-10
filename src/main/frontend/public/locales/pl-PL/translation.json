@@ -8,7 +8,10 @@
          "first_name": "Imię",
          "second_name": "Nazwisko",
          "email": "Adres email",
-         "email_short": "Email"
+         "email_short": "Email",
+         "repeat_email": "Powtórz adres email",
+         "active": "Aktywny",
+         "registered": "Zarejestrowany"
       }
    },
    "exception": {
@@ -109,5 +112,8 @@
          "basic_search": "Podstawowe wyszukiwanie",
          "advanced_search": "Rozszerzone wyszukiwanie"
       }
+   },
+   "create_user_account_page": {
+      "create_account": "Utwórz konto"
    }
 }
