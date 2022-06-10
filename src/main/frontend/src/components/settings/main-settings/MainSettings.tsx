@@ -21,7 +21,7 @@ export const MainSettings = () => {
          <p className={`category-title ${styles.category_title}`}>
             {t("settings_page.main_settings.title")}
          </p>
-         <p>{t("message.info.main-settings")}</p>
+         <p>{t("settings_page.main_settings.details_message")}</p>
          <div className={styles.row}>
             <TextInput
                label={t("global.label.first_name")}

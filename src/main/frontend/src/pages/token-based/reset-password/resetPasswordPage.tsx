@@ -22,18 +22,18 @@ export const ResetPasswordPage = () => {
       <section className={styles.reset_password_page_wrapper}>
          <Card className={styles.card_wrapper}>
             <form>
-               <p className="category-title">{t("label.reset-password")}</p>
-               <p>{t("message.info.password-reset-procedure")}</p>
+               <p className="category-title">{t("reset_password_page.title")}</p>
+               <p>{t("reset_password_page.details_message")}</p>
                <TextInput
-                  label={t("label.new-password")}
+                  label={t("reset_password_page.password-new")}
                   type="password"
-                  placeholder={t("label.password")}
+                  placeholder={t("global.label.password")}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                />
                <div className={styles.footer}>
                   <Button onClick={(e) => onSubmit(e)}>
-                     {t("label.reset-password")}
+                     {t("reset_password_page.confirm")}
                   </Button>
                </div>
                {(() => {
