@@ -10,7 +10,7 @@ import {
 } from "redux/service/usersManagementService";
 import { tableHeader } from "types/ComponentTypes";
 import { useTranslation } from "react-i18next";
-import { ListUsersFilter } from "components/list-users";
+import { ListUsersFilter } from "components/account-management/list-account";
 
 export const UserAccountListPage = () => {
    const { t } = useTranslation();

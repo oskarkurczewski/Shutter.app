@@ -64,7 +64,13 @@ export const Table: React.FC<Props> = ({
                                     onKeyDown={() => {
                                        return;
                                     }}
-                                    className={`${styles.sort} ${header.sort}`}
+                                    className={`${styles.sort} ${
+                                       header.sort
+                                          ? header.sort === "asc"
+                                             ? styles.asc
+                                             : styles.desc
+                                          : ""
+                                    } `}
                                     onClick={() => {
                                        switch (header.sort) {
                                           case "desc":

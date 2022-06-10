@@ -130,6 +130,7 @@ export const RegisterPage = () => {
 
                   <div className={styles.checkboxes_wrapper}>
                      <Checkbox
+                        id="processing-data"
                         required
                         value={checkboxState.userDataChecked}
                         onChange={(e) => {
@@ -142,6 +143,7 @@ export const RegisterPage = () => {
                         {t("register_page.processing_message")}
                      </Checkbox>
                      <Checkbox
+                        id="terms-of-use"
                         required
                         value={checkboxState.termsOfUseChecked}
                         onChange={(e) => {
