@@ -16,7 +16,6 @@ interface Props {
    sessionCount?: number;
    photosCount?: number;
    reviewCount?: number;
-   likesCount?: number;
 }
 
 export const PhotographerInfo: React.FC<Props> = ({
@@ -27,7 +26,6 @@ export const PhotographerInfo: React.FC<Props> = ({
    sessionCount,
    photosCount,
    reviewCount,
-   likesCount,
 }) => {
    return (
       <div className={styles.photographer_profile_wrapper}>
@@ -55,11 +53,6 @@ export const PhotographerInfo: React.FC<Props> = ({
                <IconText
                   text={`${reviewCount} ${"photographer_info_page.photographer_review_count"}`}
                   Icon={RiFileList2Fill}
-                  className="label-bold"
-               />
-               <IconText
-                  text={`${likesCount} ${"photographer_info_page.photographer_like_count"}`}
-                  Icon={AiFillLike}
                   className="label-bold"
                />
             </div>
