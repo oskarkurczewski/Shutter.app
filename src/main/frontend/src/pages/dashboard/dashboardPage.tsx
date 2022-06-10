@@ -3,6 +3,7 @@ import styles from "./dashboardPage.module.scss";
 import { Button } from "components/shared";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
+import { Calendar } from "components/shared/calendar";
 
 export const DashboardPage = () => {
    const dispatch = useAppDispatch();
@@ -19,6 +20,7 @@ export const DashboardPage = () => {
                Logout
             </Button>
          )}
+         <Calendar />
       </section>
    );
 };

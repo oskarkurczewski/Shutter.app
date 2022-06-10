@@ -1,0 +1,55 @@
+@use "variables.scss" as variables;
+
+$cell-height: 3rem;
+
+.day_column_wrapper {
+   width: calc(100% / 7);
+   position: relative;
+
+   .header {
+      position: sticky;
+      top: 0;
+      background-color: variables.$white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 3rem;
+
+      p {
+         padding: 3px 5px;
+         border-radius: 5px;
+      }
+
+      &.today {
+         p {
+            background-color: variables.$gray-300;
+            color: variables.$white;
+         }
+      }
+
+      &.before {
+         p {
+            color: variables.$gray-100;
+         }
+      }
+   }
+
+   .content {
+      display: flex;
+      flex-direction: column;
+
+      .half_hour {
+         height: calc($cell-height / 2);
+      }
+   }
+
+   &::before {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 100%;
+      background-color: variables.$blue-gray-100;
+      position: absolute;
+      left: 50%;
+   }
+}

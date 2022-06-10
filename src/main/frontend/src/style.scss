@@ -96,6 +96,29 @@ html {
    color: variables.$gray-200;
 }
 
+// Scrollbar
+
+::-webkit-scrollbar {
+   width: 10px;
+   height: 10px;
+}
+
+::-webkit-scrollbar-track {
+   border-radius: 5px;
+   background-color: variables.$blue-gray-100;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+   background: variables.$gray-150;
+   border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: variables.$gray-150;
+}
+
 // RWD
 html {
    @include variables.sm {

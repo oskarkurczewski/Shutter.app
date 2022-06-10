@@ -1,0 +1,30 @@
+@use "variables.scss" as variables;
+
+.header_wrapper {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+
+   p,
+   svg,
+   span {
+      color: variables.$gray-300;
+   }
+
+   .nav {
+      display: flex;
+      gap: 1rem;
+
+      .week_range {
+         display: flex;
+         flex-grow: 1;
+         aspect-ratio: auto;
+         min-width: 180px;
+
+         button {
+            padding: 0.5rem;
+            gap: 5px;
+         }
+      }
+   }
+}
