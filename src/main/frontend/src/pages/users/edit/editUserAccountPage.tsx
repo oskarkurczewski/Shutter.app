@@ -15,8 +15,11 @@ import {
    useChangeAccessLevelMutation,
    useChangeAccountInfoMutation,
 } from "redux/service/usersManagementService";
+import { useTranslation } from "react-i18next";
 
 export const EditUserAccountPage = () => {
+   const { t } = useTranslation();
+
    const { login } = useParams();
 
    const [formData, setFormData] = useState({
@@ -78,7 +81,7 @@ export const EditUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, login: e.target.value });
                   }}
-                  label="Login"
+                  label={t("global.label.login")}
                   className="text"
                   disabled
                />
@@ -121,7 +124,7 @@ export const EditUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, name: e.target.value });
                   }}
-                  label="Imię"
+                  label={t("global.label.first_name")}
                   required
                   className="text"
                />
@@ -132,7 +135,7 @@ export const EditUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, surname: e.target.value });
                   }}
-                  label="Nazwisko"
+                  label={t("global.label.second_name")}
                   required
                   className="text"
                />
@@ -143,7 +146,7 @@ export const EditUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, email: e.target.value });
                   }}
-                  label="Email"
+                  label={t("global.label.email")}
                   required
                   className="text"
                   type="email"
@@ -155,7 +158,7 @@ export const EditUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, email2: e.target.value });
                   }}
-                  label="Powtórz email"
+                  label={t("global.label.repeat_email")}
                   required
                   className="text"
                   type="email"
@@ -174,7 +177,7 @@ export const EditUserAccountPage = () => {
                      setFormData({ ...formData, active: e.target.checked });
                   }}
                >
-                  Aktywne
+                  {t("global.label.active")}
                </Checkbox>
                <Checkbox
                   value={formData.registered}
@@ -182,7 +185,7 @@ export const EditUserAccountPage = () => {
                      setFormData({ ...formData, registered: e.target.checked });
                   }}
                >
-                  Zarejestrowane
+                  {t("global.label.registered")}
                </Checkbox>
             </div>
             <div>
@@ -200,7 +203,7 @@ export const EditUserAccountPage = () => {
                         });
                   }}
                >
-                  Zapisz
+                  {t("edit_user_account_page.confirm")}
                </Button>
                {infoMutationState.isError && (
                   <p className={styles.error_message}>Nie można zapisać edycji</p>
@@ -217,7 +220,7 @@ export const EditUserAccountPage = () => {
                   setSelectedRole(e.target.value);
                }}
             >
-               Role
+               {t("edit_user_account_page.access_level")}
             </Dropdown>
          </Card>
       </div>

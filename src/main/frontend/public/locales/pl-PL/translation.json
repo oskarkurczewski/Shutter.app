@@ -141,5 +141,9 @@
          "resign_confirm": "Przestań być fotografem",
          "become_confirm": "Zostań fotografem"
       }
+   },
+   "edit_user_account_page": {
+      "confirm": "Zatwierdź",
+      "access_level": "Poziom dostępu"
    }
 }
