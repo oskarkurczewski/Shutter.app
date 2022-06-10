@@ -1,0 +1,52 @@
+@use "variables.scss" as variables;
+
+.photographer_profile_wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   padding: 20px;
+   gap: 15px;
+
+   .data_wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+      padding: 20px;
+
+      .photographer_photo {
+         filter: drop-shadow(0px 4px 1px rgba(0, 0, 0, 0.07));
+         height: 360px;
+         width: 360px;
+         border-radius: 10px;
+         // padding: 20px;
+         top: 20px;
+         left: 20px;
+         order: 0;
+         flex: none;
+         align-self: stretch;
+         flex-grow: 0;
+         box-shadow: variables.$shadow-elevated;
+      }
+
+      .label_wrapper {
+         padding: 20px 20px 5px 20px;
+         display: flex;
+         flex-direction: column;
+         width: 100%;
+         align-items: flex-start;
+         row-gap: 10px;
+      }
+
+      .text_wrapper {
+         background-color: variables.$blue-gray-100;
+         border-radius: 4px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         font-weight: bold;
+         padding: 7px 10px;
+         font-size: 14px;
+      }
+   }
+}

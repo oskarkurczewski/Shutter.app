@@ -14,9 +14,7 @@ export const MainSettings = () => {
 
    const { username } = useAppSelector((state) => state.auth);
    const [mutation, { isLoading, isError, isSuccess }] = useChangeUserDataMutation();
-   const {
-      data: { data, etag },
-   } = useGetUserInfoQuery();
+   const { data } = useGetUserInfoQuery();
 
    return (
       <Card id="main-settings" className={styles.card_wrapper}>
@@ -48,8 +46,12 @@ export const MainSettings = () => {
          <Button
             onClick={() => {
                mutation({
-                  data: { name: data.name, surname: data.surname, login: username },
-                  etag,
+                  data: {
+                     name: data.data.name,
+                     surname: data.data.surname,
+                     login: username,
+                  },
+                  etag: data.etag,
                });
             }}
          >
