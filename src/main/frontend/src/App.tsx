@@ -21,6 +21,7 @@ import { ResetPasswordPage } from "pages/token-based/reset-password";
 import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
+import { PhotographersListPage } from "pages/photographers";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -197,6 +198,10 @@ function App() {
                            <ResetPasswordPage />
                         </ProtectedRoute>
                      }
+                  />
+
+                  <Route path="photographers" element={<PhotographersListPage/>}
+
                   />
                </Route>
             </Routes>
