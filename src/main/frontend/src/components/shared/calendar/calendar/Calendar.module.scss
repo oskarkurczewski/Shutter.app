@@ -1,6 +1,6 @@
 @use "variables.scss" as variables;
 
-$cell-height: 3rem;
+$cell-height: 48px;
 
 .calendar_wrapper {
    display: flex;
@@ -12,20 +12,18 @@ $cell-height: 3rem;
          display: flex;
          align-items: flex-start;
          gap: 0.5rem;
-
-         height: 600px; //TODO
+         height: 700px; //TODO
          overflow-y: scroll;
-         scrollbar-width: none;
 
          &::-webkit-scrollbar {
-            display: none;
+            width: 6px;
          }
 
          .hours {
             display: flex;
             flex-direction: column;
             width: 5rem;
-            padding-top: 4rem; //week-header height
+            padding-top: 64px; //week-header height
 
             .hour_box {
                display: flex;

@@ -3,11 +3,12 @@ import styles from "./Calendar.module.scss";
 import { formatWeekLabel, getHourRange, getWeekRange } from "util/calendarUtil";
 import { Card } from "components/shared/card";
 import { CalendarHeader } from "../calendar-header";
-import moment from "moment";
+import { DateTime } from "luxon";
 import { DayColumn } from "../day-column";
+import { availabilityHours, reservations } from "../dumbData";
 
 export const Calendar = () => {
-   const [selectedWeek, setSelectedWeek] = useState(moment().startOf("isoWeek"));
+   const [selectedWeek, setSelectedWeek] = useState(DateTime.local().startOf("week"));
 
    const hours = useMemo(() => getHourRange(), []);
    const week = useMemo(() => {
@@ -15,7 +16,11 @@ export const Calendar = () => {
    }, [selectedWeek]);
 
    const changeWeek = (diff: 1 | -1) => {
-      setSelectedWeek(selectedWeek.clone().add(diff, "weeks"));
+      setSelectedWeek(
+         selectedWeek.plus({
+            weeks: diff,
+         })
+      );
    };
 
    return (
@@ -35,8 +40,20 @@ export const Calendar = () => {
                   ))}
                </div>
                <div className={styles.days}>
-                  {week?.map((dayData, index) => (
-                     <DayColumn dayData={dayData} key={index} />
+                  {week.map((dayData, index) => (
+                     <DayColumn
+                        dayData={dayData}
+                        key={index}
+                        availabilityList={availabilityHours.filter(
+                           (day) => day.from.weekday == index
+                        )}
+                        reservationsList={reservations.filter((day) => {
+                           return (
+                              day.from.startOf("day").toUnixInteger() ==
+                              dayData[0].from.toUnixInteger()
+                           );
+                        })}
+                     />
                   ))}
                </div>
             </div>

@@ -1,10 +1,11 @@
 @use "variables.scss" as variables;
 
-$cell-height: 3rem;
+$cell-height: 48px;
 
 .day_column_wrapper {
    width: calc(100% / 7);
    position: relative;
+   padding: 0 0.5rem;
 
    .header {
       position: sticky;
@@ -14,6 +15,7 @@ $cell-height: 3rem;
       align-items: center;
       justify-content: center;
       height: 3rem;
+      z-index: 1;
 
       p {
          padding: 3px 5px;
@@ -37,9 +39,33 @@ $cell-height: 3rem;
    .content {
       display: flex;
       flex-direction: column;
+      position: relative;
 
-      .half_hour {
-         height: calc($cell-height / 2);
+      .grid {
+         .half_hour {
+            height: calc($cell-height / 2);
+         }
+      }
+
+      .avalability_wrapper,
+      .reservations_wrapper {
+         position: absolute;
+         height: 100%;
+         width: 35%;
+      }
+
+      .avalability_wrapper {
+         left: 10%;
+      }
+
+      .reservations_wrapper {
+         right: 10%;
+
+         .reservation {
+            background-color: variables.$purple-100;
+            height: 90px;
+            top: 60px;
+         }
       }
    }
 

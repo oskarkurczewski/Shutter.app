@@ -1,18 +1,22 @@
-import moment from "moment";
+import { DateTime, Duration } from "luxon";
 import { HourBox } from "types/CalendarTypes";
 
 export const getHourRange = () => {
    const items: string[] = [];
    for (let i = 0; i < 24; i++) {
-      items.push(moment({ hour: i }).format("HH:mm"));
+      items.push(
+         Duration.fromObject({
+            hours: i,
+         }).toFormat("hh:mm")
+      );
    }
    return items;
 };
 
-export const getWeekRange = (weekStartDay: moment.Moment) => {
+export const getWeekRange = (weekStartDay: DateTime) => {
    const items: HourBox[][] = new Array(7).fill(0).map(() => new Array(48).fill(null));
    for (let i = 0; i < 336; i++) {
-      const from = moment({ ...weekStartDay }).add({
+      const from = weekStartDay.plus({
          minutes: 30 * i,
       });
 
@@ -33,18 +37,17 @@ export const formatWeekLabel = (week: HourBox[][]) => {
    const start = week[0][0].from;
    const end = week[6][0].from;
 
-   let res = start.format("DD");
-   if (start.month() !== end.month()) {
-      res += start.format(" MMM");
-      if (start.year() !== end.year()) {
-         res += start.format(" YYYY");
+   let res = start.toFormat("dd");
+   if (!start.hasSame(end, "month")) {
+      res += start.toFormat(" MMM");
+      if (!start.hasSame(end, "year")) {
+         res += start.toFormat(" yyyy");
       }
-      res += start.format(" - ");
+      res += " - ";
    } else {
       res += "-";
    }
 
-   res += end.format("DD MMM YYYY");
-
+   res += end.toFormat("dd MMM yyyy");
    return res;
 };

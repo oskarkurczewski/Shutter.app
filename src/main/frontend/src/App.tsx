@@ -2,8 +2,6 @@ import React, { Suspense, useEffect } from "react";
 import "./style.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import moment from "moment";
-import "moment/locale/pl";
 
 import { ProtectedRoute } from "components/routes";
 import { PageLayout } from "layout";
@@ -25,13 +23,6 @@ import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
 
 function App() {
-   moment.locale("pl");
-   moment.updateLocale("pl", {
-      week: {
-         dow: 1,
-      },
-   });
-
    const dispatch = useAppDispatch();
    const exp = useAppSelector((state) => state.auth.exp);
    const [refreshToken] = useRefreshTokenMutation();
