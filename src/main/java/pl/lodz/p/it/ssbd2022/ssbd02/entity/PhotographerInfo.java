@@ -21,10 +21,16 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "photographer_info")
-@NamedQuery(
-        name = "photographer_info.findByLogin",
-        query = "SELECT p FROM PhotographerInfo p JOIN Account a ON p.id=a.id WHERE a.login = :login"
-)
+@NamedQueries({
+        @NamedQuery(
+            name = "photographer_info.findByLogin",
+            query = "SELECT p FROM PhotographerInfo p JOIN Account a ON p.id=a.id WHERE a.login = :login"
+        ),
+        @NamedQuery(
+                name = "photographer_info.findAllWithVisibility",
+                query = "SELECT p FROM PhotographerInfo p WHERE p.visible=:visibility"
+        ),
+})
 public class PhotographerInfo extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)

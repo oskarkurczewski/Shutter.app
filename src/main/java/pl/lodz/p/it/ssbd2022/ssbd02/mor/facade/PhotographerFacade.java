@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -9,8 +11,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
+import java.util.List;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -27,5 +29,43 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
     @PermitAll
     public EntityManager getEm() {
         return em;
+    }
+
+
+    /**
+     * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich fotografów o podanej widoczności
+     *
+     * @param visibility widoczność fotografa, po jakiej ma być poprowadzone wyszukiwanie
+     * @param page strona listy, którą należy pozyskać
+     * @param recordsPerPage ilość krotek fotografów na stronie
+     * @return stronicowana lista aktywnych fotografów obecnych systemie
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public List<PhotographerInfo> getAllPhotographersWithVisibility(
+            Boolean visibility,
+            int page,
+            int recordsPerPage
+    ) throws BaseApplicationException {
+        TypedQuery<PhotographerInfo> query = getEm().createNamedQuery(
+                "photographer_info.findAllWithVisibility",
+                PhotographerInfo.class
+        );
+        query.setParameter("visibility", visibility);
+
+        try {
+            return query
+                    .setFirstResult(recordsPerPage * (page -1))
+                    .setMaxResults(recordsPerPage)
+                    .getResultList();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noPhotographerFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
     }
 }
