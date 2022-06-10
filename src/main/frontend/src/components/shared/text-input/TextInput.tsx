@@ -9,7 +9,7 @@ interface TextInputProps {
    placeholder?: string;
    required?: boolean;
    value: string;
-   onChange: React.ChangeEventHandler<HTMLInputElement>;
+   onChange?: React.ChangeEventHandler<HTMLInputElement>;
    name?: string;
    disabled?: boolean;
 }
