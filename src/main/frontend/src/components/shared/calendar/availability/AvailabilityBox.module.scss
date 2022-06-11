@@ -1,14 +1,47 @@
 @use "variables.scss" as variables;
 
-.avalability {
+.availability_wrapper {
    position: absolute;
-   border-radius: 5px;
-   background-color: #68d243;
-   transition: box-shadow 200ms ease-in-out;
    width: 35%;
    left: 10%;
 
-   &:hover {
-      box-shadow: 0 0 0.5rem #68d243;
+   .availability {
+      border-radius: 5px;
+      background-color: #68d243;
+      transition: box-shadow 200ms ease-in-out;
+      width: 100%;
+      cursor: pointer;
+
+      &:hover {
+         box-shadow: 0 0 0.5rem #68d243;
+      }
+   }
+
+   .availability_info_wrapper {
+      display: flex;
+      flex-direction: column;
+
+      p {
+         color: variables.$white;
+      }
+
+      div {
+         display: flex;
+         flex-direction: column;
+         flex-grow: 1;
+         flex-shrink: 0;
+         width: fit-content;
+      }
+
+      .actions {
+         padding-top: 8px;
+         display: flex;
+         width: 100%;
+         align-items: flex-end;
+
+         .remove_icon svg {
+            color: variables.$red-300;
+         }
+      }
    }
 }

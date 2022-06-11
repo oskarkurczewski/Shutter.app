@@ -1,0 +1,17 @@
+@use "variables.scss" as variables;
+
+.info_box_wrapper {
+   position: absolute;
+   width: 220px;
+   top: -20px;
+   padding: 1rem;
+   border-radius: 10px;
+
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
+   z-index: 10;
+   background-color: variables.$gray-300;
+   cursor: auto;
+   visibility: hidden;
+}

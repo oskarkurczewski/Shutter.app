@@ -1,33 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./ReservationBox.module.scss";
 import { Reservation } from "types/CalendarTypes";
-import { getNthParent } from "util/domUtils";
+import { InfoBox } from "../info-box";
+import { SquareButton } from "components/shared/square-button";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface Props {
    reservation: Reservation;
 }
 
 export const ReservationBox: React.FC<Props> = ({ reservation }) => {
-   const [infoOpen, setInfoOpen] = useState(false);
-   const boxElement = useRef(null);
-
-   const [boxStyle, setBoxStyle] = useState<{
-      left?: number | string;
-      right?: number | string;
-   }>({});
+   const [infoBoxOpen, setInfoBoxOpen] = useState(false);
 
    const offset = reservation.from.hour + reservation.from.minute / 60;
    const height = reservation.to.diff(reservation.from, "minutes").minutes / 60;
-
-   const showInfoBox = () => {
-      const column = getNthParent(boxElement.current, 2);
-      const tableWidth = getNthParent(column, 4).offsetWidth;
-
-      tableWidth - column.offsetLeft < 280
-         ? setBoxStyle({ right: "110%" })
-         : setBoxStyle({ left: "110%" });
-      setInfoOpen(!infoOpen);
-   };
 
    return (
       <div
@@ -35,8 +21,7 @@ export const ReservationBox: React.FC<Props> = ({ reservation }) => {
          style={{
             top: offset * 48,
          }}
-         onBlur={() => setInfoOpen(false)}
-         ref={boxElement}
+         onBlur={() => setInfoBoxOpen(false)}
       >
          <div
             className={styles.reservation}
@@ -45,11 +30,11 @@ export const ReservationBox: React.FC<Props> = ({ reservation }) => {
             }}
             role="button"
             tabIndex={-1}
-            onClick={showInfoBox}
-            onKeyDown={showInfoBox}
+            onClick={() => setInfoBoxOpen(true)}
+            onKeyDown={() => setInfoBoxOpen(true)}
          />
-         {infoOpen && (
-            <div className={styles.reservation_info_wrapper} style={boxStyle}>
+         {infoBoxOpen && (
+            <InfoBox className={styles.reservation_info_wrapper} isOpen={infoBoxOpen}>
                <p className="section-title">Rezerwacja</p>
                <div>
                   <p>{reservation.from.toFormat("cccc - dd.LL.yyyy")}</p>
@@ -59,7 +44,15 @@ export const ReservationBox: React.FC<Props> = ({ reservation }) => {
                      )}`}
                   </p>
                </div>
-            </div>
+               <div className={styles.actions}>
+                  <SquareButton
+                     onClick={() => console.log("Usuwanie")}
+                     className={styles.remove_icon}
+                  >
+                     <FaTrashAlt />
+                  </SquareButton>
+               </div>
+            </InfoBox>
          )}
       </div>
    );

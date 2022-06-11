@@ -47,11 +47,11 @@ $cell-height: 48px;
             height: calc($cell-height / 2);
 
             &:hover {
-               background-color: variables.$blue-gray-100;
+               background-color: rgba(variables.$blue-gray-200, 0.4);
             }
 
             &.selected {
-               background-color: variables.$blue-gray-100;
+               background-color: rgba(variables.$blue-gray-200, 0.4);
             }
          }
       }
