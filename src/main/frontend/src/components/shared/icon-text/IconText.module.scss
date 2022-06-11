@@ -26,21 +26,21 @@
       background-color: variables.$red-100;
       p,
       svg {
-         color: variables.$red-200;
+         color: variables.$red-300;
       }
    }
    &.blue {
       background-color: variables.$blue-100;
       p,
       svg {
-         color: variables.$blue-500-transparent;
+         color: variables.$blue-400;
       }
    }
    &.green {
-      background-color: variables.$green-200;
+      background-color: variables.$green-100;
       p,
       svg {
-         color: variables.$gray-200;
+         color: variables.$green-300;
       }
    }
 }

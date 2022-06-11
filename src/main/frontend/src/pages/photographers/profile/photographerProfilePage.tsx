@@ -7,14 +7,16 @@ import {
 } from "components/photographer-profile";
 import { useGetPhotographerDetailedInfoQuery } from "redux/service/photographerService";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const PhotographerProfilePage = () => {
+   const { t } = useTranslation();
    const { login } = useParams();
    const { data, isError } = useGetPhotographerDetailedInfoQuery(login);
 
    return (
       <section className={styles.photographer_info_page_wrapper}>
-         <p className="category-title">{"photographer_page.category-title"}</p>
+         <p className="category-title">{t("photographer_page.title")}</p>
          {isError && <p>EXCEPTION</p>}
          {data && (
             <div className={styles.content}>

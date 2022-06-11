@@ -13,7 +13,7 @@
       position: relative;
       padding: 20px;
 
-      .label_wrapper {
+      .specialization_wrapper {
          padding-bottom: 20px;
          display: flex;
          flex-direction: row;
@@ -21,11 +21,15 @@
          align-items: flex-start;
          column-gap: 50px;
 
-         ul {
-            list-style-type: none;
+         .specialization_column {
+            ul {
+               list-style-type: none;
 
-            li {
-               margin-top: 10px;
+               li {
+                  margin-top: 10px;
+                  display: flex;
+                  flex-grow: 1;
+               }
             }
          }
       }
@@ -37,6 +41,7 @@
          font-weight: bold;
          padding: 7px 10px;
          font-size: 14px;
+         white-space: nowrap;
       }
    }
 }
