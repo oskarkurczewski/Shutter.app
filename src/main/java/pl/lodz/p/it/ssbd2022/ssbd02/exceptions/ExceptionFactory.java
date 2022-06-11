@@ -143,4 +143,8 @@ public class ExceptionFactory {
     public static NoAccountListPreferencesFound noAccountListPreferencesFound() {
         return new NoAccountListPreferencesFound("account_list_preferences.not_found");
     }
+
+    public static PhotoAlreadyLikedException photoAlreadyLikedException() {
+        return new PhotoAlreadyLikedException("photo.liked");
+    }
 }

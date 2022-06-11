@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
-
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Photo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
@@ -14,16 +13,15 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
-
 @Stateless
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class PhotoFacade extends FacadeTemplate<Photo> {
+public class AccountFacade extends FacadeTemplate<Account> {
     @PersistenceContext(unitName = "ssbd02mowPU")
     private EntityManager em;
 
-    public PhotoFacade() {
-        super(Photo.class);
+    public AccountFacade() {
+        super(Account.class);
     }
 
     @Override
@@ -32,18 +30,16 @@ public class PhotoFacade extends FacadeTemplate<Photo> {
         return em;
     }
 
-
-    @Override
     @PermitAll
-    public Photo find(Long id) throws BaseApplicationException {
+    public Account findByLogin(String login) throws BaseApplicationException {
+        TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
+        query.setParameter("login", login);
         try {
-            return super.find(id);
+            return query.getSingleResult();
         } catch (NoResultException e) {
-            throw ExceptionFactory.noPhotoFoundException();
+            throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
-        } catch (PersistenceException ex) {
-            throw ExceptionFactory.databaseException();
         } catch (Exception ex) {
             throw ExceptionFactory.unexpectedFailException();
         }
