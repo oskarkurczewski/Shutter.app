@@ -3,17 +3,21 @@ import { IconType } from "react-icons/lib/cjs/iconBase";
 import styles from "./IconText.module.scss";
 
 interface Props {
-   textStyle?: string;
+   color?: "purple" | "red" | "blue" | "green";
    className?: string;
    text?: string;
    Icon?: IconType;
 }
 
-export const IconText: React.FC<Props> = ({ className, textStyle, text, Icon }) => {
+export const IconText: React.FC<Props> = ({ color, className, text, Icon }) => {
    return (
-      <div className={`${styles.text_wrapper} ${className ? className : ""}`}>
+      <div
+         className={`${styles.text_wrapper} ${color && styles[color]} ${
+            className ? className : ""
+         }`}
+      >
          {Icon && <Icon />}
-         {text && <p className={`${textStyle ? textStyle : ""}`}>{text}</p>}
+         {text && <p>{text}</p>}
       </div>
    );
 };

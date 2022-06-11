@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./PhotographerDescription.module.scss";
 import { Card, IconText } from "components/shared";
+import { getSpecializationProps } from "util/photographerUtil";
 
 interface Props {
    specializationList?: string[];
@@ -12,11 +13,13 @@ export const PhotographerDescription: React.FC<Props> = ({
    description,
 }) => {
    const specElement = (spec: string) => {
+      const specProps = getSpecializationProps(spec);
       return (
          <IconText
+            Icon={specProps.icon}
+            color={specProps.color}
             text={`.${spec}`}
-            className={styles.text_wrapper}
-            textStyle={styles.text_style}
+            className={`${styles.text_wrapper}`}
          />
       );
    };

@@ -31,18 +31,12 @@
       }
 
       .text_wrapper {
-         background-color: rgba(102, 49, 214, 0.13);
          border-radius: 4px;
          display: flex;
-         justify-content: center;
          align-items: center;
          font-weight: bold;
          padding: 7px 10px;
          font-size: 14px;
-      }
-
-      .text_style {
-         color: variables.$purple-100;
       }
    }
 }

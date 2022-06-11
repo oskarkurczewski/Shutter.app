@@ -7,45 +7,36 @@ interface Props {
    stars: number;
 }
 
-const countStars = (stars: number) => {
+const countingStars = (stars: number) => {
    const fullStars = Math.floor(stars / 2);
    const halfStars = stars % 2;
    const result = [];
 
-   let i = 0;
-   for (i = 0; i < fullStars; i++) {
-      result.push(
-         <li key={i}>
-            <FaStar />
-         </li>
-      );
+   for (let i = 0; i < fullStars; i++) {
+      result.push(<FaStar />);
    }
 
    if (halfStars === 1) {
-      result.push(
-         <li key={i}>
-            <FaStarHalfAlt />
-         </li>
-      );
+      result.push(<FaStarHalfAlt />);
    }
 
    for (let i = 0; i < 5 - fullStars - halfStars; i++) {
-      result.push(
-         <li key={i}>
-            <FaRegStar />
-         </li>
-      );
+      result.push(<FaRegStar />);
    }
 
    result.push(<p>{fullStars + halfStars * 0.5}/5</p>);
 
-   return <ul>{result}</ul>;
+   return result;
 };
 
 export const PhotographerStars: React.FC<Props> = ({ className, stars }) => {
    return (
       <div className={`${styles.text_wrapper} ${className ? className : ""}`}>
-         {countStars(stars)}
+         <ul>
+            {countingStars(stars).map((oneRepublic, index) => (
+               <li key={index}>{oneRepublic}</li>
+            ))}
+         </ul>
       </div>
    );
 };

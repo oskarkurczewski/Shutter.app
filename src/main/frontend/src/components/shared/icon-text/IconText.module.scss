@@ -4,10 +4,43 @@
    background-color: variables.$blue-gray-100;
    border-radius: 4px;
    display: flex;
-   justify-content: center;
+   justify-content: flex-start;
    align-items: center;
    font-weight: bold;
    padding: 7px 10px;
    font-size: 14px;
    gap: 5px;
+
+   svg {
+      color: variables.$gray-200;
+   }
+
+   &.purple {
+      background-color: variables.$purple-100-transparent;
+      p,
+      svg {
+         color: variables.$purple-100;
+      }
+   }
+   &.red {
+      background-color: variables.$red-100;
+      p,
+      svg {
+         color: variables.$red-200;
+      }
+   }
+   &.blue {
+      background-color: variables.$blue-100;
+      p,
+      svg {
+         color: variables.$blue-500-transparent;
+      }
+   }
+   &.green {
+      background-color: variables.$green-200;
+      p,
+      svg {
+         color: variables.$gray-200;
+      }
+   }
 }

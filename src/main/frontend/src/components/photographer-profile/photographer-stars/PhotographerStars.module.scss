@@ -11,9 +11,18 @@
    font-size: 14px;
    gap: 5px;
 
+   svg {
+      color: variables.$gray-200;
+   }
+
    ul {
       list-style-type: none;
       display: flex;
       gap: 3px;
+
+      li {
+         display: flex;
+         align-items: center;
+      }
    }
 }
