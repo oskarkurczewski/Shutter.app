@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeExcpetion;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.CreateReservationDto;
@@ -16,13 +17,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+@Path("/reservation")
 public class ReservationController extends AbstractController {
 
     @Inject
     private ReservationEndpoint reservationEndpoint;
 
     @POST
-    @Path("/reservation")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createReservation(
             @NotNull @Valid CreateReservationDto createReservationDto
@@ -34,8 +35,9 @@ public class ReservationController extends AbstractController {
     @Path("/{id}/cancel")
     public Response cancelReservation(
             @NotNull @PathParam("id") Long reservationId
-    ) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    ) throws BaseApplicationException {
+        repeat(() -> reservationEndpoint.cancelReservation(reservationId), reservationEndpoint);
+        return Response.ok().build();
     }
 
     @DELETE
