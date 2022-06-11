@@ -19,20 +19,20 @@ export const MainSettings = () => {
    return (
       <Card id="main-settings" className={styles.card_wrapper}>
          <p className={`category-title ${styles.category_title}`}>
-            {t("label.settings")}
+            {t("settings_page.main_settings.title")}
          </p>
-         <p>{t("message.info.main-settings")}</p>
+         <p>{t("settings_page.main_settings.details_message")}</p>
          <div className={styles.row}>
             <TextInput
-               label={t("label.first-name")}
-               placeholder={t("label.first-name")}
+               label={t("global.label.first_name")}
+               placeholder={t("global.label.first_name")}
                required
                value={name}
                onChange={(e) => setName(e.target.value)}
             />
             <TextInput
-               label={t("label.second-name")}
-               placeholder={t("label.second-name")}
+               label={t("global.label.second_name")}
+               placeholder={t("global.label.second_name")}
                required
                value={surname}
                onChange={(e) => setSurname(e.target.value)}
@@ -55,7 +55,7 @@ export const MainSettings = () => {
                });
             }}
          >
-            {t("label.change")}
+            {t("settings_page.main_settings.confirm")}
          </Button>
       </Card>
    );

@@ -30,24 +30,23 @@ export const ChangeOwnEmailPage = () => {
 
    return (
       <Card className={styles.change_own_email_wrapper}>
-         <p className="category-title">{t("label.email-change")}</p>
+         <p className="category-title">{t("change_own_email_page.title")}</p>
 
          <TextInput
-            label={t("label.email-new")}
-            placeholder={t("label.email-short")}
-            required
+            label={t("change_own_email_page.email_new")}
+            placeholder={t("global.label.email")}
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
          />
          <TextInput
-            label={t("label.email-confirm")}
-            placeholder={t("label.email-short")}
+            label={t("global.label.repeat_email")}
+            placeholder={t("global.label.repeat_email")}
             required
             value={confirmEmail}
             onChange={(e) => setConfirmEmail(e.target.value)}
          />
 
-         <Button onClick={onSubmit}>{t("label.submit")}</Button>
+         <Button onClick={onSubmit}>{t("change_own_email_page.confirm")}</Button>
 
          {(() => {
             if (isLoading) {

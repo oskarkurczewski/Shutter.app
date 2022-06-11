@@ -11,14 +11,16 @@ export const ChangeEmailSettings = () => {
 
    return (
       <Card id="change-email" className={styles.card_wrapper}>
-         <p className={`category-title ${styles.category_title}`}>{t("label.email")}</p>
-         <p>{t("message.change.email")}</p>
+         <p className={`category-title ${styles.category_title}`}>
+            {t("settings_page.email_settings.title")}
+         </p>
+         <p>{t("settings_page.email_settings.details_message")}</p>
          <Button
             onClick={() => {
                mutation();
             }}
          >
-            {t("message.send.link")}
+            {t("settings_page.email_settings.send_link")}
          </Button>
 
          {isLoading && <p>{t("message.loading.change-email")}</p>}

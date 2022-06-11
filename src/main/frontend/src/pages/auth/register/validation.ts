@@ -1,28 +1,33 @@
-export const validateFields = (formData: {
-   login: string;
-   email: string;
-   password: string;
-   confirmPassword: string;
-   name: string;
-   surname: string;
-   userDataChecked: boolean | null;
-   termsOfUseChecked: boolean | null;
-}) => [
+import type { TFunction } from "react-i18next";
+
+export const validateFields = (
+   formData: {
+      login: string;
+      email: string;
+      password: string;
+      confirmPassword: string;
+      name: string;
+      surname: string;
+      userDataChecked: boolean | null;
+      termsOfUseChecked: boolean | null;
+   },
+   t: TFunction<"translation", undefined>
+) => [
    [
       // Login section
       {
-         label: "Login musi mieć przynajmniej 3 znaki",
+         label: t("register_page.validation.login_min"),
          valid: formData.login.length == 0 ? null : formData.login.length >= 3,
       },
       {
-         label: "Login nie może mieć więcej niż 15 znaków",
+         label: t("register_page.validation.login_max"),
          valid: formData.login.length == 0 ? null : formData.login.length <= 15,
       },
    ],
    [
       // Email section
       {
-         label: "Adres email musi mieć poprawny format",
+         label: t("register_page.validation.email_format"),
          valid:
             formData.email.length == 0
                ? null
@@ -32,15 +37,15 @@ export const validateFields = (formData: {
    [
       // Password section
       {
-         label: "Hasło musi mieć przynajmniej 8 znaków",
+         label: t("register_page.validation.password_min"),
          valid: formData.password.length == 0 ? null : formData.password.length >= 8,
       },
       {
-         label: "Hasło nie może mieć więcej niż 64 znaki",
+         label: t("register_page.validation.password_max"),
          valid: formData.password.length == 0 ? null : formData.password.length <= 64,
       },
       {
-         label: "Hasła muszą być ze sobą zgodne",
+         label: t("register_page.validation.password_match"),
          valid:
             formData.password.length == 0
                ? null
@@ -50,21 +55,21 @@ export const validateFields = (formData: {
    [
       // Name section
       {
-         label: "Pole imię nie może być puste",
+         label: t("register_page.validation.first_name_empty"),
          valid: formData.name.length == 0 ? null : formData.name.length > 0,
       },
       {
-         label: "Pole nazwisko nie może być puste",
+         label: t("register_page.validation.second_name_empty"),
          valid: formData.surname.length == 0 ? null : formData.surname.length > 0,
       },
    ],
    [
       {
-         label: "Należy zaakceptować zgodę na przetwarzanie danych osobowych",
+         label: t("register_page.validation.processing_unchecked"),
          valid: formData.userDataChecked === null ? null : formData.userDataChecked,
       },
       {
-         label: "Należy zaakceptować regulamin",
+         label: t("register_page.validation.tos_unchecked"),
          valid: formData.termsOfUseChecked === null ? null : formData.termsOfUseChecked,
       },
    ],

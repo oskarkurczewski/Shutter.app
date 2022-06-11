@@ -20,35 +20,35 @@ export const BaseAccountInfo: React.FC<Props> = ({ login }) => {
             <table>
                <tbody>
                   <tr>
-                     <td>{t("label.username")}:</td>
+                     <td>{t("global.label.login")}:</td>
                      <td>{userInfo.data.login}</td>
                   </tr>
                   <tr>
-                     <td>{t("label.name")}:</td>
+                     <td>{t("global.label.first_name")}:</td>
                      <td>{userInfo.data.name}</td>
                   </tr>
                   <tr>
-                     <td>{t("label.surname")}:</td>
+                     <td>{t("global.label.second_name")}:</td>
                      <td>{userInfo.data.surname}</td>
                   </tr>
                   <tr>
-                     <td>{t("label.email")}:</td>
+                     <td>{t("global.label.email")}:</td>
                      <td>{userInfo.data.email}</td>
                   </tr>
                   <tr>
-                     <td>{t("label.registered")}:</td>
+                     <td>{t("global.label.registered")}:</td>
                      <td>
                         {userInfo.data.registered ? <FaCheck className="check" /> : <></>}
                      </td>
                   </tr>
                   <tr>
-                     <td>{t("label.active")}:</td>
+                     <td>{t("global.label.active")}:</td>
                      <td>
                         {userInfo.data.active ? <FaCheck className="check" /> : <></>}
                      </td>
                   </tr>
                   <tr>
-                     <td>{t("label.created-at")}:</td>
+                     <td>{t("user_account_info_page.created_at")}:</td>
                      <td>
                         {userInfo.data.createdAt
                            ? new Date(userInfo.data.createdAt).toUTCString()
@@ -56,11 +56,11 @@ export const BaseAccountInfo: React.FC<Props> = ({ login }) => {
                      </td>
                   </tr>
                   <tr>
-                     <td>{t("label.created-by")}:</td>
+                     <td>{t("user_account_info_page.created_by")}:</td>
                      <td>{userInfo.data.createdBy ? userInfo.data.createdBy : "-"}</td>
                   </tr>
                   <tr>
-                     <td>{t("label.last-modified-at")}:</td>
+                     <td>{t("user_account_info_page.modified_at")}:</td>
                      <td>
                         {userInfo.data.createdAt
                            ? new Date(userInfo.data.createdAt).toUTCString()
@@ -68,7 +68,7 @@ export const BaseAccountInfo: React.FC<Props> = ({ login }) => {
                      </td>
                   </tr>
                   <tr>
-                     <td>{t("label.last-modified-by")}:</td>
+                     <td>{t("user_account_info_page.modified_at")}:</td>
                      <td>{userInfo.data.createdBy ? userInfo.data.createdBy : "-"}</td>
                   </tr>
                </tbody>
