@@ -1,7 +1,8 @@
 import { Button, Card, TextInput } from "components/shared";
 import { useStateWithComparison } from "hooks/useStateWithComparison";
 import { useStateWithValidation } from "hooks/useStateWithValidation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useChangeSomeonesPasswordMutation } from "redux/service/userSettingsService";
 import { passwordPattern } from "util/regex";
 import styles from "./ChangePassword.module.scss";
@@ -11,14 +12,13 @@ interface Props {
 }
 
 export const ChangePassword: React.FC<Props> = ({ login }) => {
-   const [data, setData] = useState({ password: "", password2: "" });
+   const { t } = useTranslation();
+
    const [passwordMutation, passwordMutationState] = useChangeSomeonesPasswordMutation();
    const [passwordCheck, setPasswordCheck] = useState(false);
 
    const save = () => {
-      console.log(data);
-      passwordCheck &&
-         passwordMutation({ login: login, data: { password: data.password } });
+      passwordCheck && passwordMutation({ login: login, data: { password } });
    };
 
    const [password, setPassword, passwordValidation] = useStateWithValidation(
@@ -36,44 +36,44 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
       password
    );
 
-   useEffect(() => {
-      setPasswordCheck(data.password == data.password2);
-   }, [data]);
-
    return (
       <Card className={styles["changePassword-wrapper"]}>
-         <p className={`category-title ${styles.category_title}`}>Hasło</p>
+         <p className={`category-title ${styles.category_title}`}>
+            {t("edit_account_page.password.title")}
+         </p>
 
          <div>
             <TextInput
                value={password}
-               label="Hasło"
+               label={t("edit_account_page.password.password")}
                onChange={(e) => {
                   setPassword(e.target.value);
                }}
-               type="text"
+               type="password"
                required
                validation={passwordValidation}
                validationMessages={[
-                  "Hasło musi mieć przynajmniej 8 znaków",
-                  "Hasło może mieć maksymalnie 64 znaki",
-                  "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
+                  t("edit_account_page.password.password_validation.min"),
+                  t("edit_account_page.password.password_validation.max"),
+                  t("edit_account_page.password.password_validation.regex"),
                ]}
             />
             <TextInput
                value={password2}
-               label="Powtórz hasło"
+               label={t("edit_account_page.password.repeat_password")}
                onChange={(e) => {
                   setPassword2(e.target.value);
                }}
                type="password"
                required
                validation={password2Validation}
-               validationMessages={["Hasła różnią się od siebie"]}
+               validationMessages={[
+                  t("edit_account_page.password.password_validation.repeat"),
+               ]}
             />
          </div>
          <Button onClick={save} className={styles.save}>
-            zApIsZ
+            {t("edit_account_page.confirm")}
          </Button>
       </Card>
    );

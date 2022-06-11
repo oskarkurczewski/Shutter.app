@@ -2,6 +2,7 @@ import { Button, Card, Checkbox, TextInput } from "components/shared";
 import { useStateWithComparison } from "hooks/useStateWithComparison";
 import { useStateWithValidation } from "hooks/useStateWithValidation";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useChangeAccountInfoMutation } from "redux/service/usersManagementService";
 import { advancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
+   const { t } = useTranslation();
+
    const [login, setLogin] = useState<string>("");
    const [active, setActive] = useState<boolean>(false);
    const [registered, setRegistered] = useState<boolean>(false);
@@ -83,7 +86,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
    return (
       <Card className={styles.base_info_wrapper}>
          <p className={`category-title ${styles.category_title}`}>
-            Podstawowe informacje
+            {t("edit_account_page.basic_info.title")}
          </p>
          <div className={styles.content}>
             <div>
@@ -92,7 +95,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                   onChange={(e) => {
                      setLogin(e.target.value);
                   }}
-                  label="Login"
+                  label={t("edit_account_page.basic_info.login")}
                   className="text"
                   disabled
                />
@@ -106,7 +109,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                   }}
                   disabled
                >
-                  Zarejestrowane
+                  {t("edit_account_page.basic_info.registered")}
                </Checkbox>
                <Checkbox
                   id="active"
@@ -115,7 +118,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                      setActive(e.target.checked);
                   }}
                >
-                  Aktywne
+                  {t("edit_account_page.basic_info.active")}
                </Checkbox>
             </div>
             <div>
@@ -124,14 +127,14 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                   onChange={(e) => {
                      setName(e.target.value);
                   }}
-                  label="Imię"
+                  label={t("edit_account_page.basic_info.name")}
                   required
                   className="text"
                   validation={nameIsValid}
                   validationMessages={[
-                     "Imię musi być krótsze niż 63 znaków",
-                     "Imię może zawierać tylko wielkie i małe litery",
-                     "Imię musi się zaczynać od wielkiej litery",
+                     t("edit_account_page.basic_info.name_validation.max"),
+                     t("edit_account_page.basic_info.name_validation.regex"),
+                     t("edit_account_page.basic_info.name_validation.first_letter"),
                   ]}
                />
             </div>
@@ -141,14 +144,14 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                   onChange={(e) => {
                      setSurname(e.target.value);
                   }}
-                  label="Nazwisko"
+                  label={t("edit_account_page.basic_info.surname")}
                   required
                   className="text"
                   validation={surnameIsValid}
                   validationMessages={[
-                     "Nazwisko musi być krótsze niż 63 znaków",
-                     "Nazwisko może zawierać tylko wielkie i małe litery",
-                     "Nazwisko musi się zaczynać od wielkiej litery",
+                     t("edit_account_page.basic_info.surname_validation.max"),
+                     t("edit_account_page.basic_info.surname_validation.regex"),
+                     t("edit_account_page.basic_info.surname_validation.first_letter"),
                   ]}
                />
             </div>
@@ -159,15 +162,15 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                      onChange={(e) => {
                         setEmail(e.target.value);
                      }}
-                     label="Email"
+                     label={t("edit_account_page.basic_info.email")}
                      required
                      className="text"
                      type="email"
                      validation={emailIsValid}
                      validationMessages={[
-                        "Email musi być dłuższy niż 1 znak",
-                        "Email musi być krótszy niż 64 znaków",
-                        "Email musi być w formacie example@domain.com",
+                        t("edit_account_page.basic_info.email_validation.min"),
+                        t("edit_account_page.basic_info.email_validation.max"),
+                        t("edit_account_page.basic_info.email_validation.format"),
                      ]}
                   />
                </div>
@@ -177,12 +180,14 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                      onChange={(e) => {
                         setEmail2(e.target.value);
                      }}
-                     label="Powtórz email"
+                     label={t("edit_account_page.basic_info.repeat_email")}
                      required
                      className="text"
                      type="email"
                      validation={email2IsValid}
-                     validationMessages={["Adresy email nie mogą się różnić"]}
+                     validationMessages={[
+                        t("edit_account_page.basic_info.email_validation.repeat"),
+                     ]}
                   />
                </div>
             </div>
@@ -206,8 +211,9 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                disabled={!canSubmit}
                className={styles.btn}
             >
-               Zapisz
+               {t("edit_account_page.confirm")}
             </Button>
+            {/* TODO: change to toast */}
             {infoMutationState.isError && (
                <p className={styles.error_message}>Nie można zapisać edycji</p>
             )}
