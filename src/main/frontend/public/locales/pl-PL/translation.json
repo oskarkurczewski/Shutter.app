@@ -164,9 +164,52 @@
          "become_confirm": "Zostań fotografem"
       }
    },
-   "edit_user_account_page": {
-      "confirm": "Zatwierdź",
-      "access_level": "Poziom dostępu"
+   "edit_account_page": {
+      "confirm": "Zapisz",
+      "basic_info": {
+         "title": "Podstawowe informacje",
+         "login": "Login",
+         "registered": "Zarejestrowane",
+         "active": "Aktywne",
+         "name": "Imię",
+         "surname": "Nazwisko",
+         "email": "Email",
+         "repeat_email": "Powtórz email",
+         "name_validation": {
+            "max": "Imię nie może mieć więcej niż 63 znaki",
+            "regex": "Imię może zawierać tylko wielkie i małe litery",
+            "first_letter": "Pierwsza litera imienia musi być wielka"
+         },
+         "surname_validation": {
+            "max": "Nazwisko nie może mieć więcej niż 63 znaki",
+            "regex": "Nazwisko może zawierać tylko wielkie i małe litery",
+            "first_letter": "Pierwsza litera nazwiska musi być wielka"
+         },
+         "email_validation": {
+            "min": "Email musi mieć przynajmniej 1 znak",
+            "max": "Email nie może mieć więcej niż 64 znaki",
+            "format": "Email musi być w formacie example@domain.com",
+            "repeat": "Adresy email muszą być takie same"
+         }
+      },
+      "roles": {
+         "title": "Role",
+         "admin": "ADMINISTRATOR",
+         "moderator": "MODERATOR",
+         "client": "KLIENT",
+         "photographer": "FOTOGRAF"
+      },
+      "password": {
+         "title": "Hasło",
+         "password": "Hasło",
+         "repeat_password": "Powtórz hasło",
+         "password_validation": {
+            "min": "Hasło musi mieć przynajmniej 6 znaków",
+            "max": "Hasło nie może mieć więcej niż 64 znaki",
+            "regex": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
+            "repeat": "Hasła muszą być takie same"
+         }
+      }
    },
    "confirm_register_page": {
       "title": "Rejestracja konta",

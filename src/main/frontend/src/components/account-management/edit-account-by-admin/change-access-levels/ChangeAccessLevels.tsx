@@ -1,5 +1,6 @@
 import { Card, Checkbox } from "components/shared";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useChangeAccessLevelMutation } from "redux/service/usersManagementService";
 import { advancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
+   const { t } = useTranslation();
+
    const [allRoles, setAllRoles] = useState({
       ADMINISTRATOR: false,
       MODERATOR: false,
@@ -19,7 +22,6 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
    const [accessLevelMutation, accessLevelMutationState] = useChangeAccessLevelMutation();
 
    useEffect(() => {
-      console.log(userInfoData);
       let tempRoles = {};
       userInfoData?.data.accessLevelList.forEach((role) => {
          tempRoles = { ...tempRoles, [role.name]: true };
@@ -44,7 +46,9 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
 
    return (
       <Card className={styles.access_levels}>
-         <p className={`category-title ${styles.category_title}`}>Role</p>
+         <p className={`category-title ${styles.category_title}`}>
+            {t("edit_account_page.roles.title")}
+         </p>
          <div className={styles.content}>
             <Checkbox
                id="ADMINISTRATOR"
@@ -52,20 +56,20 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
                onChange={null}
                disabled
             >
-               ADMINISTRATOR
+               {t("edit_account_page.roles.admin")}
             </Checkbox>
             <Checkbox id="MODERATOR" value={allRoles.MODERATOR} onChange={changeRole}>
-               MODERATOR
+               {t("edit_account_page.roles.moderator")}
             </Checkbox>
             <Checkbox id="USER" value={allRoles.CLIENT} onChange={changeRole}>
-               CLIENT
+               {t("edit_account_page.roles.client")}
             </Checkbox>
             <Checkbox
                id="PHOTOGRAPHER"
                value={allRoles.PHOTOGRAPHER}
                onChange={changeRole}
             >
-               PHOTOGRAPHER
+               {t("edit_account_page.roles.photographer")}
             </Checkbox>
          </div>
       </Card>
