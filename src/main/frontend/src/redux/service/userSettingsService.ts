@@ -5,6 +5,7 @@ import {
    requestResetPasswordRequest,
    tableAccountChangeLogInfo,
    getOwnAccountChangeLogRequest,
+   changeSomeonesPasswordRequest,
 } from "redux/types/api/accountTypes";
 import { EtagData, getListResponse } from "redux/types/api/dataTypes";
 
@@ -26,11 +27,18 @@ const UserSettingsService = api.injectEndpoints({
          }),
       }),
 
-      changePassword: builder.mutation<void, changeOwnPasswordRequest>({
+      changeOwnPassword: builder.mutation<void, changeOwnPasswordRequest>({
          query: (data) => ({
             url: "account/change-password",
             method: "PUT",
             body: data,
+         }),
+      }),
+      changeSomeonesPassword: builder.mutation<void, changeSomeonesPasswordRequest>({
+         query: (data) => ({
+            url: `account/${data.login}/change-password`,
+            method: "PUT",
+            body: data.data,
          }),
       }),
 
@@ -70,7 +78,8 @@ const UserSettingsService = api.injectEndpoints({
 
 export const {
    useChangeUserDataMutation,
-   useChangePasswordMutation,
+   useChangeOwnPasswordMutation,
+   useChangeSomeonesPasswordMutation,
    useBecomePhotographerMutation,
    useSendResetPasswordLinkMutation,
    useStopBeingPhotographerMutation,

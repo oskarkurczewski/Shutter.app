@@ -469,6 +469,7 @@ public class AccountService {
         account.setEmail(editAccountInfoAsAdminDto.getEmail());
         account.setName(editAccountInfoAsAdminDto.getName());
         account.setSurname(editAccountInfoAsAdminDto.getSurname());
+        account.setActive(editAccountInfoAsAdminDto.getActive());
         accountFacade.update(account);
     }
 
@@ -513,7 +514,7 @@ public class AccountService {
     /**
      * Zapisuje preferencje wyświetlania listy kont użytkownika
      *
-     * @param account    konto użytkownika, dla którego mają zostać zapisane preferencje
+     * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
      */
     @RolesAllowed(listAllAccounts)
     public void saveAccountListPreferences(
@@ -522,7 +523,7 @@ public class AccountService {
             int recordsPerPage,
             String orderBy,
             Boolean orderAsc
-        ) throws BaseApplicationException {
+    ) throws BaseApplicationException {
         try {
             AccountListPreferences accountListPreferences = accountListPreferencesFacade.findByAccount(account);
             savePreferences(accountListPreferences, account, page, recordsPerPage, orderBy, orderAsc);
@@ -548,7 +549,7 @@ public class AccountService {
             int recordsPerPage,
             String orderBy,
             Boolean orderAsc
-        ) {
+    ) {
         preferences.setAccount(account);
         preferences.setOrderAsc(orderAsc);
         preferences.setOrderBy(orderBy);

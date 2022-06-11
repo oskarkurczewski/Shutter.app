@@ -1,11 +1,17 @@
 @use "variables.scss" as variables;
 
-.create_account_page_wrapper {
+.edit_account_page_wrapper {
    display: grid;
-   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-columns: auto auto;
    grid-template-rows: auto auto;
    gap: 1rem;
-   max-width: 40rem;
-   min-width: 30rem;
+   // max-width: 40rem;
+   // min-width: 30rem;
    align-self: center;
+   // display: flex;
+   & > div {
+      display: flex;
+      flex-direction: column;
+      gap: inherit;
+   }
 }

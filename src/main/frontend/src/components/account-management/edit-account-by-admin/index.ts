@@ -1,3 +1,3 @@
-export * from "./base-info";
-export * from "./access-levels";
-export * from "./password";
+export * from "./change-base-info";
+export * from "./change-access-levels";
+export * from "./change-password";

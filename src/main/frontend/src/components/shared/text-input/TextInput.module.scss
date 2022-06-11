@@ -14,7 +14,7 @@ div.text_input_wrapper {
       }
    }
 
-   div {
+   .field {
       display: flex;
       border-radius: 10px;
       overflow: hidden;
@@ -39,6 +39,23 @@ div.text_input_wrapper {
          font-weight: bold;
          color: variables.$gray-300;
          flex-grow: 1;
+         &:disabled {
+            background-color: variables.$gray-50;
+         }
+         &.invalid {
+            color: variables.$red-300;
+         }
+      }
+   }
+
+   .messages {
+      font-size: 11px;
+      height: 11px;
+      margin-top: 7px;
+      p {
+         font-weight: bold;
+         color: variables.$red-300;
+         margin-left: 5px;
       }
    }
 }
