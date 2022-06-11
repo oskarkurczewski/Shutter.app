@@ -30,13 +30,13 @@ export const ChangePasswordSettings = () => {
    return (
       <Card id="change-password" className={styles.card_wrapper}>
          <p className={`category-title ${styles.category_title}`}>
-            {t("label.password")}
+            {t("settings_page.password_settings.title")}
          </p>
-         <p>{t("message.change.password")}</p>
+         <p>{t("settings_page.password_settings.details_message")}</p>
          <div className={styles.row}>
             <TextInput
-               label={t("label.current-password")}
-               placeholder={t("label.password")}
+               label={t("global.label.current_password")}
+               placeholder={t("global.label.current_password")}
                type="password"
                required
                value={oldPassword}
@@ -45,16 +45,16 @@ export const ChangePasswordSettings = () => {
          </div>
          <div className={styles.row}>
             <TextInput
-               label={t("label.password")}
-               placeholder={t("label.password")}
+               label={t("global.label.password")}
+               placeholder={t("global.label.password")}
                type="password"
                required
                value={password}
                onChange={(e) => setPassword(e.target.value)}
             />
             <TextInput
-               label={t("label.repeat-password")}
-               placeholder={t("label.password")}
+               label={t("global.label.repeat_password")}
+               placeholder={t("global.label.repeat_password")}
                type="password"
                required
                value={confirmPassword}
@@ -88,7 +88,9 @@ export const ChangePasswordSettings = () => {
             }
          })()}
 
-         <Button onClick={onSubmit}>{t("label.change")}</Button>
+         <Button onClick={onSubmit}>
+            {t("settings_page.password_settings.confirm")}
+         </Button>
       </Card>
    );
 };

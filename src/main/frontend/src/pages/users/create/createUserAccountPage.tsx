@@ -44,7 +44,7 @@ export const CreateUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, login: e.target.value });
                   }}
-                  label={t("label.login-label")}
+                  label={t("global.label.login")}
                   required
                   className="text"
                />
@@ -56,7 +56,7 @@ export const CreateUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, name: e.target.value });
                   }}
-                  label={t("label.first-name")}
+                  label={t("global.label.first_name")}
                   required
                   className="text"
                />
@@ -67,7 +67,7 @@ export const CreateUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, surname: e.target.value });
                   }}
-                  label={t("label.second-name")}
+                  label={t("global.label.second_name")}
                   required
                   className="text"
                />
@@ -78,7 +78,7 @@ export const CreateUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, email: e.target.value });
                   }}
-                  label={t("label.email-short")}
+                  label={t("global.label.email")}
                   required
                   className="text"
                   type="email"
@@ -90,7 +90,7 @@ export const CreateUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, email2: e.target.value });
                   }}
-                  label={t("label.email-repeat")}
+                  label={t("global.label.repeat_email")}
                   required
                   className="text"
                   type="email"
@@ -107,7 +107,7 @@ export const CreateUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, password: e.target.value });
                   }}
-                  label={t("label.password")}
+                  label={t("global.label.password")}
                   required
                   className="text"
                   type="password"
@@ -119,7 +119,7 @@ export const CreateUserAccountPage = () => {
                   onChange={(e) => {
                      setFormData({ ...formData, password2: e.target.value });
                   }}
-                  label={t("label.repeat-password")}
+                  label={t("global.label.repeat_password")}
                   required
                   className="text"
                   type="password"
@@ -138,7 +138,7 @@ export const CreateUserAccountPage = () => {
                      setFormData({ ...formData, active: e.target.checked });
                   }}
                >
-                  {t("label.active")}
+                  {t("global.label.active")}
                </Checkbox>
                <Checkbox
                   id="registered"
@@ -147,7 +147,7 @@ export const CreateUserAccountPage = () => {
                      setFormData({ ...formData, registered: e.target.checked });
                   }}
                >
-                  {t("label.registered")}
+                  {t("global.label.registered")}
                </Checkbox>
             </div>
             <div>
@@ -166,7 +166,7 @@ export const CreateUserAccountPage = () => {
                      }
                   }}
                >
-                  {t("label.create-account")}
+                  {t("create_user_account_page.create_account")}
                </Button>
                {isError && (
                   <p className={styles.error_message}>

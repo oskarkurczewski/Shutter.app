@@ -6,6 +6,7 @@ import {
    FilterTextInput,
 } from "components/account-management/list-account";
 import { FaSearchMinus, FaSearchPlus } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    query: string;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 export const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
+   const { t } = useTranslation();
+
    const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
    // TODO: change to custom hooks
@@ -48,55 +51,61 @@ export const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
             {isAdvancedSearch ? (
                <div className={styles.filters_wrapper_advanced}>
                   <FilterTextInput
-                     label="login"
+                     label={t("user_account_list_page.login")}
                      isActive={loginIsActive}
                      setIsActive={setLoginIsActive}
                      value={login}
                      setValue={setLogin}
                   />
                   <FilterTextInput
-                     label="email"
+                     label={t("user_account_list_page.email")}
                      isActive={emailIsActive}
                      setIsActive={setEmailIsActive}
                      value={email}
                      setValue={setEmail}
                   />
                   <FilterTextInput
-                     label="name"
+                     label={t("user_account_list_page.first_name")}
                      isActive={nameIsActive}
                      setIsActive={setNameIsActive}
                      value={name}
                      setValue={setName}
                   />
                   <FilterTextInput
-                     label="surname"
+                     label={t("user_account_list_page.second_name")}
                      isActive={surnameIsActive}
                      setIsActive={setSurnameIsActive}
                      value={surname}
                      setValue={setSurname}
                   />
                   <FilterDropdownInput
-                     label="aktywacja"
+                     label={t("user_account_list_page.active")}
                      isActive={activeIsActive}
                      setIsActive={setActiveIsActive}
                      value={active}
                      setValue={setActive}
-                     possibleValues={["aktywny", "nieaktywny"]}
+                     possibleValues={[
+                        t("user_account_list_page.filter.active"),
+                        t("user_account_list_page.filter.not_active"),
+                     ]}
                   />
                   <FilterDropdownInput
-                     label="rejestracja"
+                     label={t("user_account_list_page.registered")}
                      isActive={registeredIsActive}
                      setIsActive={setRegisteredIsActive}
                      value={registered}
                      setValue={setRegistered}
-                     possibleValues={["zarejestrowany", "niezarejestrowany"]}
+                     possibleValues={[
+                        t("user_account_list_page.filter.registered"),
+                        t("user_account_list_page.filter.not_registered"),
+                     ]}
                   />
                </div>
             ) : (
                <div className={styles.filters_wrapper_basic}>
                   <TextInput
                      value={query}
-                     placeholder="szukaj"
+                     placeholder={t("user_account_list_page.filter.placeholder")}
                      onChange={(e) => {
                         setQuery(e.target.value);
                      }}
@@ -107,15 +116,19 @@ export const ListUsersFilter: React.FC<Props> = ({ query, setQuery }) => {
                <Button
                   onClick={isAdvancedSearch ? submitAdvancedSearch : submitBasicSearch}
                   className={styles.search_button}
-                  title="Search"
+                  title={t("user_account_list_page.filter.search")}
                >
-                  Szukaj
+                  {t("user_account_list_page.filter.search")}
                </Button>
                <SquareButton
                   onClick={() => {
                      setIsAdvancedSearch(!isAdvancedSearch);
                   }}
-                  title={isAdvancedSearch ? "Basic search" : "Advanced search"}
+                  title={
+                     isAdvancedSearch
+                        ? t("user_account_list_page.filter.basic_search")
+                        : t("user_account_list_page.filter.advanced_search")
+                  }
                >
                   {isAdvancedSearch ? <FaSearchMinus /> : <FaSearchPlus />}
                </SquareButton>

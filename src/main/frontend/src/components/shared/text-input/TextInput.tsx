@@ -32,7 +32,7 @@ export const TextInput = ({
 }: TextInputProps) => {
    return (
       <div className={`${styles.text_input_wrapper} ${className ? className : ""}`}>
-         {label && <p className={`label ${required && styles.required}`}>{label}</p>}
+         {label && <p className={`label ${required ? styles.required : ""}`}>{label}</p>}
          <div className={styles.field}>
             {icon && <span className="material-icons">{icon}</span>}
             <input

@@ -405,9 +405,9 @@ public class AccountService {
                 String name = ((ConstraintViolationException) ex.getCause()).getConstraintName();
                 switch (name) {
                     case IDENTICAL_LOGIN:
-                        throw ExceptionFactory.identicalFieldException("exception.login.identical");
+                        throw ExceptionFactory.identicalFieldException("exception.identical_login");
                     case IDENTICAL_EMAIL:
-                        throw ExceptionFactory.identicalFieldException("exception.email.identical");
+                        throw ExceptionFactory.identicalFieldException("exception.identical_email");
                 }
             }
             throw ExceptionFactory.databaseException();

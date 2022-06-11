@@ -32,13 +32,13 @@ export const RegisterPage = () => {
    });
 
    const [validation, setValidation] = useState(
-      validateFields({ ...formState, ...checkboxState })
+      validateFields({ ...formState, ...checkboxState }, t)
    );
 
    const [registerMutation, { isLoading, isSuccess, isError }] = useRegisterMutation();
 
    useEffect(() => {
-      setValidation(validateFields({ ...formState, ...checkboxState }));
+      setValidation(validateFields({ ...formState, ...checkboxState }, t));
    }, [formState, checkboxState]);
 
    const handleChange = ({
@@ -59,13 +59,13 @@ export const RegisterPage = () => {
 
             <Card className={styles.register_card}>
                <Form onSubmit={onSubmit} isLoading={isLoading}>
-                  <p className="section-title">{t("label.register-title")}</p>
+                  <p className="section-title">{t("register_page.form_title")}</p>
                   <div className={styles.inputs_wrapper}>
                      <div className={styles.column}>
                         <TextInput
                            className={styles.text_input_wrapper}
-                           label={t("label.login-label")}
-                           placeholder={t("label.login-label")}
+                           label={t("global.label.login")}
+                           placeholder={t("global.label.login")}
                            required
                            name="login"
                            value={formState.login}
@@ -73,8 +73,8 @@ export const RegisterPage = () => {
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
-                           label={t("label.email-short")}
-                           placeholder={t("label.email-short")}
+                           label={t("global.label.email")}
+                           placeholder={t("global.label.email_short")}
                            required
                            name="email"
                            value={formState.email}
@@ -82,8 +82,8 @@ export const RegisterPage = () => {
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
-                           label={t("label.password")}
-                           placeholder={t("label.password")}
+                           label={t("global.label.password")}
+                           placeholder={t("global.label.password")}
                            required
                            name="password"
                            type="password"
@@ -92,8 +92,8 @@ export const RegisterPage = () => {
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
-                           label={t("label.repeat-password")}
-                           placeholder={t("label.password")}
+                           label={t("global.label.repeat_password")}
+                           placeholder={t("global.label.password")}
                            required
                            name="confirmPassword"
                            type="password"
@@ -104,8 +104,8 @@ export const RegisterPage = () => {
                      <div className={styles.column}>
                         <TextInput
                            className={styles.text_input_wrapper}
-                           label={t("label.first-name")}
-                           placeholder={t("label.first-name")}
+                           label={t("global.label.first_name")}
+                           placeholder={t("global.label.first_name")}
                            required
                            name="name"
                            value={formState.name}
@@ -113,8 +113,8 @@ export const RegisterPage = () => {
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
-                           label={t("label.second-name")}
-                           placeholder={t("label.second-name")}
+                           label={t("global.label.second_name")}
+                           placeholder={t("global.label.second_name")}
                            required
                            name="surname"
                            value={formState.surname}
@@ -140,7 +140,7 @@ export const RegisterPage = () => {
                            });
                         }}
                      >
-                        {t("message.info.processing")}
+                        {t("register_page.processing_message")}
                      </Checkbox>
                      <Checkbox
                         id="terms-of-use"
@@ -153,7 +153,7 @@ export const RegisterPage = () => {
                            });
                         }}
                      >
-                        {t("message.info.tos")}
+                        {t("register_page.tos_message")}
                      </Checkbox>
                   </div>
 
@@ -161,10 +161,8 @@ export const RegisterPage = () => {
                   {isError && <p>{t("message.error.register")}</p>}
 
                   <div className={styles.footer}>
-                     <Link to="/login">
-                        {t("message.info.got-account")} {t("label.login")}
-                     </Link>
-                     <Button onClick={onSubmit}>{t("label.register")}</Button>
+                     <Link to="/login">{t("register_page.sign_in")}</Link>
+                     <Button onClick={onSubmit}>{t("register_page.sign_up")}</Button>
                   </div>
                </Form>
             </Card>
