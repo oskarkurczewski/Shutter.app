@@ -6,12 +6,9 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.PhotographerInfoFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.PhotographerInfoFacadeMok;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -24,25 +21,10 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @Stateless
 @Interceptors(LoggingInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class PhotographerService {
+public class PhotographerServiceMok {
 
     @Inject
-    private AuthenticationFacade accountFacade;
-
-    @Inject
-    private PhotographerInfoFacade photographerInfoFacade;
-
-    /**
-     * Odnajduje informacje o fotografie na podstawie jego loginu
-     *
-     * @param login Login fotografa dla którego chemy pozyskać informacje
-     * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
-     */
-    @RolesAllowed({getPhotographerInfo, getEnhancedPhotographerInfo, getOwnPhotographerInfo})
-    public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
-        return photographerInfoFacade.findPhotographerByLogin(login);
-    }
-
+    private PhotographerInfoFacadeMok photographerInfoFacadeMok;
 
     /**
      * Tworzy pusty obiekt reprezentujący informacje o fotografie lub aktywuje istniejący,
@@ -53,10 +35,10 @@ public class PhotographerService {
     @RolesAllowed(becomePhotographer)
     public void createOrActivatePhotographerInfo(Account account) throws BaseApplicationException {
         try {
-            PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
+            PhotographerInfo existingPhotographerInfo = photographerInfoFacadeMok.findPhotographerByLogin(account.getLogin());
             existingPhotographerInfo.setVisible(true);
 
-            photographerInfoFacade.update(existingPhotographerInfo);
+            photographerInfoFacadeMok.update(existingPhotographerInfo);
         } catch (NoPhotographerFound e) {
             PhotographerInfo photographerInfo = new PhotographerInfo();
             photographerInfo.setId(account.getId());
@@ -68,7 +50,7 @@ public class PhotographerService {
             photographerInfo.setLongitude(null);
             photographerInfo.setVisible(true);
 
-            photographerInfoFacade.persist(photographerInfo);
+            photographerInfoFacadeMok.persist(photographerInfo);
         }
     }
 
@@ -79,11 +61,11 @@ public class PhotographerService {
      */
     @RolesAllowed(stopBeingPhotographer)
     public void hidePhotographerInfo(String login) throws BaseApplicationException {
-        PhotographerInfo photographerInfo = photographerInfoFacade.findPhotographerByLogin(login);
+        PhotographerInfo photographerInfo = photographerInfoFacadeMok.findPhotographerByLogin(login);
 
         if (photographerInfo.getVisible()) {
             photographerInfo.setVisible(false);
-            photographerInfoFacade.persist(photographerInfo);
+            photographerInfoFacadeMok.persist(photographerInfo);
         } else {
             throw ExceptionFactory.cannotChangeException();
         }
@@ -98,7 +80,7 @@ public class PhotographerService {
      *                             gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                             profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                             niebędący ani administratorem, ani moderatorem
-     * @see BasePhotographerInfoDto
+     * @see BasePhotographerInfoMokDto
      */
     @RolesAllowed(getPhotographerInfo)
     public PhotographerInfo getPhotographerInfo(PhotographerInfo photographerInfo)

@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.PhotographerServiceMok;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.VerificationTokenService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.recaptcha.ReCaptchaService;
@@ -43,7 +43,7 @@ public class AccountEndpoint extends AbstractEndpoint {
 
 
     @Inject
-    private PhotographerService photographerService;
+    private PhotographerServiceMok photographerServiceMok;
 
     /**
      * Ustawia status użytkownika o danym loginie na zablokowany
@@ -165,7 +165,7 @@ public class AccountEndpoint extends AbstractEndpoint {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
         AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName("PHOTOGRAPHER");
         accountService.changeAccountAccessLevel(account, accessLevelValue, true);
-        photographerService.createOrActivatePhotographerInfo(account);
+        photographerServiceMok.createOrActivatePhotographerInfo(account);
     }
 
     /**
@@ -181,7 +181,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     @RolesAllowed({stopBeingPhotographer})
     public void stopBeingPhotographer() throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
-        photographerService.hidePhotographerInfo(account.getLogin());
+        photographerServiceMok.hidePhotographerInfo(account.getLogin());
         accountService.stopBeingPhotographer(account);
     }
 

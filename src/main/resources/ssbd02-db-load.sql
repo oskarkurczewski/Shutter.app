@@ -54,16 +54,7 @@ VALUES (1, 3, 5, 2137, 'Zucchini can be seasoned with shredded strawberries, als
         20, true) ON CONFLICT DO NOTHING;
 
 INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
-VALUES (1, 3, 0),
-       (1, 3, 1),
+VALUES (1, 3, 1),
        (1, 3, 2),
-       (1, 3, 3), ON CONFLICT DO NOTHING;
-
-INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
-VALUES (1, 3, 2) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
-VALUES (1, 3, 3) ON CONFLICT DO NOTHING;
-
-INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
-VALUES (1, 3, 4) ON CONFLICT DO NOTHING;
+       (1, 3, 3),
+       (1, 3, 4) ON CONFLICT DO NOTHING;
