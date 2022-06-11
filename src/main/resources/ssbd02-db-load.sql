@@ -52,3 +52,18 @@ VALUES (0, 1, 1, true, current_timestamp),
 INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible)
 VALUES (1, 3, 5, 2137, 'Zucchini can be seasoned with shredded strawberries, also try soaking the stew with tea.', 10,
         20, true) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
+VALUES (1, 3, 0),
+       (1, 3, 1),
+       (1, 3, 2),
+       (1, 3, 3), ON CONFLICT DO NOTHING;
+
+INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
+VALUES (1, 3, 2) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
+VALUES (1, 3, 3) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
+VALUES (1, 3, 4) ON CONFLICT DO NOTHING;

@@ -19,7 +19,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.becomePhotographer;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.stopBeingPhotographer;
 
 @Stateless
 @Interceptors(LoggingInterceptor.class)
@@ -37,8 +38,9 @@ public class PhotographerService {
      *
      * @param login Login fotografa dla którego chemy pozyskać informacje
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @PermitAll jest potrzebny ponieważ niezalogowany użytkownik może wyświetlić wizytówkę fotografa
      */
-    @RolesAllowed({getPhotographerInfo, getEnhancedPhotographerInfo, getOwnPhotographerInfo})
+    @PermitAll
     public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
         return photographerInfoFacade.findPhotographerByLogin(login);
     }
@@ -98,9 +100,11 @@ public class PhotographerService {
      *                             gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                             profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                             niebędący ani administratorem, ani moderatorem
+     * @PermitAll jest potrzebny ponieważ niezalogowany użytkownik może wyświetlić wizytówkę fotografa
      * @see BasePhotographerInfoDto
      */
-    @RolesAllowed(getPhotographerInfo)
+
+    @PermitAll
     public PhotographerInfo getPhotographerInfo(PhotographerInfo photographerInfo)
             throws NoPhotographerFound {
         if (

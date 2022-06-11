@@ -1,0 +1,15 @@
+@use "variables.scss" as variables;
+
+.photographer_info_page_wrapper {
+   padding: 30px 0;
+   display: flex;
+   align-items: flex-start;
+   gap: 40px;
+
+   .photographer_info_content {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      gap: 20px;
+   }
+}

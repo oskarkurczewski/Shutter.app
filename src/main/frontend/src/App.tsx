@@ -21,6 +21,7 @@ import { ResetPasswordPage } from "pages/token-based/reset-password";
 import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
+import { PhotographerProfilePage } from "pages/photographers";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -102,6 +103,23 @@ function App() {
                      element={
                         <ProtectedRoute roles={[AccessLevel.GUEST]}>
                            <RequestResetPasswordPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
+                  <Route
+                     path=":login/profile"
+                     element={
+                        <ProtectedRoute
+                           roles={[
+                              AccessLevel.GUEST,
+                              AccessLevel.ADMINISTRATOR,
+                              AccessLevel.MODERATOR,
+                              AccessLevel.PHOTOGRAPHER,
+                              AccessLevel.CLIENT,
+                           ]}
+                        >
+                           <PhotographerProfilePage />
                         </ProtectedRoute>
                      }
                   />
