@@ -6,4 +6,5 @@ export interface basicPhotographerInfo extends basicUserInfoResponse {
    description: string;
    latitude: number;
    longitude: number;
+   specializationList: string[];
 }
