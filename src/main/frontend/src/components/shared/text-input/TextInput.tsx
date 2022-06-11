@@ -9,9 +9,11 @@ interface TextInputProps {
    placeholder?: string;
    required?: boolean;
    value: string;
-   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+   onChange: React.ChangeEventHandler<HTMLInputElement>;
    name?: string;
    disabled?: boolean;
+   validation?: number | boolean;
+   validationMessages?: string[];
 }
 
 export const TextInput = ({
@@ -25,11 +27,13 @@ export const TextInput = ({
    onChange,
    name,
    disabled,
+   validation,
+   validationMessages,
 }: TextInputProps) => {
    return (
       <div className={`${styles.text_input_wrapper} ${className ? className : ""}`}>
          {label && <p className={`label ${required && styles.required}`}>{label}</p>}
-         <div>
+         <div className={styles.field}>
             {icon && <span className="material-icons">{icon}</span>}
             <input
                type={type ? type : "text"}
@@ -38,7 +42,19 @@ export const TextInput = ({
                placeholder={placeholder}
                name={name}
                disabled={disabled}
+               className={`${
+                  typeof validation === "number"
+                     ? validation !== undefined && validation !== null && styles.invalid
+                     : validation === false && styles.invalid
+               }`}
             />
+         </div>
+         <div className={styles.messages}>
+            {typeof validation === "number" ? (
+               <p>{validationMessages[validation]}</p>
+            ) : (
+               validation === false && <p>{validationMessages[0]}</p>
+            )}
          </div>
       </div>
    );

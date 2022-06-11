@@ -34,6 +34,9 @@ public class EditAccountInfoAsAdminDto implements SignableEntity {
     @Surname
     private String surname;
 
+    @NotNull
+    private Boolean active;
+
     @Override
     public String getSignablePayload() {
         return login + version.toString();
