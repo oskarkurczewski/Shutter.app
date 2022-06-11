@@ -25,5 +25,5 @@ public final class REGEXP {
     public static final String TWO_FA_CODE = "[0-9]{6}";
 
     public static final String NAME_SURNAME_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹ][a-ząćęńśłóżź]{0,63}";
-    public static final String DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%\-*:\"'\\()!?/0-9 ]{0,4096}";
+    public static final String DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{0,4096}";
 }
