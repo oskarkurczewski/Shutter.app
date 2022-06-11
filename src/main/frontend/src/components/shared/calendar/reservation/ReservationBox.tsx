@@ -20,10 +20,10 @@ export const ReservationBox: React.FC<Props> = ({ reservation }) => {
    const height = reservation.to.diff(reservation.from, "minutes").minutes / 60;
 
    const showInfoBox = () => {
-      const column = getNthParent(boxElement.current, 3);
+      const column = getNthParent(boxElement.current, 2);
       const tableWidth = getNthParent(column, 4).offsetWidth;
 
-      tableWidth - column.offsetLeft < 300
+      tableWidth - column.offsetLeft < 280
          ? setBoxStyle({ right: "110%" })
          : setBoxStyle({ left: "110%" });
       setInfoOpen(!infoOpen);
