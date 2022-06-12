@@ -32,7 +32,7 @@ public class AvailabilityController extends AbstractController {
     public Response editAvailability(
              @NotNull @Valid List<EditAvailabilityDto> availabilities
     ) throws BaseApplicationException {
-        availabilityEndpoint.editAvailability(availabilities);
+        repeat(() -> availabilityEndpoint.editAvailability(availabilities), availabilityEndpoint);
         return Response.ok().build();
     }
 
@@ -48,8 +48,8 @@ public class AvailabilityController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listAvailabilities(
             @PathParam("login") String login
-    ) throws NoPhotographerFoundException {
-        List<AvailabilityDto> availabilities = availabilityEndpoint.listAvailabilities(login);
+    ) throws BaseApplicationException {
+        List<AvailabilityDto> availabilities = repeat(() -> availabilityEndpoint.listAvailabilities(login), availabilityEndpoint);
         return Response.ok().entity(availabilities).build();
     }
 }
