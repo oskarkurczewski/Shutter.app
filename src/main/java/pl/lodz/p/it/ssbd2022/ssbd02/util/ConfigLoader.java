@@ -24,6 +24,7 @@ public class ConfigLoader {
     private static final String PROPERTIES_EMAIL_FILE = "config.email.properties";
     private static final String PROPERTIES_RECAPTCHA_FILE = "config.recaptcha.properties";
     private static final String PROPERTIES_ETAG_FILE = "config.etag.properties";
+    private static final String PROPERTIES_AWS_FILE = "config.aws.properties";
 
     private static final String REGISTRATION_CONFIRMATION_TOKEN_LIFETIME = "registration.confirmation.token.lifespan";
     private static final String EMAIL_RESET_TOKEN_LIFETIME = "email.reset.token.lifespan";
@@ -45,13 +46,16 @@ public class ConfigLoader {
 
     private static final String RECAPTCHA_API_KEY = "recaptcha.api.key";
 
+    private static final String AWS_ACCESS_KEY_ID = "aws.access.key.id";
+    private static final String AWS_SECRET_ACCESS_KEY = "aws.secret.access.key";
+
     private Properties propertiesToken;
     private Properties propertiesAuth;
     private Properties propertiesEmail;
     private Properties propertiesTimeout;
     private Properties propertiesTransaction;
     private Properties propertiesETag;
-
+    private Properties propertiesAws;
     private Properties propertiesRecaptcha;
 
     public ConfigLoader() {
@@ -66,6 +70,7 @@ public class ConfigLoader {
         propertiesTransaction = loadProperties(PROPERTIES_TRANSACTION_FILE);
         propertiesRecaptcha = loadProperties(PROPERTIES_RECAPTCHA_FILE);
         propertiesETag = loadProperties(PROPERTIES_ETAG_FILE);
+        propertiesAws = loadProperties(PROPERTIES_AWS_FILE);
     }
 
     private Properties loadProperties(String fileName) {
@@ -177,5 +182,23 @@ public class ConfigLoader {
      */
     public String getETagSecret() {
         return propertiesETag.getProperty(ETAG_SECRET);
+    }
+
+    /**
+     * Zwraca identyfikator klucza dostępowego AWS
+     *
+     * @return identyfikator klucza dostępowego AWS
+     */
+    public String getAwsAccessKeyId() {
+        return propertiesAws.getProperty(AWS_ACCESS_KEY_ID);
+    }
+
+    /**
+     * Zwraca klucz dostępowy AWS
+     *
+     * @return klucz dostępowy AWS
+     */
+    public String getAwsSecretAccessKey() {
+        return propertiesAws.getProperty(AWS_SECRET_ACCESS_KEY);
     }
 }

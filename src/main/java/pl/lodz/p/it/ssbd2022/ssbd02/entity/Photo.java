@@ -35,13 +35,16 @@ public class Photo extends ManagedEntity {
 
     @Id
     @Column(name = "id", nullable = false)
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "data", nullable = false)
+    @Column(name = "s3_url", nullable = false)
     @NotNull
-    private byte[] data;
+    private String s3Url;
+
+    @Column(name = "object_key", nullable = false)
+    @NotNull
+    private String objectKey;
 
     @Column(name = "title", nullable = false, length = 64)
     @NotNull
