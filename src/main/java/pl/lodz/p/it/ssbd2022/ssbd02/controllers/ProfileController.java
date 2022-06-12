@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotoEndpoint;
@@ -87,8 +84,9 @@ public class ProfileController extends AbstractController {
 
     @POST
     @Path("/review/{id}/like")
-    public Response likeReview(@PathParam("id") Long reviewId) throws NoReviewFoundException, NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
+    public Response likeReview(@PathParam("id") Long reviewId) throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.likeReview(reviewId), reviewEndpoint);
+        return Response.accepted().build();
     }
 
     @POST

@@ -1,12 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -16,26 +15,22 @@ import javax.persistence.*;
 @Stateless
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class ReviewFacade extends FacadeTemplate<Review> {
+public class AccountFacade extends FacadeTemplate<Account> {
+
     @PersistenceContext(unitName = "ssbd02mowPU")
     private EntityManager em;
 
-    public ReviewFacade() {
-        super(Review.class);
+    public AccountFacade() {
+        super(Account.class);
     }
 
-    @Override
-    @PermitAll
-    public EntityManager getEm() {
-        return em;
-    }
-
-    @Override
-    public Review find(Long id) throws BaseApplicationException {
+    public Account findByLogin(String login) throws BaseApplicationException {
+        TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
+        query.setParameter("login", login);
         try {
-            return super.find(id);
+            return query.getSingleResult();
         } catch (NoResultException e) {
-            throw ExceptionFactory.noReviewFoundException();
+            throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
@@ -46,15 +41,7 @@ public class ReviewFacade extends FacadeTemplate<Review> {
     }
 
     @Override
-    public Review update(Review entity) throws BaseApplicationException {
-        try {
-            return super.update(entity);
-        } catch (OptimisticLockException ex) {
-            throw ExceptionFactory.OptLockException();
-        } catch (PersistenceException ex) {
-            throw ExceptionFactory.databaseException();
-        } catch (Exception ex) {
-            throw ExceptionFactory.unexpectedFailException();
-        }
+    protected EntityManager getEm() {
+        return em;
     }
 }

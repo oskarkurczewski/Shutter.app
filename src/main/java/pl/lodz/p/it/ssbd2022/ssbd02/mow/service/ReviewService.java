@@ -2,13 +2,18 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ReviewFacade;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+
+import java.util.Optional;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -16,9 +21,12 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReviewService {
 
+    @Inject
+    private ReviewFacade reviewFacade;
+
     @PermitAll
-    public void findById(Long id) throws NoReviewFoundException{
-        throw new UnsupportedOperationException();
+    public Review findById(Long id) throws BaseApplicationException {
+        return Optional.ofNullable(reviewFacade.find(id)).orElseThrow(ExceptionFactory::noReviewFoundException);
     }
 
     @RolesAllowed({deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
@@ -32,8 +40,12 @@ public class ReviewService {
     }
 
     @RolesAllowed(likeReview)
-    public void likeReview(Account account, Review review) {
-        throw new UnsupportedOperationException();
+    public void likeReview(Account account, Review review) throws BaseApplicationException {
+        if (review.getLikedList().stream().anyMatch(u -> u.getLogin().equals(account.getLogin()))) {
+            throw ExceptionFactory.alreadyLikedException();
+        }
+        review.addLikeFromUser(account);
+        reviewFacade.update(review);
     }
 
     @RolesAllowed(unlikeReview)
