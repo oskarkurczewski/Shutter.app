@@ -84,6 +84,17 @@
             "roles": "Poziomy dostępu",
             "registered": "Czy zarejestrowany",
             "active": "Czy aktywny"
+         },
+         "photographer-list": {
+            "login": "Login",
+            "email": "Email",
+            "name": "Imię",
+            "surname": "Nazwisko",
+            "specializations": "Specjalizacje",
+            "score": "Opinia",
+            "review-count": "Liczba Recenzji",
+            "longitude": "Dług",
+            "latitude": "Szer"
          }
       }
    },
