@@ -146,3 +146,7 @@ export interface getAccountChangeLogRequest {
    params: getOwnAccountChangeLogRequest;
    pathParam: string;
 }
+
+export interface changeDescriptionRequest {
+   content: string;
+}
