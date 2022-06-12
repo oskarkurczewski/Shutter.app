@@ -638,6 +638,10 @@ GRANT SELECT, INSERT , DELETE ON public.token TO ssbd02mok;
 
 GRANT SELECT, INSERT, UPDATE ON TABLE public.account_report TO ssbd02mow;
 
+GRANT SELECT, UPDATE ON TABLE  public.photographer_info TO ssbd02mow;
+
+GRANT SELECT ON TABLE public.account TO ssbd02mow;
+
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.account_report_cause TO ssbd02mow;
 
 GRANT SELECT ON TABLE public.authorization_view TO ssbd02glassfish;
