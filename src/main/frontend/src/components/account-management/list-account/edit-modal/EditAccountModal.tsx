@@ -30,11 +30,15 @@ const EditAccountModal: React.FC<Props> = ({ login, isOpen, onSubmit }) => {
          title={t("edit_account_page.title")}
          submitText={t("edit_account_page.close")}
       >
-         <div className={styles.edit_account_modal_wrapper}>
+         <div
+            className={`${styles.edit_account_modal_wrapper} ${
+               accessLevel === AccessLevel.MODERATOR && styles.moderator
+            }`}
+         >
             <ChangeBaseInfo userInfoData={userInfoData} />
-            <div className={`${styles.border} ${styles.border_a}`} />
             {accessLevel === AccessLevel.ADMINISTRATOR && (
                <>
+                  <div className={`${styles.border} ${styles.border_a}`} />
                   <ChangeAccessLevels userInfoData={userInfoData} />
                   <div className={`${styles.border} ${styles.border_b}`} />
                   <ChangePassword login={login} />

@@ -167,14 +167,17 @@ export const UserAccountListPage = () => {
          item.isRegistered ? <FaCheck className="check" /> : <></>,
          <div key={item.login} className={styles.actions}>
             {/* <Link to={`/users/${item.login}/edit`}> */}
-            <button
+            <div
+               role="button"
+               onKeyDown={() => openEditModal(item.login)}
                className={styles.edit}
                onClick={() => {
                   openEditModal(item.login);
                }}
+               tabIndex={0}
             >
                <FaEdit />
-            </button>
+            </div>
             {/* </Link> */}
             <Link to={`/users/${item.login}/info`}>
                <div role="button" className={styles.info}>

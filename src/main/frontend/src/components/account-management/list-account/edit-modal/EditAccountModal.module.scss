@@ -6,6 +6,9 @@
    grid-template-rows: auto auto auto auto;
    gap: 1rem;
 
+   .moderator {
+      column-gap: 0;
+   }
    .border {
       background-color: variables.$gray-100;
    }

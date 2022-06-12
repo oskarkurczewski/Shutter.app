@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useChangeAccessLevelMutation } from "redux/service/usersManagementService";
 import { advancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
+import { AccessLevel } from "types";
 import styles from "./ChangeAccessLevels.module.scss";
 
 interface Props {
@@ -49,21 +50,29 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
          <p className={`section-title`}>{t("edit_account_page.roles.title")}</p>
          <div className={styles.content}>
             <Checkbox
-               id="ADMINISTRATOR"
+               id={AccessLevel.ADMINISTRATOR}
                value={allRoles.ADMINISTRATOR}
                onChange={null}
                disabled
             >
                {t("edit_account_page.roles.admin")}
             </Checkbox>
-            <Checkbox id="MODERATOR" value={allRoles.MODERATOR} onChange={changeRole}>
+            <Checkbox
+               id={AccessLevel.MODERATOR}
+               value={allRoles.MODERATOR}
+               onChange={changeRole}
+            >
                {t("edit_account_page.roles.moderator")}
             </Checkbox>
-            <Checkbox id="USER" value={allRoles.CLIENT} onChange={changeRole}>
+            <Checkbox
+               id={AccessLevel.CLIENT}
+               value={allRoles.CLIENT}
+               onChange={changeRole}
+            >
                {t("edit_account_page.roles.client")}
             </Checkbox>
             <Checkbox
-               id="PHOTOGRAPHER"
+               id={AccessLevel.PHOTOGRAPHER}
                value={allRoles.PHOTOGRAPHER}
                onChange={changeRole}
             >

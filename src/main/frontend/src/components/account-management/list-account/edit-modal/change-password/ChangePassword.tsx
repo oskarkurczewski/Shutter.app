@@ -2,7 +2,6 @@ import { Button, Card, SquareButton, TextInput } from "components/shared";
 import { useStateWithValidationAndComparison } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FaCheck } from "react-icons/fa";
 import { useChangeSomeonesPasswordMutation } from "redux/service/userSettingsService";
 import { passwordPattern } from "util/regex";
 import styles from "./ChangePassword.module.scss";
@@ -21,7 +20,6 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
          [
             (password) => password.length >= 8,
             (password) => password.length <= 64,
-            // TODO: fix password regex
             (password) => passwordPattern.test(password),
          ],
          "",
