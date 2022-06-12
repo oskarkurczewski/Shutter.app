@@ -1,10 +1,9 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
+package pl.lodz.p.it.ssbd2022.ssbd02.mok.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.MokFacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -18,16 +17,17 @@ import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.becomePhotographer;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.stopBeingPhotographer;
 
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MokFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class PhotographerInfoFacadeMow extends FacadeTemplate<PhotographerInfo> {
-    @PersistenceContext(unitName = "ssbd02mowPU")
+public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
+    @PersistenceContext(unitName = "ssbd02mokPU")
     private EntityManager em;
 
-    public PhotographerInfoFacadeMow() {
+    public PhotographerInfoFacade() {
         super(PhotographerInfo.class);
     }
 
@@ -37,6 +37,19 @@ public class PhotographerInfoFacadeMow extends FacadeTemplate<PhotographerInfo> 
         return em;
     }
 
+    @Override
+    @RolesAllowed({stopBeingPhotographer, becomePhotographer})
+    public PhotographerInfo persist(PhotographerInfo entity) throws BaseApplicationException {
+        try {
+            return super.persist(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
 
     @Override
     @RolesAllowed(becomePhotographer)
@@ -68,14 +81,13 @@ public class PhotographerInfoFacadeMow extends FacadeTemplate<PhotographerInfo> 
 
 
     /**
-     * Szuka profilu fotografa
+     * Szuka profilu fotografa. Używane tylko wy przypadku tworzenia konta. Zwyczajne wyszukiwanie konta odbywa się poprzez mow
      *
      * @param login Login użytkownika fotografa
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
-     * @PermitAll ponieważ każdy może wyświetlić informacje o fotografie
      * @see PhotographerInfo
      */
-    @PermitAll
+    @RolesAllowed({becomePhotographer, stopBeingPhotographer})
     public PhotographerInfo findPhotographerByLogin(String login) throws BaseApplicationException {
         TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);

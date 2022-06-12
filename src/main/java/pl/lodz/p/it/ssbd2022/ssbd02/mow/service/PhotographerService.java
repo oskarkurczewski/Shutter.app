@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotographerInfoFacadeMow;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotographerInfoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -21,10 +21,10 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getPhotographerInfo;
 @Stateless
 @Interceptors(LoggingInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class PhotographerServiceMow {
+public class PhotographerService {
 
     @Inject
-    private PhotographerInfoFacadeMow photographerInfoFacadeMow;
+    private PhotographerInfoFacade photographerInfoFacade;
 
     /**
      * Odnajduje informacje o fotografie na podstawie jego loginu
@@ -35,7 +35,7 @@ public class PhotographerServiceMow {
      */
     @PermitAll
     public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
-        return photographerInfoFacadeMow.findPhotographerByLogin(login);
+        return photographerInfoFacade.findPhotographerByLogin(login);
     }
 
     /**

@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.PhotographerInfoFacadeMok;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.PhotographerInfoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
@@ -21,10 +21,10 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @Stateless
 @Interceptors(LoggingInterceptor.class)
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class PhotographerServiceMok {
+public class PhotographerService {
 
     @Inject
-    private PhotographerInfoFacadeMok photographerInfoFacadeMok;
+    private PhotographerInfoFacade photographerInfoFacade;
 
     /**
      * Tworzy pusty obiekt reprezentujący informacje o fotografie lub aktywuje istniejący,
@@ -35,10 +35,10 @@ public class PhotographerServiceMok {
     @RolesAllowed(becomePhotographer)
     public void createOrActivatePhotographerInfo(Account account) throws BaseApplicationException {
         try {
-            PhotographerInfo existingPhotographerInfo = photographerInfoFacadeMok.findPhotographerByLogin(account.getLogin());
+            PhotographerInfo existingPhotographerInfo = photographerInfoFacade.findPhotographerByLogin(account.getLogin());
             existingPhotographerInfo.setVisible(true);
 
-            photographerInfoFacadeMok.update(existingPhotographerInfo);
+            photographerInfoFacade.update(existingPhotographerInfo);
         } catch (NoPhotographerFound e) {
             PhotographerInfo photographerInfo = new PhotographerInfo();
             photographerInfo.setId(account.getId());
@@ -50,7 +50,7 @@ public class PhotographerServiceMok {
             photographerInfo.setLongitude(null);
             photographerInfo.setVisible(true);
 
-            photographerInfoFacadeMok.persist(photographerInfo);
+            photographerInfoFacade.persist(photographerInfo);
         }
     }
 
@@ -61,11 +61,11 @@ public class PhotographerServiceMok {
      */
     @RolesAllowed(stopBeingPhotographer)
     public void hidePhotographerInfo(String login) throws BaseApplicationException {
-        PhotographerInfo photographerInfo = photographerInfoFacadeMok.findPhotographerByLogin(login);
+        PhotographerInfo photographerInfo = photographerInfoFacade.findPhotographerByLogin(login);
 
         if (photographerInfo.getVisible()) {
             photographerInfo.setVisible(false);
-            photographerInfoFacadeMok.persist(photographerInfo);
+            photographerInfoFacade.persist(photographerInfo);
         } else {
             throw ExceptionFactory.cannotChangeException();
         }

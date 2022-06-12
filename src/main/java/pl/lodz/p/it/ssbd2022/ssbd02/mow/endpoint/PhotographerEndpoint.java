@@ -8,7 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotographerServiceMow;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -30,7 +30,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getOwnPhotographerInfo
 public class PhotographerEndpoint extends AbstractEndpoint {
 
     @Inject
-    private PhotographerServiceMow photographerServiceMow;
+    private PhotographerService photographerService;
 
     @Inject
     private AccountService accountService;
@@ -52,8 +52,8 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      */
     @PermitAll
     public BasePhotographerInfoDto getPhotographerInfo(String login) throws BaseApplicationException {
-        PhotographerInfo photographerInfo = photographerServiceMow.findByLogin(login);
-        return new BasePhotographerInfoDto(photographerServiceMow.getPhotographerInfo(photographerInfo));
+        PhotographerInfo photographerInfo = photographerService.findByLogin(login);
+        return new BasePhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
     }
 
     /**
@@ -69,8 +69,8 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed(getEnhancedPhotographerInfo)
     public DetailedPhotographerInfoDto getEnhancedPhotographerInfo(String login) throws BaseApplicationException {
-        PhotographerInfo photographerInfo = photographerServiceMow.findByLogin(login);
-        return new DetailedPhotographerInfoDto(photographerServiceMow.getPhotographerInfo(photographerInfo));
+        PhotographerInfo photographerInfo = photographerService.findByLogin(login);
+        return new DetailedPhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
     }
 
     /**
@@ -83,6 +83,6 @@ public class PhotographerEndpoint extends AbstractEndpoint {
     @RolesAllowed(getOwnPhotographerInfo)
     public DetailedPhotographerInfoDto getYourPhotographerInfo() throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
-        return new DetailedPhotographerInfoDto(photographerServiceMow.findByLogin(account.getLogin()));
+        return new DetailedPhotographerInfoDto(photographerService.findByLogin(account.getLogin()));
     }
 }
