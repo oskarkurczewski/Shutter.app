@@ -13,10 +13,10 @@ import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
+import { Language } from "types/Language";
 
 export const RegisterPage = () => {
    const { t, i18n } = useTranslation();
-   console.log(i18n.language);
 
    const recaptchaRef = useRef(null);
    const [formState, setFormState] = useState({
@@ -53,7 +53,7 @@ export const RegisterPage = () => {
       registerMutation({
          ...formState,
          reCaptchaToken: captchaToken,
-         locale: i18n.language,
+         locale: i18n.language as Language,
       });
    };
 

@@ -1,3 +1,5 @@
+import { Language } from "types/Language";
+
 export interface LoginRequest {
    login: string;
    password: string;
@@ -15,7 +17,7 @@ export interface registerRequest {
    name: string;
    surname: string;
    reCaptchaToken: string;
-   locale: string;
+   locale: Language;
 }
 
 export interface createAccountRequest {
