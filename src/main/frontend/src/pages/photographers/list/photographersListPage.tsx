@@ -13,49 +13,49 @@ export const PhotographersListPage = () => {
    const [headers, setHeaders] = useState<tableHeader[]>([
       {
          id: "login",
-         label: t("label.tables.account-list.login"),
+         label: t("photographer_list_page.login"),
          sortable: false,
          sort: "asc"
       },
       {
          id: "name",
-         label: t("label.tables.account-list.name"),
+         label: t("photographer_list_page.name"),
          sortable: false,
          sort: "asc"
       },
       {
          id: "surname",
-         label: t("label.tables.photographer-list.surname"),
+         label: t("photographer_list_page.surname"),
          sortable: false,
          sort: "asc"
       },
       {
          id: "score",
-         label: t("label.tables.photographer-list.score"),
+         label: t("photographer_list_page.score"),
          sortable: false,
          sort: "asc"
       },
       {
          id: "reviewCount",
-         label: t("label.tables.photographer-list.review-count"),
+         label: t("photographer_list_page.review-count"),
          sortable: false,
          sort: "asc"
       },
       {
          id: "specializations",
-         label: t("label.tables.photographer-list.specializations"),
+         label: t("photographer_list_page.specializations"),
          sortable: false,
          sort: "asc"
       },
       {
          id: "longitude",
-         label: t("label.tables.photographer-list.longitude"),
+         label: t("photographer_list_page.longitude"),
          sortable: false,
          sort: "asc"
       },
       {
          id: "latitutde",
-         label: t("label.tables.photographer-list.latitude"),
+         label: t("photographer_list_page.latitude"),
          sortable: false,
          sort: "asc"
       },

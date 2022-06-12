@@ -10,7 +10,7 @@ export const ConfirmRegistrationPage = () => {
 
    const { token } = useParams();
 
-   const [confirmRegistrationMutation, { isLoading, isSuccess, isError }] =
+   const [confirmRegistrationMutation, { isLoading, isSuccess, isError, error }] =
       useConfirmRegistrationMutation();
 
    useEffect(() => {
@@ -20,16 +20,22 @@ export const ConfirmRegistrationPage = () => {
    return (
       <section className={styles.confirm_registration_page_wrapper}>
          <Card className={styles.card_wrapper}>
-            <p className="category-title">{t("label.register-account")}</p>
+            <p className="category-title">{t("confirm_register_page.title")}</p>
             {(() => {
                if (isLoading) {
                   return <p>{t("message.loading.register")}</p>;
                }
                if (isError) {
-                  return <p className="error">{t("message.error.register-confirm")}</p>;
+                  const err = error as {
+                     data: {
+                        message: string;
+                     };
+                  };
+
+                  return <p className="error">{t(err.data.message)}</p>;
                }
                if (isSuccess) {
-                  return <p>{t("message.success.regiter-confirm")}</p>;
+                  return <p>{t("confirm_register_page.success_message")}</p>;
                }
             })()}
          </Card>

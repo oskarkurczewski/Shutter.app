@@ -26,29 +26,29 @@ export const SettingsPage: React.FC = () => {
       {
          icon: <IoSettingsSharp />,
          id: "main-settings",
-         label: t("label.settings"),
+         label: t("settings_page.main_settings.title"),
       },
       {
          icon: <MdEmail />,
          id: "change-email",
-         label: t("label.email"),
+         label: t("settings_page.email_settings.title"),
       },
       {
          icon: <BsKeyFill />,
          id: "change-password",
-         label: t("label.password"),
+         label: t("settings_page.password_settings.title"),
       },
       {
          icon: <HiCamera />,
          id: "photographer-settings",
-         label: t("label.photographer-settings"),
+         label: t("settings_page.photographer_settings.title"),
       },
    ];
 
    return (
       <section className={styles.settings_page_wrapper}>
          <div className={styles.nav}>
-            <p className="category-title">{t("label.settings-short")}</p>
+            <p className="category-title">{t("settings_page.title")}</p>
             <div className={styles.links}>
                {sections.map((section, index) => (
                   <a
