@@ -20,4 +20,12 @@
       align-items: flex-end;
       gap: 1rem;
    }
+
+   .textarea {
+      width: 100%;
+      
+      textarea {
+         resize: vertical;
+      }
+   }
 }

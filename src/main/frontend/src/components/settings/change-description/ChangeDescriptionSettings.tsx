@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./ChangeDescriptionSettings.module.scss";
-import { Button, Card, TextInput } from "components/shared";
+import { Button, Card, TextArea } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useSendChangeDescriptionLinkMutation } from "redux/service/userSettingsService";
 
@@ -15,18 +15,15 @@ export const ChangeDescriptionSettings = () => {
          <p className={`category-title ${styles.category_title}`}>{t("settings_page.change_description.title")}</p>
          <p>{t("settings_page.change_description.details_message")}</p>
 
-         <div>   
-         <TextInput
+         <TextArea
+               className={styles.textarea}
                label={t("settings_page.change_description.label_message")}
-               placeholder={t("settings_page.change_description.placeholder_message")}
-               type="text"
-            
-            
+               placeholder={t("settings_page.change_description.placeholder_message")}            
                required
                value={newDescription}
                onChange={(e) => setNewDescription(e.target.value)}
+               rows={8}
             />
-         </div>
 
          <Button
             onClick={() => {

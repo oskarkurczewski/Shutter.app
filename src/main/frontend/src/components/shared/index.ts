@@ -10,3 +10,4 @@ export * from "./table";
 export * from "./text-input";
 export * from "./validation-box";
 export * from "./icon-text";
+export * from "./text-area";
