@@ -15,7 +15,8 @@ import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export const RegisterPage = () => {
-   const { t } = useTranslation();
+   const { t, i18n } = useTranslation();
+   console.log(i18n.language);
 
    const recaptchaRef = useRef(null);
    const [formState, setFormState] = useState({
@@ -49,7 +50,11 @@ export const RegisterPage = () => {
    const onSubmit = async (e) => {
       e.preventDefault();
       const captchaToken = await recaptchaRef.current.getValue();
-      registerMutation({ ...formState, reCaptchaToken: captchaToken });
+      registerMutation({
+         ...formState,
+         reCaptchaToken: captchaToken,
+         locale: i18n.language,
+      });
    };
 
    return (

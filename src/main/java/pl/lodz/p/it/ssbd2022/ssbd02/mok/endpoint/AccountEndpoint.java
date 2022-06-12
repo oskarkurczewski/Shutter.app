@@ -20,6 +20,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
@@ -130,6 +131,7 @@ public class AccountEndpoint extends AbstractEndpoint {
         account.setEmail(accountRegisterDto.getEmail());
         account.setName(accountRegisterDto.getName());
         account.setSurname(accountRegisterDto.getSurname());
+        account.setLocale(Locale.forLanguageTag(accountRegisterDto.getLocale()));
         return account;
     }
 
@@ -573,5 +575,30 @@ public class AccountEndpoint extends AbstractEndpoint {
                         .map(AccountChangeLogDto::new)
                         .collect(Collectors.toList())
         );
+    }
+
+    /**
+     * Zwraca preferowany przez użytkownika język
+     *
+     * @return Preferowany język
+     */
+    @PermitAll
+    public LocaleDto getAccountLocale() throws BaseApplicationException {
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        LocaleDto localeDto = new LocaleDto();
+        localeDto.setLanguageTag(account.getLocale().toLanguageTag());
+        return localeDto;
+    }
+
+    /**
+     * Ustawia preferowany język przez użytkownika
+     *
+     * @param languageTag Preferowany język
+     */
+    @PermitAll
+    public void changeAccountLocale(String languageTag) throws BaseApplicationException {
+        Locale locale = Locale.forLanguageTag(languageTag);
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        accountService.changeAccountLocale(account, locale);
     }
 }

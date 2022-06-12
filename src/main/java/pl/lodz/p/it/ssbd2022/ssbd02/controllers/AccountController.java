@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureValidatorFilter;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Locale;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
@@ -243,6 +244,31 @@ public class AccountController extends AbstractController {
         DetailedAccountInfoDto detailedAccountInfoDto = repeat(() -> accountEndpoint.getOwnAccountInfo(), accountEndpoint);
         EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedAccountInfoDto));
         return Response.status(Response.Status.ACCEPTED).entity(detailedAccountInfoDto).header("etag", tag.getValue()).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na pobranie ustawionego języka przez użytkownika.
+     *
+     * @return Preferowany przez użytkownika język
+     */
+    @GET
+    @Path("/locale")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAccountLocale() throws BaseApplicationException {
+        LocaleDto localeDto = repeat(() -> accountEndpoint.getAccountLocale(), accountEndpoint);
+        return Response.status(Response.Status.OK).entity(localeDto).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający na zmianę preferowanego języka przez użytkownika
+     *
+     * @param languageTag Preferowany przez użytkownika język, np. 'pl'
+     */
+    @POST
+    @Path("/locale/{languageTag}")
+    public Response changeAccountLocale(@NotNull @Locale @PathParam("languageTag") String languageTag) throws BaseApplicationException {
+        repeat(() -> accountEndpoint.changeAccountLocale(languageTag), accountEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     /**

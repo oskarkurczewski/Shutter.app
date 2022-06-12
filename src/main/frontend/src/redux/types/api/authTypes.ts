@@ -15,6 +15,7 @@ export interface registerRequest {
    name: string;
    surname: string;
    reCaptchaToken: string;
+   locale: string;
 }
 
 export interface createAccountRequest {

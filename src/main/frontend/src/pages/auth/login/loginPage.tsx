@@ -8,9 +8,10 @@ import { LoginRequest } from "redux/types/api/authTypes";
 import { useTranslation } from "react-i18next";
 import { Button, Card, TextInput } from "components/shared";
 import { getLoginPayload } from "util/loginUtil";
+import { useGetAccountLocaleMutation } from "redux/service/userSettingsService";
 
 export const LoginPage: React.FC = () => {
-   const { t } = useTranslation();
+   const { t, i18n } = useTranslation();
 
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ export const LoginPage: React.FC = () => {
 
    const [loginMutation, loginMutationState] = useLoginMutation();
    const [sendTwoFACodeMutation, sendTwoFACodeMutationState] = useSendTwoFACodeMutation();
+   const [getLocale] = useGetAccountLocaleMutation();
 
    const handleChange = ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
@@ -37,6 +39,8 @@ export const LoginPage: React.FC = () => {
       const token = await loginMutation(formState).unwrap();
       localStorage.setItem("token", token.token);
       dispatch(login(getLoginPayload()));
+      const language = await getLocale().unwrap();
+      await i18n.changeLanguage(language.languageTag);
       navigate("/");
    };
 

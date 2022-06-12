@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountChangeLogFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountListPreferencesFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
@@ -350,7 +351,6 @@ public class AccountService {
         account.setActive(true);
         account.setRegistered(false);
         account.setFailedLogInAttempts(0);
-        account.setLocale(Locale.forLanguageTag("pl"));
         account.setSecret(UUID.randomUUID().toString());
 
         addNewAccount(account);
@@ -373,7 +373,7 @@ public class AccountService {
         account.setPassword(BCryptUtils.generate(account.getPassword().toCharArray()));
         account.setTwoFAEnabled(false);
         account.setFailedLogInAttempts(0);
-        account.setLocale(Locale.forLanguageTag("pl"));
+        account.setLocale(Locale.forLanguageTag("en"));
         account.setSecret(UUID.randomUUID().toString());
 
         addNewAccount(account);
@@ -707,6 +707,18 @@ public class AccountService {
     @PermitAll
     public void toggle2fa(Account account) throws BaseApplicationException {
         account.setTwoFAEnabled(!account.getTwoFAEnabled());
+        accountFacade.update(account);
+    }
+
+    /**
+     * Ustawia preferowany język przez użytkownika
+     *
+     * @param account Konto użytkownika
+     * @param locale Język
+     */
+    @PermitAll
+    public void changeAccountLocale(Account account, Locale locale) throws BaseApplicationException {
+        account.setLocale(locale);
         accountFacade.update(account);
     }
 
