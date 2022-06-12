@@ -145,7 +145,7 @@ public class ExceptionFactory {
         return new NoAccountListPreferencesFound("exception.account_list_preferences_not_found");
     }
 
-    public static AlreadyLikedException alreadyLikedException() {
-        return new AlreadyLikedException("exception.already_liked");
+    public static LikeException alreadyLikedException() {
+        return new LikeException("exception.already_liked");
     }
 }
