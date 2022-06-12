@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-@Interceptors(LoggingInterceptor.class)
+@Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
     @PersistenceContext(unitName = "ssbd02mowPU")

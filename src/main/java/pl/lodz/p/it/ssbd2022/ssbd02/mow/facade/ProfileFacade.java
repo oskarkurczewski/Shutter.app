@@ -18,7 +18,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changePhotographerDesc
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getPhotographerInfo;
 
 @Stateless
-@Interceptors({LoggingInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
     @PersistenceContext(unitName = "ssbd02mowPU")

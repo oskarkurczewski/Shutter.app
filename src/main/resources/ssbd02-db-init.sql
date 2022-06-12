@@ -156,12 +156,13 @@ ALTER TABLE public.availability OWNER TO ssbd02admin;
 CREATE TABLE public.photo
 (
     version         bigint,
-    photographer_id bigint           NOT NULL GENERATED ALWAYS AS IDENTITY,
-    id              bigint           NOT NULL,
-    data            bytea            NOT NULL,
+    photographer_id bigint                  NOT NULL,
+    id              bigint                  NOT NULL GENERATED ALWAYS AS IDENTITY,
+    s3_url          character varying(1024) NOT NULL,
+    object_key      character varying(64)   NOT NULL,
     title           character varying(64),
     description     character varying(1024),
-    like_count      bigint DEFAULT 0 NOT NULL,
+    like_count      bigint DEFAULT 0        NOT NULL,
     created_by      bigint,
     created_at      timestamp,
     modified_by     bigint,
