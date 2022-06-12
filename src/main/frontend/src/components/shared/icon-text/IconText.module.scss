@@ -17,27 +17,34 @@
 
    &.purple {
       background-color: variables.$purple-100-transparent;
+
       p,
       svg {
          color: variables.$purple-100;
       }
    }
+
    &.red {
       background-color: variables.$red-100;
+
       p,
       svg {
          color: variables.$red-300;
       }
    }
+
    &.blue {
       background-color: variables.$blue-100;
+
       p,
       svg {
          color: variables.$blue-400;
       }
    }
+
    &.green {
       background-color: variables.$green-100;
+
       p,
       svg {
          color: variables.$green-300;

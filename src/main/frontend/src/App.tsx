@@ -107,22 +107,7 @@ function App() {
                      }
                   />
 
-                  <Route
-                     path=":login/profile"
-                     element={
-                        <ProtectedRoute
-                           roles={[
-                              AccessLevel.GUEST,
-                              AccessLevel.ADMINISTRATOR,
-                              AccessLevel.MODERATOR,
-                              AccessLevel.PHOTOGRAPHER,
-                              AccessLevel.CLIENT,
-                           ]}
-                        >
-                           <PhotographerProfilePage />
-                        </ProtectedRoute>
-                     }
-                  />
+                  <Route path=":login/profile" element={<PhotographerProfilePage />} />
 
                   <Route
                      path="settings"

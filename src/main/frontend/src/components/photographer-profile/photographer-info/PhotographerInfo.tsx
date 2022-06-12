@@ -9,13 +9,13 @@ import { PhotographerStars } from "../photographer-stars";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-   name?: string;
-   surname?: string;
+   name: string;
+   surname: string;
    location?: string;
-   stars?: number;
-   sessionCount?: number;
-   photosCount?: number;
-   reviewCount?: number;
+   stars: number;
+   sessionCount: number;
+   photosCount: number;
+   reviewCount: number;
 }
 
 export const PhotographerInfo: React.FC<Props> = ({
@@ -39,7 +39,7 @@ export const PhotographerInfo: React.FC<Props> = ({
             />
 
             <div className={styles.label_wrapper}>
-               <p className="section-title">{name + " " + surname}</p>
+               <p className="section-title">{`${name} ${surname}`}</p>
                <IconText text={location} Icon={IoLocationSharp} className="label-bold" />
                <PhotographerStars stars={stars} className="label-bold" />
                <IconText

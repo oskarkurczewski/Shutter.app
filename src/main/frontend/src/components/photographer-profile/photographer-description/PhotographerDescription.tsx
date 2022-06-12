@@ -26,14 +26,6 @@ export const PhotographerDescription: React.FC<Props> = ({
       );
    };
 
-   const specList = (specList: string[]) => {
-      const result = [];
-      for (let i = 0; i < specList.length; i++) {
-         result.push(<li key={i}>{specElement(specList[i])}</li>);
-      }
-      return result;
-   };
-
    return (
       <div className={styles.photographer_description_wrapper}>
          <Card className={styles.data_wrapper}>
@@ -42,7 +34,13 @@ export const PhotographerDescription: React.FC<Props> = ({
                   <p className="section-title">
                      {t("photographer_page.specializations")}
                   </p>
-                  <ul>{specList(specializationList)}</ul>
+                  <ul>
+                     {specializationList
+                        .map((spec) => specElement(spec))
+                        .map((element, index) => (
+                           <li key={index}>{element}</li>
+                        ))}
+                  </ul>
                </div>
                <div>
                   <p className="section-title">{t("photographer_page.description")}</p>
