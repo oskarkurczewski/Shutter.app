@@ -630,6 +630,8 @@ GRANT SELECT, INSERT, UPDATE ON TABLE public.access_level_assignment TO ssbd02mo
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.account TO ssbd02mok;
 
+GRANT SELECT ON TABLE public.account TO ssbd02mor;
+
 GRANT SELECT, INSERT, DELETE ON TABLE public.account_change_log TO ssbd02mok;
 
 GRANT SELECT, INSERT , DELETE ON public.token TO ssbd02mok;
@@ -648,6 +650,8 @@ GRANT SELECT, INSERT, DELETE ON TABLE public.photo_like TO ssbd02mow;
 
 GRANT SELECT, INSERT, UPDATE ON TABLE public.photographer_info TO ssbd02mok;
 
+GRANT SELECT ON TABLE public.photographer_info TO ssbd02mor;
+
 GRANT SELECT, INSERT ON TABLE public.old_password TO ssbd02mok;
 
 GRANT SELECT, INSERT, UPDATE ON TABLE public.photographer_report TO ssbd02mow;
@@ -655,6 +659,8 @@ GRANT SELECT, INSERT, UPDATE ON TABLE public.photographer_report TO ssbd02mow;
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.photographer_report_cause TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE ON TABLE public.photographer_specialization TO ssbd02mow;
+
+GRANT SELECT ON TABLE public.photographer_specialization TO ssbd02mor;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.reservation TO ssbd02mor;
 
@@ -667,5 +673,7 @@ GRANT SELECT, INSERT, UPDATE ON TABLE public.review_report TO ssbd02mow;
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.review_report_cause TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.specialization TO ssbd02mow;
+
+GRANT SELECT ON TABLE public.specialization TO ssbd02mor;
 
 GRANT SELECT, INSERT, UPDATE ON TABLE public.account_list_preferences TO ssbd02mok;
