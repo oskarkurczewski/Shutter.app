@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -24,6 +25,13 @@ public class AccountFacade extends FacadeTemplate<Account> {
         super(Account.class);
     }
 
+    /**
+     * Wyszukuje konto po loginie
+     * @param login login użytkownika do wyszukania
+     * @return  Konto użytkownika o podanym loginie
+     * @throws BaseApplicationException gdy wystąpi problem z bazą danych
+     */
+    @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
         query.setParameter("login", login);

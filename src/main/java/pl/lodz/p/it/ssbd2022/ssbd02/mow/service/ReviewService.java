@@ -39,6 +39,12 @@ public class ReviewService {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Wykonuje operację polubienia recenzji przez wskaznego użytkownika
+     * @param account konto użytkownika wykonującego polubienie
+     * @param review recenzja mająca być polubiona
+     * @throws BaseApplicationException Gdy operacja się nie powiedzie
+     */
     @RolesAllowed(likeReview)
     public void likeReview(Account account, Review review) throws BaseApplicationException {
         if (review.getLikedList().stream().anyMatch(u -> u.getLogin().equals(account.getLogin()))) {

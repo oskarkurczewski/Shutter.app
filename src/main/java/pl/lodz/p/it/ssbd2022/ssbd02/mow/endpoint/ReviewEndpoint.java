@@ -49,6 +49,11 @@ public class ReviewEndpoint extends AbstractEndpoint {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Wykonuje polubienie danej recenzji przez zalogowanego użytkownika
+     * @param reviewId  id recenzji mającej być polubioną
+     * @throws BaseApplicationException
+     */
     @RolesAllowed(likeReview)
     public void likeReview(Long reviewId) throws BaseApplicationException {
         Review review = reviewService.findById(reviewId);
