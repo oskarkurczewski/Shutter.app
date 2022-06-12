@@ -1,7 +1,6 @@
 import { Button, Card, TextInput } from "components/shared";
-import { useStateWithComparison } from "hooks/useStateWithComparison";
-import { useStateWithValidation } from "hooks/useStateWithValidation";
-import React, { useState } from "react";
+import { useStateWithValidationAndComparison } from "hooks";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useChangeSomeonesPasswordMutation } from "redux/service/userSettingsService";
 import { passwordPattern } from "util/regex";
@@ -15,26 +14,24 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
 
    const [passwordMutation, passwordMutationState] = useChangeSomeonesPasswordMutation();
-   const [passwordCheck, setPasswordCheck] = useState(false);
+
+   const [password, setPassword, passwordValidation] =
+      useStateWithValidationAndComparison<string>(
+         [
+            (password) => password.length >= 8,
+            (password) => password.length <= 64,
+            // TODO: fix password regex
+            (password) => passwordPattern.test(password),
+         ],
+         "",
+         ""
+      );
 
    const save = () => {
-      passwordCheck && passwordMutation({ login: login, data: { password } });
+      passwordValidation.valueA === null &&
+         passwordValidation.valueB &&
+         passwordMutation({ login: login, data: { password: password.valueA } });
    };
-
-   const [password, setPassword, passwordValidation] = useStateWithValidation(
-      [
-         (password) => password.length >= 8,
-         (password) => password.length <= 64,
-         // TODO: fix password regex
-         (password) => passwordPattern.test(password),
-      ],
-      ""
-   );
-
-   const [password2, setPassword2, password2Validation] = useStateWithComparison(
-      "",
-      password
-   );
 
    return (
       <Card className={styles["changePassword-wrapper"]}>
@@ -44,14 +41,14 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
 
          <div>
             <TextInput
-               value={password}
+               value={password.valueA}
                label={t("edit_account_page.password.password")}
                onChange={(e) => {
-                  setPassword(e.target.value);
+                  setPassword({ ...password, valueA: e.target.value });
                }}
                type="password"
                required
-               validation={passwordValidation}
+               validation={passwordValidation.valueA}
                validationMessages={[
                   t("edit_account_page.password.password_validation.min"),
                   t("edit_account_page.password.password_validation.max"),
@@ -59,14 +56,14 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
                ]}
             />
             <TextInput
-               value={password2}
+               value={password.valueB}
                label={t("edit_account_page.password.repeat_password")}
                onChange={(e) => {
-                  setPassword2(e.target.value);
+                  setPassword({ ...password, valueB: e.target.value });
                }}
                type="password"
                required
-               validation={password2Validation}
+               validation={passwordValidation.valueB}
                validationMessages={[
                   t("edit_account_page.password.password_validation.repeat"),
                ]}
@@ -75,6 +72,10 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
          <Button onClick={save} className={styles.save}>
             {t("edit_account_page.confirm")}
          </Button>
+         {/* TODO: change to toast */}
+         {passwordMutationState.isError && (
+            <p className={styles.error_message}>Nie można zapisać edycji</p>
+         )}
       </Card>
    );
 };

@@ -1,6 +1,5 @@
 import { Button, Card, Checkbox, TextInput } from "components/shared";
-import { useStateWithComparison } from "hooks/useStateWithComparison";
-import { useStateWithValidation } from "hooks/useStateWithValidation";
+import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useChangeAccountInfoMutation } from "redux/service/usersManagementService";
@@ -41,31 +40,30 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
       ""
    );
 
-   const [email, setEmail, emailIsValid] = useStateWithValidation<string>(
+   const [email, setEmail, emailIsValid] = useStateWithValidationAndComparison<string>(
       [
          (email) => email.length >= 1,
          (email) => email.length <= 64,
          (email) => emailPattern.test(email),
       ],
+      "",
       ""
    );
 
-   const [email2, setEmail2, email2IsValid] = useStateWithComparison<string>("", email);
-
    const [canSubmit, setCanSubmit] = useState(
-      nameIsValid && surnameIsValid && emailIsValid && email2IsValid
+      nameIsValid && surnameIsValid && emailIsValid.valueA === null && emailIsValid.valueB
    );
 
    useEffect(() => {
       setCanSubmit(
          nameIsValid === null &&
             surnameIsValid === null &&
-            emailIsValid === null &&
-            email2IsValid
+            emailIsValid.valueA === null &&
+            emailIsValid.valueB
             ? true
             : false
       );
-   }, [nameIsValid, surnameIsValid, emailIsValid, email2IsValid]);
+   }, [nameIsValid, surnameIsValid, emailIsValid]);
 
    useEffect(() => {
       setLogin(userInfoData?.data.login || "");
@@ -73,8 +71,11 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
       setRegistered(userInfoData?.data.registered || false);
       setName(userInfoData?.data.name || "");
       setSurname(userInfoData?.data.surname || "");
-      setEmail(userInfoData?.data.email || "");
-      setEmail2(userInfoData?.data.email || "");
+      setEmail({
+         ...email,
+         valueA: userInfoData?.data.email || "",
+         valueB: userInfoData?.data.email || "",
+      });
    }, [userInfoData]);
 
    const [infoMutation, infoMutationState] = useChangeAccountInfoMutation();
@@ -158,15 +159,15 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
             <div className={styles.email}>
                <div>
                   <TextInput
-                     value={email}
+                     value={email.valueA}
                      onChange={(e) => {
-                        setEmail(e.target.value);
+                        setEmail({ ...email, valueA: e.target.value });
                      }}
                      label={t("edit_account_page.basic_info.email")}
                      required
                      className="text"
                      type="email"
-                     validation={emailIsValid}
+                     validation={emailIsValid.valueA}
                      validationMessages={[
                         t("edit_account_page.basic_info.email_validation.min"),
                         t("edit_account_page.basic_info.email_validation.max"),
@@ -176,15 +177,15 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                </div>
                <div>
                   <TextInput
-                     value={email2}
+                     value={email.valueB}
                      onChange={(e) => {
-                        setEmail2(e.target.value);
+                        setEmail({ ...email, valueB: e.target.value });
                      }}
                      label={t("edit_account_page.basic_info.repeat_email")}
                      required
                      className="text"
                      type="email"
-                     validation={email2IsValid}
+                     validation={emailIsValid.valueB}
                      validationMessages={[
                         t("edit_account_page.basic_info.email_validation.repeat"),
                      ]}
@@ -200,7 +201,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                      infoMutation({
                         body: {
                            login: login,
-                           email: email,
+                           email: email.valueA,
                            name: name,
                            surname: surname,
                            active: active,
