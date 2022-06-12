@@ -1,0 +1,21 @@
+@use "variables.scss" as variables;
+
+.access_levels {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+   grid-column-start: 3;
+   grid-column-end: 4;
+   // min-width: 20rem;
+   // box-shadow: variables.$shadow-inner;
+   // padding: 1rem;
+   // border-radius: 10px;
+   // justify-content: space-between;
+
+   .content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding-bottom: 0.9rem;
+   }
+}

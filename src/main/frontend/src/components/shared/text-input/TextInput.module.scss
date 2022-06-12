@@ -56,6 +56,7 @@ div.text_input_wrapper {
          font-weight: bold;
          color: variables.$red-300;
          margin-left: 5px;
+         white-space: wrap;
       }
    }
 }

@@ -2,11 +2,11 @@ import React from "react";
 import styles from "./editUserAccountPage.module.scss";
 import { useParams } from "react-router-dom";
 import { useGetAdvancedUserInfoQuery } from "redux/service/usersManagementService";
-import {
-   ChangeBaseInfo,
-   ChangeAccessLevels,
-   ChangePassword,
-} from "components/account-management/edit-account-by-admin";
+// import {
+//    ChangeBaseInfo,
+//    ChangeAccessLevels,
+//    ChangePassword,
+// } from "components/account-management/edit-account-by-admin";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types";
 
@@ -18,7 +18,7 @@ export const EditUserAccountPage: React.FC = () => {
 
    return (
       <div className={styles.edit_account_page_wrapper}>
-         <ChangeBaseInfo userInfoData={userInfoData} />
+         {/* <ChangeBaseInfo userInfoData={userInfoData} />
          {accessLevel === AccessLevel.ADMINISTRATOR && (
             // <div>
             <>
@@ -26,7 +26,7 @@ export const EditUserAccountPage: React.FC = () => {
                <ChangePassword login={login} />
             </>
             // </div>
-         )}
+         )} */}
       </div>
    );
 };

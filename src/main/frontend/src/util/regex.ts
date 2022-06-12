@@ -7,5 +7,5 @@ export const emailPattern = new RegExp(
 );
 // TODO: fix password regex
 export const passwordPattern = new RegExp(
-   "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()-{}:;',?/*~$^+=<>]).{8,64}$"
+   "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()\\-{}:;',?/*~$^+=<>-]).{8,64}$"
 );

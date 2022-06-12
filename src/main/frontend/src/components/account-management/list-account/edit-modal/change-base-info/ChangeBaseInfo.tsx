@@ -1,7 +1,8 @@
-import { Button, Card, Checkbox, TextInput } from "components/shared";
+import { Button, Card, Checkbox, SquareButton, TextInput } from "components/shared";
 import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FaCheck } from "react-icons/fa";
 import { useChangeAccountInfoMutation } from "redux/service/usersManagementService";
 import { advancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
@@ -85,10 +86,8 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
    }, [infoMutationState.isSuccess]);
 
    return (
-      <Card className={styles.base_info_wrapper}>
-         <p className={`category-title ${styles.category_title}`}>
-            {t("edit_account_page.basic_info.title")}
-         </p>
+      <div className={styles.base_info_wrapper}>
+         <p className={`section-title`}>{t("edit_account_page.basic_info.title")}</p>
          <div className={styles.content}>
             <div>
                <TextInput
@@ -214,11 +213,12 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
             >
                {t("edit_account_page.confirm")}
             </Button>
+
             {/* TODO: change to toast */}
             {infoMutationState.isError && (
                <p className={styles.error_message}>Nie można zapisać edycji</p>
             )}
          </div>
-      </Card>
+      </div>
    );
 };

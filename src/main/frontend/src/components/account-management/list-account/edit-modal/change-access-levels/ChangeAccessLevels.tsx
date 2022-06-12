@@ -45,10 +45,8 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
    }, [accessLevelMutationState.isSuccess]);
 
    return (
-      <Card className={styles.access_levels}>
-         <p className={`category-title ${styles.category_title}`}>
-            {t("edit_account_page.roles.title")}
-         </p>
+      <div className={styles.access_levels}>
+         <p className={`section-title`}>{t("edit_account_page.roles.title")}</p>
          <div className={styles.content}>
             <Checkbox
                id="ADMINISTRATOR"
@@ -72,6 +70,6 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
                {t("edit_account_page.roles.photographer")}
             </Checkbox>
          </div>
-      </Card>
+      </div>
    );
 };

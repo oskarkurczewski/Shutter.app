@@ -165,7 +165,9 @@
       }
    },
    "edit_account_page": {
+      "title": "Edycja danych użytkownika",
       "confirm": "Zapisz",
+      "close": "Zamknij",
       "basic_info": {
          "title": "Podstawowe informacje",
          "login": "Login",

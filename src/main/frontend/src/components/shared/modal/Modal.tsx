@@ -11,8 +11,10 @@ type Props =
         isOpen: boolean;
         onCancel: () => void;
         onSubmit: () => void;
-        title: string;
+        title?: string;
         children: JSX.Element | JSX.Element[];
+        cancelText?: string;
+        submitText?: string;
      }
    | {
         className?: string;
@@ -20,8 +22,10 @@ type Props =
         isOpen: boolean;
         onCancel?: never;
         onSubmit: () => void;
-        title: string;
+        title?: string;
         children: JSX.Element | JSX.Element[];
+        cancelText?: never;
+        submitText?: string;
      };
 
 export const Modal: React.FC<Props> = ({
@@ -32,6 +36,8 @@ export const Modal: React.FC<Props> = ({
    onCancel,
    onSubmit,
    title,
+   submitText,
+   cancelText,
 }) => {
    const { t } = useTranslation();
 
@@ -55,10 +61,12 @@ export const Modal: React.FC<Props> = ({
                         className={styles.cancel}
                         onClick={() => onCancel && onCancel()}
                      >
-                        {t("label.cancel")}
+                        {cancelText ? cancelText : t("label.cancel")}
                      </Button>
                   )}
-                  <Button onClick={() => onSubmit()}>{t("label.submit")}</Button>
+                  <Button onClick={() => onSubmit()}>
+                     {submitText ? submitText : t("label.submit")}
+                  </Button>
                </div>
             </Card>
          </div>

@@ -1,7 +1,8 @@
-import { Button, Card, TextInput } from "components/shared";
+import { Button, Card, SquareButton, TextInput } from "components/shared";
 import { useStateWithValidationAndComparison } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { FaCheck } from "react-icons/fa";
 import { useChangeSomeonesPasswordMutation } from "redux/service/userSettingsService";
 import { passwordPattern } from "util/regex";
 import styles from "./ChangePassword.module.scss";
@@ -34,10 +35,8 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
    };
 
    return (
-      <Card className={styles["changePassword-wrapper"]}>
-         <p className={`category-title ${styles.category_title}`}>
-            {t("edit_account_page.password.title")}
-         </p>
+      <div className={styles["changePassword-wrapper"]}>
+         <p className={`section-title`}>{t("edit_account_page.password.title")}</p>
 
          <div>
             <TextInput
@@ -76,6 +75,6 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
          {passwordMutationState.isError && (
             <p className={styles.error_message}>Nie można zapisać edycji</p>
          )}
-      </Card>
+      </div>
    );
 };
