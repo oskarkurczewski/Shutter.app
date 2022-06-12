@@ -1,0 +1,45 @@
+@use "variables.scss" as variables;
+
+.base_info_wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+   justify-content: space-between;
+   min-width: 35rem;
+   grid-row-start: 1;
+   grid-row-end: 3;
+   .content {
+      // display: grid;
+      // grid-template-columns: 1fr 1fr;
+      // row-gap: 1.5rem;
+      // column-gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+      .error_message {
+         font-size: 0.7em;
+         color: variables.$red-200;
+      }
+
+      .email {
+         display: flex;
+         gap: 1rem;
+         & > div {
+            flex: 1;
+         }
+      }
+
+      .active_registered {
+         display: flex;
+         flex-direction: column;
+         gap: 1rem;
+         justify-content: space-around;
+      }
+   }
+   .save {
+      .btn {
+         margin-left: auto;
+      }
+      margin-left: auto;
+   }
+}
