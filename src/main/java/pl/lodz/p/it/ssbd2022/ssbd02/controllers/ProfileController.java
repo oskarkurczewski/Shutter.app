@@ -56,8 +56,9 @@ public class ProfileController extends AbstractController {
 
     @POST
     @Path("/photo/{id}/like")
-    public Response likePhoto(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public Response likePhoto(@PathParam("id") Long photoId) throws BaseApplicationException {
+        repeat(() -> photoEndpoint.likePhoto(photoId), photoEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST

@@ -1,7 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.ChangeType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Photo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -22,6 +20,8 @@ import javax.persistence.PersistenceException;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.addPhotoToGallery;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.deletePhotoFromGallery;
+import javax.persistence.*;
+
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
@@ -83,4 +83,19 @@ public class PhotoFacade extends FacadeTemplate<Photo> {
         }
     }
 
+    @Override
+    @PermitAll
+    public Photo find(Long id) throws BaseApplicationException {
+        try {
+            return super.find(id);
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noPhotoFoundException();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
 }

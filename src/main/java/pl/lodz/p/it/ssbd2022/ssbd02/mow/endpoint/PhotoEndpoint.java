@@ -1,12 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
-import org.apache.commons.codec.binary.Base64;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Photo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import org.apache.commons.codec.binary.Base64;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotoService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.RolesAllowed;
@@ -27,6 +30,9 @@ public class PhotoEndpoint extends AbstractEndpoint {
 
     @Inject
     private AuthenticationContext authenticationContext;
+
+    @Inject
+    private AccountService accountService;
 
     /**
      * Dodaje nowe zdjęcie do galerii obecnie uwierzytelnionego fotografa
@@ -51,8 +57,11 @@ public class PhotoEndpoint extends AbstractEndpoint {
     }
 
     @RolesAllowed(likePhoto)
-    public void likePhoto(Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public void likePhoto(Long photoId) throws BaseApplicationException {
+        Photo photo = photoService.findById(photoId);
+        String login = authenticationContext.getCurrentUsersLogin();
+        Account account = accountService.findByLogin(login);
+        photoService.likePhoto(photo, account);
     }
 
     @RolesAllowed(unlikePhoto)
