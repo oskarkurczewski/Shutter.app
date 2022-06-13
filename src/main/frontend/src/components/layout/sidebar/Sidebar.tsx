@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.scss";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
 import { AuthCard } from "components/layout";
+import { LanguageDropdown } from "components/shared";
 
 export const Sidebar = () => {
    const auth = useAppSelector((state) => state.auth);
@@ -16,6 +17,7 @@ export const Sidebar = () => {
             username={auth.username}
             accessLevelList={auth.roles}
          />
+         <LanguageDropdown />
       </div>
    );
 };

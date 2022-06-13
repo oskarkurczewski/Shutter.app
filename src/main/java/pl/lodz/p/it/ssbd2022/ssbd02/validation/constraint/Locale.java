@@ -9,18 +9,20 @@ import javax.validation.constraints.Pattern;
 import java.lang.annotation.*;
 
 /**
- * Adnotacja służąca ograniczeniu pola przedstawiającego kod 2fa.
- * Kod musi się składać z 6 cyfr.
+ * Adnotacja służąca ograniczeniu pola przedstawiającego język użytkownika.
+ * Język musi pasować do wyrażenia regularnego.
  */
+
 @Constraint(validatedBy = {})
 @Documented
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 
 @ReportAsSingleViolation
-@Pattern(regexp = REGEXP.TWO_FA_CODE_PATTERN)
-public @interface TwoFACode {
-    String message() default "validator.incorrect.2facode.regexp";
+@Pattern(regexp = REGEXP.LOCALE_PATTERN)
+public @interface Locale {
+
+    String message() default "validator.incorrect.locale.regexp";
 
     Class<?>[] groups() default {};
 
