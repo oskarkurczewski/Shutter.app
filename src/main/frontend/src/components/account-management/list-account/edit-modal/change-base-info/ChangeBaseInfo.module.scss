@@ -4,19 +4,11 @@
    display: flex;
    flex-direction: column;
    gap: 1rem;
-   // justify-content: space-between;
    min-width: 35rem;
    grid-row-start: 1;
    grid-row-end: 4;
-   // box-shadow: variables.$shadow-inner;
 
-   // padding: 1rem;
-   // border-radius: 10px;
    .content {
-      // display: grid;
-      // grid-template-columns: 1fr 1fr;
-      // row-gap: 1.5rem;
-      // column-gap: 1rem;
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
@@ -35,7 +27,6 @@
 
       .active_registered {
          display: flex;
-         // flex-direction: column;
          gap: 2rem;
          justify-content: flex-start;
       }
