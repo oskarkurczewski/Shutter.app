@@ -17,6 +17,7 @@ import javax.persistence.*;
 @Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends FacadeTemplate<Account> {
+
     @PersistenceContext(unitName = "ssbd02mowPU")
     private EntityManager em;
 
@@ -24,12 +25,12 @@ public class AccountFacade extends FacadeTemplate<Account> {
         super(Account.class);
     }
 
-    @Override
-    @PermitAll
-    public EntityManager getEm() {
-        return em;
-    }
-
+    /**
+     * Wyszukuje konto po loginie
+     * @param login login użytkownika do wyszukania
+     * @return  Konto użytkownika o podanym loginie
+     * @throws BaseApplicationException gdy wystąpi problem z bazą danych
+     */
     @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);
@@ -40,8 +41,15 @@ public class AccountFacade extends FacadeTemplate<Account> {
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
         } catch (Exception ex) {
             throw ExceptionFactory.unexpectedFailException();
         }
+    }
+
+    @Override
+    protected EntityManager getEm() {
+        return em;
     }
 }
