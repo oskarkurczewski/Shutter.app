@@ -14,17 +14,6 @@ export const PhotographerDescription: React.FC<Props> = ({
    description,
 }) => {
    const { t } = useTranslation();
-   const specElement = (spec: string) => {
-      const specProps = getSpecializationProps(spec);
-      return (
-         <IconText
-            Icon={specProps.icon}
-            color={specProps.color}
-            text={t(`photographer_specialization.${spec.toLowerCase()}`)}
-            className={`${styles.text_wrapper}`}
-         />
-      );
-   };
 
    return (
       <div className={styles.photographer_description_wrapper}>
@@ -35,11 +24,21 @@ export const PhotographerDescription: React.FC<Props> = ({
                      {t("photographer_page.specializations")}
                   </p>
                   <ul>
-                     {specializationList
-                        .map((spec) => specElement(spec))
-                        .map((element, index) => (
-                           <li key={index}>{element}</li>
-                        ))}
+                     {specializationList.map((spec, index) => {
+                        const specProps = getSpecializationProps(spec);
+                        return (
+                           <li key={index}>
+                              <IconText
+                                 Icon={specProps.icon}
+                                 color={specProps.color}
+                                 text={t(
+                                    `photographer_specialization.${spec.toLowerCase()}`
+                                 )}
+                                 className={`${styles.text_wrapper}`}
+                              />
+                           </li>
+                        );
+                     })}
                   </ul>
                </div>
                <div>
