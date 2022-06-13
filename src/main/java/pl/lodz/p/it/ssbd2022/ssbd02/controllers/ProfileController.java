@@ -45,7 +45,7 @@ public class ProfileController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/photo")
     public void addPhotoToGallery(@NotNull @Valid AddPhotoDto addPhotoDto) throws BaseApplicationException {
-        photoEndpoint.addPhotoToGallery(addPhotoDto);
+        repeat(() -> photoEndpoint.addPhotoToGallery(addPhotoDto), photoEndpoint);
     }
 
     @DELETE
