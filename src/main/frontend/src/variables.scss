@@ -1,8 +1,10 @@
 // Color scheme
+$white: #ffffff;
+
 $purple-100: #7143d2;
 $purple-100-transparent: rgba(102, 49, 214, 0.13);
 $purple-200: #4716af;
-$purple-200-transparent: #4716af80;
+$purple-200-transparent: rgba(71, 22, 175, 0.54);
 
 $gray-100: #d1d1d1;
 $gray-150: #969696;
@@ -10,19 +12,21 @@ $gray-200: #707070;
 $gray-300: #454545;
 $gray-300-transparent: #45454580;
 
-$white: #ffffff;
 $blue-gray-100: #eff1f8;
 $blue-gray-200: #dde1ee;
 $blue-gray-300: #b0b7cf;
 
 $green-200: #4ac9a2;
 $green-300: #13ab7c;
+$green-gradient: linear-gradient(315deg, #3db83a 0%, #7feb7d 100%);
 
 $yellow-200: #feed56;
 $yellow-300: #ead412;
 
 $orange-200: #f5ae5a;
 $orange-300: #f4992e;
+$orange-400: #f68500;
+$orange-gradient: linear-gradient(315deg, #eb8d49 0%, #ffdd86 100%);
 
 $blue-100: #e4effa;
 $blue-200: #e3e9fe;
@@ -30,15 +34,18 @@ $blue-300: #6b8aff;
 $blue-400: #3f66f8;
 $blue-500: #1666af;
 $blue-500-transparent: #1666af80;
+$blue-gradient: linear-gradient(315deg, #3a47b8 0%, #86b6ff 100%);
 
 $red-100: #fae4e4;
 $red-200: #eb7c7c;
 $red-300: #de5a5a;
+$red-gradient: linear-gradient(315deg, #b83a3a 0%, #ff8686 100%);
 
 // Shadows
 $shadow-regular: 0 5px 10px 0 #00000012;
 $shadow-card: 6px 6px 16px 0 #dbdbdb80, -6px -6px 16px 0 #fbfbfb80;
 $shadow-elevated: 0 4px 1px 0 #00000012;
+$shadow-strong: 0 4px 13px 1px rgba(0, 0, 0, 0.22);
 
 // Scale
 $scale-1: 1.333;

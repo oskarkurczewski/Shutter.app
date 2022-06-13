@@ -1,0 +1,41 @@
+@use "variables.scss" as variables;
+
+.toast {
+   svg {
+      fill: variables.$orange-400;
+   }
+
+   & > div:first-child {
+      background: variables.$orange-gradient;
+   }
+
+   button:hover {
+      background-color: variables.$orange-400;
+   }
+}
+
+.confirm,
+.cancel {
+   &:hover {
+      background-color: variables.$orange-400;
+
+      p {
+         color: variables.$white;
+      }
+   }
+}
+
+.confirm {
+   background-color: variables.$orange-300;
+   p {
+      color: variables.$white;
+   }
+}
+
+.cancel {
+   background-color: transparent;
+   border: 2px solid variables.$orange-300;
+   p {
+      color: variables.$orange-300;
+   }
+}

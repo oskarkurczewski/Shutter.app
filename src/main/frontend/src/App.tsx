@@ -45,7 +45,7 @@ function App() {
                   const token = await refreshToken().unwrap();
                   localStorage.setItem("token", token.token);
                   dispatch(login(getLoginPayload()));
-                  dispatch(remove("refreshToken"));
+                  // dispatch(remove("refreshToken"));
                } catch (err) {
                   return;
                }
@@ -57,17 +57,16 @@ function App() {
    };
 
    useEffect(() => {
-      if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) dispatch(push(data));
-
-      const timeoutID = setInterval(() => {
-         if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) {
-            dispatch(push(data));
-         }
-      }, 1000 * 60 * 0.5);
-
-      return () => {
-         clearTimeout(timeoutID);
-      };
+      // if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2)
+      // dispatch(push(data));
+      // const timeoutID = setInterval(() => {
+      //    if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) {
+      //       dispatch(push(data));
+      //    }
+      // }, 1000 * 60 * 0.5);
+      // return () => {
+      //    clearTimeout(timeoutID);
+      // };
    }, [exp]);
 
    return (

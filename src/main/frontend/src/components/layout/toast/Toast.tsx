@@ -4,25 +4,34 @@ import React from "react";
 import { useAppDispatch } from "redux/hooks";
 import { remove } from "redux/slices/toastSlice";
 import styles from "./Toast.module.scss";
+import { ImCross } from "react-icons/im";
 
 export interface ToastType {
-   name: string;
-   label: string;
    text: string;
-   content?: JSX.Element;
+   icon?: JSX.Element;
+   buttons?: JSX.Element;
+   className?: string;
+   id: number;
 }
 
-export const Toast: React.FC<ToastType> = ({ label, name, text, content }) => {
+export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id }) => {
    const dispatch = useAppDispatch();
 
    return (
-      <div className={styles.toast}>
-         <p className="label-bold">{label}</p>
-         <p>{text}</p>
-         {content}
+      <div className={`${styles.toast} ${className ? className : ""}`}>
+         <div className={styles.bar} />
+         <div className={styles.container}>
+            <div className={styles.wrapper}>
+               <div className={styles.content}>
+                  {icon}
+                  <p className="label-bold">{text}</p>
+               </div>
+               <div className={styles.buttons_wrapper}>{buttons}</div>
+            </div>
 
-         <div className={styles.close_btn_wrapper} onClick={() => dispatch(remove(name))}>
-            <span className={styles.close_btn} />
+            <button onClick={() => dispatch(remove(id))} className={styles.close_button}>
+               {<ImCross />}
+            </button>
          </div>
       </div>
    );
