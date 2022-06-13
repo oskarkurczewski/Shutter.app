@@ -20,6 +20,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "availability")
+@NamedQueries({
+        @NamedQuery(name = "availability.findInPeriod",
+                query = "SELECT a FROM Availability a WHERE a.photographer = :photographer AND a.day = :day AND a.from < :from AND :to < a.to"),
+})
 public class Availability extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)

@@ -68,8 +68,8 @@ public class ExceptionFactory {
         return new NoAvailabilityFoundException("exception.availability_not_found");
     }
 
-    public static InvalidReservationTimeExcpetion invalidReservationTimeException() {
-        return new InvalidReservationTimeExcpetion("exception.reservation_invalid_time");
+    public static InvalidReservationTimeException invalidReservationTimeException() {
+        return new InvalidReservationTimeException("exception.reservation_invalid_time");
     }
 
     public static NoReservationFoundException noReservationFoundException() {

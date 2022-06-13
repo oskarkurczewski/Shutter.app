@@ -1,8 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.MorAccountFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 
 import javax.annotation.security.PermitAll;
@@ -23,10 +28,29 @@ public class ReservationEndpoint extends AbstractEndpoint {
     @Inject
     private ReservationService reservationService;
 
+    @Inject
+    private MorAccountFacade morAccountFacade;
 
+    @Inject
+    private PhotographerService photographerService;
+
+    @Inject
+    private AuthenticationContext authenticationContext;
+
+    /**
+     * Metoda służąca do tworzenia rezerwacji.
+     *
+     * @param createReservationDto Dane potrzebne do utworzenia rezerwacji
+     * @throws BaseApplicationException W przypadku gdy nie można stworzyć rezerwacji
+     */
     @RolesAllowed(reservePhotographer)
-    public void createReservation(CreateReservationDto createReservationDto) throws InvalidReservationTimeExcpetion {
-        throw new UnsupportedOperationException();
+    public void createReservation(CreateReservationDto createReservationDto) throws BaseApplicationException {
+        Reservation reservation = new Reservation();
+        reservation.setPhotographer(photographerService.findByLogin(createReservationDto.getPhotographerLogin()));
+        reservation.setAccount(morAccountFacade.findByLogin(authenticationContext.getCurrentUsersLogin()));
+        reservation.setTimeFrom(createReservationDto.getFrom());
+        reservation.setTimeTo(createReservationDto.getTo());
+        reservationService.addReservation(reservation);
     }
 
     @RolesAllowed(cancelReservation)
@@ -52,7 +76,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
-     * @param page strona listy, którą należy pozyskać
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji
