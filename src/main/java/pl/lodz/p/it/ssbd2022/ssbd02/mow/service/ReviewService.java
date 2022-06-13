@@ -51,6 +51,7 @@ public class ReviewService {
             throw ExceptionFactory.alreadyLikedException();
         }
         review.addLikeFromUser(account);
+        review.setLikeCount(review.getLikeCount() + 1);
         reviewFacade.update(review);
     }
 
