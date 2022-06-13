@@ -67,6 +67,10 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
    }, [nameIsValid, surnameIsValid, emailIsValid]);
 
    useEffect(() => {
+      console.log(email, emailIsValid);
+   }, [email]);
+
+   useEffect(() => {
       setLogin(userInfoData?.data.login || "");
       setActive(userInfoData?.data.active || false);
       setRegistered(userInfoData?.data.registered || false);
@@ -160,7 +164,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                   <TextInput
                      value={email.valueA}
                      onChange={(e) => {
-                        setEmail({ ...email, valueA: e.target.value });
+                        setEmail({ valueA: e.target.value });
                      }}
                      label={t("edit_account_page.basic_info.email")}
                      required
@@ -178,7 +182,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
                   <TextInput
                      value={email.valueB}
                      onChange={(e) => {
-                        setEmail({ ...email, valueB: e.target.value });
+                        setEmail({ valueB: e.target.value });
                      }}
                      label={t("edit_account_page.basic_info.repeat_email")}
                      required

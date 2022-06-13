@@ -41,7 +41,7 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
                value={password.valueA}
                label={t("edit_account_page.password.password")}
                onChange={(e) => {
-                  setPassword({ ...password, valueA: e.target.value });
+                  setPassword({ valueA: e.target.value });
                }}
                type="password"
                required
@@ -56,7 +56,7 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
                value={password.valueB}
                label={t("edit_account_page.password.repeat_password")}
                onChange={(e) => {
-                  setPassword({ ...password, valueB: e.target.value });
+                  setPassword({ valueB: e.target.value });
                }}
                type="password"
                required

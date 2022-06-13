@@ -38,7 +38,8 @@ export const useStateWithValidationAndComparison = <T,>(
 
    const onChange = useCallback<(value: stateType) => void>(
       (nextState: stateType) => {
-         const value = nextState;
+         const value = { ...state, ...nextState };
+
          setState({ ...state, ...value });
          setIsValid({
             valueA: checkValue(value.valueA, conditions),
@@ -53,7 +54,7 @@ export const useStateWithValidationAndComparison = <T,>(
          valueA: T;
          valueB: T;
       },
-      setState: (newState: { valueA: T; valueB: T }) => void,
+      setState: (newState: { valueA?: T; valueB?: T }) => void,
       validation: {
          valueA: number;
          valueB: boolean;
