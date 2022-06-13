@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -10,7 +12,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -27,5 +31,31 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
     @PermitAll
     public EntityManager getEm() {
         return em;
+    }
+
+    @Override
+    public Reservation find(Long id) throws BaseApplicationException {
+        try {
+            return super.find(id);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    public void remove(Reservation entity) throws BaseApplicationException {
+        try {
+            super.remove(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
     }
 }

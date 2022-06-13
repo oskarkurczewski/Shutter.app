@@ -669,6 +669,10 @@ GRANT SELECT ON TABLE public.photographer_specialization TO ssbd02mor;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.reservation TO ssbd02mor;
 
+GRANT SELECT ON TABLE public.account TO ssbd02mor;
+
+GRANT SELECT ON TABLE public.photographer_info TO ssbd02mor;
+
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.review TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE ON TABLE public.review_like TO ssbd02mow;
