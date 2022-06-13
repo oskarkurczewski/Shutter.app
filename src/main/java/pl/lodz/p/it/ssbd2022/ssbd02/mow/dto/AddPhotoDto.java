@@ -1,15 +1,20 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class AddPhotoDto {
     @NotNull
-    private final String title;
+    private String title;
     @NotNull
-    private final String description;
+    private String description;
     @NotNull
-    private final byte[] data;
+    private String data;
 }
