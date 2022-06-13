@@ -65,9 +65,15 @@ public class PhotoService {
         photoFacade.persist(newPhoto);
     }
 
+    /**
+     * Usuwa podane zdjęcie z galerii użytkownika
+     *
+     * @param photo zdjęcie które ma zostać usunięte z galerii
+     */
     @RolesAllowed(deletePhotoFromGallery)
-    public void deletePhoto(Photo photo) {
-        throw new UnsupportedOperationException();
+    public void deletePhoto(Photo photo) throws BaseApplicationException {
+        photoFacade.remove(photo);
+        s3Service.deleteObject(photo.getPhotographer().getAccount().getLogin(), photo.getObjectKey());
     }
 
     /**

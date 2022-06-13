@@ -51,9 +51,15 @@ public class PhotoEndpoint extends AbstractEndpoint {
         );
     }
 
+    /**
+     * Usuwa zdjęcie o podanym identyfikatorze z galerii użytkownika
+     *
+     * @param photoId identyfikator zdjęcia fotografa, które ma zostać usunięte
+     */
     @RolesAllowed(deletePhotoFromGallery)
-    public void deletePhotoFromGallery(Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public void deletePhotoFromGallery(Long photoId) throws BaseApplicationException {
+        Photo photo = photoService.findById(photoId);
+        photoService.deletePhoto(photo);
     }
 
     @RolesAllowed(likePhoto)
