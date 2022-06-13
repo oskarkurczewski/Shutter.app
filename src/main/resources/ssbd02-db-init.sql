@@ -142,8 +142,8 @@ CREATE TABLE public.availability
     id              bigint   NOT NULL GENERATED ALWAYS AS IDENTITY,
     photographer_id bigint   NOT NULL,
     weekday         smallint NOT NULL,
-    "from"          time without time zone NOT NULL,
-    "to"            time without time zone NOT NULL,
+    time_from     time without time zone NOT NULL,
+    time_to       time without time zone NOT NULL,
     created_by      bigint,
     created_at      timestamp,
     modified_by     bigint,
@@ -641,8 +641,6 @@ GRANT SELECT, INSERT, DELETE ON public.token TO ssbd02mok;
 GRANT SELECT, INSERT, UPDATE ON TABLE public.account_report TO ssbd02mow;
 
 GRANT SELECT, UPDATE ON TABLE  public.photographer_info TO ssbd02mow;
-
-GRANT SELECT ON TABLE public.account TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.account_report_cause TO ssbd02mow;
 
