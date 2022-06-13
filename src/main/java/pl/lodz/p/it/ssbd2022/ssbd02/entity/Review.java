@@ -93,4 +93,8 @@ public class Review extends ManagedEntity {
     public void addLikeFromUser(Account account) {
         this.likedList.add(account);
     }
+
+    public void removeLikeFromUser(Account account) {
+        this.likedList.remove(account);
+    }
 }
