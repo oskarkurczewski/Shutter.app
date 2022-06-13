@@ -41,7 +41,10 @@ const EditAccountModal: React.FC<Props> = ({ login, isOpen, onSubmit }) => {
                   <div className={`${styles.border} ${styles.border_a}`} />
                   <ChangeAccessLevels userInfoData={userInfoData} />
                   <div className={`${styles.border} ${styles.border_b}`} />
-                  <ChangePassword login={login} />
+                  <ChangePassword
+                     login={login}
+                     isRegistered={userInfoData?.data.registered}
+                  />
                </>
             )}
             <div className={`${styles.border} ${styles.border_c}`} />

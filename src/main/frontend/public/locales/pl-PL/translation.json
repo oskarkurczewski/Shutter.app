@@ -205,6 +205,7 @@
          "title": "Hasło",
          "password": "Hasło",
          "repeat_password": "Powtórz hasło",
+         "cant_change": "Nie możesz zmienić hasła gdy użytkownik jest niezarejestrowany",
          "password_validation": {
             "min": "Hasło musi mieć przynajmniej 6 znaków",
             "max": "Hasło nie może mieć więcej niż 64 znaki",

@@ -8,9 +8,10 @@ import styles from "./ChangePassword.module.scss";
 
 interface Props {
    login: string;
+   isRegistered: boolean;
 }
 
-export const ChangePassword: React.FC<Props> = ({ login }) => {
+export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
    const { t } = useTranslation();
 
    const [passwordMutation, passwordMutationState] = useChangeSomeonesPasswordMutation();
@@ -35,7 +36,6 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
    return (
       <div className={styles["changePassword-wrapper"]}>
          <p className={`section-title`}>{t("edit_account_page.password.title")}</p>
-
          <div>
             <TextInput
                value={password.valueA}
@@ -51,6 +51,7 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
                   t("edit_account_page.password.password_validation.max"),
                   t("edit_account_page.password.password_validation.regex"),
                ]}
+               disabled={!isRegistered}
             />
             <TextInput
                value={password.valueB}
@@ -64,9 +65,15 @@ export const ChangePassword: React.FC<Props> = ({ login }) => {
                validationMessages={[
                   t("edit_account_page.password.password_validation.repeat"),
                ]}
+               disabled={!isRegistered}
             />
          </div>
-         <Button onClick={save} className={styles.save}>
+         <Button
+            onClick={save}
+            className={styles.save}
+            disabled={!isRegistered}
+            title={!isRegistered && t("edit_account_page.confirm.cant_change")}
+         >
             {t("edit_account_page.confirm")}
          </Button>
          {/* TODO: change to toast */}

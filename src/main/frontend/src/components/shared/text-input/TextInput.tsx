@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./TextInput.module.scss";
 
 interface TextInputProps {
@@ -30,6 +30,8 @@ export const TextInput = ({
    validation,
    validationMessages,
 }: TextInputProps) => {
+   const input = useRef<HTMLInputElement>(null);
+
    return (
       <div className={`${styles.text_input_wrapper} ${className ? className : ""}`}>
          {label && <p className={`label ${required ? styles.required : ""}`}>{label}</p>}
@@ -47,14 +49,21 @@ export const TextInput = ({
                      ? validation !== undefined && validation !== null && styles.invalid
                      : validation === false && styles.invalid
                }`}
+               ref={input}
             />
          </div>
          <div className={styles.messages}>
-            {typeof validation === "number" ? (
-               <p>{validationMessages[validation]}</p>
-            ) : (
-               validation === false && <p>{validationMessages[0]}</p>
-            )}
+            {!disabled &&
+               (typeof validation === "number" ? (
+                  <p
+                     style={{ width: input?.current?.offsetWidth }}
+                     title={validationMessages[validation]}
+                  >
+                     {validationMessages[validation]}
+                  </p>
+               ) : (
+                  validation === false && <p>{validationMessages[0]}</p>
+               ))}
          </div>
       </div>
    );
