@@ -1,4 +1,5 @@
 import { basicUserInfoResponse } from "./accountTypes";
+import { ReviewReportCause } from "types/ReviewReportCause";
 
 export interface basicPhotographerInfo extends basicUserInfoResponse {
    score: number;
@@ -8,22 +9,24 @@ export interface basicPhotographerInfo extends basicUserInfoResponse {
    longitude: number;
    specializationList: string[];
 }
-
-import internal from "stream";
-
 export interface photographerTableEntry {
-    login: string,
-    email: string,
-    name: string,
-    surname: string,
-    reviewCount: number,
-    score: number,
-    specializations: string[],
-    longitude: number,
-    latitude: number
+   login: string;
+   email: string;
+   name: string;
+   surname: string;
+   reviewCount: number;
+   score: number;
+   specializations: string[];
+   longitude: number;
+   latitude: number;
 }
 
 export interface getPhotographersListRequest {
-    pageNo: number,
-    recordsPerPage: number,
+   pageNo: number;
+   recordsPerPage: number;
+}
+
+export interface reportPhotographerReviewRequest {
+   reviewId: number;
+   cause: ReviewReportCause;
 }
