@@ -20,6 +20,12 @@
          "review-count": "Liczba Recenzji",
          "longitude": "Dług",
          "latitude": "Szer"
+      },
+      "roles": {
+         "admin": "ADMINISTRATOR",
+         "moderator": "MODERATOR",
+         "client": "KLIENT",
+         "photographer": "FOTOGRAF"
       }
    },
    "exception": {
@@ -194,24 +200,20 @@
             "repeat": "Adresy email muszą być takie same"
          }
       },
-      "roles": {
-         "title": "Role",
-         "admin": "ADMINISTRATOR",
-         "moderator": "MODERATOR",
-         "client": "KLIENT",
-         "photographer": "FOTOGRAF"
-      },
       "password": {
          "title": "Hasło",
          "password": "Hasło",
          "repeat_password": "Powtórz hasło",
-         "cant_change": "Nie możesz zmienić hasła gdy użytkownik jest niezarejestrowany",
+         "cant_change": "Nie można zmienić hasła gdy użytkownik jest niezarejestrowany",
          "password_validation": {
             "min": "Hasło musi mieć przynajmniej 6 znaków",
             "max": "Hasło nie może mieć więcej niż 64 znaki",
             "regex": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
             "repeat": "Hasła muszą być takie same"
          }
+      },
+      "roles": {
+         "title": "Role"
       }
    },
    "confirm_register_page": {

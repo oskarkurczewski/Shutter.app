@@ -55,28 +55,28 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
                onChange={null}
                disabled
             >
-               {t("edit_account_page.roles.admin")}
+               {t("global.roles.admin")}
             </Checkbox>
             <Checkbox
                id={AccessLevel.MODERATOR}
                value={allRoles.MODERATOR}
                onChange={changeRole}
             >
-               {t("edit_account_page.roles.moderator")}
+               {t("global.roles.moderator")}
             </Checkbox>
             <Checkbox
                id={AccessLevel.CLIENT}
                value={allRoles.CLIENT}
                onChange={changeRole}
             >
-               {t("edit_account_page.roles.client")}
+               {t("global.roles.client")}
             </Checkbox>
             <Checkbox
                id={AccessLevel.PHOTOGRAPHER}
                value={allRoles.PHOTOGRAPHER}
                onChange={changeRole}
             >
-               {t("edit_account_page.roles.photographer")}
+               {t("global.roles.photographer")}
             </Checkbox>
          </div>
       </div>
