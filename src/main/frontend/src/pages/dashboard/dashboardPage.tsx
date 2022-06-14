@@ -19,7 +19,6 @@ export const DashboardPage = () => {
                Logout
             </Button>
          )}
-         <Loader />
       </section>
    );
 };

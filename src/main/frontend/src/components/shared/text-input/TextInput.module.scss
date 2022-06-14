@@ -33,12 +33,13 @@ div.text_input_wrapper {
 
       input {
          background-color: variables.$blue-gray-100;
+         font-weight: 500;
+         border-radius: 10px;
          border: none;
-         outline: none;
          padding-left: 1rem;
-         font-weight: bold;
          color: variables.$gray-300;
          flex-grow: 1;
+         outline-color: variables.$blue-gray-300;
       }
    }
 }
