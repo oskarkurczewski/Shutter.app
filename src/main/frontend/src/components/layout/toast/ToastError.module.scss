@@ -9,6 +9,10 @@
       background: variables.$red-gradient;
    }
 
+   & > div:last-child {
+      background: variables.$red-300-transparent;
+   }
+
    button:hover {
       background-color: variables.$red-300;
    }

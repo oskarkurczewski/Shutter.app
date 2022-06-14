@@ -9,6 +9,10 @@
       background: variables.$orange-gradient;
    }
 
+   & > div:last-child {
+      background: variables.$orange-400-transparent;
+   }
+
    button:hover {
       background-color: variables.$orange-400;
    }
@@ -35,6 +39,7 @@
 .cancel {
    background-color: transparent;
    border: 2px solid variables.$orange-300;
+   padding: calc(0.66rem - 2px);
    p {
       color: variables.$orange-300;
    }

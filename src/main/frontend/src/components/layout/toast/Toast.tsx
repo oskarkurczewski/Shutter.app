@@ -1,10 +1,9 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch } from "redux/hooks";
 import { remove } from "redux/slices/toastSlice";
 import styles from "./Toast.module.scss";
 import { ImCross } from "react-icons/im";
+import { motion } from "framer-motion";
 
 export interface ToastType {
    text: string;
@@ -17,13 +16,71 @@ export interface ToastType {
 export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id }) => {
    const dispatch = useAppDispatch();
 
+   let timeout;
+
+   useEffect(() => {
+      timeout = setTimeout(() => {
+         dispatch(remove(id));
+      }, 10 * 1000);
+
+      return () => clearTimeout(timeout);
+   }, []);
+
+   const container = {
+      rest: {
+         opacity: [0, 1],
+         transition: {
+            duration: 1,
+         },
+      },
+      exit: {
+         x: "200%",
+         transition: {
+            duration: 0.5,
+         },
+      },
+   };
+
+   const progressBar = {
+      hover: {
+         width: "99%",
+         transition: {
+            ease: "easeOut",
+            duration: 0.5,
+         },
+      },
+      rest: {
+         width: ["99%", "0%"],
+         transition: {
+            duration: 10,
+         },
+      },
+   };
+
    return (
-      <div className={`${styles.toast} ${className ? className : ""}`}>
+      <motion.div
+         variants={container}
+         whileHover="hover"
+         initial="rest"
+         animate="rest"
+         exit="exit"
+         layout
+         className={`${styles.toast} ${className ? className : ""} `}
+         tabIndex={-1}
+         onMouseEnter={() => {
+            clearTimeout(timeout);
+         }}
+         onMouseLeave={() => {
+            timeout = setTimeout(() => {
+               dispatch(remove(id));
+            }, 10 * 1000);
+         }}
+      >
          <div className={styles.bar} />
          <div className={styles.container}>
             <div className={styles.wrapper}>
                <div className={styles.content}>
-                  {icon}
+                  <div className={styles["icon-wrapper"]}>{icon}</div>
                   <p className="label-bold">{text}</p>
                </div>
                <div className={styles.buttons_wrapper}>{buttons}</div>
@@ -33,6 +90,7 @@ export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id 
                {<ImCross />}
             </button>
          </div>
-      </div>
+         <motion.div className={styles.progress_bar} variants={progressBar} />
+      </motion.div>
    );
 };

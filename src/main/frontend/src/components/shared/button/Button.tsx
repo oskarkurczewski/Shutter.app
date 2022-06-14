@@ -26,7 +26,7 @@ export const Button: React.FC<Props> = ({
          disabled={disabled}
       >
          {icon ? <span className="material-icons">{icon}</span> : null}
-         <p>{children}</p>
+         <p className="label-bold">{children}</p>
       </button>
    );
 };
