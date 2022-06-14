@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
 
@@ -41,8 +38,9 @@ public class ReportController extends AbstractController {
     @Path("/review")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportReview(@NotNull @Valid CreateReviewReportDto createReviewReportDto)
-            throws NoAuthenticatedAccountFound, NoReviewFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        repeat(() -> reportEndpoint.reportReview(createReviewReportDto), reportEndpoint);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @GET

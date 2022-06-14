@@ -101,6 +101,10 @@ public class ExceptionFactory {
         return new NoReviewReportFoundException("exception.review_report_not_found");
     }
 
+    public static NoReviewReportCauseFoundException noReviewReportCauseFoundException() {
+        return new NoReviewReportCauseFoundException("exception.review_report_cause_not_found");
+    }
+
     public static AccountConfirmedException accountConfirmedException() {
         return new AccountConfirmedException("exception.account_already_confirmed");
     }
@@ -143,5 +147,13 @@ public class ExceptionFactory {
 
     public static NoAccountListPreferencesFound noAccountListPreferencesFound() {
         return new NoAccountListPreferencesFound("exception.account_list_preferences_not_found");
+    }
+
+    public static PhotoAlreadyLikedException photoAlreadyLikedException() {
+        return new PhotoAlreadyLikedException("photo.liked");
+    }
+
+    public static LikeException alreadyLikedException() {
+        return new LikeException("exception.already_liked");
     }
 }

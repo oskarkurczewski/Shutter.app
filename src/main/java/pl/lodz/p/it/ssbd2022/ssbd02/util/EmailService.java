@@ -390,4 +390,19 @@ public class EmailService {
         }
     }
 
+    /**
+     * Funkcja wysyłająca email informujący fotografa o odwołaniu rezerwacji przez jego klienta
+     * @param to adres email fotografa
+     * @param reservationId id odwołanej rezerwacji
+     * @param locale parametr określajacy język, w jakim wiadomość będzie wysłana
+     */
+    public void sendReservationCanceledEmail(String to, Long reservationId, Locale locale) {
+        String subject = i18n.getMessage(RESERVATION_CANCELED, locale);
+        String body = i18n.getMessage(RESERVATION_CANCELED_BODY, locale) + reservationId + ".";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

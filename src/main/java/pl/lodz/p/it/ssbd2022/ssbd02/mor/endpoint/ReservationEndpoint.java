@@ -3,7 +3,9 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -11,27 +13,36 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ReservationEndpoint extends AbstractEndpoint {
 
     @Inject
     private ReservationService reservationService;
 
+    @Inject
+    private AuthenticationContext authCtx;
 
     @RolesAllowed(reservePhotographer)
     public void createReservation(CreateReservationDto createReservationDto) throws InvalidReservationTimeExcpetion {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Metoda do anulowania rezerwacji przez klienta
+     * @param reservationId id rezerwacji, która ma być anulowana
+     */
     @RolesAllowed(cancelReservation)
-    public void cancelReservation(Long reservationId) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    public void cancelReservation(Long reservationId) throws BaseApplicationException {
+        String caller = authCtx.getCurrentUsersLogin();
+        reservationService.cancelReservation(caller, reservationId);
     }
 
     @RolesAllowed(discardReservation)

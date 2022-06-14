@@ -9,8 +9,8 @@ import javax.validation.constraints.Pattern;
 import java.lang.annotation.*;
 
 /**
- * Adnotacja służąca ograniczeniu pola przedstawiającego login użytkownika.
- * Login musi pasować do wyrażenia regularnego.
+ * Adnotacja służąca ograniczeniu pola przedstawiającego kod 2fa.
+ * Kod musi się składać z 6 cyfr.
  */
 @Constraint(validatedBy = {})
 @Documented
@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 
 @ReportAsSingleViolation
-@Pattern(regexp = REGEXP.TWO_FA_CODE)
+@Pattern(regexp = REGEXP.TWO_FA_CODE_PATTERN)
 public @interface TwoFACode {
     String message() default "validator.incorrect.2facode.regexp";
 

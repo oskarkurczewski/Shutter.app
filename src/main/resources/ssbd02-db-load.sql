@@ -62,3 +62,6 @@ VALUES (1, 3, 1),
 
 INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id, created_by, created_at)
 VALUES (0, 3, 1, 3, current_timestamp) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.review (version, photographer_id, account_id, score, like_count, content, active, created_at, created_by)
+VALUES (0, 3, 4, 3, 0, 'I really appreciate this photographer', true, current_timestamp, 4);

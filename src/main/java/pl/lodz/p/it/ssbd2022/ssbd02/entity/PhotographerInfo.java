@@ -86,7 +86,7 @@ public class PhotographerInfo extends ManagedEntity {
     private Boolean visible;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "photographer", cascade = {CascadeType.REMOVE})
     private List<Availability> availability;
 
     @ToString.Exclude

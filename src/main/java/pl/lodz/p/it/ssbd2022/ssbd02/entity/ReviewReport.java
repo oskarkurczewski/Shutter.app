@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
@@ -18,6 +15,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "review_report")
 public class ReviewReport extends ManagedEntity {
@@ -30,7 +28,6 @@ public class ReviewReport extends ManagedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @NotNull
     private Long id;
 
     @ManyToOne(optional = false)
