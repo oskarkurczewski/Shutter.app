@@ -19,9 +19,8 @@ interface Props {
 const EditAccountModal: React.FC<Props> = ({ login, isOpen, onSubmit }) => {
    const { t } = useTranslation();
 
-   const { data: userInfoData } = useGetAdvancedUserInfoQuery(login);
+   const userInfoData = useGetAdvancedUserInfoQuery(login);
    const { accessLevel } = useAppSelector((state) => state.auth);
-
    return (
       <Modal
          type="info"
@@ -35,15 +34,18 @@ const EditAccountModal: React.FC<Props> = ({ login, isOpen, onSubmit }) => {
                accessLevel === AccessLevel.MODERATOR && styles.moderator
             }`}
          >
-            <ChangeBaseInfo userInfoData={userInfoData} />
+            <ChangeBaseInfo
+               userInfoData={userInfoData.data}
+               refetch={userInfoData.refetch}
+            />
             {accessLevel === AccessLevel.ADMINISTRATOR && (
                <>
                   <div className={`${styles.border} ${styles.border_a}`} />
-                  <ChangeAccessLevels userInfoData={userInfoData} />
+                  <ChangeAccessLevels userInfoData={userInfoData.data} />
                   <div className={`${styles.border} ${styles.border_b}`} />
                   <ChangePassword
                      login={login}
-                     isRegistered={userInfoData?.data.registered}
+                     isRegistered={userInfoData?.data?.data.registered}
                   />
                </>
             )}

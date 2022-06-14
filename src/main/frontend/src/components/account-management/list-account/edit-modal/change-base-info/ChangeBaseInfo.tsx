@@ -15,9 +15,10 @@ import styles from "./ChangeBaseInfo.module.scss";
 
 interface Props {
    userInfoData: EtagData<advancedUserInfoResponse>;
+   refetch: () => void;
 }
 
-export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
+export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
    const { t } = useTranslation();
 
    const [login, setLogin] = useState<string>("");
@@ -87,6 +88,24 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
 
    useEffect(() => {
       // TODO: add toast
+   }, [infoMutationState.isSuccess]);
+
+   const submit = () => {
+      canSubmit &&
+         infoMutation({
+            body: {
+               login: login,
+               email: email.valueA,
+               name: name,
+               surname: surname,
+               active: active,
+            },
+            etag: userInfoData.etag,
+         });
+   };
+
+   useEffect(() => {
+      infoMutationState.isSuccess && refetch();
    }, [infoMutationState.isSuccess]);
 
    return (
@@ -198,23 +217,7 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData }) => {
          </div>
 
          <div className={styles.save}>
-            <Button
-               onClick={() => {
-                  canSubmit &&
-                     infoMutation({
-                        body: {
-                           login: login,
-                           email: email.valueA,
-                           name: name,
-                           surname: surname,
-                           active: active,
-                        },
-                        etag: userInfoData.etag,
-                     });
-               }}
-               disabled={!canSubmit}
-               className={styles.btn}
-            >
+            <Button onClick={submit} disabled={!canSubmit} className={styles.btn}>
                {t("edit_account_page.confirm")}
             </Button>
 
