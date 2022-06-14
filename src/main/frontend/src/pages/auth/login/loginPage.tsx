@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import { Button, Card, TextInput } from "components/shared";
 import { getLoginPayload } from "util/loginUtil";
 import { useGetAccountLocaleMutation } from "redux/service/userSettingsService";
+import { Toast } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
 
 export const LoginPage: React.FC = () => {
    const { t, i18n } = useTranslation();
@@ -41,6 +43,13 @@ export const LoginPage: React.FC = () => {
       dispatch(login(getLoginPayload()));
       const language = await getLocale().unwrap();
       await i18n.changeLanguage(language.languageTag);
+
+      const successToast: Toast = {
+         type: ToastTypes.SUCCESS,
+         text: t("toast.success_login_message"),
+      };
+      dispatch(push(successToast));
+
       navigate("/");
    };
 

@@ -1,5 +1,6 @@
 import { Button } from "components/shared";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { useAppDispatch } from "redux/hooks";
 import { remove } from "redux/slices/toastSlice";

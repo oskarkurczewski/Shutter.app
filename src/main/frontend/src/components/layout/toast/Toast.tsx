@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAppDispatch } from "redux/hooks";
 import { remove } from "redux/slices/toastSlice";
 import styles from "./Toast.module.scss";
@@ -16,14 +16,14 @@ export interface ToastType {
 export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id }) => {
    const dispatch = useAppDispatch();
 
-   let timeout;
+   const timeout = useRef(null);
 
    useEffect(() => {
-      timeout = setTimeout(() => {
+      timeout.current = setTimeout(() => {
          dispatch(remove(id));
       }, 10 * 1000);
 
-      return () => clearTimeout(timeout);
+      return () => clearTimeout(timeout.current);
    }, []);
 
    const container = {
@@ -37,6 +37,13 @@ export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id 
          x: "200%",
          transition: {
             duration: 0.5,
+         },
+      },
+      hidden: {
+         opacity: 0,
+         transition: {
+            duration: 0,
+            delay: 0.4,
          },
       },
    };
@@ -63,15 +70,15 @@ export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id 
          whileHover="hover"
          initial="rest"
          animate="rest"
-         exit="exit"
+         exit={["exit", "hidden"]}
          layout
          className={`${styles.toast} ${className ? className : ""} `}
          tabIndex={-1}
          onMouseEnter={() => {
-            clearTimeout(timeout);
+            clearTimeout(timeout.current);
          }}
          onMouseLeave={() => {
-            timeout = setTimeout(() => {
+            timeout.current = setTimeout(() => {
                dispatch(remove(id));
             }, 10 * 1000);
          }}
