@@ -27,8 +27,9 @@ public class AccountFacade extends FacadeTemplate<Account> {
 
     /**
      * Wyszukuje konto po loginie
+     *
      * @param login login użytkownika do wyszukania
-     * @return  Konto użytkownika o podanym loginie
+     * @return Konto użytkownika o podanym loginie
      * @throws BaseApplicationException gdy wystąpi problem z bazą danych
      */
     @PermitAll
@@ -47,6 +48,7 @@ public class AccountFacade extends FacadeTemplate<Account> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
+
 
     @Override
     protected EntityManager getEm() {
