@@ -36,4 +36,8 @@ public class AccountRegisterDto {
 
     @NotNull(message = "validator.incorrect.re_captcha.null")
     private String reCaptchaToken;
+
+    @NotNull(message = "validator.incorrect.locale.null")
+    @Locale
+    private String locale;
 }

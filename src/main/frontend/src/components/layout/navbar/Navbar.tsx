@@ -51,7 +51,7 @@ export const Navbar = () => {
    return (
       <div
          className={`${styles.layout_bar_navbar} ${
-            expanded && styles.expanded
+            expanded ? styles.expanded : ""
          } ${accessLevel.toLowerCase()}`}
       >
          <div className={styles.logo_container}>
@@ -61,7 +61,9 @@ export const Navbar = () => {
                   alt="shutter logo"
                   className={styles.navbar_logo}
                />
-               {expanded && <p className="section-title">{t("navbar.title")}</p>}
+               <p className={`section-title ${expanded ? "" : styles.hide_text}`}>
+                  {t("navbar.title")}
+               </p>
             </Link>
          </div>
          <div className={styles.bar_button_list_wrapper}>

@@ -36,6 +36,10 @@ public class Specialization {
     @Column(nullable = false, unique = true, length = 64)
     private String name;
 
+    public String getCode() {
+        return this.name;
+    }
+
     /**
      * Lista fotografów specjalizujących się w danej specjalizacji
      */

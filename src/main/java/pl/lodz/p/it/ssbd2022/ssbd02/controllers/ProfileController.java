@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotoEndpoint;
@@ -38,11 +35,17 @@ public class ProfileController extends AbstractController {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Dodaje nowe zdjęcie do galerii obecnie uwierzytelnionego fotografa
+     *
+     * @param addPhotoDto obiekt DTO zawierający informacje potrzebne do dodania zdjęcia
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/photo")
-    public Response addPhotoToGallery(@NotNull @Valid AddPhotoDto addPhotoDto) throws NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
+    public void addPhotoToGallery(@NotNull @Valid AddPhotoDto addPhotoDto) throws BaseApplicationException {
+        repeat(() -> photoEndpoint.addPhotoToGallery(addPhotoDto), photoEndpoint);
     }
 
     @DELETE
@@ -53,8 +56,9 @@ public class ProfileController extends AbstractController {
 
     @POST
     @Path("/photo/{id}/like")
-    public Response likePhoto(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public Response likePhoto(@PathParam("id") Long photoId) throws BaseApplicationException {
+        repeat(() -> photoEndpoint.likePhoto(photoId), photoEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
@@ -87,8 +91,9 @@ public class ProfileController extends AbstractController {
 
     @POST
     @Path("/review/{id}/like")
-    public Response likeReview(@PathParam("id") Long reviewId) throws NoReviewFoundException, NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
+    public Response likeReview(@PathParam("id") Long reviewId) throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.likeReview(reviewId), reviewEndpoint);
+        return Response.accepted().build();
     }
 
     @POST

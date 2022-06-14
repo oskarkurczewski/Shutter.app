@@ -26,10 +26,10 @@ export const BecomePhotographerSettings = () => {
    return (
       <Card id="photographer-settings" className={styles.card_wrapper}>
          <p className={`category-title ${styles.category_title}`}>
-            {t("label.photographer-settings")}
+            {t("settings_page.photographer_settings.title")}
          </p>
          <div className="content">
-            <p>{t("message.info.photographer-settings")}</p>
+            <p>{t("settings_page.photographer_settings.become_message")}</p>
             <div className={styles.buttons}>
                <Button
                   className={styles.button_wrapper}
@@ -38,7 +38,7 @@ export const BecomePhotographerSettings = () => {
                      refreshTokenMutation();
                   }}
                >
-                  {t("label.become-photographer")}
+                  {t("settings_page.photographer_settings.become_confirm")}
                </Button>
             </div>
          </div>

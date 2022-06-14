@@ -109,7 +109,6 @@ public class AuthController {
 
         accountEndpoint.registerSuccessfulLogInAttempt(data.getLogin());
         return Response.ok().entity(new AuthTokenDto(token)).build();
-
     }
 
     /**
