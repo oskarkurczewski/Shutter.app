@@ -42,11 +42,9 @@ export const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
 
    return (
       <div className={styles.auth_card_wrapper}>
-         <img
-            src="/images/auth-image.png"
-            alt="user sidebar"
-            className={styles[currentRole]}
-         />
+         <div className={`${styles.background_wrapper} ${styles[currentRole]}`}>
+            <img src="/images/auth-image.png" alt="user sidebar" />
+         </div>
          <div className={styles.data_wrapper}>
             <img src="/images/avatar.png" alt="user" className={styles.auth_card_photo} />
             <div className={styles.label_wrapper}>
