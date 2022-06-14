@@ -71,7 +71,11 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
          <Button
             onClick={save}
             className={styles.save}
-            disabled={!isRegistered}
+            disabled={
+               !isRegistered ||
+               passwordValidation.valueA !== null ||
+               !passwordValidation.valueB
+            }
             title={!isRegistered && t("edit_account_page.confirm.cant_change")}
          >
             {t("edit_account_page.confirm")}
