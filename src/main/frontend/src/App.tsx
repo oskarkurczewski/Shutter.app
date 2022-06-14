@@ -165,7 +165,10 @@ function App() {
                      />
                   </Route>
 
+                  <Route path="photographers" element={<PhotographersListPage />} />
+
                   <Route path="dashboard" element={<DashboardPage />} />
+                  <Route path="dashboard/:abc/login/:bcd" element={<DashboardPage />} />
 
                   {/* Token-based routes */}
                   <Route
@@ -198,10 +201,6 @@ function App() {
                            <ResetPasswordPage />
                         </ProtectedRoute>
                      }
-                  />
-
-                  <Route path="photographers" element={<PhotographersListPage/>}
-
                   />
                </Route>
             </Routes>

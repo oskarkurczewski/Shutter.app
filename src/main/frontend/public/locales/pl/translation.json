@@ -58,6 +58,24 @@
       "availability_not_found": "TODO",
       "availability_overlap": "TODO"
    },
+   "navigation": {
+      "home": "Strona główna",
+      "login": "Logowanie",
+      "register": "Rejestracja",
+      "request_reset_password": "Zmiana hasła",
+      "profile": "Profil",
+      "settings": "Ustawienia",
+      "users": "Użytkownicy",
+      "create": "Utwórz",
+      "edit": "Edytuj",
+      "info": "Informacje",
+      "dashboard": "Tablica",
+      "change_own_email": "Zmiana adresu email",
+      "unblock_account": "Odblokuj konto",
+      "confirm_registration": "Potwierdź rejestrację",
+      "password_reset": "Zmiana hasła",
+      "photographers": "Fotografowie"
+   },
    "navbar": {
       "title": "shutter.app",
       "buttons": {
