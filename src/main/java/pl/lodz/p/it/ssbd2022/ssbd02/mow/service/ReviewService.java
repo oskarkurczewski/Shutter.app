@@ -28,8 +28,6 @@ public class ReviewService {
     @Inject
     private ReviewFacade reviewFacade;
 
-    @Inject ProfileFacade profileFacade;
-
     @PermitAll
     public Review findById(Long id) throws BaseApplicationException {
         return Optional.ofNullable(reviewFacade.find(id)).orElseThrow(ExceptionFactory::noReviewFoundException);
@@ -41,19 +39,15 @@ public class ReviewService {
     }
 
     /**
-     * Wykonuje operację dodania recenzji wskazanemu fotografowi przez wskaznego użytkownika
+     * Wykonuje operację dodania recenzji fotografowi przez wskaznego użytkownika
      *
      * @param review recenzja, która ma być dodana
-     * @param photographer fotograf, któremu doawana jest recenzja
      *
      * @throws BaseApplicationException Gdy operacja się nie powiedzie
      */
     @RolesAllowed(reviewPhotographer)
-    public void addPhotographerReview(Review review, PhotographerInfo photographer) throws BaseApplicationException {
+    public void addPhotographerReview(Review review) throws BaseApplicationException {
         reviewFacade.persist(review);
-        photographer.setScore(photographer.getScore() + review.getScore());
-        photographer.setReviewCount(photographer.getReviewCount() + 1);
-        profileFacade.update(photographer);
     }
 
     /**

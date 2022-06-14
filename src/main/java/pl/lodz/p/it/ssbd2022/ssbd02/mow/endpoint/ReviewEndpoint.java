@@ -53,7 +53,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
         newReview.setScore(review.getScore());
         newReview.setContent(review.getContent());
         newReview.setLikeCount(0L);
-        reviewService.addPhotographerReview(newReview, photographer);
+        reviewService.addPhotographerReview(newReview);
         profileService.updateScore(photographer, review.getScore());
     }
 
