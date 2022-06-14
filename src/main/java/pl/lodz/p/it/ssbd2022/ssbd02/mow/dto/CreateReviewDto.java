@@ -1,17 +1,17 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
 public class CreateReviewDto {
     @NotNull
-    private final String photographerLogin;
+    private String photographerLogin;
     @NotNull
-    private final String clientLogin;
+    private Long score;
     @NotNull
-    private final Long score;
-    @NotNull
-    private final String content;
+    private String content;
 }

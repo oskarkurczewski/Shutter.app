@@ -14,8 +14,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changePhotographerDescription;
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getPhotographerInfo;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
@@ -29,7 +28,7 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
     }
 
     @Override
-    @RolesAllowed(changePhotographerDescription)
+    @RolesAllowed({changePhotographerDescription, reviewPhotographer})
     public PhotographerInfo update(PhotographerInfo entity) throws BaseApplicationException {
         try {
             return super.update(entity);

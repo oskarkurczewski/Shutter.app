@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
-@Path("profile")
+@Path("/profile")
 public class ProfileController extends AbstractController {
 
     @Inject
@@ -71,8 +71,9 @@ public class ProfileController extends AbstractController {
     @Path("/review")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reviewPhotographer(@NotNull @Valid CreateReviewDto review)
-            throws NoAuthenticatedAccountFound, NoPhotographerFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.reviewPhotographer(review), reviewEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     @DELETE
