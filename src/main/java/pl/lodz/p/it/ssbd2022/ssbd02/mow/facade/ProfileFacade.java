@@ -27,6 +27,13 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
         super(PhotographerInfo.class);
     }
 
+    /**
+     * Rejestruje zmianę encji JPA danych fotografa i autora tych zmian
+     *
+     * @param entity konto, którego dane zostały zmienione
+     *
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @Override
     @RolesAllowed({changePhotographerDescription, reviewPhotographer})
     public PhotographerInfo update(PhotographerInfo entity) throws BaseApplicationException {

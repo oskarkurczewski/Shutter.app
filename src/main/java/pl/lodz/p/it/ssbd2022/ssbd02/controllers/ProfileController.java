@@ -67,6 +67,12 @@ public class ProfileController extends AbstractController {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Dodaje recenzję fotografowi
+     *
+     * @param review obiekt DTO zawierający login fotografa, ocenę w skali od 1 do 10 i słowną opinię
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
     @POST
     @Path("/review")
     @Consumes(MediaType.APPLICATION_JSON)

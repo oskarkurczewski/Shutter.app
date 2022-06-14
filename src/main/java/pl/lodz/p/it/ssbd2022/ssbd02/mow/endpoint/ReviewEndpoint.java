@@ -35,6 +35,11 @@ public class ReviewEndpoint extends AbstractEndpoint {
     @Inject
     private AuthenticationContext authCtx;
 
+    /**
+     * Dodaje recenzje przez zalogowanego użytkownika
+     * @param review obiekt DTO zawierający login fotografa, ocenę w skali od 1 do 10 i słowną opinię
+     * @throws BaseApplicationException w przypadku niepowodzenia operacji
+     */
     @RolesAllowed(reviewPhotographer)
     public void reviewPhotographer(CreateReviewDto review)
             throws BaseApplicationException {
@@ -49,7 +54,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
         newReview.setContent(review.getContent());
         newReview.setLikeCount(0L);
         reviewService.addPhotographerReview(newReview, photographer);
-        profileService.updateScore(photographer, review.getScore(), 1L);
+        profileService.updateScore(photographer, review.getScore());
     }
 
     @RolesAllowed(deleteOwnPhotographerReview)

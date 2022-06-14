@@ -48,6 +48,12 @@ public class ReviewFacade extends FacadeTemplate<Review> {
         }
     }
 
+    /**
+     * Rejestruje stworzenie encji JPA recenzji fotografa
+     *
+     * @param entity obiekt recenzji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @Override
     @RolesAllowed(reviewPhotographer)
     public Review persist(Review entity) throws BaseApplicationException {

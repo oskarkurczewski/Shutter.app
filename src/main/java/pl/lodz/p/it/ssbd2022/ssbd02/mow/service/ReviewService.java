@@ -42,7 +42,10 @@ public class ReviewService {
 
     /**
      * Wykonuje operację dodania recenzji wskazanemu fotografowi przez wskaznego użytkownika
+     *
      * @param review recenzja, która ma być dodana
+     * @param photographer fotograf, któremu doawana jest recenzja
+     *
      * @throws BaseApplicationException Gdy operacja się nie powiedzie
      */
     @RolesAllowed(reviewPhotographer)
