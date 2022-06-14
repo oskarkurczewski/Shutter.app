@@ -14,7 +14,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reviewPhotographer;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
@@ -72,20 +72,6 @@ public class ReviewFacade extends FacadeTemplate<Review> {
     public Review update(Review entity) throws BaseApplicationException {
         try {
             return super.update(entity);
-        } catch (OptimisticLockException ex) {
-            throw ExceptionFactory.OptLockException();
-        } catch (PersistenceException ex) {
-            throw ExceptionFactory.databaseException();
-        } catch (Exception ex) {
-            throw ExceptionFactory.unexpectedFailException();
-        }
-    }
-
-    @Override
-    @RolesAllowed({deleteSomeonesPhotographerReview, deleteOwnPhotographerReview})
-    public void remove(Review entity) throws BaseApplicationException {
-        try {
-            super.remove(entity);
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {

@@ -33,16 +33,9 @@ public class ReviewService {
         return Optional.ofNullable(reviewFacade.find(id)).orElseThrow(ExceptionFactory::noReviewFoundException);
     }
 
-    /**
-     * Wykonuje operację usuniecia recenzji fotografa
-     *
-     * @param review recenzja, która ma być usunieta
-     *
-     * @throws BaseApplicationException Gdy operacja się nie powiedzie
-     */
     @RolesAllowed({deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
-    public void deletePhotographerReview(Review review) throws BaseApplicationException {
-        reviewFacade.remove(review);
+    public void deletePhotographerReview(Review review) {
+        throw new UnsupportedOperationException();
     }
 
     /**

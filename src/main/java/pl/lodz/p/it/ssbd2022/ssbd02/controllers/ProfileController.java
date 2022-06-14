@@ -85,17 +85,15 @@ public class ProfileController extends AbstractController {
     @DELETE
     @Path("/review/{id}")
     public Response deleteOwnPhotographerReview(@PathParam("id") Long reviewId)
-            throws BaseApplicationException {
-        repeat(() -> reviewEndpoint.deleteOwnPhotographerReview(reviewId), reviewEndpoint);
-        return Response.status(Response.Status.OK).build();
+            throws NoAuthenticatedAccountFound, NoReviewFoundException {
+        throw new UnsupportedOperationException();
     }
 
     @DELETE
     @Path("/review/{id}/admin")
     public Response deleteSomeonesPhotographerReview(@PathParam("id") Long reviewId)
-            throws BaseApplicationException {
-        repeat(() -> reviewEndpoint.deleteSomeonesPhotographerReview(reviewId), reviewEndpoint);
-        return Response.status(Response.Status.OK).build();
+            throws NoReviewFoundException {
+        throw new UnsupportedOperationException();
     }
 
     @POST

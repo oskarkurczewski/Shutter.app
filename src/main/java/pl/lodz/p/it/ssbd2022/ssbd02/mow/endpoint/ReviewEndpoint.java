@@ -3,7 +3,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
@@ -16,7 +19,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.ws.rs.NotAllowedException;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -52,46 +54,19 @@ public class ReviewEndpoint extends AbstractEndpoint {
         newReview.setContent(review.getContent());
         newReview.setLikeCount(0L);
         reviewService.addPhotographerReview(newReview);
-        profileService.updateScore(photographer, review.getScore(), 1L);
+        profileService.updateScore(photographer, review.getScore());
     }
 
-    /**
-     * Usuwa recenzje dodana przez zalogowanego użytkownika
-     *
-     * @param reviewId id recenzji fotografa
-     *
-     * @throws BaseApplicationException w przypadku niepowodzenia operacji
-     *
-     */
     @RolesAllowed(deleteOwnPhotographerReview)
     public void deleteOwnPhotographerReview(Long reviewId)
-            throws BaseApplicationException {
-        Review review = reviewService.findById(reviewId);
-        String user = authCtx.getCurrentUsersLogin();
-        Account account = accountService.findByLogin(user);
-        if (!review.getAccount().equals(account)) {
-            throw ExceptionFactory.noAuthenticatedAccountFound();
-        }
-        PhotographerInfo photographer = review.getPhotographer();
-        reviewService.deletePhotographerReview(review);
-        profileService.updateScore(photographer, -review.getScore(), -1L);
+            throws NoAuthenticatedAccountFound, NoReviewFoundException {
+        throw new UnsupportedOperationException();
     }
 
-    /**
-     * Usuwa recenzje dodana przez dowolnego użytkownika
-     *
-     * @param reviewId id recenzji fotografa
-     *
-     * @throws BaseApplicationException w przypadku niepowodzenia operacji
-     *
-     */
     @RolesAllowed(deleteSomeonesPhotographerReview)
     public void deleteSomeonesPhotographerReview(Long reviewId)
-            throws BaseApplicationException {
-        Review review = reviewService.findById(reviewId);
-        PhotographerInfo photographer = review.getPhotographer();
-        reviewService.deletePhotographerReview(review);
-        profileService.updateScore(photographer, -review.getScore(), -1L);
+            throws NoReviewFoundException {
+        throw new UnsupportedOperationException();
     }
 
     /**

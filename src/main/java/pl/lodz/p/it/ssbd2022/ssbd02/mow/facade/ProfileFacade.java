@@ -35,7 +35,7 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @Override
-    @RolesAllowed({changePhotographerDescription, reviewPhotographer, deleteSomeonesPhotographerReview, deleteOwnPhotographerReview})
+    @RolesAllowed({changePhotographerDescription, reviewPhotographer})
     public PhotographerInfo update(PhotographerInfo entity) throws BaseApplicationException {
         try {
             return super.update(entity);
