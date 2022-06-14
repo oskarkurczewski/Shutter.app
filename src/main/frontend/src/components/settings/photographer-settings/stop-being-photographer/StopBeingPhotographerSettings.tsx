@@ -1,5 +1,5 @@
-import styles from "./StopBeingPhotographerSettings.module.scss";
 import React, { useEffect } from "react";
+import styles from "./StopBeingPhotographerSettings.module.scss";
 import { Button, Card } from "components/shared";
 import { useStopBeingPhotographerMutation } from "redux/service/userSettingsService";
 import { useRefreshTokenMutation } from "redux/service/authService";
@@ -11,7 +11,8 @@ import { useTranslation } from "react-i18next";
 export const StopBeingPhotographerSettings = () => {
    const { t } = useTranslation();
 
-   const [stopBeingPhotographerMutation] = useStopBeingPhotographerMutation();
+   const [stopBeingPhotographerMutation, stopBeingPhotographerMutationState] =
+      useStopBeingPhotographerMutation();
    const [refreshTokenMutation, refreshTokenMutationState] = useRefreshTokenMutation();
    const dispatch = useAppDispatch();
 
@@ -33,6 +34,10 @@ export const StopBeingPhotographerSettings = () => {
             <p>{t("settings_page.photographer_settings.warning_message")}</p>
             <div className={styles.buttons}>
                <Button
+                  loading={
+                     stopBeingPhotographerMutationState.isLoading ||
+                     refreshTokenMutationState.isLoading
+                  }
                   className={`${styles.red_button} ${styles.button_wrapper}`}
                   onClick={async () => {
                      await stopBeingPhotographerMutation();

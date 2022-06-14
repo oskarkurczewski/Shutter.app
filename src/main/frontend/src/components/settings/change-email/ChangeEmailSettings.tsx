@@ -16,6 +16,7 @@ export const ChangeEmailSettings = () => {
          </p>
          <p>{t("settings_page.email_settings.details_message")}</p>
          <Button
+            loading={isLoading}
             onClick={() => {
                mutation();
             }}
@@ -23,7 +24,6 @@ export const ChangeEmailSettings = () => {
             {t("settings_page.email_settings.send_link")}
          </Button>
 
-         {isLoading && <p>{t("message.loading.change-email")}</p>}
          {isError && <p>{t("message.error.change-email")}</p>}
          {isSuccess && <p>{t("message.success.change-email")}</p>}
       </Card>

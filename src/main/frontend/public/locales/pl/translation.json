@@ -19,7 +19,8 @@
          "score": "Opinia",
          "review-count": "Liczba Recenzji",
          "longitude": "Dług",
-         "latitude": "Szer"
+         "latitude": "Szer",
+         "loading": "Ładowanie"
       }
    },
    "exception": {

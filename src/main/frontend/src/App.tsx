@@ -22,6 +22,7 @@ import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
 import { PhotographersListPage } from "pages/photographers";
+import { SuspenseLoader } from "components/suspense-loader";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -72,7 +73,7 @@ function App() {
    }, [exp]);
 
    return (
-      <Suspense fallback="loading...">
+      <Suspense fallback={<SuspenseLoader />}>
          <BrowserRouter>
             <Routes>
                <Route path="*" element={<NotFoundPage />} />

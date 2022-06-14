@@ -20,6 +20,7 @@ div.breadcumbs_wrapper {
 
       &.active {
          color: variables.$gray-300;
+         font-weight: bold;
       }
 
       &:not(p):hover {

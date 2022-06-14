@@ -3,7 +3,6 @@ export * from "./button";
 export * from "./card";
 export * from "./checkbox";
 export * from "./dropdown";
-export * from "./form";
 export * from "./modal";
 export * from "./square-button";
 export * from "./table";

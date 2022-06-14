@@ -63,9 +63,6 @@ export const ChangePasswordSettings = () => {
          </div>
 
          {(() => {
-            if (isLoading) {
-               return <p>{t("message.loading.change-password")}</p>;
-            }
             if (equalityError) {
                return (
                   <p className="error">{t("message.error.equality-error-password")}</p>
@@ -88,7 +85,7 @@ export const ChangePasswordSettings = () => {
             }
          })()}
 
-         <Button onClick={onSubmit}>
+         <Button loading={isLoading} onClick={onSubmit}>
             {t("settings_page.password_settings.confirm")}
          </Button>
       </Card>
