@@ -1,19 +1,22 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@AllArgsConstructor
 public class PhotographerReportDto {
     @NotNull
-    private final Long id;
+    private Long id;
     @NotNull
-    private final String accountLogin;
+    private String accountLogin;
     @NotNull
-    private final String photographerLogin;
+    private String photographerLogin;
     @NotNull
-    private final String cause;
+    private String cause;
     @NotNull
-    private final Boolean reviewed;
+    private Boolean reviewed;
+
 }
