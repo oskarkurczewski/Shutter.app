@@ -658,6 +658,14 @@ GRANT SELECT ON TABLE public.photographer_info TO ssbd02mor;
 
 GRANT SELECT, INSERT ON TABLE public.old_password TO ssbd02mok;
 
+GRANT SELECT ON TABLE public.account TO ssbd02mow;
+
+GRANT SELECT ON TABLE public.access_level TO ssbd02mow;
+
+GRANT SELECT ON TABLE public.access_level_assignment TO ssbd02mow;
+
+GRANT SELECT, INSERT, UPDATE ON TABLE public.photographer_info TO ssbd02mow;
+
 GRANT SELECT, INSERT, UPDATE ON TABLE public.photographer_report TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.photographer_report_cause TO ssbd02mow;

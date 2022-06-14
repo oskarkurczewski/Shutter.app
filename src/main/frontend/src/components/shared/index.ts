@@ -9,3 +9,4 @@ export * from "./square-button";
 export * from "./table";
 export * from "./text-input";
 export * from "./validation-box";
+export * from "./icon-text";

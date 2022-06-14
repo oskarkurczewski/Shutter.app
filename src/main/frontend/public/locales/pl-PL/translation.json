@@ -199,5 +199,20 @@
       "modification_date": "Data modyfikacji",
       "modification_author": "Autor modyfikacji",
       "modification_type": "Typ modyfikacji"
+   },
+   "photographer_page": {
+      "title": "Profil Fotografa",
+      "photographer_session_count": "Liczba skończonych rezerwacji",
+      "photographer_photos_count": "Liczba zdjęć fotografa",
+      "photographer_review_count": "Liczba recenzji fotografa",
+      "specializations": "Specjalizacje",
+      "description": "Opis",
+      "reviews": "Recenzje"
+   },
+   "photographer_specialization": {
+      "specialization_studio": "Fotografia studyjna",
+      "specialization_photoreport": "Fotoreportaż",
+      "specialization_product": "Fotografia produktowa",
+      "specialization_landscape": "Fotografia krajobrazowa"
    }
 }

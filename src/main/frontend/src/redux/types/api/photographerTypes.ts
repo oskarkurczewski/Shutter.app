@@ -1,3 +1,14 @@
+import { basicUserInfoResponse } from "./accountTypes";
+
+export interface basicPhotographerInfo extends basicUserInfoResponse {
+   score: number;
+   reviewCount: number;
+   description: string;
+   latitude: number;
+   longitude: number;
+   specializationList: string[];
+}
+
 import internal from "stream";
 
 export interface photographerTableEntry {

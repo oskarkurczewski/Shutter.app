@@ -6,12 +6,9 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.PhotographerInfoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -27,22 +24,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 public class PhotographerService {
 
     @Inject
-    private AuthenticationFacade accountFacade;
-
-    @Inject
     private PhotographerInfoFacade photographerInfoFacade;
-
-    /**
-     * Odnajduje informacje o fotografie na podstawie jego loginu
-     *
-     * @param login Login fotografa dla którego chemy pozyskać informacje
-     * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
-     */
-    @RolesAllowed({getPhotographerInfo, getEnhancedPhotographerInfo, getOwnPhotographerInfo})
-    public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
-        return photographerInfoFacade.findPhotographerByLogin(login);
-    }
-
 
     /**
      * Tworzy pusty obiekt reprezentujący informacje o fotografie lub aktywuje istniejący,
@@ -98,7 +80,7 @@ public class PhotographerService {
      *                             gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                             profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                             niebędący ani administratorem, ani moderatorem
-     * @see BasePhotographerInfoDto
+     * @see BasePhotographerInfoMokDto
      */
     @RolesAllowed(getPhotographerInfo)
     public PhotographerInfo getPhotographerInfo(PhotographerInfo photographerInfo)
