@@ -14,10 +14,10 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class CreateReviewDto {
-    @NotNull
+    @NotNull(message = "validator.incorrect.photographerLogin.null")
     private String photographerLogin;
-    @NotNull
+    @NotNull(message = "validator.incorrect.score.null")
     private Long score;
-    @NotNull
+    @NotNull(message = "validator.incorrect.content.null")
     private String content;
 }
