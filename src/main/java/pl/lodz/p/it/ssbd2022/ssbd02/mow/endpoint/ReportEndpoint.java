@@ -54,26 +54,18 @@ public class ReportEndpoint extends AbstractEndpoint {
     @RolesAllowed(reportReview)
     public void reportReview(CreateReviewReportDto createReviewReportDto)
             throws BaseApplicationException {
-        System.out.println("--------------------------------------------b");
         ReviewReport report = new ReviewReport();
-        System.out.println("--------------------------------------------c");
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
-        System.out.println("--------------------------------------------d");
         Review review = reviewService.findById(createReviewReportDto.getReviewId());
-        System.out.println("--------------------------------------------e");
 
         ReviewReportCause cause;
-        System.out.println("--------------------------------------------f");
         List<ReviewReportCause> causes = reportService.getReviewReportCauses();
-        System.out.println("Z jsona: " + createReviewReportDto.getCause());
-        causes.forEach(e -> System.out.println("POWODU Z BAZY: "+e.getCause()));
         Optional<ReviewReportCause> optionalCause = causes.stream().filter(reviewReportCause -> reviewReportCause.getCause().equals(createReviewReportDto.getCause())).findFirst();
         if (optionalCause.isPresent()) {
             cause = optionalCause.get();
         } else {
             throw ExceptionFactory.noReviewReportCauseFoundException();
         }
-        System.out.println("--------------------------------------------h");
 
         report.setAccount(account);
         report.setReview(review);

@@ -39,7 +39,6 @@ public class ReportController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportReview(@NotNull @Valid CreateReviewReportDto createReviewReportDto)
             throws BaseApplicationException {
-        System.out.println("-------------------------------------------- HELO HALO");
         repeat(() -> reportEndpoint.reportReview(createReviewReportDto), reportEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
