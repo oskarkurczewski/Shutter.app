@@ -30,7 +30,7 @@ public class ReviewReport extends ManagedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @NotNull
+//    @NotNull
     private Long id;
 
     @ManyToOne(optional = false)

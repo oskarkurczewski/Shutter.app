@@ -1,13 +1,15 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
 public class CreateReviewReportDto {
     @NotNull
-    private final Long reviewId;
+    private Long reviewId;
     @NotNull
-    private final String cause;
+    private String cause;
 }

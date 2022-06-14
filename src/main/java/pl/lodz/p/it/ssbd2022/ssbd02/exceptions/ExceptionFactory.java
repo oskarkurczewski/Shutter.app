@@ -101,6 +101,10 @@ public class ExceptionFactory {
         return new NoReviewReportFoundException("exception.review_report_not_found");
     }
 
+    public static NoReviewReportCauseFoundException noReviewReportCauseFoundException() {
+        return new NoReviewReportCauseFoundException("exception.review_report_cause_not_found");
+    }
+
     public static AccountConfirmedException accountConfirmedException() {
         return new AccountConfirmedException("exception.account_already_confirmed");
     }
