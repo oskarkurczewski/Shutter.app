@@ -52,12 +52,12 @@ public class ReservationService {
         // Jeżeli nie ma wolnych terminów, to nie rezerwacja nie może być utworzona.
         // Jeżeli jest więcej niż jeden termin, to nie można stworzyć rezerwacji
         if (availability.size() != 1) {
-            throw ExceptionFactory.invalidReservationTimeException();
+            throw ExceptionFactory.invalidReservationTimeException("exception.no_availability_in_period");
         }
 
         List<Reservation> reservationList = reservationFacade.findInPeriod(newReservation);
         if (reservationList.size() > 0) {
-            throw ExceptionFactory.invalidReservationTimeException();
+            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_already_exists");
         }
 
         reservationFacade.persist(newReservation);

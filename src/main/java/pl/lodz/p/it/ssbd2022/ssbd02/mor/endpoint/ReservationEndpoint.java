@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.MorAccountFacade;
@@ -46,8 +47,12 @@ public class ReservationEndpoint extends AbstractEndpoint {
     @RolesAllowed(reservePhotographer)
     public void createReservation(CreateReservationDto createReservationDto) throws BaseApplicationException {
         Reservation reservation = new Reservation();
+        String login = authenticationContext.getCurrentUsersLogin();
+        if (login.equals(createReservationDto.getPhotographerLogin())) {
+            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_for_self");
+        }
         reservation.setPhotographer(photographerService.findByLogin(createReservationDto.getPhotographerLogin()));
-        reservation.setAccount(morAccountFacade.findByLogin(authenticationContext.getCurrentUsersLogin()));
+        reservation.setAccount(morAccountFacade.findByLogin(login));
         reservation.setTimeFrom(createReservationDto.getFrom());
         reservation.setTimeTo(createReservationDto.getTo());
         reservationService.addReservation(reservation);

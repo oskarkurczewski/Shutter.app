@@ -26,7 +26,7 @@ public class ReservationController extends AbstractController {
             @NotNull @Valid CreateReservationDto createReservationDto
     ) throws BaseApplicationException {
         if (createReservationDto.getFrom().isAfter(createReservationDto.getTo())) {
-            throw ExceptionFactory.invalidReservationTimeException();
+            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_invalid_time_range");
         }
         repeat(() -> reservationEndpoint.createReservation(createReservationDto), reservationEndpoint);
         return Response.status(Response.Status.CREATED).build();
