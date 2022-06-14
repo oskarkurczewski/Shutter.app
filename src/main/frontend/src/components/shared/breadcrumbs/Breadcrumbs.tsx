@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./Breadcumbs.module.scss";
+import styles from "./Breadcrumbs.module.scss";
 import { BsFillCaretLeftFill } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-export const Breadcumbs = () => {
+export const Breadcrumbs = () => {
    const location = useLocation();
    const navigate = useNavigate();
 

@@ -1,4 +1,4 @@
-export * from "./breadcumbs";
+export * from "./breadcrumbs";
 export * from "./button";
 export * from "./card";
 export * from "./checkbox";
