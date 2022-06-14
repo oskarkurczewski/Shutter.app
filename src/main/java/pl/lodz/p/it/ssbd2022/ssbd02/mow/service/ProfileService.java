@@ -32,10 +32,10 @@ public class ProfileService {
      *
      * @throws BaseApplicationException niepowodzenie operacji
      */
-    @RolesAllowed(reviewPhotographer)
-    public void updateScore(PhotographerInfo photographer, Long score) throws BaseApplicationException {
+    @RolesAllowed({reviewPhotographer, deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
+    public void updateScore(PhotographerInfo photographer, Long score, Long reviewCount) throws BaseApplicationException {
         photographer.setScore(photographer.getScore() + score);
-        photographer.setReviewCount(photographer.getReviewCount() + 1);
+        photographer.setReviewCount(photographer.getReviewCount() + reviewCount);
         facade.update(photographer);
     }
 
