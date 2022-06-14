@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./dashboardPage.module.scss";
-import { Button } from "components/shared";
+import { Button, Loader } from "components/shared";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
 
@@ -19,6 +19,7 @@ export const DashboardPage = () => {
                Logout
             </Button>
          )}
+         <Loader />
       </section>
    );
 };
