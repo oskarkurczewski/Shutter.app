@@ -55,16 +55,18 @@ VALUES (0, 1, 1, true, current_timestamp),
        (1, 4, 4, true, current_timestamp)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible, created_at)
+INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible,
+                                      created_at)
 VALUES (1, 3, 5, 2137, 'Zucchini can be seasoned with shredded strawberries, also try soaking the stew with tea.', 10,
-        20, true)
+        20, true, current_timestamp)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
 VALUES (1, 3, 1),
        (1, 3, 2),
        (1, 3, 3),
-       (1, 3, 4) ON CONFLICT DO NOTHING;
+       (1, 3, 4)
+ON CONFLICT DO NOTHING;
 
 -- Dane Przeznaczone Do Testów Aplikacji
 
@@ -72,15 +74,16 @@ INSERT INTO public.photographer_specialization (version, photographer_id, specia
 VALUES (0, 3, 1, 3, current_timestamp)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.reservation (version, photographer_id, account_id, created_by, created_at)
+INSERT INTO public.reservation (version, photographer_id, account_id, time_from, time_to)
 VALUES (0, 3, 4, '2022-06-14 16:00:00.000000', '2022-06-14 16:00:00.000000'),
        (0, 3, 4, '2022-06-13 16:00:00.000000', '2022-06-13 17:00:00.000000')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.availability (version, photographer_id, weekday, "from", "to")
+INSERT INTO public.availability (version, photographer_id, weekday, time_from, time_to)
 VALUES (0, 3, 0, '06:00:00', '23:00:00'),
        (0, 3, 1, '06:00:00', '23:00:00')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.review (version, photographer_id, account_id, score, like_count, content, active, created_at, created_by)
+INSERT INTO public.review (version, photographer_id, account_id, score, like_count, content, active, created_at,
+                           created_by)
 VALUES (0, 3, 4, 3, 0, 'I really appreciate this photographer', true, current_timestamp, 4);

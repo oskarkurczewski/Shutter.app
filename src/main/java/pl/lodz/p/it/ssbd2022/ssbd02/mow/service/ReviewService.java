@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -45,7 +44,6 @@ public class ReviewService {
      * Wykonuje operację dodania recenzji fotografowi przez wskaznego użytkownika
      *
      * @param review recenzja, która ma być dodana
-     *
      * @throws BaseApplicationException Gdy operacja się nie powiedzie
      */
     @RolesAllowed(reviewPhotographer)
