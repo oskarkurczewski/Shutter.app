@@ -75,14 +75,14 @@ export interface changeOwnUserDataRequest {
    surname: string;
 }
 
-export interface changeOwnPasswordRequest {
+export interface changePasswordRequest {
    password: string;
    oldPassword?: string;
 }
 
 export interface changeSomeonesPasswordRequest {
    login: string;
-   data: changeOwnPasswordRequest;
+   data: changePasswordRequest;
 }
 
 export interface changeOwnEmailRequest {

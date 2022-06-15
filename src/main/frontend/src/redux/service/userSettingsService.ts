@@ -1,11 +1,10 @@
 import { api } from "./api";
 import {
-   changeOwnPasswordRequest,
+   changePasswordRequest as changePasswordRequest,
    changeOwnUserDataRequest,
    requestResetPasswordRequest,
    tableAccountChangeLogInfo,
    getOwnAccountChangeLogRequest,
-   changeSomeonesPasswordRequest,
    changeDescriptionRequest,
    GetAccountLocaleResponse,
 } from "redux/types/api/accountTypes";
@@ -30,18 +29,11 @@ const UserSettingsService = api.injectEndpoints({
          }),
       }),
 
-      changeOwnPassword: builder.mutation<void, changeOwnPasswordRequest>({
+      changePassword: builder.mutation<void, changePasswordRequest>({
          query: (data) => ({
             url: "account/change-password",
             method: "PUT",
             body: data,
-         }),
-      }),
-      changeSomeonesPassword: builder.mutation<void, changeSomeonesPasswordRequest>({
-         query: (data) => ({
-            url: `account/${data.login}/change-password`,
-            method: "PUT",
-            body: data.data,
          }),
       }),
 
@@ -97,14 +89,12 @@ const UserSettingsService = api.injectEndpoints({
             body: data,
          }),
       }),
-
    }),
 });
 
 export const {
    useChangeUserDataMutation,
-   useChangeOwnPasswordMutation,
-   useChangeSomeonesPasswordMutation,
+   useChangePasswordMutation,
    useBecomePhotographerMutation,
    useSendResetPasswordLinkMutation,
    useStopBeingPhotographerMutation,

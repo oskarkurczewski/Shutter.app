@@ -2,7 +2,7 @@ import { Button, Card, SquareButton, TextInput } from "components/shared";
 import { useStateWithValidationAndComparison } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useChangeSomeonesPasswordMutation } from "redux/service/userSettingsService";
+import { useChangeSomeonesPasswordMutation } from "redux/service/usersManagementService";
 import { passwordPattern } from "util/regex";
 import styles from "./ChangePassword.module.scss";
 
