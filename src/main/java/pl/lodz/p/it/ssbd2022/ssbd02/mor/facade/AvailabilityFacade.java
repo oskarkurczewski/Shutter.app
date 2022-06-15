@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Availability;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
@@ -12,17 +13,20 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
+import javax.persistence.*;
+import java.util.List;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.entity.WeekDay.getWeekDay;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
-import java.util.List;
-
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
-@Interceptors({LoggingInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MorFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AvailabilityFacade extends FacadeTemplate<Availability> {
     @PersistenceContext(unitName = "ssbd02morPU")
@@ -100,6 +104,26 @@ public class AvailabilityFacade extends FacadeTemplate<Availability> {
                 em.persist(availability);
             }
             em.flush();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @RolesAllowed(reservePhotographer)
+    public List<Availability> findInPeriod(Reservation reservation) throws BaseApplicationException {
+        TypedQuery<Availability> query = getEm().createNamedQuery("availability.findInPeriod", Availability.class);
+        query.setParameter("photographer", reservation.getPhotographer());
+        query.setParameter("from", reservation.getTimeFrom().toLocalTime());
+        query.setParameter("to", reservation.getTimeTo().toLocalTime());
+        query.setParameter("day", getWeekDay(reservation.getTimeFrom()));
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {

@@ -14,7 +14,7 @@ import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
 @Stateless
-@Interceptors({LoggingInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends FacadeTemplate<Account> {
 
@@ -27,8 +27,9 @@ public class AccountFacade extends FacadeTemplate<Account> {
 
     /**
      * Wyszukuje konto po loginie
+     *
      * @param login login użytkownika do wyszukania
-     * @return  Konto użytkownika o podanym loginie
+     * @return Konto użytkownika o podanym loginie
      * @throws BaseApplicationException gdy wystąpi problem z bazą danych
      */
     @PermitAll

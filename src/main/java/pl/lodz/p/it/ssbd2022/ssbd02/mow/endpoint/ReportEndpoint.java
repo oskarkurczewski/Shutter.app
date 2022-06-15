@@ -1,19 +1,24 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-
+import javax.interceptor.Interceptors;
 import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ReportEndpoint extends AbstractEndpoint {
     @RolesAllowed(reportClient)

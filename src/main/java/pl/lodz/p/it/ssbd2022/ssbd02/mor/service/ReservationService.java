@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.AvailabilityFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.PhotographerFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.ReservationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
@@ -25,12 +27,6 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReservationService {
 
-    @Inject
-    private ReservationFacade reservationFacade;
-
-    @Inject
-    private EmailService emailService;
-
     /**
      * Metoda wyszukująca rezerwację z danym numerem ID
      * @param id id rezerwacji
@@ -39,14 +35,44 @@ public class ReservationService {
     @Inject
     private PhotographerFacade photographerFacade;
 
+    @Inject
+    private ReservationFacade reservationFacade;
+
+    @Inject
+    private EmailService emailService;
+
+    @Inject
+    private AvailabilityFacade availabilityFacade;
+
     @PermitAll
     public Reservation findById(Long id) throws BaseApplicationException {
         return Optional.ofNullable(reservationFacade.find(id)).orElseThrow(ExceptionFactory::noReservationFoundException);
     }
 
+    /**
+     * Metoda służąca do tworzenia rezerwacji.
+     * <p>
+     * Jeżeli nie ma wolnych terminów, to nie rezerwacja nie może być utworzona.
+     * Jeżeli jest więcej niż jeden termin, to nie można stworzyć rezerwacji
+     *
+     * @param newReservation Nowa rezerwacja
+     * @throws BaseApplicationException W przypadku gdy nie można stworzyć rezerwacji
+     */
     @RolesAllowed(reservePhotographer)
-    public void addReservation(Reservation newReservation) throws InvalidReservationTimeExcpetion {
-        throw new UnsupportedOperationException();
+    public void addReservation(Reservation newReservation) throws BaseApplicationException {
+        List<Availability> availability = availabilityFacade.findInPeriod(newReservation);
+        // Jeżeli nie ma wolnych terminów, to nie rezerwacja nie może być utworzona.
+        // Jeżeli jest więcej niż jeden termin, to nie można stworzyć rezerwacji
+        if (availability.size() != 1) {
+            throw ExceptionFactory.invalidReservationTimeException("exception.no_availability_in_period");
+        }
+
+        List<Reservation> reservationList = reservationFacade.findInPeriod(newReservation);
+        if (reservationList.size() > 0) {
+            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_already_exists");
+        }
+
+        reservationFacade.persist(newReservation);
     }
 
     /**
@@ -84,7 +110,7 @@ public class ReservationService {
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
-     * @param page strona listy, którą należy pozyskać
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji

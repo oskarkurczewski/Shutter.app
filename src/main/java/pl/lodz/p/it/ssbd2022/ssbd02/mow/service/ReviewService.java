@@ -5,9 +5,9 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.LikeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ReviewFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReviewService {
 
@@ -53,8 +55,9 @@ public class ReviewService {
 
     /**
      * Wykonuje operację polubienia recenzji przez wskaznego użytkownika
+     *
      * @param account konto użytkownika wykonującego polubienie
-     * @param review recenzja mająca być polubiona
+     * @param review  recenzja mająca być polubiona
      * @throws BaseApplicationException Gdy operacja się nie powiedzie
      */
     @RolesAllowed(likeReview)
