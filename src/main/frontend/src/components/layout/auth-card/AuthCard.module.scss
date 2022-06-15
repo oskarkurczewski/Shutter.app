@@ -5,10 +5,33 @@
    display: flex;
    flex-direction: column;
 
-   img {
-      width: 100%;
-      height: 100px;
+   .background_wrapper {
+      display: flex;
       border-radius: 10px;
+      overflow: hidden;
+      isolation: isolate;
+      background-color: variables.$purple-100-transparent;
+
+      img {
+         width: 100%;
+         mix-blend-mode: color-burn;
+      }
+
+      &.CLIENT {
+         background-color: variables.$blue-300;
+      }
+
+      &.PHOTOGRAPHER {
+         background-color: variables.$orange-300;
+      }
+
+      &.MODERATOR {
+         background-color: variables.$green-300;
+      }
+
+      &.ADMINISTRATOR {
+         background-color: variables.$red-300;
+      }
    }
 
    .data_wrapper {

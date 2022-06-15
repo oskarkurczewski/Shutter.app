@@ -1,4 +1,5 @@
 import internal from "stream";
+import { basicUserInfoResponse } from "./accountTypes";
 
 export interface photographerTableEntry {
     login: string,
@@ -15,4 +16,13 @@ export interface photographerTableEntry {
 export interface getPhotographersListRequest {
     pageNo: number,
     recordsPerPage: number,
+}
+
+export interface basicPhotographerInfo extends basicUserInfoResponse {
+   score: number;
+   reviewCount: number;
+   description: string;
+   latitude: number;
+   longitude: number;
+   specializationList: string[];
 }

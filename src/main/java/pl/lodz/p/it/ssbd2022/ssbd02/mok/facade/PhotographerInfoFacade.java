@@ -16,7 +16,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.becomePhotographer;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.stopBeingPhotographer;
 
 
 @Stateless
@@ -80,13 +81,13 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
 
 
     /**
-     * Szuka profilu fotografa
+     * Szuka profilu fotografa. Używane tylko wy przypadku tworzenia konta. Zwyczajne wyszukiwanie konta odbywa się poprzez mow
      *
      * @param login Login użytkownika fotografa
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @see PhotographerInfo
      */
-    @RolesAllowed({getPhotographerInfo, getEnhancedPhotographerInfo, getOwnPhotographerInfo})
+    @RolesAllowed({becomePhotographer, stopBeingPhotographer})
     public PhotographerInfo findPhotographerByLogin(String login) throws BaseApplicationException {
         TypedQuery<PhotographerInfo> query = getEm().createNamedQuery("photographer_info.findByLogin", PhotographerInfo.class);
         query.setParameter("login", login);

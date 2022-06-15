@@ -26,6 +26,20 @@ public class ProfileService {
     }
 
     /**
+     * Metoda aktualizująca wynik i ilość recenzji u fotografa
+     * @param photographer fotograf, którego wynik i ilość recenzji zmieniamy
+     * @param score wynik fotografa
+     *
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @RolesAllowed(reviewPhotographer)
+    public void updateScore(PhotographerInfo photographer, Long score) throws BaseApplicationException {
+        photographer.setScore(photographer.getScore() + score);
+        photographer.setReviewCount(photographer.getReviewCount() + 1);
+        facade.update(photographer);
+    }
+
+    /**
      * Metoda zmieniająca opis wskazanego fotografa
      * @param photographer fotograf, którego opis zmieniamy
      * @param newDescription nowy opis

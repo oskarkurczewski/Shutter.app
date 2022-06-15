@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeAccessInterceptorTemplate;
 
 import javax.inject.Inject;
+
 /**
  * Klasa interceptora pozwalające na automatyczne aktualizowanie użytkowników, którzy ostatnio dokonali zmiany
  * na / lub utworzyli encję JPA

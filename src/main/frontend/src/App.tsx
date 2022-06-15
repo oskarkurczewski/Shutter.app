@@ -22,6 +22,8 @@ import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
 import { PhotographersListPage } from "pages/photographers";
+import { SuspenseLoader } from "components/suspense-loader";
+import { PhotographerProfilePage } from "pages/photographers";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -72,7 +74,7 @@ function App() {
    }, [exp]);
 
    return (
-      <Suspense fallback="loading...">
+      <Suspense fallback={<SuspenseLoader />}>
          <BrowserRouter>
             <Routes>
                <Route path="*" element={<NotFoundPage />} />
@@ -106,6 +108,8 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
+
+                  <Route path=":login/profile" element={<PhotographerProfilePage />} />
 
                   <Route
                      path="settings"
@@ -156,7 +160,10 @@ function App() {
                      />
                   </Route>
 
+                  <Route path="photographers" element={<PhotographersListPage />} />
+
                   <Route path="dashboard" element={<DashboardPage />} />
+                  <Route path="dashboard/:abc/login/:bcd" element={<DashboardPage />} />
 
                   {/* Token-based routes */}
                   <Route

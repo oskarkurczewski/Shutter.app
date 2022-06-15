@@ -31,7 +31,6 @@ public class Review extends ManagedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @NotNull
     private Long id;
 
     /**
@@ -55,7 +54,7 @@ public class Review extends ManagedEntity {
     private Account account;
 
     /**
-     * Ocena przydatności recenzji wystawiona przez innych użytkowników
+     * Ocena fotografa wystawiona przez użytkownika dającego recenzję
      */
     @NotNull
     @Column(name = "score", nullable = false)
@@ -92,5 +91,9 @@ public class Review extends ManagedEntity {
 
     public void addLikeFromUser(Account account) {
         this.likedList.add(account);
+    }
+
+    public void removeLikeFromUser(Account account) {
+        this.likedList.remove(account);
     }
 }

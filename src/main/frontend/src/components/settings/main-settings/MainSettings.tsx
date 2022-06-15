@@ -39,11 +39,11 @@ export const MainSettings = () => {
             />
          </div>
 
-         {isLoading && <p>{t("message.loading.main-settings")}</p>}
          {isError && <p>{t("message.error.main-settings")}</p>}
          {isSuccess && <p>{t("message.success.main-settings")}</p>}
 
          <Button
+            loading={isLoading}
             onClick={() => {
                mutation({
                   data: {
