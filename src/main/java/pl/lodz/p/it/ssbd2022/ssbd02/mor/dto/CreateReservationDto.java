@@ -7,24 +7,25 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Reservation;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@Reservation
 public class CreateReservationDto {
-    @NotNull
+    @NotNull(message = "validator.incorrect.photographer_login.null")
     private String photographerLogin;
-    @NotNull
+    @NotNull(message = "validator.incorrect.time_from.null")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime from;
-    @NotNull
+    @NotNull(message = "validator.incorrect.time_to.null")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime to;
-
 }

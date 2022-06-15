@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
@@ -25,9 +24,6 @@ public class ReservationController extends AbstractController {
     public Response createReservation(
             @NotNull @Valid CreateReservationDto createReservationDto
     ) throws BaseApplicationException {
-        if (createReservationDto.getFrom().isAfter(createReservationDto.getTo())) {
-            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_invalid_time_range");
-        }
         repeat(() -> reservationEndpoint.createReservation(createReservationDto), reservationEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
