@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReport;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReportCause;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -11,8 +12,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -37,7 +37,15 @@ public class PhotographerReportFacade extends FacadeTemplate<PhotographerReport>
 
     @Override
     public PhotographerReport persist(PhotographerReport entity) throws BaseApplicationException {
-        return super.persist(entity);
+        try {
+            return super.persist(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
     }
 
     /**
@@ -45,11 +53,11 @@ public class PhotographerReportFacade extends FacadeTemplate<PhotographerReport>
      *
      * @return lista zgłoszeń fotografów
      */
-    public List<PhotographerReportCause> getAllPhotographerReportCauses() {
+    public List<String> getAllPhotographerReportCauses() {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<PhotographerReportCause> query = criteriaBuilder.createQuery(PhotographerReportCause.class);
+        CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
         Root<PhotographerReportCause> root = query.from(PhotographerReportCause.class);
-        query.select(root);
+        query.select(root.get("cause"));
         return em.createQuery(query).getResultList();
     }
 
@@ -58,14 +66,25 @@ public class PhotographerReportFacade extends FacadeTemplate<PhotographerReport>
      *
      * @param cause ciąg znaków określający powód zgłoszenia
      * @return powód zgłoszenia fotografa
+     * @throws BaseApplicationException wystąpił błąd podczas pobierania powodu zgłoszenia z bazy danych
      */
-    public PhotographerReportCause getPhotographerReportCause(String cause) {
+    public PhotographerReportCause getPhotographerReportCause(String cause) throws BaseApplicationException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<PhotographerReportCause> query = criteriaBuilder.createQuery(PhotographerReportCause.class);
         Root<PhotographerReportCause> root = query.from(PhotographerReportCause.class);
         query.select(root);
         query.where(criteriaBuilder.equal(root.get("cause"), cause));
-        return em.createQuery(query).getSingleResult();
+        try {
+            return em.createQuery(query).getSingleResult();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noPhotographerReportFoundException();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
     }
 
     /**
@@ -75,7 +94,7 @@ public class PhotographerReportFacade extends FacadeTemplate<PhotographerReport>
      * @param reporterLogin     nazwa użytkownika zgłaszającego
      * @return lista zgłoszeń fotografa
      */
-    public List<PhotographerReport> getPhotographerReportByPhotographerLongAndReporterId(String photographerLogin, String reporterLogin) {
+    public List<PhotographerReport> getPhotographerReportByPhotographerLoginAndReporterLogin(String photographerLogin, String reporterLogin) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<PhotographerReport> query = criteriaBuilder.createQuery(PhotographerReport.class);
         Root<PhotographerReport> root = query.from(PhotographerReport.class);

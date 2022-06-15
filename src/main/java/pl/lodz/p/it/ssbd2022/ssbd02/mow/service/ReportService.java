@@ -103,7 +103,7 @@ public class ReportService {
      * @return powód zgłoszenia fotografa
      */
     @RolesAllowed(reportPhotographer)
-    public PhotographerReportCause getPhotographerReportCause(String cause) {
+    public PhotographerReportCause getPhotographerReportCause(String cause) throws BaseApplicationException {
         return photographerReportFacade.getPhotographerReportCause(cause);
     }
 
@@ -113,7 +113,7 @@ public class ReportService {
      * @return lista zgłoszeń fotografów
      */
     @RolesAllowed(reportPhotographer)
-    public List<PhotographerReportCause> getAllPhotographerReportCauses() {
+    public List<String> getAllPhotographerReportCauses() {
         return photographerReportFacade.getAllPhotographerReportCauses();
     }
 
@@ -125,11 +125,11 @@ public class ReportService {
      * @return lista zgłoszeń fotografa
      */
     @RolesAllowed(reportPhotographer)
-    public List<PhotographerReport> getPhotographerReportByPhotographerLongAndReporterId(
+    public List<PhotographerReport> getPhotographerReportByPhotographerLoginAndReporterLogin(
             String photographerLogin,
             String reporterLogin
     ) {
-        return photographerReportFacade.getPhotographerReportByPhotographerLongAndReporterId(
+        return photographerReportFacade.getPhotographerReportByPhotographerLoginAndReporterLogin(
                 photographerLogin,
                 reporterLogin
         );

@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReport;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReportCause;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
@@ -16,7 +15,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -53,16 +51,11 @@ public class ReportEndpoint extends AbstractEndpoint {
     public void reportPhotographer(CreatePhotographerReportDto createPhotographerReportDto)
             throws BaseApplicationException {
         String cause = createPhotographerReportDto.getCause();
-        List<String> causes = reportService
-                .getAllPhotographerReportCauses()
-                .stream()
-                .map(PhotographerReportCause::getCause)
-                .collect(Collectors.toList());
-        if (!causes.contains(cause)) {
+        if (!reportService.getAllPhotographerReportCauses().contains(cause)) {
             throw ExceptionFactory.wrongCauseNameException();
         }
 
-        List<PhotographerReport> reportOld = reportService.getPhotographerReportByPhotographerLongAndReporterId(
+        List<PhotographerReport> reportOld = reportService.getPhotographerReportByPhotographerLoginAndReporterLogin(
                 createPhotographerReportDto.getPhotographerLogin(),
                 authenticationContext.getCurrentUsersLogin()
         );
@@ -122,10 +115,6 @@ public class ReportEndpoint extends AbstractEndpoint {
      */
     @RolesAllowed(reportPhotographer)
     public List<String> getAllPhotographerReportCauses() {
-
-
-        return reportService.getAllPhotographerReportCauses().stream()
-                .map(PhotographerReportCause::getCause)
-                .collect(Collectors.toList());
+        return reportService.getAllPhotographerReportCauses();
     }
 }

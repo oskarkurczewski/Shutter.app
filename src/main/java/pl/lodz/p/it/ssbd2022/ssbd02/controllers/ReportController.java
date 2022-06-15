@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
 
@@ -29,13 +26,36 @@ public class ReportController extends AbstractController {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Punkt końcowy pozwalający zgłosić fotografa
+     *
+     * @param createPhotographerReportDto obiekt DTO zawierający dane zgłoszenia
+     * @throws WrongParameterException  podano nieprawidłowy powód zgłoszenia
+     * @throws CannotChangeException    dany użytkownik zgłosił już danego fotografa
+     * @throws BaseApplicationException wystąpił nieznany błąd podczas dodawania do bazy danych
+     */
     @POST
     @Path("/photographer")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportPhotographer(@NotNull @Valid CreatePhotographerReportDto createPhotographerReportDto)
-            throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        repeat(() -> reportEndpoint.reportPhotographer(createPhotographerReportDto), reportEndpoint);
+        return Response.ok().build();
     }
+
+    /**
+     * Punkt końcowy zwracający listę powodów zgłoszeń fotografa
+     *
+     * @return the all photographer report causes
+     * @throws BaseApplicationException the base application exception
+     */
+    @GET
+    @Path("/photographer/report-causes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getAllPhotographerReportCauses() throws BaseApplicationException {
+        return repeat(() -> reportEndpoint.getAllPhotographerReportCauses(), reportEndpoint);
+    }
+
 
     @POST
     @Path("/review")
