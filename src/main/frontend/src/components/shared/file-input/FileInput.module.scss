@@ -1,0 +1,17 @@
+@use "variables.scss" as variables;
+
+div.text_input_wrapper {
+    label {
+        background-color: variables.$blue-gray-100;
+        color: variables.$gray-300;
+        font-weight: 500;
+        border-radius: 10px;
+        border: none;
+        line-height: 3.6rem;
+        padding: 0.8rem 1rem;
+        outline-color: variables.$blue-gray-300;
+        input {
+            display: none;
+        }
+    }
+}

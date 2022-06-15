@@ -20,7 +20,10 @@
          "review-count": "Liczba Recenzji",
          "longitude": "Dług",
          "latitude": "Szer",
-         "loading": "Ładowanie"
+         "loading": "Ładowanie",
+         "choose_file": "Wybierz Plik",
+         "submit": "Potwierdź",
+         "cancel": "Anuluj"
       }
    },
    "exception": {
@@ -57,7 +60,8 @@
       "reservation_not_found": "TODO",
       "reservation_invalid_time": "TODO",
       "availability_not_found": "TODO",
-      "availability_overlap": "TODO"
+      "availability_overlap": "TODO",
+      "photo_upload_error": "Nie udało się dodać zdjęcia"
    },
    "navigation": {
       "home": "Strona główna",
@@ -75,7 +79,8 @@
       "unblock_account": "Odblokuj konto",
       "confirm_registration": "Potwierdź rejestrację",
       "password_reset": "Zmiana hasła",
-      "photographers": "Fotografowie"
+      "photographers": "Fotografowie",
+      "gallery": "Galeria"
    },
    "navbar": {
       "title": "shutter.app",
@@ -227,5 +232,11 @@
       "modification_date": "Data modyfikacji",
       "modification_author": "Autor modyfikacji",
       "modification_type": "Typ modyfikacji"
+   },
+   "photographer_gallery_page": {
+      "photo_title": "Tytuł zdjęcia",
+      "photo_description": "Opsi zdjęcia",
+      "add_photo": "Dodaj zdjecie",
+      "choose_file": "Wybierz zdjęcie"
    }
 }
