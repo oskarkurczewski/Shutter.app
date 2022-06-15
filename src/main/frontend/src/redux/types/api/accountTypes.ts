@@ -148,6 +148,10 @@ export interface getAccountChangeLogRequest {
    pathParam: string;
 }
 
+export interface changeDescriptionRequest {
+   content: string;
+}
+
 export interface GetAccountLocaleResponse {
    languageTag: Language;
 }

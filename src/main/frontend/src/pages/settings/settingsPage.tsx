@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./settingsPage.module.scss";
 import { HiCamera } from "react-icons/hi";
+import { BsChatSquareTextFill } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import {
@@ -9,6 +10,7 @@ import {
    MainSettings,
    ChangeEmailSettings,
    ChangePasswordSettings,
+   ChangeDescriptionSettings,
 } from "components/settings";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
@@ -43,6 +45,11 @@ export const SettingsPage: React.FC = () => {
          id: "photographer-settings",
          label: t("settings_page.photographer_settings.title"),
       },
+      {
+         icon: <BsChatSquareTextFill/>,
+         id: "change-description",
+         label: t("settings_page.change_description.title")
+      },
    ];
 
    return (
@@ -67,9 +74,11 @@ export const SettingsPage: React.FC = () => {
             <ChangeEmailSettings />
             <ChangePasswordSettings />
             {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
-               <StopBeingPhotographerSettings />
+               <><StopBeingPhotographerSettings />
+               <ChangeDescriptionSettings /> </>
             ) : (
                <BecomePhotographerSettings />
+
             )}
          </div>
       </section>

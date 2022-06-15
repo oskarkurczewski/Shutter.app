@@ -162,6 +162,15 @@
          "become_message": "W każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania rezerwacjami.",
          "resign_confirm": "Przestań być fotografem",
          "become_confirm": "Zostań fotografem"
+      },
+      "change_description": {
+         "title": "Zmiana opisu",
+         "details_message": "Podaj nowy opis Twojego profilu",
+         "label_message": "Nowy opis",
+         "placeholder_message": "Wprowadź opis...",
+         "confirm": "Zatwierdź",
+         "success_message": "Zmiana wykonana pomyślnie",
+         "error_message": "Coś poszło nie tak"
       }
    },
    "edit_user_account_page": {

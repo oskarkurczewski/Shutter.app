@@ -5,6 +5,7 @@ import {
    requestResetPasswordRequest,
    tableAccountChangeLogInfo,
    getOwnAccountChangeLogRequest,
+   changeDescriptionRequest,
    GetAccountLocaleResponse,
 } from "redux/types/api/accountTypes";
 import { EtagData, getListResponse } from "redux/types/api/dataTypes";
@@ -80,6 +81,15 @@ const UserSettingsService = api.injectEndpoints({
             method: "POST",
          }),
       }),
+
+      sendChangeDescriptionLink: builder.mutation<void, changeDescriptionRequest>({
+         query: (data) => ({
+            url: `photographer/change-description`,
+            method: "PUT",
+            body: data,
+         }),
+      }),
+
    }),
 });
 
@@ -91,6 +101,7 @@ export const {
    useStopBeingPhotographerMutation,
    useGetOwnAccountChangeLogMutation,
    useSendChangeEmailLinkMutation,
+   useSendChangeDescriptionLinkMutation,
    useGetAccountLocaleMutation,
    useChangeAccountLocaleMutation,
 } = UserSettingsService;
