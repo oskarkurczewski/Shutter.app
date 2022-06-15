@@ -129,8 +129,8 @@ public class ExceptionFactory {
         return new WrongParameterException("exception.wrong_cause_name");
     }
 
-    public static CannotChangeException alreadyReportedException() {
-        return new CannotChangeException("exception.already_reported");
+    public static CannotChangeException photographerAlreadyReportedException() {
+        return new CannotChangeException("exception.photographer_already_reported");
     }
 
     public static UserNotInGroupException userNotInGroupException() {
