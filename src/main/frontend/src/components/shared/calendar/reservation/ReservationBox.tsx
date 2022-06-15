@@ -1,27 +1,30 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./ReservationBox.module.scss";
+import { useOnClickOutside } from "hooks";
 import { Reservation } from "types/CalendarTypes";
 import { InfoBox } from "../info-box";
-import { SquareButton } from "components/shared/square-button";
-import { FaTrashAlt } from "react-icons/fa";
 
 interface Props {
    reservation: Reservation;
+   fullWidth: boolean;
 }
 
-export const ReservationBox: React.FC<Props> = ({ reservation }) => {
+export const ReservationBox: React.FC<Props> = ({ reservation, fullWidth }) => {
+   const ref = useRef(null);
    const [infoBoxOpen, setInfoBoxOpen] = useState(false);
 
    const offset = reservation.from.hour + reservation.from.minute / 60;
    const height = reservation.to.diff(reservation.from, "minutes").minutes / 60;
 
+   useOnClickOutside(ref, () => setInfoBoxOpen(false));
+
    return (
       <div
-         className={styles.reservation_wrapper}
+         ref={ref}
+         className={`${styles.reservation_wrapper} ${fullWidth ? styles.full_width : ""}`}
          style={{
             top: offset * 48,
          }}
-         onBlur={() => setInfoBoxOpen(false)}
       >
          <div
             className={styles.reservation}
@@ -34,7 +37,7 @@ export const ReservationBox: React.FC<Props> = ({ reservation }) => {
             onKeyDown={() => setInfoBoxOpen(true)}
          />
          {infoBoxOpen && (
-            <InfoBox className={styles.reservation_info_wrapper} isOpen={infoBoxOpen}>
+            <InfoBox className={styles.reservation_info_wrapper}>
                <p className="section-title">Rezerwacja</p>
                <div>
                   <p>{reservation.from.toFormat("cccc - dd.LL.yyyy")}</p>
@@ -44,14 +47,7 @@ export const ReservationBox: React.FC<Props> = ({ reservation }) => {
                      )}`}
                   </p>
                </div>
-               <div className={styles.actions}>
-                  <SquareButton
-                     onClick={() => console.log("Usuwanie")}
-                     className={styles.remove_icon}
-                  >
-                     <FaTrashAlt />
-                  </SquareButton>
-               </div>
+               <div className={styles.actions}></div>
             </InfoBox>
          )}
       </div>

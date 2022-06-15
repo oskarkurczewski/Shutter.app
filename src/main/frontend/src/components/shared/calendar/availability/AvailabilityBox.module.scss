@@ -5,6 +5,10 @@
    width: 35%;
    left: 10%;
 
+   &.full_width {
+      width: 80%;
+   }
+
    .availability {
       border-radius: 5px;
       background-color: #68d243;
@@ -38,10 +42,6 @@
          display: flex;
          width: 100%;
          align-items: flex-end;
-
-         .remove_icon svg {
-            color: variables.$red-300;
-         }
       }
    }
 }

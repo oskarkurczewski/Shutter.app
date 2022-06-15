@@ -1,5 +1,13 @@
 import React, { useCallback, useState } from "react";
 
+interface SelectableProps extends React.HTMLAttributes<HTMLDivElement> {
+   index: number;
+   disabled?: boolean;
+   children?: JSX.Element | JSX.Element[];
+   selectedClassName?: string;
+   className?: string;
+}
+
 export const useSelectable = <T,>({
    objects,
    onSelect,
@@ -37,15 +45,15 @@ export const useSelectable = <T,>({
       clearSelection();
    };
 
-   interface SelectableProps extends React.HTMLAttributes<HTMLDivElement> {
-      index: number;
-      children?: JSX.Element | JSX.Element[];
-      selectedClassName?: string;
-      className?: string;
-   }
-
    const Selectable = useCallback(
-      ({ index, children, selectedClassName, className, ...rest }: SelectableProps) => {
+      ({
+         index,
+         disabled = false,
+         children,
+         selectedClassName,
+         className,
+         ...rest
+      }: SelectableProps) => {
          const selected =
             selectionStart != null &&
             selectionEnd != null &&
@@ -54,18 +62,20 @@ export const useSelectable = <T,>({
 
          return (
             <div
-               className={`${selected ? selectedClassName : ""} ${className}`}
+               className={`${
+                  selected && !disabled ? selectedClassName : ""
+               }  ${className}`}
                onMouseDownCapture={() => {
-                  startSelection(index);
+                  !disabled && startSelection(index);
                }}
                onMouseUpCapture={() => {
-                  endSelection(index);
+                  !disabled && endSelection(index);
                }}
                onMouseOver={() => {
-                  animateSelection(index);
+                  !disabled && animateSelection(index);
                }}
                onFocus={() => {
-                  animateSelection(index);
+                  !disabled && animateSelection(index);
                }}
                {...rest}
             >

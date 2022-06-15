@@ -5,9 +5,19 @@ import { Card } from "components/shared/card";
 import { CalendarHeader } from "../calendar-header";
 import { DateTime } from "luxon";
 import { DayColumn } from "../day-column";
-import { availabilityHours, reservations } from "../dumbData";
+import { AvailabilityHour, Reservation } from "types/CalendarTypes";
 
-export const Calendar = () => {
+interface Props {
+   availability?: AvailabilityHour[];
+   reservations?: Reservation[];
+   selectable?: boolean;
+}
+
+export const Calendar: React.FC<Props> = ({
+   availability,
+   reservations,
+   selectable = true,
+}) => {
    const [selectedWeek, setSelectedWeek] = useState(DateTime.local().startOf("week"));
 
    const hours = useMemo(() => getHourRange(), []);
@@ -44,10 +54,10 @@ export const Calendar = () => {
                      <DayColumn
                         dayData={dayData}
                         key={index}
-                        availabilityList={availabilityHours.filter(
+                        availabilityList={availability?.filter(
                            (day) => day.from.weekday == index
                         )}
-                        reservationsList={reservations.filter((day) => {
+                        reservationsList={reservations?.filter((day) => {
                            return (
                               day.from.startOf("day").toUnixInteger() ==
                               dayData[0].from.toUnixInteger()

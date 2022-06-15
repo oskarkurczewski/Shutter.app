@@ -5,10 +5,9 @@ import styles from "./InfoBox.module.scss";
 interface Props {
    children: JSX.Element | JSX.Element[];
    className?: string;
-   isOpen: boolean;
 }
 
-export const InfoBox: React.FC<Props> = ({ children, className, isOpen }) => {
+export const InfoBox: React.FC<Props> = ({ children, className }) => {
    const boxElement = useRef(null);
 
    const [boxStyle, setBoxStyle] = useState<{
@@ -27,14 +26,12 @@ export const InfoBox: React.FC<Props> = ({ children, className, isOpen }) => {
    }, []);
 
    return (
-      isOpen && (
-         <div
-            className={`${styles.info_box_wrapper} ${className ? className : ""}`}
-            ref={boxElement}
-            style={boxStyle}
-         >
-            {children}
-         </div>
-      )
+      <div
+         className={`${styles.info_box_wrapper} ${className ? className : ""}`}
+         ref={boxElement}
+         style={boxStyle}
+      >
+         {children}
+      </div>
    );
 };

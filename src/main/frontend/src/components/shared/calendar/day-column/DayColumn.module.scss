@@ -5,7 +5,7 @@ $cell-height: 48px;
 .day_column_wrapper {
    width: calc(100% / 7);
    position: relative;
-   padding: 0 0.5rem;
+   margin: 0 0.5rem;
 
    .header {
       position: sticky;
@@ -46,8 +46,10 @@ $cell-height: 48px;
          .half_hour {
             height: calc($cell-height / 2);
 
-            &:hover {
-               background-color: rgba(variables.$blue-gray-200, 0.4);
+            &:not(.disabled) {
+               &:hover {
+                  background-color: rgba(variables.$blue-gray-200, 0.4);
+               }
             }
 
             &.selected {

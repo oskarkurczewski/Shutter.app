@@ -34,15 +34,15 @@ export const availabilityHours: AvailabilityHour[] = [
 
 export const reservations: Reservation[] = [
    {
-      from: DateTime.local(2022, 6, 7, 10, 30),
-      to: DateTime.local(2022, 6, 7, 12, 30),
+      from: DateTime.local(2022, 6, 14, 10, 30),
+      to: DateTime.local(2022, 6, 14, 12, 30),
    },
    {
-      from: DateTime.local(2022, 6, 10, 11, 0),
-      to: DateTime.local(2022, 6, 10, 12, 0),
+      from: DateTime.local(2022, 6, 17, 11, 0),
+      to: DateTime.local(2022, 6, 17, 12, 0),
    },
    {
-      from: DateTime.local(2022, 6, 10, 12, 30),
-      to: DateTime.local(2022, 6, 10, 14, 30),
+      from: DateTime.local(2022, 6, 17, 12, 30),
+      to: DateTime.local(2022, 6, 17, 14, 30),
    },
 ];

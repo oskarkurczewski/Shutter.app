@@ -7,18 +7,22 @@ import { ReservationBox } from "../reservation";
 import { DateTime } from "luxon";
 
 interface Props {
+   selectable?: boolean;
    dayData: HourBox[];
    availabilityList?: AvailabilityHour[];
    reservationsList?: Reservation[];
 }
 
 export const DayColumn: React.FC<Props> = ({
+   selectable,
    dayData,
    availabilityList,
    reservationsList,
 }) => {
    const today = useMemo(() => DateTime.local().startOf("day"), [dayData]);
+   const displayFullWidth = !(availabilityList && reservationsList);
    const dayStart = dayData[0].from;
+
    const labelClass =
       dayStart < today ? styles.before : dayStart.equals(today) && styles.today;
 
@@ -38,18 +42,29 @@ export const DayColumn: React.FC<Props> = ({
                   return (
                      <Selectable
                         index={index}
-                        selectedClassName={styles.selected}
-                        className={styles.half_hour}
+                        disabled={!selectable}
+                        selectedClassName={selectable ? styles.selected : ""}
+                        className={`${styles.half_hour} ${
+                           !selectable ? styles.disabled : ""
+                        }`}
                         key={index}
                      />
                   );
                })}
             </div>
-            {availabilityList.map((availability, index) => (
-               <AvailabilityBox availability={availability} key={index} />
+            {availabilityList?.map((availability, index) => (
+               <AvailabilityBox
+                  availability={availability}
+                  key={index}
+                  fullWidth={displayFullWidth}
+               />
             ))}
-            {reservationsList.map((reservation, index) => (
-               <ReservationBox reservation={reservation} key={index} />
+            {reservationsList?.map((reservation, index) => (
+               <ReservationBox
+                  reservation={reservation}
+                  key={index}
+                  fullWidth={displayFullWidth}
+               />
             ))}
          </div>
       </div>
