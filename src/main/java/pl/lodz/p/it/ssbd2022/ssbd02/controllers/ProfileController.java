@@ -104,7 +104,8 @@ public class ProfileController extends AbstractController {
 
     @POST
     @Path("/review/{id}/unlike")
-    public Response unlikeReview(@PathParam("id") Long reviewId) throws NoReviewFoundException, NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
+    public Response unlikeReview(@PathParam("id") Long reviewId) throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.unlikeReview(reviewId), reviewEndpoint);
+        return Response.accepted().build();
     }
 }

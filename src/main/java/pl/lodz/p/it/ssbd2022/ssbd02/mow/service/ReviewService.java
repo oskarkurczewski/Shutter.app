@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.LikeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ReviewFacade;
 
 import javax.annotation.security.PermitAll;
@@ -56,7 +57,12 @@ public class ReviewService {
     }
 
     @RolesAllowed(unlikeReview)
-    public void unlikeReview(Account account, Review review) {
-        throw new UnsupportedOperationException();
+    public void unlikeReview(Account account, Review review) throws BaseApplicationException {
+        if (review.getLikedList().stream().noneMatch(u -> u.getLogin().equals(account.getLogin()))) {
+            throw ExceptionFactory.alreadyUnlikedException();
+        }
+        review.removeLikeFromUser(account);
+        review.setLikeCount(review.getLikeCount() - 1);
+        reviewFacade.update(review);
     }
 }

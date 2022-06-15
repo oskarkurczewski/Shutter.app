@@ -62,8 +62,16 @@ public class ReviewEndpoint extends AbstractEndpoint {
         reviewService.likeReview(account, review);
     }
 
+    /**
+     * Wykonuje usunięcie polubienia danej recenzji przez zalogowanego użytkownika
+     * @param reviewId  id recenzji mającej przestać być polubioną
+     * @throws BaseApplicationException
+     */
     @RolesAllowed(unlikeReview)
-    public void unlikeReview(Long reviewId) throws NoReviewFoundException, NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
+    public void unlikeReview(Long reviewId) throws BaseApplicationException {
+        Review review = reviewService.findById(reviewId);
+        String user = authCtx.getCurrentUsersLogin();
+        Account account = accountService.findByLogin(user);
+        reviewService.unlikeReview(account, review);
     }
 }

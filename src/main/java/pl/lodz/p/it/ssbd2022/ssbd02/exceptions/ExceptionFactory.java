@@ -152,4 +152,8 @@ public class ExceptionFactory {
     public static LikeException alreadyLikedException() {
         return new LikeException("exception.already_liked");
     }
+
+    public static LikeException alreadyUnlikedException() {
+        return new LikeException("exception.already_unliked");
+    }
 }
