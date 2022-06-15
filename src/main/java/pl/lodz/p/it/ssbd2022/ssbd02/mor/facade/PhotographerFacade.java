@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import java.util.List;
+
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -13,6 +14,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -115,6 +119,55 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
 
         try {
             return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noPhotographerFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    /**
+     * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których imię
+     * lub nazwisko zawiera szukaną frazę
+     *
+     * @param name szukana fraza
+     * @param page strona listy, którą należy pozyskać
+     * @param recordsPerPage ilość krotek fotografów na stronie
+     * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public List<PhotographerInfo> getAllVisiblePhotographersByNameSurname(String name, int page, int recordsPerPage) throws BaseApplicationException {
+       CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+       CriteriaQuery<PhotographerInfo> criteriaQuery = criteriaBuilder.createQuery(PhotographerInfo.class);
+
+       Root<PhotographerInfo> from = criteriaQuery.from(PhotographerInfo.class);
+
+       criteriaQuery.where(
+               criteriaBuilder.and(
+                       criteriaBuilder.equal(from.get("visible"), true),
+                       criteriaBuilder.or(
+                       criteriaBuilder.like(
+                               criteriaBuilder.lower(from.get("account").get("name")), criteriaBuilder.parameter(String.class, "name")
+                       ),
+                       criteriaBuilder.like(
+                               criteriaBuilder.lower(from.get("account").get("surname")), criteriaBuilder.parameter(String.class, "name")
+                       )
+               ))
+
+       );
+
+       TypedQuery<PhotographerInfo> typedQuery = em.createQuery(criteriaQuery);
+       typedQuery.setParameter("name", "%" + name.toLowerCase() + "%");
+        try {
+            return typedQuery
+                    .setFirstResult(recordsPerPage * (page -1))
+                    .setMaxResults(recordsPerPage)
+                    .getResultList();
         } catch (NoResultException e) {
             throw ExceptionFactory.noPhotographerFound();
         } catch (OptimisticLockException ex) {

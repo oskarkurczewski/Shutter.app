@@ -29,4 +29,6 @@ public final class REGEXP {
     public static final String DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{0,4096}";
 
     public static final String LOCALE_PATTERN = "^[a-zA-Z]{2}(?:-[a-zA-Z]{2}){0,2}$";
+
+    public static final String NAME_SURNAME_QUERY_PATTERN = "[a-ząćęńśłóżźA-ZĄĆĘŃŚŁÓŻŹ]{1,63}";
 }

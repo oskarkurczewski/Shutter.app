@@ -105,9 +105,17 @@ public class ReservationService {
         return photographerFacade.countAllPhotographersWithVisibility(true);
     }
 
+    /**
+     * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
+     *
+     * @param page strona listy, którą należy pozyskać
+     * @param recordsPerPage ilość krotek fotografów na stronie
+     * @return stronicowana lista aktywnych fotografów obecnych systemie
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
-    public List<PhotographerInfo> findPhotographerByName(String name) {
-        throw new UnsupportedOperationException();
+    public List<PhotographerInfo> findPhotographerByNameSurname(String name, int page, int recordsPerPage) throws BaseApplicationException {
+        return photographerFacade.getAllVisiblePhotographersByNameSurname(name, page, recordsPerPage);
     }
 
     @PermitAll
