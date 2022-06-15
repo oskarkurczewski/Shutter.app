@@ -15,6 +15,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
