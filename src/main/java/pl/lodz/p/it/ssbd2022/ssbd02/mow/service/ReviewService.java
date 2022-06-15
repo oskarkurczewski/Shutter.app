@@ -1,11 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.LikeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ReviewFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -13,6 +15,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceException;
 
 import java.util.Optional;
 
@@ -35,9 +39,16 @@ public class ReviewService {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Wykonuje operację dodania recenzji fotografowi przez wskaznego użytkownika
+     *
+     * @param review recenzja, która ma być dodana
+     *
+     * @throws BaseApplicationException Gdy operacja się nie powiedzie
+     */
     @RolesAllowed(reviewPhotographer)
-    public void addPhotographerReview(Review review) {
-        throw new UnsupportedOperationException();
+    public void addPhotographerReview(Review review) throws BaseApplicationException {
+        reviewFacade.persist(review);
     }
 
     /**
