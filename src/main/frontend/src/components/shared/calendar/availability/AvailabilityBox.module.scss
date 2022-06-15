@@ -9,16 +9,31 @@
       width: 80%;
    }
 
+   &:nth-of-type(2n) {
+      .availability {
+         background-color: #68d243;
+
+         &:hover {
+            box-shadow: 0 0 0.5rem #68d243;
+         }
+      }
+   }
+
+   &:nth-of-type(2n + 1) {
+      .availability {
+         background-color: #3db812;
+
+         &:hover {
+            box-shadow: 0 0 0.5rem #3db812;
+         }
+      }
+   }
+
    .availability {
       border-radius: 5px;
-      background-color: #68d243;
       transition: box-shadow 200ms ease-in-out;
       width: 100%;
       cursor: pointer;
-
-      &:hover {
-         box-shadow: 0 0 0.5rem #68d243;
-      }
    }
 
    .availability_info_wrapper {

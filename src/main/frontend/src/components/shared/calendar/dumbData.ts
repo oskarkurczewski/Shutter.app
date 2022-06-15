@@ -45,4 +45,8 @@ export const reservations: Reservation[] = [
       from: DateTime.local(2022, 6, 17, 12, 30),
       to: DateTime.local(2022, 6, 17, 14, 30),
    },
+   {
+      from: DateTime.local(2022, 6, 17, 16, 30),
+      to: DateTime.local(2022, 6, 17, 20, 0),
+   },
 ];
