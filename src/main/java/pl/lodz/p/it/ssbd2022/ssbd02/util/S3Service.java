@@ -1,10 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import javax.annotation.PostConstruct;
@@ -63,5 +67,24 @@ public class S3Service {
                 .toString();
 
         return httpsUrl.replaceAll("https", "http");
+    }
+
+    /**
+     * Usuwa z serwisu AWS S3 zdjęcie należące do podanego użytkownika o podanym kluczu
+     * @param owner nazwa użytkownika, którego zdjęcie ma zostać usunięte
+     * @param objectKey klucz zdjęcia, które ma zostać usunięte
+     * @throws NoPhotoFoundException zdjęcie o danym kluczu / właścicielu nie istnieje
+     */
+    public void deleteObject(String owner, String objectKey) throws NoPhotoFoundException {
+        String key = owner + "/" + objectKey + ".png";
+        try {
+            s3.deleteObject(DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build()
+            );
+        } catch (NoSuchKeyException e) {
+            throw ExceptionFactory.noPhotoFoundException();
+        }
     }
 }
