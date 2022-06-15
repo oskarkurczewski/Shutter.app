@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.MorAccountFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -33,7 +33,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
     private ReservationService reservationService;
 
     @Inject
-    private MorAccountFacade morAccountFacade;
+    private AccountService accountService;
 
     @Inject
     private PhotographerService photographerService;
@@ -55,7 +55,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
             throw ExceptionFactory.invalidReservationTimeException("exception.reservation_for_self");
         }
         reservation.setPhotographer(photographerService.getPhotographer(createReservationDto.getPhotographerLogin()));
-        reservation.setAccount(morAccountFacade.findByLogin(login));
+        reservation.setAccount(accountService.findByLogin(login));
         reservation.setTimeFrom(createReservationDto.getFrom());
         reservation.setTimeTo(createReservationDto.getTo());
         reservationService.addReservation(reservation);
@@ -63,6 +63,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
 
     /**
      * Metoda do anulowania rezerwacji przez klienta
+     *
      * @param reservationId id rezerwacji, która ma być anulowana
      */
     @RolesAllowed(cancelReservation)
