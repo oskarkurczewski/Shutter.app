@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeExcpetion;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -45,11 +46,26 @@ public class ReservationController extends AbstractController {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Punkt końcowy pozwalający na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
+     *
+     * @param pageNo            numer strony
+     * @param recordsPerPage    liczba recenzji na stronę
+     * @param order             kolejność sortowania względem kolumny time_from
+     * @param getAll            flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException     niepowodzenie operacji
+     */
     @GET
     @Path("/my-reservations")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReservationListEntryDto> listReservations() {
-        throw new UnsupportedOperationException();
+    public List<ReservationListEntryDto> listReservations(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("all") @DefaultValue("false") Boolean getAll
+    ) throws BaseApplicationException {
+        return reservationEndpoint.listReservations(pageNo, recordsPerPage, order, getAll);
     }
 
     @GET

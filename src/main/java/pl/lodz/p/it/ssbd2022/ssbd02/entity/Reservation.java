@@ -44,11 +44,11 @@ public class Reservation extends ManagedEntity {
     private Account account;
 
     @NotNull
-    @Column(name = "from", nullable = false)
+    @Column(name = "time_from", nullable = false)
     private LocalDateTime from;
 
     @NotNull
-    @Column(name = "to", nullable = false)
+    @Column(name = "time_to", nullable = false)
     private LocalDateTime to;
 
     @Override

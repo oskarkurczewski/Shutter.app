@@ -1,7 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.MorAccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -14,6 +17,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +30,10 @@ public class ReservationEndpoint extends AbstractEndpoint {
 
     @Inject
     private ReservationService reservationService;
+
+    @Inject
+    private MorAccountService accountService;
+
 
     @Inject
     private AuthenticationContext authCtx;
@@ -50,9 +58,30 @@ public class ReservationEndpoint extends AbstractEndpoint {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
+     *
+     * @param page              numer strony
+     * @param recordsPerPage    liczba recenzji na stronę
+     * @param order             kolejność sortowania względem kolumny time_from
+     * @param getAll            flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException     niepowodzenie operacji
+     */
     @RolesAllowed(showReservations)
-    public List<ReservationListEntryDto> listReservations() {
-        throw new UnsupportedOperationException();
+    public List<ReservationListEntryDto> listReservations(int page, int recordsPerPage, String order, Boolean getAll)
+            throws BaseApplicationException {
+        String login = authCtx.getCurrentUsersLogin();
+        Account account = accountService.findByLogin(login);
+
+        List<Reservation> reservations = reservationService.listReservations(account, page, recordsPerPage, order, getAll);
+        List<ReservationListEntryDto> reservationDtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            reservationDtoList.add(new ReservationListEntryDto(reservation));
+        }
+
+        return reservationDtoList;
     }
 
     @RolesAllowed(showJobs)

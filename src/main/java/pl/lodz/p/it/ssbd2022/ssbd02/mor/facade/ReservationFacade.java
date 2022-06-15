@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -7,14 +8,19 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.showReservations;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -50,6 +56,67 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
     public void remove(Reservation entity) throws BaseApplicationException {
         try {
             super.remove(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
+     *
+     * @param account           konto użytkownika, dla którego pobierane są rezerwacje
+     * @param page              numer strony
+     * @param recordsPerPage    liczba recenzji na stronę
+     * @param order             kolejność sortowania względem kolumny time_from
+     * @param getAll            flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException     niepowodzenie operacji
+     */
+    @RolesAllowed(showReservations)
+    public List<Reservation> getReservationsForUser(Account account, int page, int recordsPerPage, String order, Boolean getAll)
+            throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
+        Root<Reservation> table = query.from(Reservation.class);
+        query.select(table);
+
+        try {
+            switch (order) {
+                case "asc": {
+                    query.orderBy(criteriaBuilder.asc(table.get("from")));
+                    break;
+                }
+                case "desc": {
+                    query.orderBy(criteriaBuilder.desc(table.get("from")));
+                    break;
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            throw ExceptionFactory.wrongParameterException();
+        }
+
+        if (getAll) {
+            query.where(criteriaBuilder.equal(table.get("account"), account.getId()));
+        } else {
+            query.where(criteriaBuilder.and(
+                criteriaBuilder.equal(table.get("account"), account.getId()),
+                criteriaBuilder.greaterThan(table.get("from"), LocalDateTime.now())
+            ));
+        }
+
+        try {
+            return em
+                    .createQuery(query)
+                    .setFirstResult(recordsPerPage * (page - 1))
+                    .setMaxResults(recordsPerPage)
+                    .getResultList();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
