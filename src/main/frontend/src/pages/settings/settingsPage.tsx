@@ -61,7 +61,7 @@ export const SettingsPage: React.FC = () => {
                   <a
                      key={index}
                      href={`#${section.id}`}
-                     className={location.hash.includes(section.id) && styles.active}
+                     className={location.hash.includes(section.id) ? styles.active : ""}
                   >
                      {section.icon}
                      <p className="label-bold">{section.label}</p>

@@ -1,9 +1,8 @@
-export * from "./breadcumbs";
+export * from "./breadcrumbs";
 export * from "./button";
 export * from "./card";
 export * from "./checkbox";
 export * from "./dropdown";
-export * from "./form";
 export * from "./modal";
 export * from "./square-button";
 export * from "./table";
@@ -11,3 +10,4 @@ export * from "./text-input";
 export * from "./validation-box";
 export * from "./icon-text";
 export * from "./text-area";
+export * from "./loader";

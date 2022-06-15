@@ -11,7 +11,8 @@ import { useTranslation } from "react-i18next";
 export const BecomePhotographerSettings = () => {
    const { t } = useTranslation();
 
-   const [becomePhotographerMutation] = useBecomePhotographerMutation();
+   const [becomePhotographerMutation, becomePhotographerMutationState] =
+      useBecomePhotographerMutation();
    const [refreshTokenMutation, refreshTokenMutationState] = useRefreshTokenMutation();
    const dispatch = useAppDispatch();
 
@@ -32,6 +33,10 @@ export const BecomePhotographerSettings = () => {
             <p>{t("settings_page.photographer_settings.become_message")}</p>
             <div className={styles.buttons}>
                <Button
+                  loading={
+                     becomePhotographerMutationState.isLoading ||
+                     refreshTokenMutationState.isLoading
+                  }
                   className={styles.button_wrapper}
                   onClick={async () => {
                      await becomePhotographerMutation();
