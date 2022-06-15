@@ -45,19 +45,26 @@ public class ProfileController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/photo")
     public void addPhotoToGallery(@NotNull @Valid AddPhotoDto addPhotoDto) throws BaseApplicationException {
-        photoEndpoint.addPhotoToGallery(addPhotoDto);
+        repeat(() -> photoEndpoint.addPhotoToGallery(addPhotoDto), photoEndpoint);
     }
 
+    /**
+     * Usuwa zdjęcie o podanym identyfikatorze z galerii fotografa
+     *
+     * @param photoId identyfikator zdjęcia, które ma zostać usunięte
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
     @DELETE
     @Path("/photo/{id}")
-    public Response deletePhotoFromGallery(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public void deletePhotoFromGallery(@PathParam("id") Long photoId) throws BaseApplicationException {
+        repeat(() -> photoEndpoint.deletePhotoFromGallery(photoId), photoEndpoint);
     }
 
     @POST
     @Path("/photo/{id}/like")
-    public Response likePhoto(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public Response likePhoto(@PathParam("id") Long photoId) throws BaseApplicationException {
+        repeat(() -> photoEndpoint.likePhoto(photoId), photoEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
@@ -90,13 +97,15 @@ public class ProfileController extends AbstractController {
 
     @POST
     @Path("/review/{id}/like")
-    public Response likeReview(@PathParam("id") Long reviewId) throws NoReviewFoundException, NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
+    public Response likeReview(@PathParam("id") Long reviewId) throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.likeReview(reviewId), reviewEndpoint);
+        return Response.accepted().build();
     }
 
     @POST
     @Path("/review/{id}/unlike")
-    public Response unlikeReview(@PathParam("id") Long reviewId) throws NoReviewFoundException, NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
+    public Response unlikeReview(@PathParam("id") Long reviewId) throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.unlikeReview(reviewId), reviewEndpoint);
+        return Response.accepted().build();
     }
 }

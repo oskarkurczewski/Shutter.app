@@ -26,25 +26,25 @@ default_table_access_method = heap;
 
 CREATE TABLE public.account
 (
-    version       bigint,
-    id            bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
-    login         character varying(64) NOT NULL,
-    email         character varying(64) NOT NULL,
-    password      character varying(60) NOT NULL,
-    name          character varying(64) NOT NULL,
-    surname       character varying(64) NOT NULL,
-    locale        character varying(2)  NOT NULL,
-    two_factor_auth boolean DEFAULT FALSE NOT NULL,
-    registered    boolean DEFAULT false NOT NULL,
-    active        boolean DEFAULT true  NOT NULL,
-    failed_logins integer DEFAULT 0     NOT NULL,
-    last_login    timestamp,
-    created_by    bigint,
-    created_at    timestamp,
-    secret        character varying(36),
-    modified_by   bigint,
-    modified_at   timestamp,
-    last_failed_login timestamp,
+    version              bigint,
+    id                   bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
+    login                character varying(64) NOT NULL,
+    email                character varying(64) NOT NULL,
+    password             character varying(60) NOT NULL,
+    name                 character varying(64) NOT NULL,
+    surname              character varying(64) NOT NULL,
+    locale               character varying(2)  NOT NULL,
+    two_factor_auth      boolean DEFAULT FALSE NOT NULL,
+    registered           boolean DEFAULT false NOT NULL,
+    active               boolean DEFAULT true  NOT NULL,
+    failed_logins        integer DEFAULT 0     NOT NULL,
+    last_login           timestamp,
+    created_by           bigint,
+    created_at           timestamp,
+    secret               character varying(36),
+    modified_by          bigint,
+    modified_at          timestamp,
+    last_failed_login    timestamp,
     last_failed_login_ip varchar(64)
 );
 
@@ -67,7 +67,7 @@ CREATE TABLE public.account_change_log
     secret        character varying(36),
     changed_by    bigint,
     changed_at    timestamp,
-    change_type   character varying (16)
+    change_type   character varying(16)
 );
 
 ALTER TABLE public.account_change_log OWNER TO ssbd02admin;
@@ -142,8 +142,8 @@ CREATE TABLE public.availability
     id              bigint   NOT NULL GENERATED ALWAYS AS IDENTITY,
     photographer_id bigint   NOT NULL,
     weekday         smallint NOT NULL,
-    "from"          time without time zone NOT NULL,
-    "to"            time without time zone NOT NULL,
+    time_from     time without time zone NOT NULL,
+    time_to       time without time zone NOT NULL,
     created_by      bigint,
     created_at      timestamp,
     modified_by     bigint,
@@ -176,7 +176,6 @@ CREATE TABLE public.photo_like
     version     bigint,
     photo_id    bigint NOT NULL,
     account_id  bigint NOT NULL,
-    test_field  bigint NOT NULL,
     created_by  bigint,
     created_at  timestamp,
     modified_by bigint,
@@ -342,14 +341,14 @@ ALTER TABLE public.token OWNER TO ssbd02admin;
 
 CREATE TABLE public.old_password
 (
-    version    bigint,
-    id         bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
-    account_id bigint                NOT NULL,
-    password   character varying(60) NOT NULL,
-    created_by   bigint,
-    created_at   timestamp,
-    modified_by  bigint,
-    modified_at  timestamp
+    version     bigint,
+    id          bigint                NOT NULL GENERATED ALWAYS AS IDENTITY,
+    account_id  bigint                NOT NULL,
+    password    character varying(60) NOT NULL,
+    created_by  bigint,
+    created_at  timestamp,
+    modified_by bigint,
+    modified_at timestamp
 );
 
 ALTER TABLE public.old_password OWNER TO ssbd02admin;
@@ -633,15 +632,15 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.account TO ssbd02mok;
 
 GRANT SELECT ON TABLE public.account TO ssbd02mor;
 
+GRANT SELECT ON TABLE public.account TO ssbd02mow;
+
 GRANT SELECT, INSERT, DELETE ON TABLE public.account_change_log TO ssbd02mok;
 
-GRANT SELECT, INSERT , DELETE ON public.token TO ssbd02mok;
+GRANT SELECT, INSERT, DELETE ON public.token TO ssbd02mok;
 
 GRANT SELECT, INSERT, UPDATE ON TABLE public.account_report TO ssbd02mow;
 
 GRANT SELECT, UPDATE ON TABLE  public.photographer_info TO ssbd02mow;
-
-GRANT SELECT ON TABLE public.account TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.account_report_cause TO ssbd02mow;
 
@@ -654,6 +653,8 @@ GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.photo TO ssbd02mow;
 GRANT SELECT, INSERT, DELETE ON TABLE public.photo_like TO ssbd02mow;
 
 GRANT SELECT, INSERT, UPDATE ON TABLE public.photographer_info TO ssbd02mok;
+
+GRANT SELECT ON TABLE public.photographer_info TO ssbd02mow;
 
 GRANT SELECT ON TABLE public.photographer_info TO ssbd02mor;
 
@@ -668,6 +669,8 @@ GRANT SELECT, INSERT, DELETE ON TABLE public.photographer_specialization TO ssbd
 GRANT SELECT ON TABLE public.photographer_specialization TO ssbd02mor;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.reservation TO ssbd02mor;
+
+GRANT SELECT ON TABLE public.photographer_info TO ssbd02mor;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.review TO ssbd02mow;
 

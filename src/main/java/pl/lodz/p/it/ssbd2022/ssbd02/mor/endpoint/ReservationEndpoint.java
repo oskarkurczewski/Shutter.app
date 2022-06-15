@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -17,12 +18,14 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateful
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ReservationEndpoint extends AbstractEndpoint {
 
@@ -51,16 +54,21 @@ public class ReservationEndpoint extends AbstractEndpoint {
         if (login.equals(createReservationDto.getPhotographerLogin())) {
             throw ExceptionFactory.invalidReservationTimeException("exception.reservation_for_self");
         }
-        reservation.setPhotographer(photographerService.findByLogin(createReservationDto.getPhotographerLogin()));
+        reservation.setPhotographer(photographerService.getPhotographer(createReservationDto.getPhotographerLogin()));
         reservation.setAccount(morAccountFacade.findByLogin(login));
         reservation.setTimeFrom(createReservationDto.getFrom());
         reservation.setTimeTo(createReservationDto.getTo());
         reservationService.addReservation(reservation);
     }
 
+    /**
+     * Metoda do anulowania rezerwacji przez klienta
+     * @param reservationId id rezerwacji, która ma być anulowana
+     */
     @RolesAllowed(cancelReservation)
-    public void cancelReservation(Long reservationId) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    public void cancelReservation(Long reservationId) throws BaseApplicationException {
+        String caller = authenticationContext.getCurrentUsersLogin();
+        reservationService.cancelReservation(caller, reservationId);
     }
 
     @RolesAllowed(discardReservation)

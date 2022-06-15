@@ -37,6 +37,8 @@ public class I18n {
     public static String ACCESS_LEVEL_REVOKED_BODY = "access.level.revoked.body";
     public static String ACCOUNT_ACTIVATED_SUBJECT = "account.activated.subject";
     public static String ACCOUNT_ACTIVATED_BODY = "account.activated.body";
+    public static String RESERVATION_CANCELED = "reservation.canceled.subject";
+    public static String RESERVATION_CANCELED_BODY = "reservation.canceled.body";
 
     @PermitAll
     public String getMessage(String key, Locale locale) {

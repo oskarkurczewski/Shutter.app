@@ -36,8 +36,9 @@ public class ReservationController extends AbstractController {
     @Path("/{id}/cancel")
     public Response cancelReservation(
             @NotNull @PathParam("id") Long reservationId
-    ) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    ) throws BaseApplicationException {
+        repeat(() -> reservationEndpoint.cancelReservation(reservationId), reservationEndpoint);
+        return Response.ok().build();
     }
 
     @DELETE

@@ -3,18 +3,17 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mor.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.PhotographerFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
 
-import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
 
 @Stateless
 @Interceptors(LoggingInterceptor.class)
@@ -22,16 +21,21 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
 public class PhotographerService {
 
     @Inject
-    private PhotographerFacade photographerFacade;
+    PhotographerFacade photographerFacade;
 
     /**
-     * Odnajduje informacje o fotografie na podstawie jego loginu
+     * Metoda zwracająca encję zawierającą informacje o fotografie
      *
-     * @param login Login fotografa dla którego chemy pozyskać informacje
-     * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @param login login fotografa
+     * @return PhotographerInfo
+     * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
      */
-    @RolesAllowed({reservePhotographer})
-    public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
-        return photographerFacade.findPhotographerByLogin(login);
+    @PermitAll
+    public PhotographerInfo getPhotographer(String login) throws NoPhotographerFoundException {
+        try {
+            return photographerFacade.getPhotographerByLogin(login);
+        } catch (BaseApplicationException e) {
+            throw ExceptionFactory.noPhotographerFoundException();
+        }
     }
 }

@@ -16,15 +16,22 @@ import javax.persistence.*;
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class MowAccountFacade extends FacadeTemplate<Account> {
+public class AccountFacade extends FacadeTemplate<Account> {
 
     @PersistenceContext(unitName = "ssbd02mowPU")
     private EntityManager em;
 
-    public MowAccountFacade() {
+    public AccountFacade() {
         super(Account.class);
     }
 
+    /**
+     * Wyszukuje konto po loginie
+     *
+     * @param login login użytkownika do wyszukania
+     * @return Konto użytkownika o podanym loginie
+     * @throws BaseApplicationException gdy wystąpi problem z bazą danych
+     */
     @PermitAll
     public Account findByLogin(String login) throws BaseApplicationException {
         TypedQuery<Account> query = getEm().createNamedQuery("account.findByLogin", Account.class);

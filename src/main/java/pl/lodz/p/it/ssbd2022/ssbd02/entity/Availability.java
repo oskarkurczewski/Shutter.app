@@ -33,7 +33,7 @@ public class Availability extends ManagedEntity {
 
     @Id
     @Column(name = "id", nullable = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
@@ -46,11 +46,11 @@ public class Availability extends ManagedEntity {
     @Enumerated(value = EnumType.ORDINAL)
     private WeekDay day;
 
-    @Column(name = "from")
+    @Column(name = "time_from")
     @NotNull
     private LocalTime from;
 
-    @Column(name = "to")
+    @Column(name = "time_to")
     @NotNull
     private LocalTime to;
 

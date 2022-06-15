@@ -75,3 +75,6 @@ INSERT INTO public.availability (version, photographer_id, weekday, "from", "to"
 VALUES (0, 3, 0, '06:00:00', '23:00:00'),
        (0, 3, 1, '06:00:00', '23:00:00')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO public.review (version, photographer_id, account_id, score, like_count, content, active, created_at, created_by)
+VALUES (0, 3, 4, 3, 0, 'I really appreciate this photographer', true, current_timestamp, 4);
