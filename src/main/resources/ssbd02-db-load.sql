@@ -49,6 +49,20 @@ VALUES (0, 1, 1, true, current_timestamp),
        (1, 3, 4, true, current_timestamp),
        (1, 4, 4, true, current_timestamp) ON CONFLICT DO NOTHING;
 
-INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible)
+INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible, created_at)
 VALUES (1, 3, 5, 2137, 'Zucchini can be seasoned with shredded strawberries, also try soaking the stew with tea.', 10,
-        20, true) ON CONFLICT DO NOTHING;
+        20, true, current_timestamp) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)
+VALUES (1, 3, 1),
+       (1, 3, 2),
+       (1, 3, 3),
+       (1, 3, 4) ON CONFLICT DO NOTHING;
+
+-- Dane Przeznaczone Do Testów Aplikacji
+
+INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id, created_by, created_at)
+VALUES (0, 3, 1, 3, current_timestamp) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.review (version, photographer_id, account_id, score, like_count, content, active, created_at, created_by)
+VALUES (0, 3, 4, 3, 0, 'I really appreciate this photographer', true, current_timestamp, 4);

@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./settingsPage.module.scss";
 import { HiCamera } from "react-icons/hi";
+import { BsChatSquareTextFill } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import {
@@ -9,6 +10,7 @@ import {
    MainSettings,
    ChangeEmailSettings,
    ChangePasswordSettings,
+   ChangeDescriptionSettings,
 } from "components/settings";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
@@ -26,35 +28,40 @@ export const SettingsPage: React.FC = () => {
       {
          icon: <IoSettingsSharp />,
          id: "main-settings",
-         label: t("label.settings"),
+         label: t("settings_page.main_settings.title"),
       },
       {
          icon: <MdEmail />,
          id: "change-email",
-         label: t("label.email"),
+         label: t("settings_page.email_settings.title"),
       },
       {
          icon: <BsKeyFill />,
          id: "change-password",
-         label: t("label.password"),
+         label: t("settings_page.password_settings.title"),
       },
       {
          icon: <HiCamera />,
          id: "photographer-settings",
-         label: t("label.photographer-settings"),
+         label: t("settings_page.photographer_settings.title"),
+      },
+      {
+         icon: <BsChatSquareTextFill/>,
+         id: "change-description",
+         label: t("settings_page.change_description.title")
       },
    ];
 
    return (
       <section className={styles.settings_page_wrapper}>
          <div className={styles.nav}>
-            <p className="category-title">{t("label.settings-short")}</p>
+            <p className="category-title">{t("settings_page.title")}</p>
             <div className={styles.links}>
                {sections.map((section, index) => (
                   <a
                      key={index}
                      href={`#${section.id}`}
-                     className={location.hash.includes(section.id) && styles.active}
+                     className={location.hash.includes(section.id) ? styles.active : ""}
                   >
                      {section.icon}
                      <p className="label-bold">{section.label}</p>
@@ -67,9 +74,11 @@ export const SettingsPage: React.FC = () => {
             <ChangeEmailSettings />
             <ChangePasswordSettings />
             {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
-               <StopBeingPhotographerSettings />
+               <><StopBeingPhotographerSettings />
+               <ChangeDescriptionSettings /> </>
             ) : (
                <BecomePhotographerSettings />
+
             )}
          </div>
       </section>

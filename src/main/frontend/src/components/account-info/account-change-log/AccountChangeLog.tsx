@@ -37,25 +37,25 @@ export const AccountChangeLog: React.FC<Props> = ({ login }) => {
    const [headers, setHeaders] = useState<tableHeader[]>([
       {
          id: "id",
-         label: t("label.tables.account-changelog.id"),
+         label: t("global.label.id"),
          sortable: true,
          sort: "asc",
       },
       {
          id: "changedAt",
-         label: t("label.tables.account-changelog.changed-at"),
+         label: t("user_account_info_page.modification_date"),
          sortable: true,
          sort: null,
       },
       {
          id: "changedBy",
-         label: t("label.tables.account-changelog.changed-by"),
+         label: t("user_account_info_page.modification_author"),
          sortable: true,
          sort: null,
       },
       {
          id: "changeType",
-         label: t("label.tables.account-changelog.change-type"),
+         label: t("user_account_info_page.modification_type"),
          sortable: true,
          sort: null,
       },

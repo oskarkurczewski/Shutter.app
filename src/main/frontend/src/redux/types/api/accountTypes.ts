@@ -1,3 +1,4 @@
+import { Language } from "types/Language";
 import { etag } from "./dataTypes";
 
 interface traceable {
@@ -145,4 +146,12 @@ export interface getOwnAccountChangeLogRequest {
 export interface getAccountChangeLogRequest {
    params: getOwnAccountChangeLogRequest;
    pathParam: string;
+}
+
+export interface changeDescriptionRequest {
+   content: string;
+}
+
+export interface GetAccountLocaleResponse {
+   languageTag: Language;
 }

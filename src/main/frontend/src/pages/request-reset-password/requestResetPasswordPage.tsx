@@ -25,13 +25,12 @@ export const RequestResetPasswordPage = () => {
       <section className={styles.reset_password_page_wrapper}>
          <Card className={styles.card_wrapper}>
             <form>
-               <p className="category-title">{t("label.dont-remember-password")}</p>
-               <p>{t("message.info.email-instruction")}</p>
-               <p>{t("message.info.type-login")}:</p>
+               <p className="category-title">{t("request_reset_password_page.title")}</p>
+               <p>{t("request_reset_password_page.details_message")}</p>
                <TextInput
-                  label={t("label.login-label")}
+                  label={t("global.label.login")}
                   type="login"
-                  placeholder={t("label.login-label")}
+                  placeholder={t("global.label.login")}
                   value={login}
                   onChange={(e) => setLogin(e.target.value)}
                />
@@ -41,7 +40,7 @@ export const RequestResetPasswordPage = () => {
                />
                <div className={styles.footer}>
                   <Button onClick={(e) => onSubmit(e)}>
-                     {t("message.info.send-email-message")}
+                     {t("request_reset_password_page.confirm")}
                   </Button>
                </div>
                {(() => {

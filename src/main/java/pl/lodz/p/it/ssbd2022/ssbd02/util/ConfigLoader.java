@@ -18,12 +18,13 @@ import java.util.Properties;
 @Interceptors({LoggingInterceptor.class})
 public class ConfigLoader {
     private static final String PROPERTIES_TOKEN_FILE = "config.token.properties";
-    private static final String PROPERTIES_2FA_FILE = "config.2fa.properties";
+    private static final String PROPERTIES_2FA_FILE = "config.auth.properties";
     private static final String PROPERTIES_TIMEOUT_FILE = "config.timeout.properties";
     private static final String PROPERTIES_TRANSACTION_FILE = "config.transaction.properties";
     private static final String PROPERTIES_EMAIL_FILE = "config.email.properties";
     private static final String PROPERTIES_RECAPTCHA_FILE = "config.recaptcha.properties";
     private static final String PROPERTIES_ETAG_FILE = "config.etag.properties";
+    private static final String PROPERTIES_AWS_FILE = "config.aws.properties";
 
     private static final String REGISTRATION_CONFIRMATION_TOKEN_LIFETIME = "registration.confirmation.token.lifespan";
     private static final String EMAIL_RESET_TOKEN_LIFETIME = "email.reset.token.lifespan";
@@ -32,6 +33,7 @@ public class ConfigLoader {
     private static final String FORCED_PASSWORD_RESET_TOKEN_LIFETIME = "forced.password.reset.token.lifespan";
     private static final String UNBLOCK_OWN_ACCOUNT_TOKEN_LIFETIME = "unblock.own.account.token.lifespan";
     private static final String PERIOD_2FA = "2fa.period";
+    private static final String ALLOWED_FAILED_ATTEMPTS = "allowed.failed.attempts";
     private static final String EMAIL_API_KEY = "api.key";
     private static final String EMAIL_SENDER_ADDRESS = "email.sender.email";
     private static final String EMAIL_SENDER_NAME = "email.sender.name";
@@ -44,13 +46,16 @@ public class ConfigLoader {
 
     private static final String RECAPTCHA_API_KEY = "recaptcha.api.key";
 
+    private static final String AWS_ACCESS_KEY_ID = "aws.access.key.id";
+    private static final String AWS_SECRET_ACCESS_KEY = "aws.secret.access.key";
+
     private Properties propertiesToken;
-    private Properties properties2Fa;
+    private Properties propertiesAuth;
     private Properties propertiesEmail;
     private Properties propertiesTimeout;
     private Properties propertiesTransaction;
     private Properties propertiesETag;
-
+    private Properties propertiesAws;
     private Properties propertiesRecaptcha;
 
     public ConfigLoader() {
@@ -59,12 +64,13 @@ public class ConfigLoader {
     @PostConstruct
     private void init() {
         propertiesToken = loadProperties(PROPERTIES_TOKEN_FILE);
-        properties2Fa = loadProperties(PROPERTIES_2FA_FILE);
+        propertiesAuth = loadProperties(PROPERTIES_2FA_FILE);
         propertiesEmail = loadProperties(PROPERTIES_EMAIL_FILE);
         propertiesTimeout = loadProperties(PROPERTIES_TIMEOUT_FILE);
         propertiesTransaction = loadProperties(PROPERTIES_TRANSACTION_FILE);
         propertiesRecaptcha = loadProperties(PROPERTIES_RECAPTCHA_FILE);
         propertiesETag = loadProperties(PROPERTIES_ETAG_FILE);
+        propertiesAws = loadProperties(PROPERTIES_AWS_FILE);
     }
 
     private Properties loadProperties(String fileName) {
@@ -122,7 +128,11 @@ public class ConfigLoader {
     }
 
     public int get2FaPeriod() {
-        return Integer.parseInt(properties2Fa.getProperty(PERIOD_2FA));
+        return Integer.parseInt(propertiesAuth.getProperty(PERIOD_2FA));
+    }
+
+    public int getAllowedFailedAttempts() {
+        return Integer.parseInt(propertiesAuth.getProperty(ALLOWED_FAILED_ATTEMPTS));
     }
 
     public String getEmailApiKey() {
@@ -172,5 +182,23 @@ public class ConfigLoader {
      */
     public String getETagSecret() {
         return propertiesETag.getProperty(ETAG_SECRET);
+    }
+
+    /**
+     * Zwraca identyfikator klucza dostępowego AWS
+     *
+     * @return identyfikator klucza dostępowego AWS
+     */
+    public String getAwsAccessKeyId() {
+        return propertiesAws.getProperty(AWS_ACCESS_KEY_ID);
+    }
+
+    /**
+     * Zwraca klucz dostępowy AWS
+     *
+     * @return klucz dostępowy AWS
+     */
+    public String getAwsSecretAccessKey() {
+        return propertiesAws.getProperty(AWS_SECRET_ACCESS_KEY);
     }
 }

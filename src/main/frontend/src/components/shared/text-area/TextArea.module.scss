@@ -1,0 +1,46 @@
+@use "variables.scss" as variables;
+
+div.text_area_wrapper {
+   p {
+      margin-bottom: 5px;
+      color: variables.$gray-300;
+
+      &.required {
+         &::after {
+            content: "*";
+            color: variables.$red-200;
+            margin-left: 2px;
+         }
+      }
+   }
+
+   div {
+      display: flex;
+      border-radius: 10px;
+      box-shadow: variables.$shadow-elevated;
+
+      span,
+      textarea {
+         padding: 0.5rem;
+         font-size: variables.$scale-1;
+      }
+
+      span {
+         background-color: variables.$blue-gray-200;
+      }
+
+      textarea {
+         font-family: 'Roboto', sans-serif;
+         font-size: 1rem;
+         min-height: 43px;
+         min-width: 250px;
+         background-color: variables.$blue-gray-100;
+         border: none;
+         outline: none;
+         padding-left: 1rem;
+         font-weight: bold;
+         color: variables.$gray-300;
+         flex-grow: 1;
+      }
+   }
+}

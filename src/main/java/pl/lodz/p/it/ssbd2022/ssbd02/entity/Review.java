@@ -31,7 +31,6 @@ public class Review extends ManagedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @NotNull
     private Long id;
 
     /**
@@ -55,7 +54,7 @@ public class Review extends ManagedEntity {
     private Account account;
 
     /**
-     * Ocena przydatności recenzji wystawiona przez innych użytkowników
+     * Ocena fotografa wystawiona przez użytkownika dającego recenzję
      */
     @NotNull
     @Column(name = "score", nullable = false)
@@ -72,8 +71,8 @@ public class Review extends ManagedEntity {
     @ManyToMany
     @JoinTable(
             name = "review_like",
-            joinColumns = {@JoinColumn(name = "account_id")},
-            inverseJoinColumns = {@JoinColumn(name = "review_id")}
+            joinColumns = {@JoinColumn(name = "review_id")},
+            inverseJoinColumns = {@JoinColumn(name = "account_id")}
     )
     private List<Account> likedList = new ArrayList<>();
 
@@ -88,5 +87,13 @@ public class Review extends ManagedEntity {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public void addLikeFromUser(Account account) {
+        this.likedList.add(account);
+    }
+
+    public void removeLikeFromUser(Account account) {
+        this.likedList.remove(account);
     }
 }

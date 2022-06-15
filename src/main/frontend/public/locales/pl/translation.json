@@ -1,0 +1,231 @@
+{
+   "global": {
+      "label": {
+         "id": "Id",
+         "login": "Login",
+         "password": "Hasło",
+         "repeat_password": "Powtórz hasło",
+         "current_password": "Bieżące hasło",
+         "2fa_code": "Kod uwierzytelniania",
+         "first_name": "Imię",
+         "second_name": "Nazwisko",
+         "email": "Adres email",
+         "email_short": "Email",
+         "repeat_email": "Powtórz adres email",
+         "active": "Aktywny",
+         "registered": "Zarejestrowany",
+         "name": "Imię",
+         "specializations": "Specjalizacje",
+         "score": "Opinia",
+         "review-count": "Liczba Recenzji",
+         "longitude": "Dług",
+         "latitude": "Szer",
+         "loading": "Ładowanie"
+      }
+   },
+   "exception": {
+      "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
+      "database": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
+      "cannot_change": "Wybrany zasób jest już w tym stanie.",
+      "mail_provider_error": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
+      "identical_login": "Konto o podanym loginie już istnieje.",
+      "identical_email": "Konto o podanym adresie email już istnieje.",
+      "account_not_found": "Nie znaleziono szukanego konta.",
+      "account_unauthenticated": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
+      "photographer_not_found": "Nie znaleziono szukanego fotografa.",
+      "password_mismatch": "Wprowadzone hasło nie pokrywa się ze starym hasłem.",
+      "old_password_not_exists": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
+      "exexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
+      "login_failed": "Podany login lub hasło są niepoprawne.",
+      "2_fa_code_required": "Do zalogowania wymagany jest kod uwierzytelniający.",
+      "account_already_confirmed": "Twoje jest już potwierdzone.",
+      "token_not_found": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
+      "token_expired": "Twoja sesja wygasła. Zaloguj się ponownie.",
+      "token_invalid": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
+      "optlock": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
+      "search_wrong_parameter": "Podano błędne parametry wyszukania.",
+      "user_not_in_group": "Nie posiadasz podanego poziomu dostępu.",
+      "password_not_unique": "Z podanego hasła korzystałeś/aś już niedawno.",
+      "captcha_invalid": "Wprowadzona ReCaptcha jest niepoprawna.",
+      "etag": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
+      "account_list_preferences_not_found": "Nie znaleziono zapisanych preferencji wyszukiwania.",
+      "review_report_not_found": "TODO",
+      "photographer_report_not_found": "TODO",
+      "account_report_not_found": "TODO",
+      "photo_not_found": "TODO",
+      "review_not_found": "TODO",
+      "reservation_not_found": "TODO",
+      "reservation_invalid_time": "TODO",
+      "availability_not_found": "TODO",
+      "availability_overlap": "TODO"
+   },
+   "navigation": {
+      "home": "Strona główna",
+      "login": "Logowanie",
+      "register": "Rejestracja",
+      "request_reset_password": "Zmiana hasła",
+      "profile": "Profil",
+      "settings": "Ustawienia",
+      "users": "Użytkownicy",
+      "create": "Utwórz",
+      "edit": "Edytuj",
+      "info": "Informacje",
+      "dashboard": "Tablica",
+      "change_own_email": "Zmiana adresu email",
+      "unblock_account": "Odblokuj konto",
+      "confirm_registration": "Potwierdź rejestrację",
+      "password_reset": "Zmiana hasła",
+      "photographers": "Fotografowie"
+   },
+   "navbar": {
+      "title": "shutter.app",
+      "buttons": {
+         "login": "Zaloguj się",
+         "homepage": "Strona główna",
+         "photographers": "Fotografowie",
+         "reservations": "Rezerwacje",
+         "settings": "Ustawienia",
+         "users": "Użytkownicy",
+         "reports": "Zgłoszenia",
+         "adduser": "Dodaj użytkownika",
+         "logout": "Wyloguj się"
+      }
+   },
+   "login_page": {
+      "send_2fa_code": "Wyślij kod",
+      "2fa_code": "6-cyfrowy kod",
+      "form_title": "Logowanie",
+      "recover_password": "Przypomnij hasło",
+      "sign_in": "Zaloguj się",
+      "sign_up": "Zarejestruj się",
+      "inviting_message": "Załóż je teraz, to zupełnie darmowe!",
+      "not_user_message": "Nie masz jeszcze konta?",
+      "login_code": "Twój kod do logowania został wysłany.",
+      "loading": "Trwa próba zalogowania..."
+   },
+   "register_page": {
+      "form_title": "Rejestracja",
+      "processing_message": "Wyrażam zgodę na przetwarzanie moich danych osobowych.",
+      "tos_message": "Potwierdzam, że zapoznałem się z regulaminem.",
+      "sign_in": "Zaloguj się",
+      "sign_up": "Zarejestruj się",
+      "validation": {
+         "login_min": "Login musi mieć przynajmniej 3 znaki",
+         "login_max": "Login nie może mieć więcej niż 15 znaków",
+         "email_format": "Adres email musi mieć poprawny format",
+         "password_min": "Hasło musi mieć przynajmniej 8 znaków",
+         "password_max": "Hasło nie może mieć więcej niż 64 znaki",
+         "password_match": "Hasła muszą być ze sobą zgodne",
+         "first_name_empty": "Pole imię nie może być puste",
+         "second_name_empty": "Pole nazwisko nie może być puste",
+         "processing_unchecked": "Należy zaakceptować zgodę na przetwarzanie danych osobowych",
+         "tos_unchecked": "Należy zaakceptować regulamin"
+      }
+   },
+   "user_account_list_page": {
+      "id": "Id",
+      "login": "Login",
+      "email": "Email",
+      "first_name": "Imię",
+      "second_name": "Nazwisko",
+      "access_level": "Poziom dostępu",
+      "registered": "Zarejestrowany",
+      "active": "Aktywny",
+      "actions": "Akcje",
+      "filter": {
+         "active": "Aktywny",
+         "not_active": "Nieaktywny",
+         "registered": "Zarejestrowany",
+         "not_registered": "Niezarejestrowany",
+         "search": "Szukaj",
+         "placeholder": "Imię i nazwisko",
+         "basic_search": "Podstawowe wyszukiwanie",
+         "advanced_search": "Rozszerzone wyszukiwanie"
+      }
+   },
+   "photographer_list_page": {
+      "login": "Login",
+      "email": "Email",
+      "name": "Imię",
+      "surname": "Nazwisko",
+      "specializations": "Specjalizacje",
+      "score": "Opinia",
+      "review-count": "Liczba Recenzji",
+      "longitude": "Dług",
+      "latitude": "Szer"
+   },
+   "create_user_account_page": {
+      "create_account": "Utwórz konto"
+   },
+   "settings_page": {
+      "title": "Ustawienia",
+      "main_settings": {
+         "title": "Ustawienia główne",
+         "confirm": "Zatwierdź",
+         "details_message": "Poniższe zmiany będą widoczne dla fotografa po dokonaniu u niego rezerwacji."
+      },
+      "email_settings": {
+         "title": "Zmień adres email",
+         "details_message": "W przypadku chęci zmiany adresu email zostanie wysłany odpowiedni link na twój aktualny adres email.",
+         "send_link": "Wyślij link"
+      },
+      "password_settings": {
+         "title": "Zmień hasło",
+         "details_message": "W celu zmiany hasła podaj hasło bieżące oraz nowe.",
+         "confirm": "Zatwierdź"
+      },
+      "photographer_settings": {
+         "title": "Ustawienia fotografa",
+         "details_message": "W każdej chwili możesz edytować widoczność swojego profilu fotografa.",
+         "warning_message": "Uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu fotografa.",
+         "become_message": "W każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania rezerwacjami.",
+         "resign_confirm": "Przestań być fotografem",
+         "become_confirm": "Zostań fotografem"
+      },
+      "change_description": {
+         "title": "Zmiana opisu",
+         "details_message": "Podaj nowy opis Twojego profilu",
+         "label_message": "Nowy opis",
+         "placeholder_message": "Wprowadź opis...",
+         "confirm": "Zatwierdź",
+         "success_message": "Zmiana wykonana pomyślnie",
+         "error_message": "Coś poszło nie tak"
+      }
+   },
+   "edit_user_account_page": {
+      "confirm": "Zatwierdź",
+      "access_level": "Poziom dostępu"
+   },
+   "confirm_register_page": {
+      "title": "Rejestracja konta",
+      "success_message": "Pomyślnie zarejestrowano konto"
+   },
+   "change_own_email_page": {
+      "title": "Zmiana adresu email",
+      "email_new": "Nowy adres email",
+      "confirm": "Zatwierdź"
+   },
+   "request_reset_password_page": {
+      "title": "Nie pamiętasz hasła?",
+      "details_message": "Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.",
+      "confirm": "Przypomnij hasło"
+   },
+   "reset_password_page": {
+      "title": "Zresetuj hasło",
+      "details_message": "Aby dokończyć procedurę resetowania hasła wpisz nowe hasło dla twojego konta.",
+      "password-new": "Nowe hasło",
+      "confirm": "Zmień hasło"
+   },
+   "unblock_account_page": {
+      "title": "Odblokowywanie konta"
+   },
+   "user_account_info_page": {
+      "created_at": "Utworzone o",
+      "created_by": "Utworzone przez",
+      "modified_at": "Zmodyfikowane o",
+      "last-modified-by": "Zmodyfikowane przez",
+      "modification_date": "Data modyfikacji",
+      "modification_author": "Autor modyfikacji",
+      "modification_type": "Typ modyfikacji"
+   }
+}

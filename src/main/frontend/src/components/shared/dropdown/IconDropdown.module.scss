@@ -1,0 +1,75 @@
+@use "variables.scss" as variables;
+
+.container {
+   display: flex;
+   flex-direction: column;
+   position: relative;
+   align-items: flex-end;
+
+   button {
+      color: variables.$gray-300;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      column-gap: 5px;
+      border: none;
+
+      &:hover {
+         cursor: pointer;
+      }
+
+      span {
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         user-select: none;
+      }
+   }
+
+   .option_wrapper {
+      background-color: variables.$blue-gray-100;
+
+      svg {
+         font-size: 1.5rem;
+      }
+
+      &:hover {
+         background-color: variables.$blue-gray-200;
+      }
+   }
+
+   .option_list {
+      display: flex;
+      flex-direction: column;
+      row-gap: 5px;
+      align-items: flex-end;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: variables.$white;
+      box-shadow: variables.$shadow-regular;
+      padding: 0.7rem 0.5rem;
+      border-radius: 7px;
+      border: 0.5px solid variables.$blue-gray-100;
+      width: fit-content;
+      max-width: 130px;
+
+      .option {
+         width: 100%;
+         justify-content: flex-end;
+         background: none;
+         padding: 0.7rem 0.5rem;
+
+         &:hover,
+         &:focus {
+            background-color: variables.$blue-gray-100;
+         }
+
+         &:focus {
+            outline: 2px solid variables.$gray-200;
+         }
+      }
+   }
+}

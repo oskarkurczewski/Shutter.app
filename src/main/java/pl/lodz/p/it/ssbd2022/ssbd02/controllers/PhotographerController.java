@@ -3,17 +3,17 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedPhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.PhotographerEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,11 +22,13 @@ import javax.ws.rs.core.Response;
 public class PhotographerController extends AbstractController {
 
     @Inject
-    PhotographerEndpoint photographerEndpoint;
+    private PhotographerEndpoint photographerEndpoint;
 
     @Inject
-    SignatureVerifier signatureVerifier;
+    private SignatureVerifier signatureVerifier;
 
+    @Inject
+    private ProfileEndpoint profileEndpoint;
     /**
      * Punkt końcowy szukający fotografa
      *
@@ -58,9 +60,9 @@ public class PhotographerController extends AbstractController {
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
-        DetailedPhotographerInfoDto detailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getEnhancedPhotographerInfo(login), photographerEndpoint);
-        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedPhotographerInfoDto));
-        return Response.status(Response.Status.ACCEPTED).entity(detailedPhotographerInfoDto).tag(tag).build();
+        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getEnhancedPhotographerInfo(login), photographerEndpoint);
+        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(DetailedPhotographerInfoDto));
+        return Response.status(Response.Status.ACCEPTED).entity(DetailedPhotographerInfoDto).tag(tag).build();
 
     }
 
@@ -75,8 +77,23 @@ public class PhotographerController extends AbstractController {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhotographerInfo() throws BaseApplicationException {
-        DetailedPhotographerInfoDto detailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
-        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedPhotographerInfoDto));
-        return Response.status(Response.Status.ACCEPTED).entity(detailedPhotographerInfoDto).tag(tag).build();
+        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
+        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(DetailedPhotographerInfoDto));
+        return Response.status(Response.Status.ACCEPTED).entity(DetailedPhotographerInfoDto).tag(tag).build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający uwierzytelnionemu fotografowi zmienić opis na swoim profilu
+     * @param changeDescriptionDto obiekt DTO zawierający nowy opis
+     * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
+     * @throws NoAuthenticatedAccountFound Gdy użytkownik nie jest uwierzytelniony
+     * @throws BaseApplicationException gdy aktualizacja opisu się nie powiedzie
+     */
+    @PUT
+    @Path("/change-description")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editDescription(@NotNull @Valid ChangeDescriptionDto changeDescriptionDto) throws BaseApplicationException {
+        repeat(() -> profileEndpoint.changeDescription(changeDescriptionDto), profileEndpoint);
+        return Response.accepted().build();
     }
 }

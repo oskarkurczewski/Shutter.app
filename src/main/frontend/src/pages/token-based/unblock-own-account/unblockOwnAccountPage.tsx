@@ -19,7 +19,7 @@ export const UnblockOwnAccountPage = () => {
 
    return (
       <Card className={styles.unblock_own_account_wrapper}>
-         <p className="category-title">{t("label.unblock-account")}</p>
+         <p className="category-title">{t("unblock_account_page.title")}</p>
          {(() => {
             if (isLoading) {
                return <p>{t("message.loading.unblock-account")}</p>;

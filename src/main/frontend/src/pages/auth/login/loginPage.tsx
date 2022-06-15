@@ -8,9 +8,10 @@ import { LoginRequest } from "redux/types/api/authTypes";
 import { useTranslation } from "react-i18next";
 import { Button, Card, TextInput } from "components/shared";
 import { getLoginPayload } from "util/loginUtil";
+import { useGetAccountLocaleMutation } from "redux/service/userSettingsService";
 
 export const LoginPage: React.FC = () => {
-   const { t } = useTranslation();
+   const { t, i18n } = useTranslation();
 
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ export const LoginPage: React.FC = () => {
 
    const [loginMutation, loginMutationState] = useLoginMutation();
    const [sendTwoFACodeMutation, sendTwoFACodeMutationState] = useSendTwoFACodeMutation();
+   const [getLocale] = useGetAccountLocaleMutation();
 
    const handleChange = ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
@@ -37,6 +39,8 @@ export const LoginPage: React.FC = () => {
       const token = await loginMutation(formState).unwrap();
       localStorage.setItem("token", token.token);
       dispatch(login(getLoginPayload()));
+      const language = await getLocale().unwrap();
+      await i18n.changeLanguage(language.languageTag);
       navigate("/");
    };
 
@@ -46,8 +50,8 @@ export const LoginPage: React.FC = () => {
             <div className={styles.aside}>
                <img src="images/logo_new_black.svg" alt="logo" />
                <div>
-                  <p className="section-title">{t("message.info.login-title")}</p>
-                  <p>{t("message.info.login-register")}</p>
+                  <p className="section-title">{t("login_page.not_user_message")}</p>
+                  <p>{t("login_page.inviting_message")}</p>
                </div>
                <Button
                   className={styles.button_wrapper}
@@ -55,61 +59,64 @@ export const LoginPage: React.FC = () => {
                      navigate("/register");
                   }}
                >
-                  {t("label.register")}
+                  {t("login_page.sign_up")}
                </Button>
             </div>
             <form onSubmit={onSubmit}>
-               <p className="section-title">{t("label.login-title")}</p>
+               <p className="section-title">{t("login_page.form_title")}</p>
                <TextInput
-                  label={t("label.login-label")}
-                  placeholder={t("label.login-label")}
+                  label={t("global.label.login")}
+                  placeholder={t("global.label.login")}
                   type="text"
                   name="login"
                   value={formState.login}
                   onChange={handleChange}
                />
                <TextInput
-                  label={t("label.password")}
+                  label={t("global.label.password")}
                   type="password"
-                  placeholder={t("label.password")}
+                  placeholder={t("global.label.password")}
                   value={formState.password}
                   name="password"
                   onChange={handleChange}
                />
                <div className={styles.two_factory_auth}>
                   <TextInput
-                     label={t("label.code")}
-                     placeholder={t("label.code-short")}
+                     label={t("global.label.2fa_code")}
+                     placeholder={t("login_page.2fa_code")}
                      value={formState.twoFACode}
                      name="twoFACode"
                      onChange={handleChange}
                   />
-                  <Button onClick={onSendTwoFA}>
-                     {t("message.info.login-send-code")}
-                  </Button>
+                  <Button onClick={onSendTwoFA}>{t("login_page.send_2fa_code")}</Button>
                </div>
 
                <p>
                   {(loginMutationState.isLoading ||
                      sendTwoFACodeMutationState.isLoading) &&
-                     t("message.loading.login")}
+                     t("login_page.loading")}
                </p>
 
                {loginMutationState.isError && (
-                  <p className="message">{t("message.error.login-credentials")}</p>
+                  <p className="message">{t("exception.login_failed")}</p>
                )}
                {sendTwoFACodeMutationState.isError && (
-                  <p className="message">{t("label.message.error.login-code")}</p>
+                  <p className="message">{t("exception.2_fa_code_required")}</p>
                )}
                {sendTwoFACodeMutationState.isSuccess && (
-                  <p>{t("message.success.login-code")}</p>
+                  <p>{t("exception.login_code")}</p>
                )}
 
                <div className={styles.footer}>
                   <Link to={"/request-reset-password"}>
-                     {t("label.forgot-password")}?
+                     {t("login_page.recover_password")}
                   </Link>
-                  <Button onClick={(e) => onSubmit(e)}>{t("label.login")}</Button>
+                  <Button
+                     loading={loginMutationState.isLoading}
+                     onClick={(e) => onSubmit(e)}
+                  >
+                     {t("login_page.sign_in")}
+                  </Button>
                </div>
             </form>
          </Card>
