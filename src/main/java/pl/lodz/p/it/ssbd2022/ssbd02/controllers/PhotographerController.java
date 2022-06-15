@@ -3,11 +3,12 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeSpecializationsDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
 
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ public class PhotographerController extends AbstractController {
 
     @Inject
     private ProfileEndpoint profileEndpoint;
+
     /**
      * Punkt końcowy szukający fotografa
      *
@@ -84,10 +86,11 @@ public class PhotographerController extends AbstractController {
 
     /**
      * Punkt końcowy pozwalający uwierzytelnionemu fotografowi zmienić opis na swoim profilu
+     *
      * @param changeDescriptionDto obiekt DTO zawierający nowy opis
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound Gdy użytkownik nie jest uwierzytelniony
-     * @throws BaseApplicationException gdy aktualizacja opisu się nie powiedzie
+     * @throws BaseApplicationException    gdy aktualizacja opisu się nie powiedzie
      */
     @PUT
     @Path("/change-description")
@@ -96,4 +99,32 @@ public class PhotographerController extends AbstractController {
         repeat(() -> profileEndpoint.changeDescription(changeDescriptionDto), profileEndpoint);
         return Response.accepted().build();
     }
+
+    /**
+     * Punkt końcowy pozwalający uwierzytelnionemu fotografowi zmienić swoje specjalizacje
+     *
+     * @param changeSpecializationsDto obiekt dto zawierający specjalizacje do dodania i/lub usunięcia
+     * @throws BaseApplicationException operacja sie nie udała
+     * @see ChangeSpecializationsDto
+     */
+    @PUT
+    @Path("/change-specializations")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editSpecializations(@NotNull @Valid ChangeSpecializationsDto changeSpecializationsDto) throws BaseApplicationException {
+        repeat(() -> profileEndpoint.changeSpecializations(changeSpecializationsDto), profileEndpoint);
+        return Response.accepted().build();
+    }
+
+    /**
+     * Punkt końcowy pozwalający pobrać listę wszystkich dostępnych specjalizacji
+     *
+     * @return lista specjalizacji
+     */
+    @GET
+    @Path("/get-specializations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSpecializationList() throws BaseApplicationException {
+        return Response.ok(repeat(() -> profileEndpoint.getSpecializationList(), profileEndpoint)).build();
+    }
+
 }

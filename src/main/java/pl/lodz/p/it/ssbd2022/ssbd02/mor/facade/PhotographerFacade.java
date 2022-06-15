@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import java.util.List;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -15,6 +14,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
 
@@ -31,6 +31,7 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
 
     /**
      * Metoda zwracająca encję zawierającą informacje o fotografie
+     *
      * @param login login fotografa
      * @return PhotographerInfo
      * @throws BaseApplicationException
@@ -43,16 +44,12 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            System.out.println("not found");
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
-            System.out.println("opt lock");
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
-            System.out.println("persistence");
             throw ExceptionFactory.databaseException();
         } catch (Exception ex) {
-            System.out.println("exception");
             throw ExceptionFactory.unexpectedFailException();
         }
     }

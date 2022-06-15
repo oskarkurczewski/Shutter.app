@@ -156,4 +156,21 @@ public class ExceptionFactory {
     public static LikeException alreadyUnlikedException() {
         return new LikeException("exception.already_unliked");
     }
+
+
+    public static CannotChangeException photographerAlreadySpecializedException() {
+        return new CannotChangeException("exception.photographer_already_specialized");
+    }
+
+    public static CannotChangeException photographerNotSpecializedException() {
+        return new CannotChangeException("exception.photographer_not_specialized");
+    }
+
+    public static WrongParameterException specializationNotFoundException() {
+        return new WrongParameterException("exception.specialization_not_found");
+    }
+
+    public static WrongParameterException specializationRepeatedException() {
+        return new WrongParameterException("exception.specialization_repeated");
+    }
 }

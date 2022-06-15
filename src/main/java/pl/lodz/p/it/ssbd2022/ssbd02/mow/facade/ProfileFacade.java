@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
@@ -13,6 +14,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -31,7 +36,6 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
      * Rejestruje zmianę encji JPA danych fotografa i autora tych zmian
      *
      * @param entity konto, którego dane zostały zmienione
-     *
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @Override
@@ -87,4 +91,20 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
+
+    /**
+     * Pobiera listę wszystkich dostępnych specjalizacji
+     *
+     * @return lista specjalizacji
+     */
+    @RolesAllowed(changeSpecializations)
+    public List<Specialization> getSpecializationList() {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Specialization> query = criteriaBuilder.createQuery(Specialization.class);
+        Root<Specialization> root = query.from(Specialization.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
+    }
+
+
 }
