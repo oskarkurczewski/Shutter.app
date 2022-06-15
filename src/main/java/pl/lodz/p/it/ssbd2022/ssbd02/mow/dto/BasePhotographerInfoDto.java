@@ -1,10 +1,13 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
+package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Klasa DTO wykorzystywana przy zwracaniu informacji o fotografie w punkcie końcowym typu GET
@@ -29,7 +32,8 @@ public class BasePhotographerInfoDto extends BaseAccountInfoDto {
     @NotNull
     private final Double longitude;
 
-    
+    @NotNull
+    private List<String> specializationList = new ArrayList<>();
 
 
     /**
@@ -44,5 +48,6 @@ public class BasePhotographerInfoDto extends BaseAccountInfoDto {
         description = photographerInfo.getDescription();
         latitude = photographerInfo.getLatitude();
         longitude = photographerInfo.getLongitude();
+        photographerInfo.getSpecializationList().forEach(specialization -> specializationList.add(specialization.getName()));
     }
 }

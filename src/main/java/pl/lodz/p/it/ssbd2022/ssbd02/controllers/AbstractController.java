@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.OptLockException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.TransactionClass;
@@ -10,7 +9,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.TransactionClass;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
-import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory.unexpectedFailException;
 

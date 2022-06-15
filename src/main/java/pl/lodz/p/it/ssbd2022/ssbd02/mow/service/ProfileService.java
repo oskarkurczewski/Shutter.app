@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changePhotographerDescription;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reviewPhotographer;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -26,6 +27,20 @@ public class ProfileService {
     @PermitAll
     public PhotographerInfo findPhotographerInfo(String login) throws BaseApplicationException {
         return facade.findByLogin(login);
+    }
+
+    /**
+     * Metoda aktualizująca wynik i ilość recenzji u fotografa
+     *
+     * @param photographer fotograf, którego wynik i ilość recenzji zmieniamy
+     * @param score        wynik fotografa
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @RolesAllowed(reviewPhotographer)
+    public void updateScore(PhotographerInfo photographer, Long score) throws BaseApplicationException {
+        photographer.setScore(photographer.getScore() + score);
+        photographer.setReviewCount(photographer.getReviewCount() + 1);
+        facade.update(photographer);
     }
 
     /**

@@ -111,7 +111,12 @@ export const LoginPage: React.FC = () => {
                   <Link to={"/request-reset-password"}>
                      {t("login_page.recover_password")}
                   </Link>
-                  <Button onClick={(e) => onSubmit(e)}>{t("login_page.sign_in")}</Button>
+                  <Button
+                     loading={loginMutationState.isLoading}
+                     onClick={(e) => onSubmit(e)}
+                  >
+                     {t("login_page.sign_in")}
+                  </Button>
                </div>
             </form>
          </Card>

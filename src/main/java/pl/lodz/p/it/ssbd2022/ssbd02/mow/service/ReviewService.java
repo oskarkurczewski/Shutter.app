@@ -36,9 +36,15 @@ public class ReviewService {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Wykonuje operację dodania recenzji fotografowi przez wskaznego użytkownika
+     *
+     * @param review recenzja, która ma być dodana
+     * @throws BaseApplicationException Gdy operacja się nie powiedzie
+     */
     @RolesAllowed(reviewPhotographer)
-    public void addPhotographerReview(Review review) {
-        throw new UnsupportedOperationException();
+    public void addPhotographerReview(Review review) throws BaseApplicationException {
+        reviewFacade.persist(review);
     }
 
     /**

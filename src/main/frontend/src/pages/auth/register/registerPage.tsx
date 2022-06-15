@@ -1,13 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./registerPage.module.scss";
-import {
-   Button,
-   Card,
-   Checkbox,
-   TextInput,
-   ValidationBox,
-   Form,
-} from "components/shared";
+import { Button, Card, Checkbox, TextInput, ValidationBox } from "components/shared";
 import { Link } from "react-router-dom";
 import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/authService";
@@ -28,8 +21,8 @@ export const RegisterPage = () => {
       surname: "",
    });
    const [checkboxState, setCheckboxState] = useState({
-      userDataChecked: null,
-      termsOfUseChecked: null,
+      userDataChecked: false,
+      termsOfUseChecked: false,
    });
 
    const [validation, setValidation] = useState(
@@ -63,7 +56,7 @@ export const RegisterPage = () => {
             <ValidationBox data={validation} className={styles.validation_card} />
 
             <Card className={styles.register_card}>
-               <Form onSubmit={onSubmit} isLoading={isLoading}>
+               <form onSubmit={onSubmit}>
                   <p className="section-title">{t("register_page.form_title")}</p>
                   <div className={styles.inputs_wrapper}>
                      <div className={styles.column}>
@@ -165,9 +158,11 @@ export const RegisterPage = () => {
 
                   <div className={styles.footer}>
                      <Link to="/login">{t("register_page.sign_in")}</Link>
-                     <Button onClick={onSubmit}>{t("register_page.sign_up")}</Button>
+                     <Button loading={isLoading} onClick={onSubmit}>
+                        {t("register_page.sign_up")}
+                     </Button>
                   </div>
-               </Form>
+               </form>
             </Card>
          </div>
       </section>

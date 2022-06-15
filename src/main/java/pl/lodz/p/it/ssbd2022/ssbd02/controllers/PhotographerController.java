@@ -3,11 +3,11 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedPhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
 
 import javax.inject.Inject;
@@ -60,9 +60,9 @@ public class PhotographerController extends AbstractController {
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
-        DetailedPhotographerInfoDto detailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getEnhancedPhotographerInfo(login), photographerEndpoint);
-        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedPhotographerInfoDto));
-        return Response.status(Response.Status.ACCEPTED).entity(detailedPhotographerInfoDto).tag(tag).build();
+        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getEnhancedPhotographerInfo(login), photographerEndpoint);
+        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(DetailedPhotographerInfoDto));
+        return Response.status(Response.Status.ACCEPTED).entity(DetailedPhotographerInfoDto).tag(tag).build();
 
     }
 
@@ -77,9 +77,9 @@ public class PhotographerController extends AbstractController {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhotographerInfo() throws BaseApplicationException {
-        DetailedPhotographerInfoDto detailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
-        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedPhotographerInfoDto));
-        return Response.status(Response.Status.ACCEPTED).entity(detailedPhotographerInfoDto).tag(tag).build();
+        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
+        EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(DetailedPhotographerInfoDto));
+        return Response.status(Response.Status.ACCEPTED).entity(DetailedPhotographerInfoDto).tag(tag).build();
     }
 
     /**

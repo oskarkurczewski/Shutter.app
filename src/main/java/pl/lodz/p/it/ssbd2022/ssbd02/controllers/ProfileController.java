@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
-@Path("profile")
+@Path("/profile")
 public class ProfileController extends AbstractController {
 
     @Inject
@@ -73,12 +73,19 @@ public class ProfileController extends AbstractController {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Dodaje recenzję fotografowi
+     *
+     * @param review obiekt DTO zawierający login fotografa, ocenę w skali od 1 do 10 i słowną opinię
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
     @POST
     @Path("/review")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reviewPhotographer(@NotNull @Valid CreateReviewDto review)
-            throws NoAuthenticatedAccountFound, NoPhotographerFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.reviewPhotographer(review), reviewEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     @DELETE

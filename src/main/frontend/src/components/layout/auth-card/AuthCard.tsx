@@ -38,11 +38,11 @@ export const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
    }, [data]);
    const { t } = useTranslation();
 
-   const { token, exp } = useAppSelector((state) => state.auth);
-
    return (
       <div className={styles.auth_card_wrapper}>
-         <img src="/images/auth-image.png" alt="user sidebar" />
+         <div className={`${styles.background_wrapper} ${styles[currentRole]}`}>
+            <img src="/images/auth-image.png" alt="user sidebar" />
+         </div>
          <div className={styles.data_wrapper}>
             <img src="/images/avatar.png" alt="user" className={styles.auth_card_photo} />
             <div className={styles.label_wrapper}>
@@ -75,14 +75,6 @@ export const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
                </select>
             </>
          )}
-         {/* <p>Token: {token}</p>
-         <p>Exp: {new Date(exp).toLocaleString()}</p> */}
-         <p>
-            {t("misc.token")}: {token}
-         </p>
-         <p>
-            {t("misc.exp")}: {new Date(exp).toLocaleString()}
-         </p>
       </div>
    );
 };
