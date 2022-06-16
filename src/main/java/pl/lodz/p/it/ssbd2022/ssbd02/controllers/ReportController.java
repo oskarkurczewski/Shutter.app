@@ -16,14 +16,21 @@ import java.util.List;
 public class ReportController extends AbstractController {
 
     @Inject
-    ReportEndpoint reportEndpoint;
+    private ReportEndpoint reportEndpoint;
 
+    /**
+     * Punkt końcowy pozwalający na zgłoszenie klienta z podanym powodem.
+     *
+     * @param createAccountReportDto Obiekt przedstawiający dane zawierające login zgłoszonego klienta oraz powód.
+     * @throws BaseApplicationException W przypadku niepowodzenia operacji
+     */
     @POST
     @Path("/account")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response reportAccount(@NotNull @Valid CreateAccountReportDto createAccountReportDto)
-            throws NoAuthenticatedAccountFound, NoAccountFound {
-        throw new UnsupportedOperationException();
+    public Response reportClientAccount(@NotNull @Valid CreateAccountReportDto createAccountReportDto)
+            throws BaseApplicationException {
+        reportEndpoint.reportClientAccount(createAccountReportDto);
+        return Response.status(Response.Status.OK).build();
     }
 
     /**

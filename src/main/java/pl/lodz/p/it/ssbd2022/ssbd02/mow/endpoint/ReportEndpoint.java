@@ -5,6 +5,8 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReportCause;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountReportCause;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
@@ -46,10 +48,26 @@ public class ReportEndpoint extends AbstractEndpoint {
     @Inject
     private ProfileService profileService;
 
+    /**
+     * Tworzy zgłoszenie na podanego klienta.
+     *
+     * @param createAccountReportDto Obiekt przedstawiający login zgłoszonego klienta oraz powód zgłoszenia.
+     * @throws BaseApplicationException W przypadku niepowodzenia operacji.
+     */
     @RolesAllowed(reportClient)
-    public void reportAccount(CreateAccountReportDto createAccountReportDto)
-            throws NoAuthenticatedAccountFound, NoAccountFound {
-        throw new UnsupportedOperationException();
+    public void reportClientAccount(CreateAccountReportDto createAccountReportDto)
+            throws BaseApplicationException {
+        Account reported = accountService.findByLogin(createAccountReportDto.getReportedLogin());
+        AccountReportCause reportCause = reportService.getAccountReportCause(createAccountReportDto.getCause());
+        Account reportee = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+
+        AccountReport accountReport = new AccountReport();
+        accountReport.setReported(reported);
+        accountReport.setCause(reportCause);
+        accountReport.setReportee(reportee);
+        accountReport.setReviewed(false);
+
+        reportService.addClientAccountReport(accountReport);
     }
 
     /**

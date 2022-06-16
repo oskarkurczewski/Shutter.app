@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CreateAccountReportDto {
     @NotNull
-    private final String reportedLogin;
+    private String reportedLogin;
     @NotNull
-    private final String cause;
+    private String cause;
 }
