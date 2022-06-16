@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
@@ -12,12 +14,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.*;
+
 import java.util.List;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reportReview;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.listAllReports;
 
@@ -36,6 +37,37 @@ public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
     @PermitAll
     public EntityManager getEm() {
         return em;
+    }
+
+    @Override
+    @RolesAllowed(reportReview)
+    public ReviewReport persist(ReviewReport entity) throws BaseApplicationException {
+        try {
+            return super.persist(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @PermitAll
+    public List<ReviewReportCause> getReportCauses() throws BaseApplicationException {
+        TypedQuery<ReviewReportCause> query = getEm().createNamedQuery(
+                "review_report_cause.getAll",
+                ReviewReportCause.class);
+        try {
+            return query.getResultList();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
     }
 
 

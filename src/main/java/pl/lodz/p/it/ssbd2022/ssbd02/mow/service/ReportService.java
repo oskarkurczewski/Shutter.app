@@ -3,6 +3,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.service;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountReport;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReport;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReportCause;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountReportFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerReportFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewReportFoundException;
@@ -21,11 +23,15 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.List;
+
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReportService {
+    @Inject
+    ReviewReportFacade reviewReportFacade;
 
     @Inject
     AccountFacade accountFacade;
@@ -51,6 +57,11 @@ public class ReportService {
         throw new UnsupportedOperationException();
     }
 
+    @PermitAll
+    public List<ReviewReportCause> getReviewReportCauses() throws BaseApplicationException {
+        return reviewReportFacade.getReportCauses();
+    }
+
     @RolesAllowed(reportClient)
     public void addAccountReport(AccountReport report) {
         throw new UnsupportedOperationException();
@@ -62,8 +73,8 @@ public class ReportService {
     }
 
     @RolesAllowed(reportReview)
-    public void addReviewReport(ReviewReport report) {
-        throw new UnsupportedOperationException();
+    public void addReviewReport(ReviewReport report) throws BaseApplicationException {
+        reviewReportFacade.persist(report);
     }
 
     /**

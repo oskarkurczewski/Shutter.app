@@ -38,8 +38,9 @@ public class ReportController extends AbstractController {
     @Path("/review")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportReview(@NotNull @Valid CreateReviewReportDto createReviewReportDto)
-            throws NoAuthenticatedAccountFound, NoReviewFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        repeat(() -> reportEndpoint.reportReview(createReviewReportDto), reportEndpoint);
+        return Response.status(Response.Status.CREATED).build();
     }
 
 
