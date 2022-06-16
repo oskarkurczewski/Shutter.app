@@ -46,7 +46,7 @@ public class ReportEndpoint extends AbstractEndpoint {
         accountReport.setReportee(reportee);
         accountReport.setReviewed(false);
 
-        reportService.addAccountReport(accountReport);
+        reportService.addClientAccountReport(accountReport);
     }
 
     @RolesAllowed(reportPhotographer)

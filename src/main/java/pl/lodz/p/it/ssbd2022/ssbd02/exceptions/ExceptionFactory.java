@@ -156,4 +156,12 @@ public class ExceptionFactory {
     public static LikeException alreadyUnlikedException() {
         return new LikeException("exception.already_unliked");
     }
+
+    public static SelfReportException selfReportException() {
+        return new SelfReportException("exception.self_report");
+    }
+
+    public static NoAccountFound noAccountFound(String message) {
+        return new NoAccountFound(message);
+    }
 }
