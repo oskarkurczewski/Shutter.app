@@ -61,11 +61,11 @@ export const Modal: React.FC<Props> = ({
                         className={styles.cancel}
                         onClick={() => onCancel && onCancel()}
                      >
-                        {cancelText ? cancelText : t("label.cancel")}
+                        {cancelText ? cancelText : t("global.label.cancel")}
                      </Button>
                   )}
                   <Button onClick={() => onSubmit()}>
-                     {submitText ? submitText : t("label.submit")}
+                     {submitText ? submitText : t("global.label.submit")}
                   </Button>
                </div>
             </Card>

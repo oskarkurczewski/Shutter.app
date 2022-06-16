@@ -56,7 +56,8 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public BasePhotographerInfoDto getPhotographerInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
+    public BasePhotographerInfoDto getPhotographerInfo(@NotNull @PathParam("login") String login)
+            throws BaseApplicationException {
         return repeat(() -> photographerEndpoint.getPhotographerInfo(login), photographerEndpoint);
     }
 
@@ -74,8 +75,12 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login) throws BaseApplicationException {
-        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getEnhancedPhotographerInfo(login), photographerEndpoint);
+    public Response getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login)
+            throws BaseApplicationException {
+        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(
+                () -> photographerEndpoint.getEnhancedPhotographerInfo(login),
+                photographerEndpoint
+        );
         EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(DetailedPhotographerInfoDto));
         return Response.status(Response.Status.ACCEPTED).entity(DetailedPhotographerInfoDto).tag(tag).build();
 
@@ -92,7 +97,10 @@ public class PhotographerController extends AbstractController {
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhotographerInfo() throws BaseApplicationException {
-        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(() -> photographerEndpoint.getYourPhotographerInfo(), photographerEndpoint);
+        DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(
+                () -> photographerEndpoint.getYourPhotographerInfo(),
+                photographerEndpoint
+        );
         EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(DetailedPhotographerInfoDto));
         return Response.status(Response.Status.ACCEPTED).entity(DetailedPhotographerInfoDto).tag(tag).build();
     }
@@ -108,7 +116,8 @@ public class PhotographerController extends AbstractController {
     @PUT
     @Path("/change-description")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editDescription(@NotNull @Valid ChangeDescriptionDto changeDescriptionDto) throws BaseApplicationException {
+    public Response editDescription(@NotNull @Valid ChangeDescriptionDto changeDescriptionDto)
+            throws BaseApplicationException {
         repeat(() -> profileEndpoint.changeDescription(changeDescriptionDto), profileEndpoint);
         return Response.accepted().build();
     }
@@ -133,7 +142,11 @@ public class PhotographerController extends AbstractController {
             @NumberQuery @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage
 
     ) throws BaseApplicationException {
-        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurname(name, page, recordsPerPage);
+        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurname(
+                name,
+                page,
+                recordsPerPage
+        );
         return Response.status(Response.Status.OK).entity(responseDto).build();
     }
 }

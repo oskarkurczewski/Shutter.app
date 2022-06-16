@@ -8,6 +8,7 @@ interface Props {
    name: string;
    id: string;
    children?: string;
+   className?: string;
 }
 
 export const Dropdown: React.FC<Props> = ({
@@ -17,9 +18,10 @@ export const Dropdown: React.FC<Props> = ({
    name,
    id,
    selectedValue,
+   className,
 }) => {
    return (
-      <div className={styles.dropdown_wrapper}>
+      <div className={`${styles.dropdown_wrapper} ${className && className}`}>
          {children && <p className="label">{children}</p>}
          <select
             name={name}

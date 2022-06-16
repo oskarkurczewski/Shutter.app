@@ -14,6 +14,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+
+import java.util.List;
 import java.util.Optional;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
@@ -29,6 +31,11 @@ public class ReviewService {
     @PermitAll
     public Review findById(Long id) throws BaseApplicationException {
         return Optional.ofNullable(reviewFacade.find(id)).orElseThrow(ExceptionFactory::noReviewFoundException);
+    }
+
+    @PermitAll
+    public List<Review> listReviewsByPhotographerId(int pageNo, int recordsPerPage, Long id) throws BaseApplicationException {
+        return reviewFacade.getReviewListByPhotographer(pageNo, recordsPerPage, id);
     }
 
     @RolesAllowed({deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
