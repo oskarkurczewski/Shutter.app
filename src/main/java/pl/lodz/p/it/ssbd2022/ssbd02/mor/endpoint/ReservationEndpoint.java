@@ -2,7 +2,9 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeExcpetion;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.MorAccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
@@ -45,6 +47,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
 
     /**
      * Metoda do anulowania rezerwacji przez klienta
+     *
      * @param reservationId id rezerwacji, która ma być anulowana
      */
     @RolesAllowed(cancelReservation)
@@ -61,20 +64,21 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param page              numer strony
-     * @param recordsPerPage    liczba recenzji na stronę
-     * @param order             kolejność sortowania względem kolumny time_from
-     * @param getAll            flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param name           imię lub nazwisko do wyszukania
+     * @param page           numer strony
+     * @param recordsPerPage liczba recenzji na stronę
+     * @param order          kolejność sortowania względem kolumny time_from
+     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
      * @return ReservationListEntryDto      lista rezerwacji
-     * @throws BaseApplicationException     niepowodzenie operacji
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)
-    public List<ReservationListEntryDto> listReservations(int page, int recordsPerPage, String order, Boolean getAll)
+    public List<ReservationListEntryDto> listReservations(String name, int page, int recordsPerPage, String order, Boolean getAll)
             throws BaseApplicationException {
         String login = authCtx.getCurrentUsersLogin();
         Account account = accountService.findByLogin(login);
 
-        List<Reservation> reservations = reservationService.listReservations(account, page, recordsPerPage, order, getAll);
+        List<Reservation> reservations = reservationService.listReservations(account, name, page, recordsPerPage, order, getAll);
         List<ReservationListEntryDto> reservationDtoList = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
@@ -92,7 +96,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
-     * @param page strona listy, którą należy pozyskać
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji

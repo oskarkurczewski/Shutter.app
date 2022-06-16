@@ -1,7 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.service;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeExcpetion;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.PhotographerFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.ReservationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
@@ -33,6 +38,7 @@ public class ReservationService {
 
     /**
      * Metoda wyszukująca rezerwację z danym numerem ID
+     *
      * @param id id rezerwacji
      * @return rezerwacja o wskazanym ID
      */
@@ -52,7 +58,8 @@ public class ReservationService {
     /**
      * Metoda odwołująca rezerwację w imieniu wskazanego klienta
      * Klient może odowłać tylko własną rezerwację
-     * @param caller login klienta odwołującego rezerwację
+     *
+     * @param caller        login klienta odwołującego rezerwację
      * @param reservationId id rezerwacji mającej być odwołanej
      */
     @RolesAllowed(cancelReservation)
@@ -75,18 +82,18 @@ public class ReservationService {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param account           konto użytkownika, dla którego pobierane są rezerwacje
-     * @param page              numer strony
-     * @param recordsPerPage    liczba recenzji na stronę
-     * @param order             kolejność sortowania względem kolumny time_from
-     * @param getAll            flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param account        konto użytkownika, dla którego pobierane są rezerwacje
+     * @param page           numer strony
+     * @param recordsPerPage liczba recenzji na stronę
+     * @param order          kolejność sortowania względem kolumny time_from
+     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
      * @return Reservation      lista rezerwacji
-     * @throws BaseApplicationException     niepowodzenie operacji
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)
-    public List<Reservation> listReservations(Account account, int page, int recordsPerPage, String order, Boolean getAll)
+    public List<Reservation> listReservations(Account account, String name, int page, int recordsPerPage, String order, Boolean getAll)
             throws BaseApplicationException {
-        return reservationFacade.getReservationsForUser(account, page, recordsPerPage, order, getAll);
+        return reservationFacade.getReservationsForUser(account, name, page, recordsPerPage, order, getAll);
     }
 
     @RolesAllowed(showJobs)
@@ -97,7 +104,7 @@ public class ReservationService {
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
-     * @param page strona listy, którą należy pozyskać
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji
