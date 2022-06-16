@@ -1,25 +1,48 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { ToastType } from "components/layout/toast";
+import { Toast } from "types";
+
+export interface ToastRenderType extends ToastType {
+   type: ToastTypes;
+   confirm?: ButtonObject;
+   cancel?: ButtonObject;
+}
+
+interface ButtonObject {
+   onClick: () => void;
+   text: string;
+}
+
+export enum ToastTypes {
+   INFO = "info",
+   SUCCESS = "success",
+   WARNING = "warning",
+   ERROR = "error",
+}
 
 interface ToastHandlerState {
-   stack: ToastType[];
+   stack: ToastRenderType[];
+   id: number;
 }
 
 const initialState: ToastHandlerState = {
    stack: [],
+   id: 0,
 };
 
 export const toastSlice = createSlice({
    name: "toast",
    initialState,
    reducers: {
-      push: (state: ToastHandlerState, action: PayloadAction<ToastType>) => {
-         if (state.stack.some((element) => element.name === action.payload.name)) return;
-         state.stack = [...state.stack, action.payload];
+      push: (state: ToastHandlerState, action: PayloadAction<Toast>) => {
+         const item: ToastRenderType = { ...action.payload, id: state.id };
+
+         state.id++;
+         state.stack = [...state.stack, item];
       },
-      remove: (state: ToastHandlerState, action: PayloadAction<string>) => {
-         state.stack = state.stack.filter((element) => element.name !== action.payload);
+      remove: (state: ToastHandlerState, action: PayloadAction<number>) => {
+         state.stack = state.stack.filter((element) => element.id !== action.payload);
       },
    },
 });

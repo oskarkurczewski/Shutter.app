@@ -3,9 +3,9 @@
 .toast_handler_wrapper {
    position: fixed;
    bottom: 20px;
-   right: 400px;
+   right: 430px;
    display: flex;
    flex-direction: column-reverse;
    row-gap: 20px;
-   z-index: 2;
+   z-index: 1;
 }
