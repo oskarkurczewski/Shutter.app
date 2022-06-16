@@ -5,6 +5,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedRoute } from "components/routes";
 import { PageLayout } from "layout";
 import { AccessLevel } from "types/AccessLevel";
+import { SuspenseLoader } from "components/suspense-loader";
+import { getLoginPayload, getTokenExp } from "util/loginUtil";
+import { useAppDispatch } from "redux/hooks";
+import { login, logout } from "redux/slices/authSlice";
 
 import { DashboardPage } from "pages/dashboard";
 import { HomePage } from "pages/home";
@@ -15,12 +19,22 @@ import { ResetPasswordPage } from "pages/token-based/reset-password";
 import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
-import { PhotographersListPage } from "pages/photographers";
-import { SuspenseLoader } from "components/suspense-loader";
-import { PhotographerProfilePage } from "pages/photographers";
 import { PhotographerGalleryPage } from "pages/photographers/gallery";
+import {
+   PhotographersListPage,
+   PhotographerProfilePage,
+   ChangeAvailabilityPage,
+} from "pages/photographers";
 
 function App() {
+   const dispatch = useAppDispatch();
+
+   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
+      dispatch(login(getLoginPayload()));
+   } else {
+      dispatch(logout());
+   }
+
    return (
       <Suspense fallback={<SuspenseLoader />}>
          <BrowserRouter>
@@ -29,6 +43,7 @@ function App() {
 
                <Route element={<PageLayout />}>
                   <Route path="" element={<HomePage />} />
+                  <Route path="dashboard" element={<DashboardPage />} />
 
                   <Route
                      path="login"
@@ -56,8 +71,6 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
-
-                  <Route path=":login/profile" element={<PhotographerProfilePage />} />
 
                   <Route
                      path="settings"
@@ -108,6 +121,20 @@ function App() {
                      />
                   </Route>
 
+                  {/* Photographer routes */}
+                  <Route path="profile">
+                     <Route path=":login" element={<PhotographerProfilePage />} />
+
+                     <Route
+                        path="change-availability"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <ChangeAvailabilityPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                  </Route>
+
                   <Route
                      path=":login/profile/gallery"
                      element={
@@ -118,9 +145,6 @@ function App() {
                   />
 
                   <Route path="photographers" element={<PhotographersListPage />} />
-
-                  <Route path="dashboard" element={<DashboardPage />} />
-                  <Route path="dashboard/:abc/login/:bcd" element={<DashboardPage />} />
 
                   {/* Token-based routes */}
                   <Route

@@ -1,4 +1,3 @@
-import internal from "stream";
 import { basicUserInfoResponse } from "./accountTypes";
 import { ReviewReportCause } from "types/ReviewReportCause";
 
@@ -58,4 +57,17 @@ export interface getPhotographerReviewsRequest {
    pageNo: number;
    recordsPerPage?: number;
    photographerLogin: string;
+}
+
+export interface AvailabilityResponse {
+   id: number;
+   day: number;
+   from: string;
+   to: string;
+}
+
+export interface AvailabilityRequest {
+   day: string;
+   from: string;
+   to: string;
 }

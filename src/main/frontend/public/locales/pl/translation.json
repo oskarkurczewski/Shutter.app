@@ -86,12 +86,14 @@
       "confirm_registration": "Potwierdź rejestrację",
       "password_reset": "Zmiana hasła",
       "photographers": "Fotografowie",
-      "gallery": "Galeria"
+      "gallery": "Galeria",
+      "change_availability": "Zmiana godzin dostępności"
    },
    "toast": {
       "renew": "Przedłuż",
+      "success_update": "Pomyślnie zmodyfikowano",
       "success_login_message": "Pomyślnie zalogowano.",
-      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliklnij w przycisk poniżej, aby ją przedłużyć."
+      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć."
    },
    "navbar": {
       "title": "shutter.app",
@@ -106,6 +108,11 @@
          "adduser": "Dodaj użytkownika",
          "logout": "Wyloguj się"
       }
+   },
+   "calendar": {
+      "calendar": "Kalendarz",
+      "availability": "Godziny Dostępności",
+      "reservation": "Rezerwacja"
    },
    "login_page": {
       "send_2fa_code": "Wyślij kod",
@@ -314,5 +321,15 @@
       "photo_title_empty": "Tytuł zdjęcia nie może być pusty",
       "photo_data_empty": "Wybierz zdjęcie w formacie PNG do umieszczenia w galerii",
       "uploading_photo": "Dodawanie zdjęcia..."
+   },
+   "change_availability_page": {
+      "availability_hours": "Godziny Dostępności",
+      "no_availability": "Brak dostępności",
+      "calendar_title": "Kalendarz",
+      "validator": {
+         "incorrect": {
+            "availability_time": "Podano niepoprawny zakres"
+         }
+      }
    }
 }
