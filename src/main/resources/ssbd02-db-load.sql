@@ -58,7 +58,6 @@ VALUES (1, 3, 1),
        (1, 3, 2),
        (1, 3, 3),
        (1, 3, 4) ON CONFLICT DO NOTHING;
-
 -- Dane Przeznaczone Do Testów Aplikacji
 
 INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id, created_by, created_at)

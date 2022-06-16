@@ -17,6 +17,9 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "review_report_cause")
+@NamedQueries({
+        @NamedQuery(name = "review_report_cause.getAll", query = "SELECT a FROM ReviewReportCause AS a"),
+})
 public class ReviewReportCause {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

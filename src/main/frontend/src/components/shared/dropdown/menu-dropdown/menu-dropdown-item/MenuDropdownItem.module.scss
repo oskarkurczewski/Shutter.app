@@ -1,0 +1,17 @@
+@use "variables.scss" as variables;
+
+.menu_dropdown_item {
+   width: 100%;
+   justify-content: flex-end;
+   background: none;
+   padding: 0.3rem 0.5rem;
+
+   &:hover,
+   &:focus {
+      background-color: variables.$blue-gray-100;
+   }
+
+   &:focus {
+      outline: 2px solid variables.$gray-200;
+   }
+}
