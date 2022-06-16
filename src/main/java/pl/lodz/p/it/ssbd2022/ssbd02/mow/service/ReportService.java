@@ -39,8 +39,7 @@ public class ReportService {
     @Inject
     PhotographerReportFacade photographerReportFacade;
 
-    @Inject
-    ReviewReportFacade reviewReportFacade;
+  
 
     @PermitAll
     public AccountReport findAccountReportById(Long id) throws NoAccountReportFoundException {

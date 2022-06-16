@@ -12,12 +12,14 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReportService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReviewService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@Interceptors({LoggingInterceptor.class})
 public class ReportEndpoint extends AbstractEndpoint {
     @Inject
     ReviewService reviewService;
