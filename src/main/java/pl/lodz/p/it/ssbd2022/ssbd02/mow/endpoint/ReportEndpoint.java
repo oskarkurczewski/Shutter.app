@@ -33,8 +33,14 @@ public class ReportEndpoint extends AbstractEndpoint {
     @Inject
     private AuthenticationContext authenticationContext;
 
+    /**
+     * Tworzy zgłoszenie na podanego klienta.
+     *
+     * @param createAccountReportDto Obiekt przedstawiający login zgłoszonego klienta oraz powód zgłoszenia.
+     * @throws BaseApplicationException W przypadku niepowodzenia operacji.
+     */
     @RolesAllowed(reportClient)
-    public void reportAccount(CreateAccountReportDto createAccountReportDto)
+    public void reportClientAccount(CreateAccountReportDto createAccountReportDto)
             throws BaseApplicationException {
         Account reported = accountService.findByLogin(createAccountReportDto.getReportedLogin());
         AccountReportCause reportCause = reportService.getAccountReportCause(createAccountReportDto.getCause());

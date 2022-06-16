@@ -46,6 +46,12 @@ public class ReportService {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Tworzy zgłoszenie na podanego klienta.
+     *
+     * @param report Obiekt zgłoszenia
+     * @throws BaseApplicationException
+     */
     @RolesAllowed(reportClient)
     public void addClientAccountReport(AccountReport report) throws BaseApplicationException {
             if (report.getReported().getLogin().equals(report.getReportee().getLogin())) {
