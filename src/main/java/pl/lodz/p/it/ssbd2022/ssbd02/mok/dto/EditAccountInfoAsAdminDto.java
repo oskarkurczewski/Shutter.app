@@ -18,7 +18,7 @@ public class EditAccountInfoAsAdminDto implements SignableEntity {
     @NotNull
     Long version;
 
-    @NotNull(message = "validator.incorrect.login.null")
+    @NotNull(message = "validator.incorrect.login_null")
     @Login
     private String login;
 
