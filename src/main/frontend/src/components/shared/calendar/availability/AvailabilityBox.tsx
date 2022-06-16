@@ -5,13 +5,20 @@ import { AvailabilityHour } from "types/CalendarTypes";
 import { InfoBox } from "../info-box";
 import { useTranslation } from "react-i18next";
 import { Info } from "luxon";
+import { SquareButton } from "components/shared/square-button";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface Props {
    availability: AvailabilityHour;
    fullWidth: boolean;
+   onRemove?: (availability: AvailabilityHour) => void;
 }
 
-export const AvailabilityBox: React.FC<Props> = ({ availability, fullWidth }) => {
+export const AvailabilityBox: React.FC<Props> = ({
+   availability,
+   fullWidth,
+   onRemove,
+}) => {
    const ref = useRef(null);
    const [infoBoxOpen, setInfoBoxOpen] = useState(false);
    const { t } = useTranslation();
@@ -55,7 +62,16 @@ export const AvailabilityBox: React.FC<Props> = ({ availability, fullWidth }) =>
                      )}`}
                   </p>
                </div>
-               <div className={styles.actions}></div>
+               <div className={styles.actions}>
+                  {onRemove && (
+                     <SquareButton
+                        onClick={() => onRemove(availability)}
+                        className={styles.remove_icon}
+                     >
+                        <FaTrashAlt />
+                     </SquareButton>
+                  )}
+               </div>
             </InfoBox>
          )}
       </div>

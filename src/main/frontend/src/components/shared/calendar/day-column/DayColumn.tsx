@@ -9,18 +9,22 @@ import { useTranslation } from "react-i18next";
 
 interface Props {
    showWeekNavigation: boolean;
-   onRangeSelection?: (selection: HourBox[]) => void;
    dayData: HourBox[];
    availabilityList?: AvailabilityHour[];
    reservationsList?: Reservation[];
+   onRangeSelection?: (selection: HourBox[]) => void;
+   onAvailabilityRemove?: (availability: AvailabilityHour) => void;
+   onReservationRemove?: (reservation: Reservation) => void;
 }
 
 export const DayColumn: React.FC<Props> = ({
    showWeekNavigation,
-   onRangeSelection,
    dayData,
    availabilityList,
    reservationsList,
+   onRangeSelection,
+   onAvailabilityRemove,
+   onReservationRemove,
 }) => {
    const { i18n } = useTranslation();
    const today = useMemo(() => DateTime.local().startOf("day"), [dayData]);
@@ -32,7 +36,7 @@ export const DayColumn: React.FC<Props> = ({
 
    const Selectable = useSelectable({
       objects: dayData,
-      onSelect: (e) => onRangeSelection(e),
+      onSelect: (selection) => onRangeSelection(selection),
    });
 
    return (
@@ -65,6 +69,7 @@ export const DayColumn: React.FC<Props> = ({
                   availability={availability}
                   key={index}
                   fullWidth={displayFullWidth}
+                  onRemove={onAvailabilityRemove}
                />
             ))}
             {reservationsList?.map((reservation, index) => (

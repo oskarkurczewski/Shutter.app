@@ -15,6 +15,8 @@ interface Props {
    reservations?: Reservation[];
    showWeekNavigation?: boolean;
    onRangeSelection?: (selection?: HourBox[]) => void;
+   onAvailabilityRemove?: (availability: AvailabilityHour) => void;
+   onReservationRemove?: (reservation: Reservation) => void;
 }
 
 export const Calendar: React.FC<Props> = ({
@@ -24,6 +26,8 @@ export const Calendar: React.FC<Props> = ({
    reservations,
    showWeekNavigation = true,
    onRangeSelection,
+   onAvailabilityRemove,
+   onReservationRemove,
 }) => {
    const [selectedWeek, setSelectedWeek] = useState(DateTime.local().startOf("week"));
 
@@ -65,14 +69,18 @@ export const Calendar: React.FC<Props> = ({
                         showWeekNavigation={showWeekNavigation}
                         dayData={dayData}
                         key={index}
-                        onRangeSelection={onRangeSelection}
-                        availabilityList={availability?.filter((day) => day.day == index)}
+                        availabilityList={availability?.filter(
+                           (day) => day.day == index + 1
+                        )}
                         reservationsList={reservations?.filter((day) => {
                            return (
                               day.from.startOf("day").toUnixInteger() ==
                               dayData[0].from.toUnixInteger()
                            );
                         })}
+                        onRangeSelection={onRangeSelection}
+                        onAvailabilityRemove={onAvailabilityRemove}
+                        onReservationRemove={onReservationRemove}
                      />
                   ))}
                </div>

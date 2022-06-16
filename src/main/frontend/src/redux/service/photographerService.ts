@@ -17,9 +17,13 @@ const PhotographerService = api.injectEndpoints({
          transformResponse(data: availabilityResponse[]) {
             return data.map((availability) => ({
                id: availability.id,
-               day: availability.day,
-               from: DateTime.fromFormat(availability.from, "hh:mm:ss"),
-               to: DateTime.fromFormat(availability.to, "hh:mm:ss"),
+               day: availability.day + 1,
+               from: DateTime.fromFormat(availability.from, "hh:mm:ss").set({
+                  weekday: availability.day + 1,
+               }),
+               to: DateTime.fromFormat(availability.to, "hh:mm:ss").set({
+                  weekday: availability.day + 1,
+               }),
             }));
          },
       }),

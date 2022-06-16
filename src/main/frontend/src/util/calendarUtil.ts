@@ -23,10 +23,10 @@ export const getWeekRange = (weekStartDay: DateTime) => {
          minutes: 30,
       });
 
-      const weekday = Math.floor(i / 48);
+      const weekday = Math.floor(i / 48) + 1;
       const hour = i % 48;
 
-      items[weekday][hour] = {
+      items[weekday - 1][hour] = {
          selected: false,
          from,
          to,

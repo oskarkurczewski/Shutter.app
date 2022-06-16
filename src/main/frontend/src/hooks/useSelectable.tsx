@@ -41,7 +41,11 @@ export const useSelectable = <T,>({
       setSelectionEnd(index);
       setMouseDown(false);
 
-      onSelect(objects.slice(selectionStart, selectionEnd + 1));
+      if (selectionStart <= selectionEnd) {
+         onSelect(objects.slice(selectionStart, selectionEnd + 1));
+      } else {
+         onSelect(objects.slice(selectionEnd, selectionStart + 1));
+      }
       clearSelection();
    };
 

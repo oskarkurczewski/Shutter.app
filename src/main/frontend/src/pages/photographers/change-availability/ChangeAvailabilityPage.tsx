@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Info } from "luxon";
 import { useGetAvailabityHoursQuery } from "redux/service/photographerService";
 import { useAppSelector } from "redux/hooks";
-import { AvailabilityHour } from "types/CalendarTypes";
+import { AvailabilityHour, HourBox } from "types/CalendarTypes";
 
 export const ChangeAvailabilityPage = () => {
    const { t } = useTranslation();
@@ -24,6 +24,24 @@ export const ChangeAvailabilityPage = () => {
       data: newHours?.filter((availability) => availability.day === index),
    }));
 
+   const addAvailability = (selection: HourBox[]) => {
+      const day = selection[0].weekday;
+      const from = selection[0].from;
+      const to = selection[selection.length - 1].to;
+
+      const isConflict = newHours.find(
+         (availability) => from < availability.to && to > availability.from
+      );
+      !isConflict && setNewHours([...newHours, { day, from, to }]);
+   };
+
+   const removeAvailability = (availability: AvailabilityHour): void => {
+      const res = newHours.filter(
+         (element) => availability.from !== element.from && availability.to !== element.to
+      );
+      setNewHours(res);
+   };
+
    return (
       <section className={styles.change_availability_page_wrapper}>
          <Calendar
@@ -31,16 +49,8 @@ export const ChangeAvailabilityPage = () => {
             showWeekNavigation={false}
             className={styles.calendar_wrapper}
             availability={newHours}
-            onRangeSelection={(selection) => {
-               setNewHours([
-                  ...newHours,
-                  {
-                     day: selection[0].weekday,
-                     from: selection[0].from,
-                     to: selection[selection.length - 1].to,
-                  },
-               ]);
-            }}
+            onRangeSelection={addAvailability}
+            onAvailabilityRemove={(availability) => removeAvailability(availability)}
          />
 
          <div className={styles.list_wrapper}>

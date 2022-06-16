@@ -59,6 +59,10 @@
          display: flex;
          width: 100%;
          align-items: flex-end;
+
+         .remove_icon svg {
+            color: variables.$red-300;
+         }
       }
    }
 }
