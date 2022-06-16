@@ -5,18 +5,20 @@ import { Card } from "components/shared/card";
 import { CalendarHeader } from "../calendar-header";
 import { DateTime } from "luxon";
 import { DayColumn } from "../day-column";
-import { AvailabilityHour, Reservation } from "types/CalendarTypes";
+import { AvailabilityHour, HourBox, Reservation } from "types/CalendarTypes";
 
 interface Props {
+   className?: string;
    availability?: AvailabilityHour[];
    reservations?: Reservation[];
-   selectable?: boolean;
+   onRangeSelection?: (selection?: HourBox[]) => void;
 }
 
 export const Calendar: React.FC<Props> = ({
+   className = "",
    availability,
    reservations,
-   selectable = true,
+   onRangeSelection,
 }) => {
    const [selectedWeek, setSelectedWeek] = useState(DateTime.local().startOf("week"));
 
@@ -34,14 +36,14 @@ export const Calendar: React.FC<Props> = ({
    };
 
    return (
-      <Card className={styles.calendar_wrapper}>
+      <Card className={`${styles.calendar_wrapper} ${className}`}>
          <CalendarHeader
             title="Kalendarz"
             changeWeek={changeWeek}
             weekLabel={formatWeekLabel(week)}
          />
          <div className={styles.content}>
-            <div className={styles.scroll_wrapper}>
+            <div>
                <div className={styles.hours}>
                   {hours.map((hour, index) => (
                      <div className={styles.hour_box} key={index}>
@@ -54,6 +56,7 @@ export const Calendar: React.FC<Props> = ({
                      <DayColumn
                         dayData={dayData}
                         key={index}
+                        onRangeSelection={onRangeSelection}
                         availabilityList={availability?.filter(
                            (day) => day.from.weekday == index
                         )}

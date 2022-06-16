@@ -75,7 +75,8 @@
       "unblock_account": "Odblokuj konto",
       "confirm_registration": "Potwierdź rejestrację",
       "password_reset": "Zmiana hasła",
-      "photographers": "Fotografowie"
+      "photographers": "Fotografowie",
+      "change_availability": "Zmiana godzin dostępności"
    },
    "navbar": {
       "title": "shutter.app",
@@ -227,5 +228,8 @@
       "modification_date": "Data modyfikacji",
       "modification_author": "Autor modyfikacji",
       "modification_type": "Typ modyfikacji"
+   },
+   "change_availability_page": {
+      "availability_hours": "Godziny Dostępności"
    }
 }

@@ -23,8 +23,8 @@ export const DashboardPage = () => {
          )}
          <Calendar
             availability={availabilityHours}
-            reservations={reservations}
-            selectable={false}
+            // reservations={reservations}
+            onRangeSelection={(e) => console.log(e)}
          />
       </section>
    );

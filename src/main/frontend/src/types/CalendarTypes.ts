@@ -11,15 +11,16 @@ export type HourBox = {
 };
 
 export type AvailabilityHour = {
-   // id: number;
+   id: number;
+   day: number;
    from: DateTime;
    to: DateTime;
 };
 
 export type Reservation = {
-   // id: number;
-   // photographer: string;
-   // client: string;
+   id: number;
+   photographer: string;
+   client: string;
    from: DateTime;
    to: DateTime;
 };

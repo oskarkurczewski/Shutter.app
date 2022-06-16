@@ -21,9 +21,12 @@ import { ResetPasswordPage } from "pages/token-based/reset-password";
 import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
-import { PhotographersListPage } from "pages/photographers";
+import {
+   PhotographersListPage,
+   PhotographerProfilePage,
+   ChangeAvailabilityPage,
+} from "pages/photographers";
 import { SuspenseLoader } from "components/suspense-loader";
-import { PhotographerProfilePage } from "pages/photographers";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -81,6 +84,7 @@ function App() {
 
                <Route element={<PageLayout />}>
                   <Route path="" element={<HomePage />} />
+                  <Route path="dashboard" element={<DashboardPage />} />
 
                   <Route
                      path="login"
@@ -108,8 +112,6 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
-
-                  <Route path=":login/profile" element={<PhotographerProfilePage />} />
 
                   <Route
                      path="settings"
@@ -169,10 +171,21 @@ function App() {
                      />
                   </Route>
 
-                  <Route path="photographers" element={<PhotographersListPage />} />
+                  {/* Photographer routes */}
+                  <Route path="profile">
+                     <Route path=":login" element={<PhotographerProfilePage />} />
 
-                  <Route path="dashboard" element={<DashboardPage />} />
-                  <Route path="dashboard/:abc/login/:bcd" element={<DashboardPage />} />
+                     <Route
+                        path="change-availability"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <ChangeAvailabilityPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                  </Route>
+
+                  <Route path="photographers" element={<PhotographersListPage />} />
 
                   {/* Token-based routes */}
                   <Route

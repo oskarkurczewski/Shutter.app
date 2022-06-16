@@ -5,7 +5,6 @@ $cell-height: 48px;
 .day_column_wrapper {
    width: calc(100% / 7);
    position: relative;
-   margin: 0 0.5rem;
 
    .header {
       position: sticky;
@@ -41,6 +40,7 @@ $cell-height: 48px;
       display: flex;
       flex-direction: column;
       position: relative;
+      padding: 0 0.5rem;
 
       .grid {
          .half_hour {

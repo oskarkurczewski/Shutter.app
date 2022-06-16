@@ -7,14 +7,14 @@ import { ReservationBox } from "../reservation";
 import { DateTime } from "luxon";
 
 interface Props {
-   selectable?: boolean;
+   onRangeSelection?: (selection: HourBox[]) => void;
    dayData: HourBox[];
    availabilityList?: AvailabilityHour[];
    reservationsList?: Reservation[];
 }
 
 export const DayColumn: React.FC<Props> = ({
-   selectable,
+   onRangeSelection,
    dayData,
    availabilityList,
    reservationsList,
@@ -28,7 +28,7 @@ export const DayColumn: React.FC<Props> = ({
 
    const Selectable = useSelectable({
       objects: dayData,
-      onSelect: (s) => console.log("selected", s),
+      onSelect: (e) => onRangeSelection(e),
    });
 
    return (
@@ -42,10 +42,10 @@ export const DayColumn: React.FC<Props> = ({
                   return (
                      <Selectable
                         index={index}
-                        disabled={!selectable}
-                        selectedClassName={selectable ? styles.selected : ""}
+                        disabled={!onRangeSelection}
+                        selectedClassName={onRangeSelection ? styles.selected : ""}
                         className={`${styles.half_hour} ${
-                           !selectable ? styles.disabled : ""
+                           !onRangeSelection ? styles.disabled : ""
                         }`}
                         key={index}
                      />
