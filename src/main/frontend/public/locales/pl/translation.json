@@ -237,6 +237,9 @@
       "photo_title": "Tytuł zdjęcia",
       "photo_description": "Opsi zdjęcia",
       "add_photo": "Dodaj zdjecie",
-      "choose_file": "Wybierz zdjęcie"
+      "choose_file": "Wybierz zdjęcie",
+      "photo_title_empty": "Tytuł zdjęcia nie może być pusty",
+      "photo_data_empty": "Wybierz zdjęcie w formacie PNG do umieszczenia w galerii",
+      "uploading_photo": "Dodawanie zdjęcia..."
    }
 }
