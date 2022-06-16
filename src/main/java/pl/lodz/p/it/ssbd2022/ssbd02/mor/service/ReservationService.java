@@ -29,6 +29,7 @@ public class ReservationService {
 
     /**
      * Metoda wyszukująca rezerwację z danym numerem ID
+     *
      * @param id id rezerwacji
      * @return rezerwacja o wskazanym ID
      */
@@ -77,8 +78,9 @@ public class ReservationService {
 
     /**
      * Metoda odwołująca rezerwację w imieniu wskazanego klienta
-     * Klient może odowłać tylko własną rezerwację
-     * @param caller login klienta odwołującego rezerwację
+     * Klient może odwołać tylko własną rezerwację
+     *
+     * @param caller        login klienta odwołującego rezerwację
      * @param reservationId id rezerwacji mającej być odwołanej
      */
     @RolesAllowed(cancelReservation)
@@ -92,9 +94,22 @@ public class ReservationService {
         emailService.sendReservationCanceledEmail(pInfo.getAccount().getEmail(), r.getId(), pInfo.getAccount().getLocale());
     }
 
+    /**
+     * Metoda odrzucająca rezerwację przez fotografa
+     * Fotograf może odwołać tylko własną rezerwację
+     *
+     * @param caller        login fotografa odwołującego rezerwację
+     * @param reservationId id rezerwacji mającej być odwołanej
+     */
     @RolesAllowed(discardReservation)
-    public void discardReservation(Reservation reservation) {
-        throw new UnsupportedOperationException();
+    public void discardReservation(String caller, Long reservationId) throws BaseApplicationException {
+        Reservation r = findById(reservationId);
+        if (!r.getPhotographer().getAccount().getLogin().equals(caller)) {
+            throw ExceptionFactory.noReservationFoundException();
+        }
+        PhotographerInfo pInfo = r.getPhotographer();
+        reservationFacade.remove(r);
+        emailService.sendReservationDiscardedEmail(r.getAccount().getEmail(), r.getId(), pInfo.getAccount().getLocale());
     }
 
     @RolesAllowed(showReservations)
