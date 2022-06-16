@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
 
@@ -19,14 +16,15 @@ import java.util.List;
 public class ReportController extends AbstractController {
 
     @Inject
-    ReportEndpoint reportEndpoint;
+    private ReportEndpoint reportEndpoint;
 
     @POST
     @Path("/account")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportAccount(@NotNull @Valid CreateAccountReportDto createAccountReportDto)
-            throws NoAuthenticatedAccountFound, NoAccountFound {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        reportEndpoint.reportAccount(createAccountReportDto);
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
