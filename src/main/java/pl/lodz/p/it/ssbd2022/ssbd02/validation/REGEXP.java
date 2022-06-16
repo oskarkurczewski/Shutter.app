@@ -26,7 +26,11 @@ public final class REGEXP {
 
     public static final String NAME_SURNAME_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹ][a-ząćęńśłóżź]{0,63}";
 
-    public static final String DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{0,4096}";
+    public static final String DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{1,4096}";
+
+    public static final String PHOTO_DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{0,1024}";
+
+    public static final String PHOTO_TITLE_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{1,64}";
 
     public static final String LOCALE_PATTERN = "^[a-zA-Z]{2}(?:-[a-zA-Z]{2}){0,2}$";
 

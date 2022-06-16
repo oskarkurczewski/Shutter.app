@@ -18,6 +18,7 @@ import * as TokenBased from "pages/token-based";
 import { PhotographersListPage } from "pages/photographers";
 import { SuspenseLoader } from "components/suspense-loader";
 import { PhotographerProfilePage } from "pages/photographers";
+import { PhotographerGalleryPage } from "pages/photographers/gallery";
 
 function App() {
    return (
@@ -106,6 +107,15 @@ function App() {
                         }
                      />
                   </Route>
+
+                  <Route
+                     path=":login/profile/gallery"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <PhotographerGalleryPage />
+                        </ProtectedRoute>
+                     }
+                  />
 
                   <Route path="photographers" element={<PhotographersListPage />} />
 
