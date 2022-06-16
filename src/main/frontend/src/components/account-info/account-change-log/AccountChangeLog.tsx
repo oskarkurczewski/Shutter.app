@@ -19,6 +19,7 @@ export const AccountChangeLog: React.FC<Props> = ({ login }) => {
       columnName: "id",
       order: "asc",
    });
+
    const [tableData, setTableData] = useState([]);
    useEffect(() => {
       getAccountChangeLogMutation({ params: params, pathParam: login });

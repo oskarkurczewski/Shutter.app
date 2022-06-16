@@ -56,21 +56,17 @@ public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
         Root<ReviewReport> table = query.from(ReviewReport.class);
         query.select(table);
 
-        try {
             switch (order) {
                 case "asc": {
-                    query.orderBy(criteriaBuilder.asc(table.get("created_at")));
+                    query.orderBy(criteriaBuilder.asc(table.get("createdAt")));
                     break;
 
                 }
                 case "desc": {
-                    query.orderBy(criteriaBuilder.desc(table.get("created_at")));
+                    query.orderBy(criteriaBuilder.desc(table.get("createdAt")));
                     break;
                 }
             }
-        } catch (IllegalArgumentException e) {
-            throw ExceptionFactory.wrongParameterException();
-        }
 
         if (reviewed != null) query.where(criteriaBuilder.equal(table.get("reviewed"), reviewed));
         return getEm()

@@ -50,15 +50,18 @@ public class ReportController extends AbstractController {
      * @throws WrongParameterException niepoprawna kolejność sortowania
      */
     @GET
-    @Path("/account")
+    @Path("/list/account")
     @Produces(MediaType.APPLICATION_JSON)
     public ListResponseDto<AccountReportDto> listAllAccountReports(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
             @QueryParam("reviewed") Boolean reviewed
-    ) throws WrongParameterException {
-        return reportEndpoint.getAccountReportList(new GetReportRequestDto(reviewed, order, pageNo, recordsPerPage));
+    ) throws BaseApplicationException {
+        return repeat(() -> reportEndpoint.getAccountReportList(
+                        new GetReportRequestDto(reviewed, order, pageNo, recordsPerPage)
+                ), reportEndpoint
+        );
     }
 
     /**
@@ -68,7 +71,7 @@ public class ReportController extends AbstractController {
      * @throws WrongParameterException niepoprawna kolejność sortowania
      */
     @GET
-    @Path("/photographeer")
+    @Path("/list/photographer")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public ListResponseDto<PhotographerReportDto> listAllPhotographerReports(
@@ -78,8 +81,9 @@ public class ReportController extends AbstractController {
             @QueryParam("reviewed") Boolean reviewed
     ) throws BaseApplicationException {
         return repeat(() -> reportEndpoint.getPhotographerReportList(
-                new GetReportRequestDto(reviewed, order, pageNo, recordsPerPage)
-        ), reportEndpoint);
+                        new GetReportRequestDto(reviewed, order, pageNo, recordsPerPage)
+                ), reportEndpoint
+        );
     }
 
     /**
@@ -89,15 +93,18 @@ public class ReportController extends AbstractController {
      * @throws WrongParameterException niepoprawna kolejność sortowania
      */
     @GET
-    @Path("/review")
+    @Path("/list/review")
     @Produces(MediaType.APPLICATION_JSON)
     public ListResponseDto<ReviewReportDto> listAllReviewReports(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
             @QueryParam("reviewed") Boolean reviewed
-    ) throws WrongParameterException {
-        return reportEndpoint.getReviewReportList(new GetReportRequestDto(reviewed, order, pageNo, recordsPerPage));
+    ) throws BaseApplicationException {
+        return repeat(() -> reportEndpoint.getReviewReportList(
+                        new GetReportRequestDto(reviewed, order, pageNo, recordsPerPage)
+                ), reportEndpoint
+        );
     }
 
 
