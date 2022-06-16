@@ -49,6 +49,7 @@ public class AccountFacade extends FacadeTemplate<Account> {
         }
     }
 
+
     @Override
     protected EntityManager getEm() {
         return em;

@@ -129,6 +129,14 @@ public class ExceptionFactory {
         return new WrongParameterException("exception.search_wrong_parameter");
     }
 
+    public static WrongParameterException wrongCauseNameException() {
+        return new WrongParameterException("exception.wrong_cause_name");
+    }
+
+    public static CannotChangeException photographerAlreadyReportedException() {
+        return new CannotChangeException("exception.photographer_already_reported");
+    }
+
     public static UserNotInGroupException userNotInGroupException() {
         return new UserNotInGroupException("exception.user_not_in_group");
     }
