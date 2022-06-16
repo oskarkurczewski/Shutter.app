@@ -1,10 +1,10 @@
 import { api } from "./api";
-import { DateTime } from "luxon";
 import {
    basicPhotographerInfo,
-   availabilityResponse,
+   AvailabilityResponse,
 } from "redux/types/api/photographerTypes";
 import { AvailabilityHour } from "types/CalendarTypes";
+import { parseToAvailabilityHour, parseToAvailabilityRequest } from "redux/converters";
 
 const PhotographerService = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -14,21 +14,23 @@ const PhotographerService = api.injectEndpoints({
 
       getAvailabityHours: builder.query<AvailabilityHour[], string>({
          query: (login) => ({ url: `/availability/${login}` }),
-         transformResponse(data: availabilityResponse[]) {
-            return data.map((availability) => ({
-               id: availability.id,
-               day: availability.day + 1,
-               from: DateTime.fromFormat(availability.from, "hh:mm:ss").set({
-                  weekday: availability.day + 1,
-               }),
-               to: DateTime.fromFormat(availability.to, "hh:mm:ss").set({
-                  weekday: availability.day + 1,
-               }),
-            }));
+         transformResponse(data: AvailabilityResponse[]) {
+            return parseToAvailabilityHour(data);
          },
+      }),
+
+      updateAvailabilityHours: builder.mutation<void, AvailabilityHour[]>({
+         query: (availability) => ({
+            url: "/availability",
+            method: "PUT",
+            body: parseToAvailabilityRequest(availability),
+         }),
       }),
    }),
 });
 
-export const { useGetPhotographerDetailedInfoQuery, useGetAvailabityHoursQuery } =
-   PhotographerService;
+export const {
+   useGetPhotographerDetailedInfoQuery,
+   useGetAvailabityHoursQuery,
+   useUpdateAvailabilityHoursMutation,
+} = PhotographerService;

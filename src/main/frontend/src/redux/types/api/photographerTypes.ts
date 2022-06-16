@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 import { basicUserInfoResponse } from "./accountTypes";
 
 export interface photographerTableEntry {
@@ -27,9 +26,15 @@ export interface basicPhotographerInfo extends basicUserInfoResponse {
    specializationList: string[];
 }
 
-export interface availabilityResponse {
+export interface AvailabilityResponse {
    id: number;
    day: number;
+   from: string;
+   to: string;
+}
+
+export interface AvailabilityRequest {
+   day: string;
    from: string;
    to: string;
 }

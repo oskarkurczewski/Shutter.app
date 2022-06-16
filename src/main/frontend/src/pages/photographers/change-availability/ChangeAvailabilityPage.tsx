@@ -4,7 +4,10 @@ import { Calendar } from "components/shared/calendar";
 import { Button, Card } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { Info } from "luxon";
-import { useGetAvailabityHoursQuery } from "redux/service/photographerService";
+import {
+   useGetAvailabityHoursQuery,
+   useUpdateAvailabilityHoursMutation,
+} from "redux/service/photographerService";
 import { useAppSelector } from "redux/hooks";
 import { AvailabilityHour, HourBox } from "types/CalendarTypes";
 
@@ -13,6 +16,7 @@ export const ChangeAvailabilityPage = () => {
    const { username } = useAppSelector((state) => state.auth);
 
    const { data } = useGetAvailabityHoursQuery(username);
+   const [updateMutation, updateMutationState] = useUpdateAvailabilityHoursMutation();
    const [newHours, setNewHours] = useState<AvailabilityHour[]>([]);
 
    useEffect(() => {
@@ -86,7 +90,7 @@ export const ChangeAvailabilityPage = () => {
                   ))}
                </div>
                <div className={styles.footer}>
-                  <Button onClick={() => console.log("wcisnieto")}>Zapisz</Button>
+                  <Button onClick={() => updateMutation(newHours)}>Zapisz</Button>
                </div>
             </Card>
          </div>
