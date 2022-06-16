@@ -3,6 +3,7 @@ import styles from "./ReservationBox.module.scss";
 import { useOnClickOutside } from "hooks";
 import { Reservation } from "types/CalendarTypes";
 import { InfoBox } from "../info-box";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    reservation: Reservation;
@@ -12,6 +13,7 @@ interface Props {
 export const ReservationBox: React.FC<Props> = ({ reservation, fullWidth }) => {
    const ref = useRef(null);
    const [infoBoxOpen, setInfoBoxOpen] = useState(false);
+   const { i18n } = useTranslation();
 
    const offset = reservation.from.hour + reservation.from.minute / 60;
    const height = reservation.to.diff(reservation.from, "minutes").minutes / 60;
@@ -40,7 +42,11 @@ export const ReservationBox: React.FC<Props> = ({ reservation, fullWidth }) => {
             <InfoBox className={styles.reservation_info_wrapper}>
                <p className="section-title">Rezerwacja</p>
                <div>
-                  <p>{reservation.from.toFormat("cccc - dd.LL.yyyy")}</p>
+                  <p>
+                     {reservation.from
+                        .setLocale(i18n.language)
+                        .toFormat("cccc - dd.LL.yyyy")}
+                  </p>
                   <p>
                      {`${reservation.from.toFormat("T")} - ${reservation.to.toFormat(
                         "T"

@@ -230,6 +230,7 @@
       "modification_type": "Typ modyfikacji"
    },
    "change_availability_page": {
-      "availability_hours": "Godziny Dostępności"
+      "availability_hours": "Godziny Dostępności",
+      "no_availability": "Brak dostępności"
    }
 }

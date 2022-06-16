@@ -21,8 +21,6 @@ export const InfoBox: React.FC<Props> = ({ children, className }) => {
          const column = getNthParent(boxElement.current, 3);
          const table = getNthParent(column, 4);
 
-         // console.log(column, table, table.offsetWidth - column.offsetLeft);
-
          table.offsetWidth - column.offsetLeft < 300
             ? setBoxStyle({ right: "110%", visibility: "visible" })
             : setBoxStyle({ left: "110%", visibility: "visible" });

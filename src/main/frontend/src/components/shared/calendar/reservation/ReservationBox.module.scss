@@ -47,6 +47,7 @@
    .reservation_info_wrapper {
       p {
          color: variables.$white;
+         text-transform: capitalize;
       }
 
       div {

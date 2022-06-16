@@ -5,6 +5,7 @@ import { AvailabilityHour, HourBox, Reservation } from "types/CalendarTypes";
 import { AvailabilityBox } from "../availability";
 import { ReservationBox } from "../reservation";
 import { DateTime } from "luxon";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    onRangeSelection?: (selection: HourBox[]) => void;
@@ -19,6 +20,7 @@ export const DayColumn: React.FC<Props> = ({
    availabilityList,
    reservationsList,
 }) => {
+   const { i18n } = useTranslation();
    const today = useMemo(() => DateTime.local().startOf("day"), [dayData]);
    const displayFullWidth = !(availabilityList && reservationsList);
    const dayStart = dayData[0].from;
@@ -34,7 +36,9 @@ export const DayColumn: React.FC<Props> = ({
    return (
       <div className={styles.day_column_wrapper}>
          <div className={`${styles.header} ${labelClass}`}>
-            <p className="label-bold">{dayStart.setLocale("pl").toFormat("ccc dd")}</p>
+            <p className="label-bold">
+               {dayStart.setLocale(i18n.language).toFormat("ccc dd")}
+            </p>
          </div>
          <div className={styles.content}>
             <div className={styles.grid}>

@@ -3,6 +3,7 @@ import styles from "./AvailabilityBox.module.scss";
 import { useOnClickOutside } from "hooks";
 import { AvailabilityHour } from "types/CalendarTypes";
 import { InfoBox } from "../info-box";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    availability: AvailabilityHour;
@@ -12,6 +13,7 @@ interface Props {
 export const AvailabilityBox: React.FC<Props> = ({ availability, fullWidth }) => {
    const ref = useRef(null);
    const [infoBoxOpen, setInfoBoxOpen] = useState(false);
+   const { i18n } = useTranslation();
 
    const offset = availability.from.hour + availability.from.minute / 60;
    const height = availability.to.diff(availability.from, "minutes").minutes / 60;
@@ -42,7 +44,11 @@ export const AvailabilityBox: React.FC<Props> = ({ availability, fullWidth }) =>
             <InfoBox className={styles.availability_info_wrapper}>
                <p className="section-title">Godziny dostępności:</p>
                <div>
-                  <p>{availability.from.toFormat("cccc - dd.LL.yyyy")}</p>
+                  <p>
+                     {availability.from
+                        .setLocale(i18n.language)
+                        .toFormat("cccc - dd.LL.yyyy")}
+                  </p>
                   <p>
                      {`${availability.from.toFormat("T")} - ${availability.to.toFormat(
                         "T"
