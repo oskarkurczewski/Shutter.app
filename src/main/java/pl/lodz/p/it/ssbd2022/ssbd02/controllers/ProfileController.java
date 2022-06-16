@@ -67,10 +67,17 @@ public class ProfileController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Usuwa polubienie na wybranym zdjęciu
+     *
+     * @param photoId Id zdjęcia
+     * @throws BaseApplicationException W przypadku niepowodzenia akcji
+     */
     @POST
     @Path("/photo/{id}/unlike")
-    public Response unlikePhoto(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public Response unlikePhoto(@PathParam("id") Long photoId) throws BaseApplicationException {
+        repeat(() -> photoEndpoint.unlikePhoto(photoId), photoEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     /**

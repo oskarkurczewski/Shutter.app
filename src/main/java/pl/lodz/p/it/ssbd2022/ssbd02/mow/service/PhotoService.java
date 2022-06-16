@@ -94,9 +94,22 @@ public class PhotoService {
         photo.setLikeCount(photo.getLikeCount() + 1);
     }
 
+    /**
+     * Usuwa polubienie użytkownika na zdjęciu o danym Id
+     *
+     * @param photo Wybrane zdjęcie
+     * @param account Użytkownik
+     * @throws PhotoAlreadyUnlikedException
+     */
     @RolesAllowed(unlikePhoto)
-    public void unlikePhoto(Photo photo) {
-        throw new UnsupportedOperationException();
+    public void unlikePhoto(Photo photo, Account account) throws PhotoAlreadyUnlikedException {
+        if (!photo.getLikesList().contains(account) || account.getLikedPhotosList().contains(photo)) {
+            throw ExceptionFactory.photoAlreadyUnlikedException();
+        }
+
+        photo.getLikesList().remove(account);
+        account.getLikedPhotosList().remove(photo);
+        photo.setLikeCount(photo.getLikeCount() - 1);
     }
 
 }
