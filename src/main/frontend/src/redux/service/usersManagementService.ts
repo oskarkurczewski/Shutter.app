@@ -11,8 +11,13 @@ import {
    tableAccountChangeLogInfo,
    getAccountChangeLogRequest,
    getBasicUserListRequest,
+   accountReport,
 } from "redux/types/api";
-import { EtagData, getListResponse } from "redux/types/api/dataTypes";
+import {
+   EtagData,
+   getListResponse,
+   getReportListRequest,
+} from "redux/types/api/dataTypes";
 
 const UsersManagementService = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -96,6 +101,13 @@ const UsersManagementService = api.injectEndpoints({
             params: data.params,
          }),
       }),
+
+      getAccountReportList: builder.query<
+         getListResponse<accountReport>,
+         getReportListRequest
+      >({
+         query: (params) => ({ url: `/report/list/review`, params }),
+      }),
    }),
 });
 
@@ -109,4 +121,5 @@ export const {
    useChangeAccountInfoMutation,
    useGetAccountListPreferencesMutation,
    useGetBasicUserListMutation,
+   useGetAccountReportListQuery,
 } = UsersManagementService;

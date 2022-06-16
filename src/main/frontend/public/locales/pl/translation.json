@@ -227,5 +227,17 @@
       "modification_date": "Data modyfikacji",
       "modification_author": "Autor modyfikacji",
       "modification_type": "Typ modyfikacji"
+   },
+   "reports_page": {
+      "title": "Zgłoszenia",
+      "user": {
+         "title": "Zgłoszenia użytkowników"
+      },
+      "photographer": {
+         "title": "Zgłoszenia fotografa"
+      },
+      "review": {
+         "title": "Zgłoszenia recenzji"
+      }
    }
 }

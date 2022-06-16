@@ -1,0 +1,51 @@
+@use "variables.scss" as variables;
+
+.reports_page_wrapper {
+   display: flex;
+   .nav {
+      padding: 1rem;
+      width: 300px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 30px;
+
+      & > p {
+         margin-bottom: 2rem;
+         color: variables.$gray-300;
+      }
+
+      div.links {
+         display: flex;
+         flex-direction: column;
+         gap: 3px;
+
+         .link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 7px;
+            color: variables.$gray-200;
+            border-radius: 4px;
+            transition: background-color 150ms ease-in-out;
+            cursor: pointer;
+
+            svg {
+               font-size: 20px;
+            }
+
+            &.active,
+            &:hover {
+               background-color: variables.$purple-100-transparent;
+               color: variables.$purple-100;
+
+               p {
+                  color: variables.$purple-100;
+               }
+            }
+         }
+      }
+   }
+   .card {
+      flex: 1;
+   }
+}

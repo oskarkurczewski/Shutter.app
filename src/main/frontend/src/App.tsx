@@ -24,6 +24,7 @@ import * as TokenBased from "pages/token-based";
 import { PhotographersListPage } from "pages/photographers";
 import { SuspenseLoader } from "components/suspense-loader";
 import { PhotographerProfilePage } from "pages/photographers";
+import { ReportsPage } from "pages/reports";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -168,6 +169,17 @@ function App() {
                         }
                      />
                   </Route>
+
+                  <Route
+                     path="/reports"
+                     element={
+                        <ProtectedRoute
+                           roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
+                        >
+                           <ReportsPage />
+                        </ProtectedRoute>
+                     }
+                  />
 
                   <Route path="photographers" element={<PhotographersListPage />} />
 
