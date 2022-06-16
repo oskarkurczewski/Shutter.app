@@ -1,17 +1,47 @@
 @use "variables.scss" as variables;
 
 div.text_input_wrapper {
-    label {
-        background-color: variables.$blue-gray-100;
-        color: variables.$gray-300;
-        font-weight: 500;
-        border-radius: 10px;
-        border: none;
-        line-height: 2.5rem;
-        padding: 0.8rem 1rem;
-        outline-color: variables.$blue-gray-300;
-        input {
-            display: none;
-        }
-    }
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+
+   & > p {
+      margin-bottom: 5px;
+      color: variables.$gray-300;
+
+      &.required {
+         &::after {
+            content: "*";
+            color: variables.$red-200;
+            margin-left: 2px;
+         }
+      }
+   }
+
+   label {
+      height: 43px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      flex-grow: 1;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+
+      font-size: 0.83rem;
+      border: none;
+      background-color: variables.$blue-gray-100;
+      color: variables.$gray-300;
+      font-weight: 500;
+      outline-color: variables.$blue-gray-300;
+      box-shadow: variables.$shadow-elevated;
+      cursor: pointer;
+
+      svg {
+         font-size: 1rem;
+      }
+
+      input {
+         display: none;
+      }
+   }
 }

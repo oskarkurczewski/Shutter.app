@@ -4,6 +4,7 @@ div.text_input_wrapper {
    position: relative;
    display: flex;
    flex-direction: column;
+
    p {
       margin-bottom: 5px;
       color: variables.$gray-300;
@@ -42,7 +43,7 @@ div.text_input_wrapper {
          color: variables.$gray-300;
          flex-grow: 1;
          outline-color: variables.$blue-gray-300;
-         
+
          &:disabled {
             background-color: variables.$gray-50;
          }
