@@ -1,16 +1,10 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import "./style.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { ProtectedRoute } from "components/routes";
 import { PageLayout } from "layout";
-import { Button } from "components/shared";
-import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { AccessLevel } from "types/AccessLevel";
-import { login, logout } from "redux/slices/authSlice";
-import { push, remove } from "redux/slices/toastSlice";
-import { useRefreshTokenMutation } from "redux/service/authService";
 
 import { DashboardPage } from "pages/dashboard";
 import { HomePage } from "pages/home";
@@ -26,53 +20,6 @@ import { SuspenseLoader } from "components/suspense-loader";
 import { PhotographerProfilePage } from "pages/photographers";
 
 function App() {
-   const dispatch = useAppDispatch();
-   const exp = useAppSelector((state) => state.auth.exp);
-   const [refreshToken] = useRefreshTokenMutation();
-
-   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
-      dispatch(login(getLoginPayload()));
-   } else {
-      dispatch(logout());
-   }
-
-   const data = {
-      name: "refreshToken",
-      label: "Powiadomienie",
-      text: "Twoja sesja niedługo wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć!",
-      content: (
-         <Button
-            onClick={async (e) => {
-               e.preventDefault();
-               try {
-                  const token = await refreshToken().unwrap();
-                  localStorage.setItem("token", token.token);
-                  dispatch(login(getLoginPayload()));
-                  dispatch(remove("refreshToken"));
-               } catch (err) {
-                  return;
-               }
-            }}
-         >
-            Przedłuż
-         </Button>
-      ),
-   };
-
-   useEffect(() => {
-      if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) dispatch(push(data));
-
-      const timeoutID = setInterval(() => {
-         if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) {
-            dispatch(push(data));
-         }
-      }, 1000 * 60 * 0.5);
-
-      return () => {
-         clearTimeout(timeoutID);
-      };
-   }, [exp]);
-
    return (
       <Suspense fallback={<SuspenseLoader />}>
          <BrowserRouter>
