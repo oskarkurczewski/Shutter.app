@@ -1,6 +1,7 @@
 @use "variables.scss" as variables;
 
 .container {
+   z-index: 100;
    display: flex;
    flex-direction: column;
    position: relative;

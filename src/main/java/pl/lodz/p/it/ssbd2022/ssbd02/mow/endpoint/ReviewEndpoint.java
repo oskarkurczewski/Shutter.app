@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReviewService;
@@ -114,8 +115,11 @@ public class ReviewEndpoint extends AbstractEndpoint {
         List<Review> reviews = reviewService.listReviewsByPhotographerId(pageNo, recordsPerPage, photographerId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
 
+        String login = authCtx.getCurrentUsersLogin();
+
         for (Review review: reviews) {
-            reviewDtoList.add(new ReviewDto(review));
+            boolean liked = review.getLikedList().stream().anyMatch(r -> r.getLogin().equals(login));
+            reviewDtoList.add(new ReviewDto(review, liked));
         }
 
         return reviewDtoList;

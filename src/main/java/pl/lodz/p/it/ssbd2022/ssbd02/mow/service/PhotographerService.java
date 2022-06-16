@@ -48,7 +48,7 @@ public class PhotographerService {
      *                             niebędący ani administratorem, ani moderatorem
      * @see BasePhotographerInfoDto
      */
-    @RolesAllowed(getPhotographerInfo)
+    @PermitAll
     public PhotographerInfo getPhotographerInfo(PhotographerInfo photographerInfo)
             throws NoPhotographerFound {
         if (

@@ -93,7 +93,9 @@
       "renew": "Przedłuż",
       "success_update": "Pomyślnie zmodyfikowano",
       "success_login_message": "Pomyślnie zalogowano.",
-      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć."
+      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+      "success_like": "Pomyślnie polubiono",
+      "error_like": "Polubienie nie powiodło się"
    },
    "navbar": {
       "title": "shutter.app",

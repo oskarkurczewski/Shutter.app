@@ -9,6 +9,7 @@ export interface basicPhotographerInfo extends basicUserInfoResponse {
    longitude: number;
    specializationList: string[];
 }
+
 export interface photographerTableEntry {
    login: string;
    email: string;
