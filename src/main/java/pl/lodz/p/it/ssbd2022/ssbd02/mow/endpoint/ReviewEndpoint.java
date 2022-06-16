@@ -111,8 +111,11 @@ public class ReviewEndpoint extends AbstractEndpoint {
         List<Review> reviews = reviewService.listReviewsByPhotographerId(pageNo, recordsPerPage, photographerId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
 
+        String login = authCtx.getCurrentUsersLogin();
+
         for (Review review: reviews) {
-            reviewDtoList.add(new ReviewDto(review));
+            boolean liked = review.getLikedList().stream().anyMatch(r -> r.getLogin().equals(login));
+            reviewDtoList.add(new ReviewDto(review, liked));
         }
 
         return reviewDtoList;
