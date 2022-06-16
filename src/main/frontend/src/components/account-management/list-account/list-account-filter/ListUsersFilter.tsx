@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styles from "./ListUsersFilter.module.scss";
 import { Card, TextInput, SquareButton, Button } from "components/shared";
-import { FilterDropdownInput, FilterTextInput } from "components/list-users";
+import {
+   FilterDropdownInput,
+   FilterTextInput,
+} from "components/account-management/list-account";
 import { FaSearchMinus, FaSearchPlus } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 

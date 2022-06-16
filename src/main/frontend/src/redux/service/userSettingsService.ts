@@ -1,6 +1,6 @@
 import { api } from "./api";
 import {
-   changeOwnPasswordRequest,
+   changePasswordRequest as changePasswordRequest,
    changeOwnUserDataRequest,
    requestResetPasswordRequest,
    tableAccountChangeLogInfo,
@@ -29,7 +29,7 @@ const UserSettingsService = api.injectEndpoints({
          }),
       }),
 
-      changePassword: builder.mutation<void, changeOwnPasswordRequest>({
+      changePassword: builder.mutation<void, changePasswordRequest>({
          query: (data) => ({
             url: "account/change-password",
             method: "PUT",
@@ -89,7 +89,6 @@ const UserSettingsService = api.injectEndpoints({
             body: data,
          }),
       }),
-
    }),
 });
 

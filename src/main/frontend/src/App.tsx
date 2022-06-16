@@ -149,15 +149,6 @@ function App() {
                      />
 
                      <Route
-                        path=":login/edit"
-                        element={
-                           <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                              <UserPages.EditUserAccountPage />
-                           </ProtectedRoute>
-                        }
-                     />
-
-                     <Route
                         path=":login/info"
                         element={
                            <ProtectedRoute
@@ -206,6 +197,8 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
+
+                  <Route path="photographers" element={<PhotographersListPage />} />
                </Route>
             </Routes>
          </BrowserRouter>

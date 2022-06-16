@@ -1,42 +1,38 @@
 import React from "react";
-import { Checkbox, Dropdown } from "components/shared";
+import { Checkbox, TextInput } from "components/shared";
 
-interface DropdownInputProps {
+interface TextInputProps {
    label: string;
    isActive: boolean;
    setIsActive: (value: boolean) => void;
    value: string;
    setValue: (value: string) => void;
-   possibleValues: string[];
 }
 
-export const FilterDropdownInput: React.FC<DropdownInputProps> = ({
+export const FilterTextInput: React.FC<TextInputProps> = ({
    label,
    isActive,
    setIsActive,
    value,
    setValue,
-   possibleValues,
 }) => {
    return (
-      <div className={`filter dropdown ${label}`}>
+      <div className={`filter text ${label}`}>
          <Checkbox
+            id="label"
             onChange={(e) => {
                setIsActive(e.target.checked);
             }}
             value={isActive}
          />
-         <Dropdown
-            values={possibleValues}
-            selectedValue={value}
+
+         <TextInput
+            value={value}
             onChange={(e) => {
                setValue(e.target.value);
             }}
-            name={label}
-            id={label}
-         >
-            {label}
-         </Dropdown>
+            label={label}
+         />
       </div>
    );
 };
