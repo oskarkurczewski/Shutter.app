@@ -78,6 +78,11 @@
       "photographers": "Fotografowie",
       "change_availability": "Zmiana godzin dostępności"
    },
+   "toast": {
+      "renew": "Przedłuż",
+      "success_login_message": "Pomyślnie zalogowano.",
+      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliklnij w przycisk poniżej, aby ją przedłużyć."
+   },
    "navbar": {
       "title": "shutter.app",
       "buttons": {

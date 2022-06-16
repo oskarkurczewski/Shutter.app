@@ -1,0 +1,19 @@
+@use "variables.scss" as variables;
+
+.toast {
+   svg {
+      fill: variables.$red-300;
+   }
+
+   & > div:first-child {
+      background: variables.$red-gradient;
+   }
+
+   & > div:last-child {
+      background: variables.$red-300-transparent;
+   }
+
+   button:hover {
+      background-color: variables.$red-300;
+   }
+}
