@@ -6,24 +6,16 @@ import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useRefreshTokenMutation } from "redux/service/authService";
-import { login, logout } from "redux/slices/authSlice";
+import { login } from "redux/slices/authSlice";
 import { ToastTypes, push } from "redux/slices/toastSlice";
 import { Toast } from "types";
-import { getTokenExp, getLoginPayload } from "util/loginUtil";
+import { getLoginPayload } from "util/loginUtil";
 
 export const PageLayout: React.FC = () => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
    const exp = useAppSelector((state) => state.auth.exp);
    const [refreshToken] = useRefreshTokenMutation();
-
-   useEffect(() => {
-      if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
-         dispatch(login(getLoginPayload()));
-      } else {
-         dispatch(logout());
-      }
-   }, []);
 
    const sessionToast: Toast = useMemo(
       () => ({

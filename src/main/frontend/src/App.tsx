@@ -5,6 +5,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProtectedRoute } from "components/routes";
 import { PageLayout } from "layout";
 import { AccessLevel } from "types/AccessLevel";
+import { SuspenseLoader } from "components/suspense-loader";
+import { getLoginPayload, getTokenExp } from "util/loginUtil";
+import { useAppDispatch } from "redux/hooks";
+import { login, logout } from "redux/slices/authSlice";
 
 import { DashboardPage } from "pages/dashboard";
 import { HomePage } from "pages/home";
@@ -20,9 +24,16 @@ import {
    PhotographerProfilePage,
    ChangeAvailabilityPage,
 } from "pages/photographers";
-import { SuspenseLoader } from "components/suspense-loader";
 
 function App() {
+   const dispatch = useAppDispatch();
+
+   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
+      dispatch(login(getLoginPayload()));
+   } else {
+      dispatch(logout());
+   }
+
    return (
       <Suspense fallback={<SuspenseLoader />}>
          <BrowserRouter>

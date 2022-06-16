@@ -8,26 +8,32 @@ import {
    useGetAvailabityHoursQuery,
    useUpdateAvailabilityHoursMutation,
 } from "redux/service/photographerService";
-import { useAppSelector } from "redux/hooks";
-import { AvailabilityHour, HourBox } from "types/CalendarTypes";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { AvailabilityHour, ErrorResponse, HourBox, Toast } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { parseError } from "util/errorUtil";
 
 export const ChangeAvailabilityPage = () => {
    const { t } = useTranslation();
    const { username } = useAppSelector((state) => state.auth);
+   const dispatch = useAppDispatch();
 
    const { data } = useGetAvailabityHoursQuery(username);
    const [updateMutation, updateMutationState] = useUpdateAvailabilityHoursMutation();
-   const [newHours, setNewHours] = useState<AvailabilityHour[]>([]);
+
+   const [newHours, setNewHours] = useState<AvailabilityHour[]>();
 
    useEffect(() => {
       data && setNewHours(data);
    }, [data]);
 
+   // Parse to display
    const weekdayData = Info.weekdays().map((weekday, index) => ({
       weekday,
-      data: newHours?.filter((availability) => availability.day === index),
+      data: newHours?.filter((availability) => availability.day === index + 1),
    }));
 
+   // Manage availability
    const addAvailability = (selection: HourBox[]) => {
       const day = selection[0].weekday;
       const from = selection[0].from;
@@ -45,6 +51,26 @@ export const ChangeAvailabilityPage = () => {
       );
       setNewHours(res);
    };
+
+   // Handle request response
+   useEffect(() => {
+      if (updateMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_update"),
+         };
+         dispatch(push(successToast));
+      }
+
+      if (updateMutationState.isError) {
+         const err = updateMutationState.error as ErrorResponse;
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(`change_availability_page.${parseError(err.data.message)}`),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [updateMutationState]);
 
    return (
       <section className={styles.change_availability_page_wrapper}>

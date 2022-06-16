@@ -80,6 +80,7 @@
    },
    "toast": {
       "renew": "Przedłuż",
+      "success_update": "Pomyślnie zmodyfikowano",
       "success_login_message": "Pomyślnie zalogowano.",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliklnij w przycisk poniżej, aby ją przedłużyć."
    },
@@ -242,6 +243,11 @@
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",
       "no_availability": "Brak dostępności",
-      "calendar_title": "Kalendarz"
+      "calendar_title": "Kalendarz",
+      "validator": {
+         "incorrect": {
+            "availability_time": "Podano niepoprawny zakres"
+         }
+      }
    }
 }
