@@ -33,6 +33,7 @@
       }
    },
    "exception": {
+      "invalid_credentials": "Niepoprawne dane logowania",
       "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
       "database": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "cannot_change": "Wybrany zasób jest już w tym stanie.",
@@ -117,16 +118,19 @@
       "reservation": "Rezerwacja"
    },
    "login_page": {
-      "send_2fa_code": "Wyślij kod",
-      "2fa_code": "6-cyfrowy kod",
       "form_title": "Logowanie",
+      "send_2fa_code": "Wyślij kod",
+      "2fa_code": "Kod uwierzytelniający",
       "recover_password": "Przypomnij hasło",
       "sign_in": "Zaloguj się",
       "sign_up": "Zarejestruj się",
-      "inviting_message": "Załóż je teraz, to zupełnie darmowe!",
-      "not_user_message": "Nie masz jeszcze konta?",
+      "not_user_message_up": "Nie masz",
+      "not_user_message_down": "Jeszcze konta?",
+      "inviting_message_up": "Załóż je teraz,",
+      "inviting_message_down": "to zupełnie darmowe!",
       "login_code": "Twój kod do logowania został wysłany.",
-      "loading": "Trwa próba zalogowania..."
+      "loading": "Trwa próba zalogowania...",
+      "twoFA_desc": "Podaj kod dwustopniowego logowania wysłany na Twój adres email w celu potwierdzenia swojej tożsamości."
    },
    "register_page": {
       "form_title": "Rejestracja",

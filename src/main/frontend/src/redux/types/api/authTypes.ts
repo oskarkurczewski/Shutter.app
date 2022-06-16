@@ -3,7 +3,7 @@ import { Language } from "types/Language";
 export interface LoginRequest {
    login: string;
    password: string;
-   twoFACode: string;
+   twoFACode?: string;
 }
 
 export interface TokenResponse {
