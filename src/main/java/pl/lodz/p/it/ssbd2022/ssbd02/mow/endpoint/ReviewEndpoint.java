@@ -7,22 +7,26 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReviewService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ReviewEndpoint extends AbstractEndpoint {
 
@@ -71,7 +75,8 @@ public class ReviewEndpoint extends AbstractEndpoint {
 
     /**
      * Wykonuje polubienie danej recenzji przez zalogowanego użytkownika
-     * @param reviewId  id recenzji mającej być polubioną
+     *
+     * @param reviewId id recenzji mającej być polubioną
      * @throws BaseApplicationException
      */
     @RolesAllowed(likeReview)
@@ -84,7 +89,8 @@ public class ReviewEndpoint extends AbstractEndpoint {
 
     /**
      * Wykonuje usunięcie polubienia danej recenzji przez zalogowanego użytkownika
-     * @param reviewId  id recenzji mającej przestać być polubioną
+     *
+     * @param reviewId id recenzji mającej przestać być polubioną
      * @throws BaseApplicationException
      */
     @RolesAllowed(unlikeReview)

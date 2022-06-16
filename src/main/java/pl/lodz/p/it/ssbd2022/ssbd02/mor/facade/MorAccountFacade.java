@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
+package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
@@ -14,14 +14,14 @@ import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
 @Stateless
-@Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MorFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
-public class MowAccountFacade extends FacadeTemplate<Account> {
+public class MorAccountFacade extends FacadeTemplate<Account> {
 
-    @PersistenceContext(unitName = "ssbd02mowPU")
+    @PersistenceContext(unitName = "ssbd02morPU")
     private EntityManager em;
 
-    public MowAccountFacade() {
+    public MorAccountFacade() {
         super(Account.class);
     }
 

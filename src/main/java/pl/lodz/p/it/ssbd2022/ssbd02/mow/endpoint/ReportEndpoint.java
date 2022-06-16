@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
-import org.hibernate.service.spi.InjectService;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
@@ -12,12 +11,14 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReportService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReviewService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ReportEndpoint extends AbstractEndpoint {
     @Inject
