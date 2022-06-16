@@ -64,7 +64,9 @@
    "toast": {
       "renew": "Przedłuż",
       "success_login_message": "Pomyślnie zalogowano.",
-      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliklnij w przycisk poniżej, aby ją przedłużyć."
+      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliklnij w przycisk poniżej, aby ją przedłużyć.",
+      "success_like": "Pomyślnie polubiono",
+      "error_like": "Polubienie nie powiodło się"
    },
    "navigation": {
       "home": "Strona główna",
