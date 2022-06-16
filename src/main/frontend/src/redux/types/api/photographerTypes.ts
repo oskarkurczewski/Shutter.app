@@ -28,5 +28,24 @@ export interface getPhotographersListRequest {
 
 export interface reportPhotographerReviewRequest {
    reviewId: number;
-   cause: ReviewReportCause;
+   cause: string;
+}
+
+export interface getPhotographerReviewsResponse {
+   pageNo: number;
+   recordsPerPage: number;
+   list: {
+      id: number;
+      name: string;
+      surname: string;
+      score: number;
+      content: string;
+      likeCount: string;
+   }[];
+}
+
+export interface getPhotographerReviewsRequest {
+   pageNo: number;
+   recordsPerPage?: number;
+   photographerLogin: string;
 }

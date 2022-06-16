@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styles from "./PhotographerReview.module.scss";
-import { Button, SquareButton } from "components/shared";
-import { FaEllipsisH } from "react-icons/fa";
 import { PhotographerStars } from "../photographer-stars";
 import { PhotographerReviewReportModal } from "../photographer-report-modal";
+import { MenuDropdown } from "components/shared/dropdown/menu-dropdown";
+import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    id?: number;
@@ -20,10 +21,15 @@ export const PhotographerReview: React.FC<Props> = ({
    stars,
    description,
 }) => {
-   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
+   const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
+   const { t } = useTranslation();
 
    const reportReview = () => {
-      setEditModalIsOpen(true);
+      setEditReportModalIsOpen(true);
+   };
+
+   const deleteReview = () => {
+      //TODO: delete review
    };
 
    return (
@@ -41,16 +47,23 @@ export const PhotographerReview: React.FC<Props> = ({
          </div>
          <p className={styles.review_description}>{description}</p>
          <div className={styles.review_buttons}>
-            <SquareButton onClick={reportReview}>
-               <FaEllipsisH />
-            </SquareButton>
+            <MenuDropdown>
+               <MenuDropdownItem
+                  value={t("photographer_page.report_button")}
+                  onClick={reportReview}
+               />
+               <MenuDropdownItem
+                  value={t("photographer_page.delete_button")}
+                  onClick={deleteReview}
+               />
+            </MenuDropdown>
             {/* TODO: like button */}
          </div>
          <PhotographerReviewReportModal
             reviewId={id}
-            isOpen={editModalIsOpen}
-            onSubmit={() => setEditModalIsOpen(false)}
-            onCancel={() => setEditModalIsOpen(false)}
+            isOpen={editReportModalIsOpen}
+            onSubmit={() => setEditReportModalIsOpen(false)}
+            onCancel={() => setEditReportModalIsOpen(false)}
          />
       </div>
    );

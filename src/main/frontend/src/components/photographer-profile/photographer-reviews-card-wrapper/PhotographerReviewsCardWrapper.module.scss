@@ -34,6 +34,14 @@
                flex-direction: row;
                gap: 10px;
 
+               button {
+                  p,
+                  span {
+                     color: variables.$gray-200;
+                  }
+                  background-color: variables.$blue-gray-100;
+               }
+
                .add_review_button {
                   button {
                      padding: 19px;
@@ -41,14 +49,6 @@
                }
             }
          }
-      }
-
-      button {
-         p,
-         span {
-            color: variables.$gray-200;
-         }
-         background-color: variables.$blue-gray-100;
       }
    }
 }

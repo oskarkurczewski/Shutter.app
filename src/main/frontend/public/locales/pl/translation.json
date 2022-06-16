@@ -19,7 +19,9 @@
          "score": "Opinia",
          "review-count": "Liczba Recenzji",
          "longitude": "Dług",
-         "latitude": "Szer"
+         "latitude": "Szer",
+         "submit": "Potwierdź",
+         "cancel": "Anuluj"
       }
    },
    "exception": {
@@ -207,7 +209,12 @@
       "photographer_review_count": "Liczba recenzji fotografa",
       "specializations": "Specjalizacje",
       "description": "Opis",
-      "reviews": "Recenzje"
+      "reviews": "Recenzje",
+      "add_review": "Dodaj recenzję",
+      "report_button": "Zgłoś",
+      "delete_button": "Usuń",
+      "report_review_modal_title": "Zgłaszanie recenzji",
+      "report_review_dropdown": "Przyczyna zgłoszenia:"
    },
    "photographer_specialization": {
       "specialization_studio": "Fotografia studyjna",

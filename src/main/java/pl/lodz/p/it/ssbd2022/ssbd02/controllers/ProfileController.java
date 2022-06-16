@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotoEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReviewEndpoint;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 
 @Path("profile")
@@ -100,5 +102,27 @@ public class ProfileController extends AbstractController {
     @Path("/review/{id}/unlike")
     public Response unlikeReview(@PathParam("id") Long reviewId) throws NoReviewFoundException, NoAuthenticatedAccountFound {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Punkt końcowy zwracający listę recenzji dla danego fotografa
+     *
+     * @param pageNo         numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @param photographerLogin login fotografa którego dotyczą recenzje
+
+     * @return lista recenzji
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @GET
+    @Path("review/list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ReviewDto> getReviewList(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @DefaultValue("1") int recordsPerPage,
+            @QueryParam("photographerLogin") @NotNull String photographerLogin
+    ) throws BaseApplicationException {
+        return repeat(() -> reviewEndpoint.getReviewsByPhotographerLogin(pageNo, recordsPerPage, photographerLogin), reviewEndpoint);
     }
 }

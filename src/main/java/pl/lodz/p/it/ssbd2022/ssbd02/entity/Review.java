@@ -17,7 +17,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-
 @Entity
 @NoArgsConstructor
 @Table(name = "review")

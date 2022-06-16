@@ -25,38 +25,36 @@ export const PhotographerReviewReportModal: React.FC<Props> = ({
    onSubmit,
    onCancel,
 }) => {
-   const [cause, setCause] = useState<ReviewReportCause>(
-      ReviewReportCause.OBSCENE_CONTENT
-   );
-   const [reportReview, { data: data }] = useReportPhotographerReviewMutation();
+   const [cause, setCause] = useState<string>(ReviewReportCause.SPAM);
+   const [reportReview, report] = useReportPhotographerReviewMutation();
    const { t } = useTranslation();
 
    return (
-      <Modal
-         title={t("photographer_page.report_review")}
-         isOpen={isOpen}
-         type="confirm"
-         onSubmit={async () => {
-            console.log(reviewId);
-            console.log({ reviewId: reviewId, cause: cause });
-            await reportReview({ reviewId: reviewId, cause: cause });
-            onSubmit();
-         }}
-         onCancel={onCancel}
-      >
-         <Dropdown
-            values={[
-               ReviewReportCause.OBSCENE_CONTENT,
-               ReviewReportCause.SPAM,
-               ReviewReportCause.FAKE_REVIEW,
-            ]}
-            selectedValue={cause}
-            name="selectCause"
-            id="selectCause"
-            onChange={(e) => setCause(ReviewReportCause[e.target.value])}
+      <div className={styles.photographer_review_report_modal_wrapper}>
+         <Modal
+            title={t("photographer_page.report_review_modal_title")}
+            isOpen={isOpen}
+            type="confirm"
+            onSubmit={async () => {
+               await reportReview({ reviewId: reviewId, cause: cause });
+               onSubmit();
+            }}
+            onCancel={onCancel}
          >
-            {t("photographer_page.report_review_dropdown")}
-         </Dropdown>
-      </Modal>
+            <Dropdown
+               values={[
+                  ReviewReportCause.OBSCENE_CONTENT,
+                  ReviewReportCause.SPAM,
+                  ReviewReportCause.FAKE_REVIEW,
+               ]}
+               selectedValue={cause}
+               name="selectCause"
+               id="selectCause"
+               onChange={(e) => setCause(e.target.value)}
+            >
+               {t("photographer_page.report_review_dropdown")}
+            </Dropdown>
+         </Modal>
+      </div>
    );
 };

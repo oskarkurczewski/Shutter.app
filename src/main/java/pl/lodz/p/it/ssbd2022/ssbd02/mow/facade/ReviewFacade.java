@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -7,11 +8,18 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
+
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.listAllAccounts;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
@@ -56,5 +64,24 @@ public class ReviewFacade extends FacadeTemplate<Review> {
         } catch (Exception ex) {
             throw ExceptionFactory.unexpectedFailException();
         }
+    }
+
+    @PermitAll
+    public List<Review> getReviewListByPhotographer(
+            int page,
+            int recordsPerPage,
+            Long photographerId
+    ) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Review> query = criteriaBuilder.createQuery(Review.class);
+        Root<Review> table = query.from(Review.class);
+        query.select(table);
+        query.where(criteriaBuilder.equal(table.get("photographer"), photographerId));
+
+        return em
+                .createQuery(query)
+                .setFirstResult(recordsPerPage * (page - 1))
+                .setMaxResults(recordsPerPage)
+                .getResultList();
     }
 }
