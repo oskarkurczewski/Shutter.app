@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
 
@@ -41,8 +40,9 @@ public class ReservationController extends AbstractController {
     @Path("/{id}/discard")
     public Response discardReservation(
             @NotNull @PathParam("id") Long reservationId
-    ) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    ) throws BaseApplicationException {
+        repeat(() -> reservationEndpoint.discardReservation(reservationId), reservationEndpoint);
+        return Response.ok().build();
     }
 
     @GET

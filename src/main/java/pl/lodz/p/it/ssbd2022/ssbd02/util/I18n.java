@@ -39,6 +39,8 @@ public class I18n {
     public static String ACCOUNT_ACTIVATED_BODY = "account.activated.body";
     public static String RESERVATION_CANCELED = "reservation.canceled.subject";
     public static String RESERVATION_CANCELED_BODY = "reservation.canceled.body";
+    public static String RESERVATION_DISCARDED = "reservation.discarded.subject";
+    public static String RESERVATION_DISCARDED_BODY = "reservation.discarded.body";
 
     @PermitAll
     public String getMessage(String key, Locale locale) {

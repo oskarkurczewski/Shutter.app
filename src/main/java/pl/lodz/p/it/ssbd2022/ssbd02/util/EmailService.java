@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.util;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.EmailException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 import sendinblue.ApiClient;
 import sendinblue.ApiException;
 import sendinblue.Configuration;
@@ -17,7 +16,6 @@ import sibModel.SendSmtpEmailTo;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
@@ -392,13 +390,31 @@ public class EmailService {
 
     /**
      * Funkcja wysyłająca email informujący fotografa o odwołaniu rezerwacji przez jego klienta
-     * @param to adres email fotografa
+     *
+     * @param to            adres email fotografa
      * @param reservationId id odwołanej rezerwacji
-     * @param locale parametr określajacy język, w jakim wiadomość będzie wysłana
+     * @param locale        parametr określajacy język, w jakim wiadomość będzie wysłana
      */
     public void sendReservationCanceledEmail(String to, Long reservationId, Locale locale) {
         String subject = i18n.getMessage(RESERVATION_CANCELED, locale);
         String body = i18n.getMessage(RESERVATION_CANCELED_BODY, locale) + reservationId + ".";
+        try {
+            sendEmail(to, subject, body);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Funkcja wysyłająca email informujący klienta o odrzuceniu rezerwacji przez fotografa
+     *
+     * @param to            adres email klienta
+     * @param reservationId id odwołanej rezerwacji
+     * @param locale        parametr określajacy język, w jakim wiadomość będzie wysłana
+     */
+    public void sendReservationDiscardedEmail(String to, Long reservationId, Locale locale) {
+        String subject = i18n.getMessage(RESERVATION_DISCARDED, locale);
+        String body = i18n.getMessage(RESERVATION_DISCARDED_BODY, locale) + reservationId + ".";
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {

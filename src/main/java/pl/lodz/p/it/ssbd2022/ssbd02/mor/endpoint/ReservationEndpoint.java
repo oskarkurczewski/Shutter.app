@@ -1,8 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
@@ -71,9 +72,15 @@ public class ReservationEndpoint extends AbstractEndpoint {
         reservationService.cancelReservation(caller, reservationId);
     }
 
+    /**
+     * Metoda do anulowania rezerwacji przez fotografa
+     *
+     * @param reservationId id rezerwacji, która ma być anulowana
+     */
     @RolesAllowed(discardReservation)
-    public void discardReservation(Long reservationId) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    public void discardReservation(Long reservationId) throws BaseApplicationException {
+        String caller = authenticationContext.getCurrentUsersLogin();
+        reservationService.discardReservation(caller, reservationId);
     }
 
     @RolesAllowed(showReservations)
