@@ -1,9 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
@@ -114,9 +113,30 @@ public class ReservationEndpoint extends AbstractEndpoint {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których imię
+     * lub nazwisko zawiera szukaną frazę
+     *
+     * @param name szukana fraza
+     * @param page strona listy, którą należy pozyskać
+     * @param recordsPerPage ilość krotek fotografów na stronie
+     * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
-    public List<PhotographerListEntryDto> findPhotographerByName(String name) {
-        throw new UnsupportedOperationException();
+    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurname(String name, int page, int recordsPerPage) throws BaseApplicationException {
+        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurname(name, page, recordsPerPage);
+        Long photographerCount = (long) list.size();
+
+        return new MorListResponseDto(
+                page,
+                (int) Math.ceil(photographerCount.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                photographerCount,
+                list.stream()
+                        .map(PhotographerListEntryDto::new)
+                        .collect(Collectors.toList())
+        );
     }
 
     @PermitAll
