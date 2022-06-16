@@ -17,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "account_report")
-public class AccountReport extends ManagedEntity  {
+public class AccountReport extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)
     @Version
