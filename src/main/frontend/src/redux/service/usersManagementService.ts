@@ -11,6 +11,7 @@ import {
    tableAccountChangeLogInfo,
    getAccountChangeLogRequest,
    getBasicUserListRequest,
+   changeSomeonesPasswordRequest,
 } from "redux/types/api";
 import { EtagData, getListResponse } from "redux/types/api/dataTypes";
 
@@ -96,6 +97,14 @@ const UsersManagementService = api.injectEndpoints({
             params: data.params,
          }),
       }),
+
+      changeSomeonesPassword: builder.mutation<void, changeSomeonesPasswordRequest>({
+         query: (data) => ({
+            url: `account/${data.login}/change-password`,
+            method: "PUT",
+            body: data.data,
+         }),
+      }),
    }),
 });
 
@@ -109,4 +118,5 @@ export const {
    useChangeAccountInfoMutation,
    useGetAccountListPreferencesMutation,
    useGetBasicUserListMutation,
+   useChangeSomeonesPasswordMutation,
 } = UsersManagementService;

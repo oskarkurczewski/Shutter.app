@@ -20,6 +20,13 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "account_report_cause")
+
+@NamedQueries({
+        @NamedQuery(
+                name = "account_report_cause.getAccountReportCause",
+                query = "SELECT cause FROM AccountReportCause AS cause WHERE cause.cause = :report_cause")
+})
+
 public class AccountReportCause {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

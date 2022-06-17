@@ -14,7 +14,7 @@ import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
 @Stateless
-@Interceptors({LoggingInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class MowAccountFacade extends FacadeTemplate<Account> {
 

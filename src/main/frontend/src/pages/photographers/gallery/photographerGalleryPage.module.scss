@@ -1,0 +1,22 @@
+.gallery_page_wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 2rem;
+}
+
+.upload_form {
+   min-width: 40rem;
+   min-height: 25rem;
+   > * {
+      margin: 1rem;
+   }
+
+}
+
+.desc_field {
+   div {
+      textarea {
+         min-height: 10rem !important;
+      }
+   }
+}

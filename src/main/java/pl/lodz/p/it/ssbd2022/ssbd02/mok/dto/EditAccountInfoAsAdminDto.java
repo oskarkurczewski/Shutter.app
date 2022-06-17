@@ -18,7 +18,7 @@ public class EditAccountInfoAsAdminDto implements SignableEntity {
     @NotNull
     Long version;
 
-    @NotNull(message = "validator.incorrect.login.null")
+    @NotNull(message = "validator.incorrect.login_null")
     @Login
     private String login;
 
@@ -33,6 +33,9 @@ public class EditAccountInfoAsAdminDto implements SignableEntity {
     @NotNull
     @Surname
     private String surname;
+
+    @NotNull
+    private Boolean active;
 
     @Override
     public String getSignablePayload() {

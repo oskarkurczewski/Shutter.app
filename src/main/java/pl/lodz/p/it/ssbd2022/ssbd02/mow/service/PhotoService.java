@@ -4,10 +4,13 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Photo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyLikedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyUnlikedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.S3Service;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -15,13 +18,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-
+import javax.interceptor.Interceptors;
 import java.util.UUID;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.unlikePhoto;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class PhotoService {
 
@@ -94,9 +97,22 @@ public class PhotoService {
         photo.setLikeCount(photo.getLikeCount() + 1);
     }
 
+    /**
+     * Usuwa polubienie użytkownika na zdjęciu o danym Id
+     *
+     * @param photo Wybrane zdjęcie
+     * @param account Użytkownik
+     * @throws PhotoAlreadyUnlikedException zdjęcie zostało już polubione przez danego użytkownika
+     */
     @RolesAllowed(unlikePhoto)
-    public void unlikePhoto(Photo photo) {
-        throw new UnsupportedOperationException();
+    public void unlikePhoto(Photo photo, Account account) throws PhotoAlreadyUnlikedException {
+        if (!photo.getLikesList().contains(account) || account.getLikedPhotosList().contains(photo)) {
+            throw ExceptionFactory.photoAlreadyUnlikedException();
+        }
+
+        photo.getLikesList().remove(account);
+        account.getLikedPhotosList().remove(photo);
+        photo.setLikeCount(photo.getLikeCount() - 1);
     }
 
 }

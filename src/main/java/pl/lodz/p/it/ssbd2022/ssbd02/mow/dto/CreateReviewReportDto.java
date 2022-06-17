@@ -8,8 +8,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class CreateReviewReportDto {
-    @NotNull
+    @NotNull(message = "validator.incorrect.id.null")
     private Long reviewId;
-    @NotNull
+
+    @NotNull(message = "validator.incorrect.cause.null")
     private String cause;
 }

@@ -5,24 +5,33 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReviewService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ReviewEndpoint extends AbstractEndpoint {
 
@@ -34,6 +43,8 @@ public class ReviewEndpoint extends AbstractEndpoint {
     private ProfileService profileService;
     @Inject
     private AuthenticationContext authCtx;
+    @Inject
+    private PhotographerService photographerService;
 
     /**
      * Dodaje recenzje przez zalogowanego użytkownika
@@ -71,7 +82,8 @@ public class ReviewEndpoint extends AbstractEndpoint {
 
     /**
      * Wykonuje polubienie danej recenzji przez zalogowanego użytkownika
-     * @param reviewId  id recenzji mającej być polubioną
+     *
+     * @param reviewId id recenzji mającej być polubioną
      * @throws BaseApplicationException
      */
     @RolesAllowed(likeReview)
@@ -84,7 +96,8 @@ public class ReviewEndpoint extends AbstractEndpoint {
 
     /**
      * Wykonuje usunięcie polubienia danej recenzji przez zalogowanego użytkownika
-     * @param reviewId  id recenzji mającej przestać być polubioną
+     *
+     * @param reviewId id recenzji mającej przestać być polubioną
      * @throws BaseApplicationException
      */
     @RolesAllowed(unlikeReview)
@@ -93,5 +106,22 @@ public class ReviewEndpoint extends AbstractEndpoint {
         String user = authCtx.getCurrentUsersLogin();
         Account account = accountService.findByLogin(user);
         reviewService.unlikeReview(account, review);
+    }
+
+    @PermitAll
+    public List<ReviewDto> getReviewsByPhotographerLogin(int pageNo, int recordsPerPage, String photographerLogin)
+            throws BaseApplicationException {
+        Long photographerId = photographerService.findByLogin(photographerLogin).getId();
+        List<Review> reviews = reviewService.listReviewsByPhotographerId(pageNo, recordsPerPage, photographerId);
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+
+        String login = authCtx.getCurrentUsersLogin();
+
+        for (Review review: reviews) {
+            boolean liked = review.getLikedList().stream().anyMatch(r -> r.getLogin().equals(login));
+            reviewDtoList.add(new ReviewDto(review, liked));
+        }
+
+        return reviewDtoList;
     }
 }

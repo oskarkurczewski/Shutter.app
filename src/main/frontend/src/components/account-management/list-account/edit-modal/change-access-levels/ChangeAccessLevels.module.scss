@@ -1,0 +1,16 @@
+@use "variables.scss" as variables;
+
+.access_levels {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+   grid-column-start: 3;
+   grid-column-end: 4;
+
+   .content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+      padding-bottom: 0.3rem;
+   }
+}

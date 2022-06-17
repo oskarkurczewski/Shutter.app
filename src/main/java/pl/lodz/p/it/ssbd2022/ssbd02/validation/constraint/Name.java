@@ -22,7 +22,7 @@ import java.lang.annotation.*;
 @Size(min = 1, max = 64)
 @Pattern(regexp = REGEXP.NAME_SURNAME_PATTERN)
 public @interface Name {
-    String message() default "validator.incorrect.name.length";
+    String message() default "validator.incorrect.name.regexp";
 
     Class<?>[] groups() default {};
 

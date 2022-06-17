@@ -20,6 +20,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "reservation")
+@NamedQueries({
+        @NamedQuery(name = "reservation.findInPeriod",
+                query = "SELECT r FROM Reservation r WHERE r.photographer = :photographer AND r.account = :account AND :time_from < r.timeTo AND r.timeFrom < :time_to"),
+})
 public class Reservation extends ManagedEntity {
 
     @Setter(value = AccessLevel.NONE)
@@ -29,7 +33,6 @@ public class Reservation extends ManagedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -44,12 +47,12 @@ public class Reservation extends ManagedEntity {
     private Account account;
 
     @NotNull
-    @Column(name = "from", nullable = false)
-    private LocalDateTime from;
+    @Column(name = "time_from", nullable = false)
+    private LocalDateTime timeFrom;
 
     @NotNull
-    @Column(name = "to", nullable = false)
-    private LocalDateTime to;
+    @Column(name = "time_to", nullable = false)
+    private LocalDateTime timeTo;
 
     @Override
     public boolean equals(Object o) {

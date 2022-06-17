@@ -132,6 +132,7 @@ export const CreateUserAccountPage = () => {
             </div>
             <div>
                <Checkbox
+                  id="active"
                   value={formData.active}
                   onChange={(e) => {
                      setFormData({ ...formData, active: e.target.checked });
@@ -140,6 +141,7 @@ export const CreateUserAccountPage = () => {
                   {t("global.label.active")}
                </Checkbox>
                <Checkbox
+                  id="registered"
                   value={formData.registered}
                   onChange={(e) => {
                      setFormData({ ...formData, registered: e.target.checked });

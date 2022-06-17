@@ -12,7 +12,9 @@ export const store = configureStore({
    middleware: (getDefaultMiddleWare) =>
       getDefaultMiddleWare({
          serializableCheck: {
+            ignoredPaths: ["toast.stack"],
             ignoredActions: ["toast/push"],
+            // ignoredActionPaths: ["toast.push, toast/push"],
          },
       }).concat(api.middleware),
 });

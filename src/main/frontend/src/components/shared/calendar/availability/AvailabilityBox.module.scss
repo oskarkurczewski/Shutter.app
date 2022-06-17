@@ -1,0 +1,68 @@
+@use "variables.scss" as variables;
+
+.availability_wrapper {
+   position: absolute;
+   width: 25%;
+   left: 20%;
+
+   &.full_width {
+      width: 50%;
+      left: 25%;
+   }
+
+   &:nth-of-type(2n) {
+      .availability {
+         background-color: #68d243;
+
+         &:hover {
+            box-shadow: 0 0 0.5rem #68d243;
+         }
+      }
+   }
+
+   &:nth-of-type(2n + 1) {
+      .availability {
+         background-color: #3db812;
+
+         &:hover {
+            box-shadow: 0 0 0.5rem #3db812;
+         }
+      }
+   }
+
+   .availability {
+      border-radius: 5px;
+      transition: box-shadow 200ms ease-in-out;
+      width: 100%;
+      cursor: pointer;
+   }
+
+   .availability_info_wrapper {
+      display: flex;
+      flex-direction: column;
+
+      p {
+         color: variables.$white;
+         text-transform: capitalize;
+      }
+
+      div {
+         display: flex;
+         flex-direction: column;
+         flex-grow: 1;
+         flex-shrink: 0;
+         width: fit-content;
+      }
+
+      .actions {
+         padding-top: 8px;
+         display: flex;
+         width: 100%;
+         align-items: flex-end;
+
+         .remove_icon svg {
+            color: variables.$red-300;
+         }
+      }
+   }
+}

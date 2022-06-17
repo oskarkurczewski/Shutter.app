@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./userAccountInfoPage.module.scss";
-import { AccountChangeLog, BaseAccountInfo } from "components/account-info";
+import {
+   AccountChangeLog,
+   BaseAccountInfo,
+} from "components/account-management/account-info";
 import { useParams } from "react-router-dom";
 
 export const UserAccountInfoPage = () => {

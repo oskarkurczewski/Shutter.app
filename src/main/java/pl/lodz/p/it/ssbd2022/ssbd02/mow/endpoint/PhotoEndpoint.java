@@ -1,27 +1,27 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
+import org.apache.commons.codec.binary.Base64;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Photo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import org.apache.commons.codec.binary.Base64;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotoService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.unlikePhoto;
 
 @Stateful
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class PhotoEndpoint extends AbstractEndpoint {
 
@@ -70,8 +70,16 @@ public class PhotoEndpoint extends AbstractEndpoint {
         photoService.likePhoto(photo, account);
     }
 
+    /**
+     * Usuwa polubienie zdjęcia na wybranym zdjęciu
+     *
+     * @param photoId Id zdjęcia
+     * @throws BaseApplicationException W przypadku niepowodzenia
+     */
     @RolesAllowed(unlikePhoto)
-    public void unlikePhoto(Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public void unlikePhoto(Long photoId) throws BaseApplicationException {
+        Photo photo = photoService.findById(photoId);
+        Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+        photoService.unlikePhoto(photo, account);
     }
 }

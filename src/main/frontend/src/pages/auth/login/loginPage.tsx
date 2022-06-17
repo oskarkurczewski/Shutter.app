@@ -1,14 +1,16 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./loginPage.module.scss";
 import { useAppDispatch } from "redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation, useSendTwoFACodeMutation } from "redux/service/authService";
+import { useLoginMutation } from "redux/service/authService";
 import { login } from "redux/slices/authSlice";
 import { LoginRequest } from "redux/types/api/authTypes";
 import { useTranslation } from "react-i18next";
 import { Button, Card, TextInput } from "components/shared";
 import { getLoginPayload } from "util/loginUtil";
 import { useGetAccountLocaleMutation } from "redux/service/userSettingsService";
+import { ErrorResponse, Toast } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
 
 export const LoginPage: React.FC = () => {
    const { t, i18n } = useTranslation();
@@ -16,23 +18,17 @@ export const LoginPage: React.FC = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
 
+   const [show2FAPage, setShow2FAPage] = useState(false);
    const [formState, setFormState] = useState<LoginRequest>({
       login: "",
       password: "",
-      twoFACode: "000000",
    });
 
    const [loginMutation, loginMutationState] = useLoginMutation();
-   const [sendTwoFACodeMutation, sendTwoFACodeMutationState] = useSendTwoFACodeMutation();
    const [getLocale] = useGetAccountLocaleMutation();
 
    const handleChange = ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
       setFormState((prev) => ({ ...prev, [name]: value }));
-
-   const onSendTwoFA = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      sendTwoFACodeMutation(formState.login);
-   };
 
    const onSubmit = async (e) => {
       e.preventDefault();
@@ -44,14 +40,47 @@ export const LoginPage: React.FC = () => {
       navigate("/");
    };
 
+   useEffect(() => {
+      if (loginMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_login_message"),
+         };
+         dispatch(push(successToast));
+      }
+      if (loginMutationState.isError) {
+         const err = loginMutationState.error as ErrorResponse;
+
+         if (err.data.message == "exception.2_fa_code_required") {
+            setShow2FAPage(true);
+         } else {
+            const successToast: Toast = {
+               type: ToastTypes.ERROR,
+               text: t("exception.invalid_credentials"),
+            };
+            dispatch(push(successToast));
+         }
+      }
+   }, [loginMutationState]);
+
    return (
       <section className={styles.login_page_wrapper}>
          <Card className={styles.card_wrapper}>
             <div className={styles.aside}>
                <img src="images/logo_new_black.svg" alt="logo" />
                <div>
-                  <p className="section-title">{t("login_page.not_user_message")}</p>
-                  <p>{t("login_page.inviting_message")}</p>
+                  <div>
+                     <p className="section-title">
+                        {t("login_page.not_user_message_up")}
+                     </p>
+                     <p className="section-title">
+                        {t("login_page.not_user_message_down")}
+                     </p>
+                  </div>
+                  <div>
+                     <p>{t("login_page.inviting_message_up")}</p>
+                     <p>{t("login_page.inviting_message_down")}</p>
+                  </div>
                </div>
                <Button
                   className={styles.button_wrapper}
@@ -64,47 +93,36 @@ export const LoginPage: React.FC = () => {
             </div>
             <form onSubmit={onSubmit}>
                <p className="section-title">{t("login_page.form_title")}</p>
-               <TextInput
-                  label={t("global.label.login")}
-                  placeholder={t("global.label.login")}
-                  type="text"
-                  name="login"
-                  value={formState.login}
-                  onChange={handleChange}
-               />
-               <TextInput
-                  label={t("global.label.password")}
-                  type="password"
-                  placeholder={t("global.label.password")}
-                  value={formState.password}
-                  name="password"
-                  onChange={handleChange}
-               />
-               <div className={styles.two_factory_auth}>
-                  <TextInput
-                     label={t("global.label.2fa_code")}
-                     placeholder={t("login_page.2fa_code")}
-                     value={formState.twoFACode}
-                     name="twoFACode"
-                     onChange={handleChange}
-                  />
-                  <Button onClick={onSendTwoFA}>{t("login_page.send_2fa_code")}</Button>
-               </div>
-
-               <p>
-                  {(loginMutationState.isLoading ||
-                     sendTwoFACodeMutationState.isLoading) &&
-                     t("login_page.loading")}
-               </p>
-
-               {loginMutationState.isError && (
-                  <p className="message">{t("exception.login_failed")}</p>
-               )}
-               {sendTwoFACodeMutationState.isError && (
-                  <p className="message">{t("exception.2_fa_code_required")}</p>
-               )}
-               {sendTwoFACodeMutationState.isSuccess && (
-                  <p>{t("exception.login_code")}</p>
+               {!show2FAPage ? (
+                  <>
+                     <TextInput
+                        label={t("global.label.login")}
+                        placeholder={t("global.label.login")}
+                        type="text"
+                        name="login"
+                        value={formState.login}
+                        onChange={handleChange}
+                     />
+                     <TextInput
+                        label={t("global.label.password")}
+                        type="password"
+                        placeholder={t("global.label.password")}
+                        value={formState.password}
+                        name="password"
+                        onChange={handleChange}
+                     />
+                  </>
+               ) : (
+                  <>
+                     <p>{t("login_page.twoFA_desc")}</p>
+                     <TextInput
+                        label={t("global.label.2fa_code")}
+                        placeholder="000000"
+                        value={formState.twoFACode || ""}
+                        name="twoFACode"
+                        onChange={handleChange}
+                     />
+                  </>
                )}
 
                <div className={styles.footer}>
