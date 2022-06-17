@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Sidebar.module.scss";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
-import { AuthCard } from "components/layout";
-import { LanguageDropdown } from "components/shared";
+import { AuthCard, LanguageDropdown } from "components/layout";
+import { MultiSelectDropdown } from "components/shared/dropdown/multi-select-dropdown/MultiSelectDropdown";
+import { ExampleMultiSelectDropdown } from "components/shared";
 
 export const Sidebar = () => {
    const auth = useAppSelector((state) => state.auth);

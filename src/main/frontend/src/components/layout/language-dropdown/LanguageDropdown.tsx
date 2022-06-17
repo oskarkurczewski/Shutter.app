@@ -1,9 +1,11 @@
+import { IconDropdown } from "components/shared";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { IoLanguage } from "react-icons/io5";
 import { useAppSelector } from "redux/hooks";
 import { useChangeAccountLocaleMutation } from "redux/service/userSettingsService";
 import { Language } from "types/Language";
-import { IconDropdown } from ".";
+import styles from "./LanguageDropdown.module.scss";
 
 export const LanguageDropdown = () => {
    const { i18n } = useTranslation();
@@ -30,6 +32,7 @@ export const LanguageDropdown = () => {
 
    return (
       <IconDropdown
+         className={styles.container}
          options={lng}
          value={selected}
          onChange={async (key: Language) => {
@@ -40,6 +43,7 @@ export const LanguageDropdown = () => {
             }
             i18n.changeLanguage(key);
          }}
+         icon={<IoLanguage />}
       />
    );
 };

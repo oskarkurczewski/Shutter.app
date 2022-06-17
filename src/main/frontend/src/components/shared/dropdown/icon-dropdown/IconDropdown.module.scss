@@ -9,7 +9,7 @@
    button {
       color: variables.$gray-300;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       border-radius: 5px;
       padding: 0.5rem 1rem;
@@ -66,6 +66,7 @@
       max-width: 130px;
       max-height: calc((2.3rem + 5px) * 5);
       overflow-y: scroll;
+      z-index: 3;
 
       &::-webkit-scrollbar {
          width: 6px;
@@ -78,11 +79,11 @@
          padding: 0.7rem 0.5rem;
 
          &:hover,
-         &:focus {
+         &.selected {
             background-color: variables.$blue-gray-100;
          }
 
-         &:focus {
+         &:focus-visible {
             outline: 2px solid variables.$gray-200;
          }
       }
