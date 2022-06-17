@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./photographersListPage.module.scss";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGetActivePhotographersQuery } from "redux/service/photographerManagementService";
 import { tableHeader } from "types/ComponentTypes";
 import { Card, Table } from "components/shared";
@@ -9,8 +9,10 @@ import { Card, Table } from "components/shared";
 export const PhotographersListPage = () => {
    const { t } = useTranslation();
    const location = useLocation();
+   const navigate = useNavigate();
    const queryParams = new URLSearchParams(location.search);
 
+   const [tableData, setTableData] = useState([]);
    const [headers, setHeaders] = useState<tableHeader[]>([
       {
          id: "login",
@@ -62,25 +64,21 @@ export const PhotographersListPage = () => {
       },
    ]);
 
-   const [tableData, setTableData] = useState([]);
-   const [params, setParams] = useState({
-      pageNo: 1,
-      recordsPerPage: 25,
-   });
+   const pageNo = parseInt(queryParams.get("pageNo")) || 1;
+   const recordsPerPage = parseInt(queryParams.get("records")) || 25;
 
-   const { data } = useGetActivePhotographersQuery(params);
+   const { data } = useGetActivePhotographersQuery({ pageNo, recordsPerPage });
 
    const setQueryParam = (key: string, value: string) => {
       queryParams.set(key, value);
+      navigate({
+         pathname: location.pathname,
+         search: queryParams.toString(),
+      });
    };
 
    useEffect(() => {
-      setQueryParam("pageNo", String(params.pageNo));
-      setQueryParam("recordsPerPage", String(params.recordsPerPage));
-   }, [params]);
-
-   useEffect(() => {
-      setParams({ ...params });
+      setQueryParam("pageNo", "1");
    }, [headers]);
 
    useEffect(() => {
@@ -111,12 +109,13 @@ export const PhotographersListPage = () => {
                setHeaders={setHeaders}
                allRecords={data?.allRecords || 0}
                allPages={data?.allPages || 0}
-               pageNo={params.pageNo}
-               setPageNo={(num) => setParams({ ...params, pageNo: num })}
-               recordsPerPage={params.recordsPerPage}
-               setRecordsPerPage={(num) =>
-                  setParams({ ...params, pageNo: 1, recordsPerPage: num })
-               }
+               pageNo={pageNo}
+               setPageNo={(num) => setQueryParam("pageNo", num.toString())}
+               recordsPerPage={recordsPerPage}
+               setRecordsPerPage={(num) => {
+                  setQueryParam("records", num.toString());
+                  setQueryParam("pageNo", "1");
+               }}
             />
          </Card>
       </div>
