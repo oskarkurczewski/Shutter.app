@@ -1,0 +1,44 @@
+@use "variables.scss" as variables;
+
+.drag_and_drop_wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+   position: relative;
+   border-radius: 10px;
+   padding: 25px;
+   border: variables.$blue-500-transparent dashed 2px;
+   background-color: transparent;
+   transition: border 250ms ease-in-out, background 250ms ease-in-out;
+
+   svg,
+   p {
+      color: variables.$blue-300;
+      transition: color 250ms ease-in-out;
+   }
+
+   svg {
+      font-size: 3rem;
+   }
+
+   &.on_file_hover {
+      border-color: variables.$purple-200-transparent;
+      background-color: rgba(194, 173, 241, 0.13);
+
+      svg,
+      p {
+         color: variables.$purple-100;
+      }
+   }
+
+   input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      opacity: 0;
+   }
+}

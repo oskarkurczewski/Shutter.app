@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styles from "./dashboardPage.module.scss";
-import { Button, ExpandableCard } from "components/shared";
+import { Button, DragAndDrop, ExpandableCard } from "components/shared";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
 import { Calendar } from "components/shared/calendar";
+import { FaPlusCircle } from "react-icons/fa";
 
 export const DashboardPage = () => {
    const dispatch = useAppDispatch();
@@ -24,6 +25,11 @@ export const DashboardPage = () => {
          <ExpandableCard isOpen={isOpen} setIsOpen={(open) => setIsOpen(open)}>
             <Calendar />
          </ExpandableCard>
+         <DragAndDrop
+            icon={<FaPlusCircle />}
+            label="Dodaj nowe zdjęcie"
+            onCapture={(file) => console.log(file)}
+         />
       </section>
    );
 };
