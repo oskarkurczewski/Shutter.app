@@ -13,6 +13,7 @@ interface Props {
    className?: string;
    availability?: AvailabilityHour[];
    reservations?: Reservation[];
+   showWeekNavigation?: boolean;
    onRangeSelection?: (selection?: HourBox[]) => void;
 }
 
@@ -21,6 +22,7 @@ export const Calendar: React.FC<Props> = ({
    className = "",
    availability,
    reservations,
+   showWeekNavigation = true,
    onRangeSelection,
 }) => {
    const [selectedWeek, setSelectedWeek] = useState(DateTime.local().startOf("week"));
@@ -43,6 +45,7 @@ export const Calendar: React.FC<Props> = ({
    return (
       <Card className={`${styles.calendar_wrapper} ${className}`}>
          <CalendarHeader
+            showWeekNavigation={showWeekNavigation}
             title={title}
             changeWeek={changeWeek}
             weekLabel={formatWeekLabel(week, i18n.language)}
@@ -59,6 +62,7 @@ export const Calendar: React.FC<Props> = ({
                <div className={styles.days}>
                   {week.map((dayData, index) => (
                      <DayColumn
+                        showWeekNavigation={showWeekNavigation}
                         dayData={dayData}
                         key={index}
                         onRangeSelection={onRangeSelection}

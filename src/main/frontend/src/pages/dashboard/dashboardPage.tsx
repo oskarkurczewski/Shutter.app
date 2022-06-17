@@ -3,8 +3,6 @@ import styles from "./dashboardPage.module.scss";
 import { Button } from "components/shared";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
-import { Calendar } from "components/shared/calendar";
-import { availabilityHours, reservations } from "components/shared/calendar/dumbData";
 
 export const DashboardPage = () => {
    const dispatch = useAppDispatch();
@@ -21,12 +19,6 @@ export const DashboardPage = () => {
                Logout
             </Button>
          )}
-         <Calendar
-            title="Kalendarz"
-            availability={availabilityHours}
-            // reservations={reservations}
-            onRangeSelection={(e) => console.log(e)}
-         />
       </section>
    );
 };

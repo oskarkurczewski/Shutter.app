@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 import { useTranslation } from "react-i18next";
 
 interface Props {
+   showWeekNavigation: boolean;
    onRangeSelection?: (selection: HourBox[]) => void;
    dayData: HourBox[];
    availabilityList?: AvailabilityHour[];
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const DayColumn: React.FC<Props> = ({
+   showWeekNavigation,
    onRangeSelection,
    dayData,
    availabilityList,
@@ -37,7 +39,9 @@ export const DayColumn: React.FC<Props> = ({
       <div className={styles.day_column_wrapper}>
          <div className={`${styles.header} ${labelClass}`}>
             <p className="label-bold">
-               {dayStart.setLocale(i18n.language).toFormat("ccc dd")}
+               {showWeekNavigation
+                  ? dayStart.setLocale(i18n.language).toFormat("ccc dd")
+                  : dayStart.setLocale(i18n.language).toFormat("ccc")}
             </p>
          </div>
          <div className={styles.content}>
