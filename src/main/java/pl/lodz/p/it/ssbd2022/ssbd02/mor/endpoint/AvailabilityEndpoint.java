@@ -16,6 +16,7 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,12 @@ public class AvailabilityEndpoint extends AbstractEndpoint {
             availability.setPhotographer(photographer);
             availability.setDay(availabilityDto.getDay());
             availability.setFrom(availabilityDto.getFrom());
-            availability.setTo(availabilityDto.getTo());
+
+            LocalTime toFixed = availabilityDto.getTo();
+            if(toFixed.equals(LocalTime.MIDNIGHT)) {
+                toFixed = LocalTime.of(23, 59, 59);
+            }
+            availability.setTo(toFixed);
 
             availabilities.add(availability);
         }
