@@ -1,37 +1,18 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import styles from "./AuthCard.module.scss";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { useSwitchCurrentAccessLevelMutation } from "redux/service/authService";
 import { useGetUserInfoQuery } from "redux/service/usersManagementService";
-import { AccessLevel } from "types/AccessLevel";
-import { setAccessLevel, setUserInfo } from "redux/slices/authSlice";
+import { setUserInfo } from "redux/slices/authSlice";
+import { Button } from "components/shared";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-   username?: string;
-   accessLevelList?: AccessLevel[];
-   selectedAccessLevel: AccessLevel;
-}
-
-export const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
-   const { roles, accessLevel, name, surname, email } = useAppSelector(
-      (state) => state.auth
-   );
-   const [currentRole, setCurrentRole] = useState(null);
-   const { data } = useGetUserInfoQuery(username);
-
-   const [mutation, mutationState] = useSwitchCurrentAccessLevelMutation();
+export const AuthCard: FC = () => {
    const dispatch = useAppDispatch();
+   const navigate = useNavigate();
 
-   useEffect(() => {
-      if (mutationState.isSuccess) {
-         dispatch(setAccessLevel({ accessLevel: currentRole }));
-      }
-   }, [mutationState.isSuccess]);
-
-   useEffect(() => {
-      accessLevel && setCurrentRole(accessLevel);
-   }, [accessLevel]);
+   const { accessLevel, name, surname, username } = useAppSelector((state) => state.auth);
+   const { data } = useGetUserInfoQuery(username, { skip: !username });
 
    useEffect(() => {
       data && dispatch(setUserInfo(data));
@@ -40,41 +21,30 @@ export const AuthCard: FC<Props> = ({ username, selectedAccessLevel }) => {
 
    return (
       <div className={styles.auth_card_wrapper}>
-         <div className={`${styles.background_wrapper} ${styles[currentRole]}`}>
+         <div className={`${styles.background_wrapper} ${styles[accessLevel]}`}>
             <img src="/images/auth-image.png" alt="user sidebar" />
          </div>
          <div className={styles.data_wrapper}>
             <img src="/images/avatar.png" alt="user" className={styles.auth_card_photo} />
             <div className={styles.label_wrapper}>
-               <p className="label">{selectedAccessLevel}</p>
-               <p className="label-bold">{username ? username : t("auth.notloggedin")}</p>
-            </div>
-         </div>
-         {name && surname && email && (
-            <>
-               <p>
+               <p className="label-bold">
                   {name} {surname}
                </p>
-               <p>{email}</p>
-            </>
-         )}
-         {roles.length > 1 && (
-            <>
-               <select
-                  value={currentRole}
-                  onChange={(e) => {
-                     setCurrentRole(e.target.value);
-                     mutation(AccessLevel[e.target.value]);
-                  }}
-               >
-                  {roles.map((role, index) => (
-                     <option key={index} value={role}>
-                        {role}
-                     </option>
-                  ))}
-               </select>
-            </>
-         )}
+               <p className="label">
+                  {username ? (
+                     username
+                  ) : (
+                     <Button
+                        onClick={() => {
+                           navigate("/login");
+                        }}
+                     >
+                        {t("navbar.buttons.login")}
+                     </Button>
+                  )}
+               </p>
+            </div>
+         </div>
       </div>
    );
 };

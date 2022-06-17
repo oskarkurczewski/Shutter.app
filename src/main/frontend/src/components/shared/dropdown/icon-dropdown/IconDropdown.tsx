@@ -14,6 +14,7 @@ interface Props {
    multi?: boolean;
    selected?: string[];
    className?: string;
+   disabled?: boolean;
 }
 
 export const IconDropdown: FC<Props> = ({
@@ -24,6 +25,7 @@ export const IconDropdown: FC<Props> = ({
    multi,
    selected,
    className = "",
+   disabled,
 }) => {
    const [active, setActive] = useState(false);
 
@@ -31,7 +33,7 @@ export const IconDropdown: FC<Props> = ({
 
    return (
       <div
-         className={`${styles.container} ${className}`}
+         className={`${styles.container} ${disabled ? styles.disabled : ""} ${className}`}
          onBlur={(e) => {
             if (
                !e.relatedTarget ||
@@ -45,7 +47,7 @@ export const IconDropdown: FC<Props> = ({
          <button
             className={`${styles.option_wrapper} ${active ? styles.active : ""}`}
             onClick={() => {
-               setActive(!active);
+               if (!disabled) setActive(!active);
             }}
             ref={selectedElement}
          >

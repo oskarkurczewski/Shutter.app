@@ -10,6 +10,7 @@
    user-select: none;
    background-color: variables.$purple-100;
    width: fit-content;
+   overflow: hidden;
 
    button {
       border: none;

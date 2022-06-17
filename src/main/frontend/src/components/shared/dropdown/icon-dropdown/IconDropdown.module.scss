@@ -6,6 +6,22 @@
    position: relative;
    align-items: flex-end;
 
+   &.disabled {
+      button {
+         background-color: variables.$blue-gray-100;
+         color: variables.$gray-200;
+      }
+
+      svg:last-child {
+         visibility: hidden;
+      }
+
+      button:hover {
+         cursor: not-allowed;
+         background-color: variables.$blue-gray-100;
+      }
+   }
+
    button {
       color: variables.$gray-300;
       display: flex;
@@ -65,11 +81,16 @@
       width: fit-content;
       max-width: 130px;
       max-height: calc((2.3rem + 5px) * 5);
-      overflow-y: scroll;
+      overflow-y: auto;
       z-index: 3;
+
+      &:empty {
+         display: none;
+      }
 
       &::-webkit-scrollbar {
          width: 6px;
+         height: 6px;
       }
 
       .option {
