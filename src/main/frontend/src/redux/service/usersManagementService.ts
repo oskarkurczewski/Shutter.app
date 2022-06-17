@@ -80,11 +80,12 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
-      getAccountListPreferences: builder.query<AccountListPreferencesResponse, void>({
+      getAccountListPreferences: builder.mutation<AccountListPreferencesResponse, void>({
          query: () => ({
             url: "account/list/preferences",
             method: "GET",
          }),
+         invalidatesTags: ["Preferences"],
       }),
 
       getAccountChangeLog: builder.mutation<
@@ -115,7 +116,7 @@ export const {
    useChangeAccessLevelMutation,
    useGetAccountChangeLogMutation,
    useChangeAccountInfoMutation,
-   useGetAccountListPreferencesQuery,
+   useGetAccountListPreferencesMutation,
    useGetBasicUserListMutation,
    useChangeSomeonesPasswordMutation,
 } = UsersManagementService;

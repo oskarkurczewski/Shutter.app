@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./userAccountListPage.module.scss";
-import { Card, Table } from "components/shared";
+import { Card, Modal, Table } from "components/shared";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaAngleRight, FaCheck, FaEdit } from "react-icons/fa";
 import {
-   useGetAccountListPreferencesQuery,
+   useGetAccountListPreferencesMutation,
    useGetAdvancedUserListMutation,
    useGetBasicUserListMutation,
 } from "redux/service/usersManagementService";
@@ -95,7 +95,12 @@ export const UserAccountListPage = () => {
    const queryParams = new URLSearchParams(location.search);
 
    // Fetching
-   const paramsData = useGetAccountListPreferencesQuery();
+   const [
+      fetchParameters,
+      { data: databaseParameters, isSuccess: parametersSuccess, isUninitialized },
+   ] = useGetAccountListPreferencesMutation();
+
+   const [fetchAdvancedList, { data: dataAdvanced }] = useGetAdvancedUserListMutation();
    const [fetchBasicList, { data: dataBasic }] = useGetBasicUserListMutation();
    // const pageNo = parseInt(queryParams.get("pageNo")) || 1;
    // const recordsPerPage = parseInt(queryParams.get("records")) || 25;
@@ -106,36 +111,40 @@ export const UserAccountListPage = () => {
    const allPages = dataBasic?.allPages || 0;
 
    useEffect(() => {
-      if (paramsData.isSuccess) {
-         const dbOrder = paramsData.data.orderAsc ? "asc" : "desc";
+      fetchParameters();
+   }, []);
+
+   useEffect(() => {
+      if (parametersSuccess) {
+         const dbOrder = databaseParameters.orderAsc ? "asc" : "desc";
 
          setParams({
-            pageNo: paramsData.data.page,
-            recordsPerPage: paramsData.data.recordsPerPage,
-            columnName: paramsData.data.orderBy,
+            pageNo: databaseParameters.page,
+            recordsPerPage: databaseParameters.recordsPerPage,
+            columnName: databaseParameters.orderBy,
             order: dbOrder,
             q: query,
          });
 
          setHeaders(
             headers.map((hd) =>
-               hd.id === paramsData.data.orderBy
+               hd.id === databaseParameters.orderBy
                   ? { ...hd, sort: dbOrder }
                   : { ...hd, sort: null }
             )
          );
       }
-   }, [paramsData.isSuccess]);
+   }, [parametersSuccess]);
 
    useEffect(() => {
-      if (paramsData.isSuccess || !paramsData.isUninitialized) {
+      if (parametersSuccess || !isUninitialized) {
          fetchBasicList(params);
       }
       setQueryParam("column", params.columnName);
       setQueryParam("order", params.order);
       setQueryParam("pageNo", String(params.pageNo));
       setQueryParam("records", String(params.recordsPerPage));
-   }, [params, paramsData.isUninitialized]);
+   }, [params, isUninitialized]);
 
    useEffect(() => {
       const sorted = headers.find((header) => header.sort);
