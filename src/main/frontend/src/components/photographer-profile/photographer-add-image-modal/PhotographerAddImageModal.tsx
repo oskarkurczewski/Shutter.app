@@ -73,11 +73,14 @@ export const PhotographerAddImageModal: React.FC<Props> = ({
          onSubmit();
       }
       if (postPhotoMutationState.isError) {
-         const msg = postPhotoMutationState.error as ErrorResponse;
-
          setNotification({
             type: "error",
-            content: t(`photographer_gallery_page.${parseError(msg.data.message)}`),
+            content: t(
+               parseError(
+                  postPhotoMutationState.error as ErrorResponse,
+                  "photographer_gallery_page"
+               )
+            ),
          });
       }
    }, [postPhotoMutationState]);

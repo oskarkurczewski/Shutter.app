@@ -63,10 +63,14 @@ export const ChangeAvailabilityPage = () => {
       }
 
       if (updateMutationState.isError) {
-         const err = updateMutationState.error as ErrorResponse;
          const errorToast: Toast = {
             type: ToastTypes.ERROR,
-            text: t(`change_availability_page.${parseError(err.data.message)}`),
+            text: t(
+               parseError(
+                  updateMutationState.error as ErrorResponse,
+                  "change_availability_page"
+               )
+            ),
          };
          dispatch(push(errorToast));
       }

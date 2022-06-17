@@ -34,6 +34,7 @@
       }
    },
    "exception": {
+      "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
       "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
       "database": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
