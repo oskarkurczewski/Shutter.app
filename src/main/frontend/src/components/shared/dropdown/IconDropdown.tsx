@@ -1,5 +1,6 @@
 import React, { FC, useRef, useState } from "react";
 import { IoLanguage } from "react-icons/io5";
+import { MdKeyboardArrowRight } from "react-icons/md";
 import styles from "./IconDropdown.module.scss";
 
 interface Option {
@@ -30,7 +31,7 @@ export const IconDropdown: FC<Props> = ({ options, value, onChange }) => {
          }}
       >
          <button
-            className={styles.option_wrapper}
+            className={`${styles.option_wrapper} ${active ? styles.active : ""}`}
             onClick={() => {
                setActive(!active);
             }}
@@ -38,6 +39,7 @@ export const IconDropdown: FC<Props> = ({ options, value, onChange }) => {
          >
             <IoLanguage />
             <span className="label-bold">{options[value]}</span>
+            <MdKeyboardArrowRight className={active ? styles.expand : ""} />
          </button>
          {active && (
             <div

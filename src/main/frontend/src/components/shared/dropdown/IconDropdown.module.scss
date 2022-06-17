@@ -30,12 +30,21 @@
 
    .option_wrapper {
       background-color: variables.$blue-gray-100;
+      padding-right: 5px;
 
       svg {
          font-size: 1.5rem;
       }
 
       &:hover {
+         background-color: variables.$blue-gray-200;
+      }
+
+      .expand {
+         transform: rotate(90deg);
+      }
+
+      &.active {
          background-color: variables.$blue-gray-200;
       }
    }
@@ -55,6 +64,12 @@
       border: 0.5px solid variables.$blue-gray-100;
       width: fit-content;
       max-width: 130px;
+      max-height: calc((2.3rem + 5px) * 5);
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+         width: 6px;
+      }
 
       .option {
          width: 100%;

@@ -15,6 +15,11 @@ export const LanguageDropdown = () => {
       pl: "Polski",
       en: "English",
       de: "Deutsch",
+      dee: "A",
+      deed: "B",
+      deeee: "C",
+      deeeee: "D",
+      deeeeee: "E",
    };
 
    useEffect(() => {
