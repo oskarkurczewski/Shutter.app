@@ -9,18 +9,19 @@ import { parseError } from "util/errorUtil";
 import styles from "./PhotographerAddImageModal.module.scss";
 
 interface Props {
+   file: File;
    isOpen: boolean;
    onSubmit: () => void;
    onCancel: () => void;
 }
 
 export const PhotographerAddImageModal: React.FC<Props> = ({
+   file,
    isOpen,
    onSubmit,
    onCancel,
 }) => {
    const { t } = useTranslation();
-
    const [postPhotoMutation, postPhotoMutationState] = usePostPhotoRequestMutation();
 
    const [notification, setNotification] = useState<Notification>(null);
@@ -29,6 +30,10 @@ export const PhotographerAddImageModal: React.FC<Props> = ({
       desc: "",
       file: null,
    });
+
+   useEffect(() => {
+      setFormData({ ...formData, file });
+   }, [file]);
 
    const uploadFile = () => {
       const pngB64Header = "iVBORw0KGgoA";

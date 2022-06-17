@@ -20,7 +20,7 @@ export const DragAndDrop: React.FC<Props> = ({ label, icon, onCapture }) => {
             type="file"
             onDragEnter={() => setFileHover(true)}
             onDragLeave={() => setFileHover(false)}
-            onDrop={(e: React.DragEvent<HTMLInputElement>) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                const target = e.target as HTMLInputElement;
                onCapture(target.files[0]);
                setFileHover(false);
