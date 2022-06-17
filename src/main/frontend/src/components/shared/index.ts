@@ -11,4 +11,8 @@ export * from "./validation-box";
 export * from "./icon-text";
 export * from "./text-area";
 export * from "./loader";
+export * from "./drag-and-drop";
+export * from "./file-input";
+export * from "./text-area";
+export * from "./calendar";
 export * from "./stars";

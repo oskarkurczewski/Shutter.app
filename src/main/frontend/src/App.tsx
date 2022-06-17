@@ -125,12 +125,19 @@ function App() {
                   {/* Photographer routes */}
                   <Route path="profile">
                      <Route path=":login" element={<PhotographerProfilePage />} />
-
                      <Route
                         path="change-availability"
                         element={
                            <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
                               <ChangeAvailabilityPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                     <Route
+                        path="gallery"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <PhotographerGalleryPage />
                            </ProtectedRoute>
                         }
                      />
@@ -146,16 +153,7 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
-
-                  <Route
-                     path=":login/profile/gallery"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
-                           <PhotographerGalleryPage />
-                        </ProtectedRoute>
-                     }
-                  />
-
+                  
                   <Route path="photographers" element={<PhotographersListPage />} />
 
                   {/* Token-based routes */}

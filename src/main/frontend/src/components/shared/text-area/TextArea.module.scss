@@ -34,6 +34,7 @@ div.text_area_wrapper {
          font-family: "Roboto", sans-serif;
          font-size: variables.$scale-1;
          min-height: 43px;
+         max-height: 350px;
          min-width: 250px;
          background-color: variables.$blue-gray-100;
          border: none;
@@ -42,6 +43,7 @@ div.text_area_wrapper {
          font-weight: 500;
          color: variables.$gray-300;
          flex-grow: 1;
+         resize: vertical;
       }
    }
 }

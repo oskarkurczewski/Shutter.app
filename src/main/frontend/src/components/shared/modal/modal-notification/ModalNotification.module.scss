@@ -1,0 +1,40 @@
+@use "variables.scss" as variables;
+
+.modal_notification_wrapper {
+   .content {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+
+      svg {
+         font-size: 2rem;
+      }
+
+      &.error {
+         color: variables.$red-300;
+      }
+
+      &.success {
+         color: variables.$green-300;
+      }
+
+      &.info {
+         color: variables.$blue-400;
+      }
+
+      &.warning {
+         color: variables.$orange-400;
+      }
+
+      & > div {
+         display: flex;
+         gap: 1rem;
+         align-items: center;
+      }
+
+      .button {
+         justify-self: flex-end;
+      }
+   }
+}

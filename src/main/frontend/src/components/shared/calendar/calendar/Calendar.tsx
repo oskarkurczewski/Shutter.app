@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import styles from "./Calendar.module.scss";
 import { formatWeekLabel, getHourRange, getWeekRange } from "util/calendarUtil";
-import { Card } from "components/shared/card";
 import { CalendarHeader } from "../calendar-header";
 import { DateTime } from "luxon";
 import { DayColumn } from "../day-column";
@@ -47,7 +46,7 @@ export const Calendar: React.FC<Props> = ({
    };
 
    return (
-      <Card className={`${styles.calendar_wrapper} ${className}`}>
+      <div className={`${styles.calendar_wrapper} ${className}`}>
          <CalendarHeader
             showWeekNavigation={showWeekNavigation}
             title={title}
@@ -86,6 +85,6 @@ export const Calendar: React.FC<Props> = ({
                </div>
             </div>
          </div>
-      </Card>
+      </div>
    );
 };
