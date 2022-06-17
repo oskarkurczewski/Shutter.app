@@ -16,8 +16,9 @@ import { DateTime } from "luxon";
 import { FaCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BiLink } from "react-icons/bi";
+import { ReviewReportModal } from "components/reports";
 
-export const ReportsPage = () => {
+export const ReportsPage: React.FC = () => {
    const { t } = useTranslation();
    enum tab {
       USERS = "userReports",
@@ -59,6 +60,9 @@ export const ReportsPage = () => {
 
    const [filter, setFilter] = useState<number>(0);
 
+   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+   const [currentReview, setCurrentReview] = useState<number>();
+
    const accountReports = useGetAccountReportListQuery({
       order: accountHeaders[5].sort,
       page: pageNo,
@@ -88,6 +92,11 @@ export const ReportsPage = () => {
             <p>{dateTime.toFormat("HH:mm:ss")}</p>
          </>
       );
+   };
+
+   const openModal = (reviewNumber: number) => {
+      setModalIsOpen(true);
+      setCurrentReview(reviewNumber);
    };
 
    const getData = (): (string | ReactNode)[][] => {
@@ -121,7 +130,7 @@ export const ReportsPage = () => {
                      item.id.toString(),
                      <Link
                         key={index}
-                        to={`/${item.photographerLogin}/profile`}
+                        to={`/profile/${item.photographerLogin}`}
                         className={styles.table_link}
                      >
                         <span>{item.photographerLogin}</span>
@@ -138,10 +147,22 @@ export const ReportsPage = () => {
 
          if (tabState === tab.REVIEWS) {
             return reviewReports?.data?.list.map(
-               (item: reviewReport): (string | ReactNode)[] => {
+               (item: reviewReport, index): (string | ReactNode)[] => {
                   return [
                      item.id.toString(),
-                     item.reviewId.toString(),
+                     <div
+                        key={index}
+                        role="button"
+                        onClick={() => {
+                           openModal(item.reviewId);
+                        }}
+                        onKeyDown={null}
+                        tabIndex={index}
+                        className={styles.table_link}
+                     >
+                        <span>{item.reviewId}</span>
+                        <BiLink />
+                     </div>,
                      item.accountLogin,
                      t(`reports_page.review.causes.${item.cause}`),
                      item.reviewed && <FaCheck />,
@@ -235,6 +256,13 @@ export const ReportsPage = () => {
                setRecordsPerPage={setRecordsPerPage}
             />
          </Card>
+         <ReviewReportModal
+            isOpen={modalIsOpen}
+            onSubmit={() => {
+               setModalIsOpen(false);
+            }}
+            reviewId={1}
+         />
       </section>
    );
 };

@@ -32,12 +32,6 @@ const PhotographerManagementService = api.injectEndpoints({
       >({
          query: (params) => ({ url: `/report/list/review`, params }),
       }),
-      getActivePhotographers: builder.mutation<
-         getListResponse<photographerTableEntry>,
-         getPhotographersListRequest
-      >({
-         query: (data) => ({ url: "reservation/photographers", params: data }),
-      }),
       getPhotographerReviews: builder.query<
          getPhotographerReviewsResponse,
          getPhotographerReviewsRequest
@@ -54,7 +48,6 @@ const PhotographerManagementService = api.injectEndpoints({
 });
 
 export const {
-   useGetActivePhotographersMutation,
    useGetPhotographerReportListQuery,
    useGetReviewReportListQuery,
    useGetActivePhotographersMutation,

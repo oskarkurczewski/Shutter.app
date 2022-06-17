@@ -40,7 +40,6 @@ export const IconDropdown: FC<Props> = ({ options, value, onChange, icon }) => {
          >
             {icon}
             <span className="label-bold">{options[value]}</span>
-            <VscTriangleDown className={`${styles.arrow} ${active && styles.active}`} />
          </button>
          {active && (
             <div

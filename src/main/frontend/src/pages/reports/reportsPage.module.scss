@@ -57,11 +57,15 @@
    .card {
       flex: 1;
       .table_link {
+         cursor: pointer;
          display: flex;
          gap: 0.3rem;
          &:hover {
             color: variables.$purple-100;
             text-decoration: underline;
+         }
+         svg {
+            font-size: 18px;
          }
       }
    }

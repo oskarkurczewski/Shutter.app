@@ -10,12 +10,14 @@ div.modal_backdrop {
    display: flex;
    align-items: center;
    justify-content: center;
+   z-index: 99999999999;
 
    .modal_wrapper {
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
       gap: 1.3rem;
+      max-width: 80vw;
 
       .modal_header {
          p {

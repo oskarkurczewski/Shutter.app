@@ -25,6 +25,7 @@ import {
    PhotographerProfilePage,
    ChangeAvailabilityPage,
 } from "pages/photographers";
+import { ReportsPage } from "pages/reports";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -150,7 +151,7 @@ function App() {
                      path=":login/profile/gallery"
                      element={
                         <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
-                              <PhotographerGalleryPage />
+                           <PhotographerGalleryPage />
                         </ProtectedRoute>
                      }
                   />
