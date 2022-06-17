@@ -6,6 +6,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { PhotographerReview } from "../photographer-review";
 import { getPhotographerReviewsRequest } from "redux/types/api";
 import { useGetPhotographerReviewsQuery } from "redux/service/photographerManagementService";
+import AddReviewModal from "../add-review-modal/AddReviewModal";
 interface Props {
    photographerLogin: string;
    reviewCount: number;
@@ -21,10 +22,14 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
       pageNo: reviewPage,
       photographerLogin: photographerLogin,
    });
+   const [reviewModalIsOpen, setReviewModalIsOpen] = useState<boolean>(false);
+   const openReviewModal = () => setReviewModalIsOpen(true);
+   const closeReviewModal = () => {
+      setReviewModalIsOpen(false);
+   };
 
-   //TODO: add review
    const addReview = () => {
-      return;
+      closeReviewModal();
    };
 
    const showPreviousReview = () => {
@@ -46,7 +51,11 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
                <div className={styles.top_wrapper}>
                   <p className="section-title">{t("photographer_page.reviews")}</p>
                   <div className={styles.top_buttons_wrapper}>
-                     <Button onClick={addReview} icon="add_box">
+                     <Button
+                        className={styles.add_review_button}
+                        onClick={openReviewModal}
+                        icon="add_box"
+                     >
                         {t("photographer_page.add_review")}
                      </Button>
                      <SquareButton onClick={showPreviousReview}>
@@ -69,6 +78,12 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
                )}
             </div>
          </Card>
+         <AddReviewModal
+            isOpen={reviewModalIsOpen}
+            photographerLogin={photographerLogin}
+            onSubmit={addReview}
+            onCancel={closeReviewModal}
+         />
       </div>
    );
 };

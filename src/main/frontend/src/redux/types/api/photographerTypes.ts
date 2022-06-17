@@ -69,6 +69,12 @@ export interface getPhotographerReviewsRequest {
    photographerLogin: string;
 }
 
+export interface addReviewRequest {
+   photographerLogin: string;
+   score: number;
+   content: string;
+}
+
 export interface AvailabilityResponse {
    id: number;
    day: number;

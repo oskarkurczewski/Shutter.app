@@ -7,6 +7,7 @@ import { RiFileList2Fill } from "react-icons/ri";
 import { MdFactCheck } from "react-icons/md";
 import { Stars } from "../../shared/stars";
 import { useTranslation } from "react-i18next";
+import { review } from "pages/reports/headers";
 
 interface Props {
    name: string;
@@ -41,7 +42,11 @@ export const PhotographerInfo: React.FC<Props> = ({
             <div className={styles.label_wrapper}>
                <p className="section-title">{`${name} ${surname}`}</p>
                <IconText text={location} Icon={IoLocationSharp} className="label-bold" />
-               <Stars stars={stars} className="label-bold" backgroundVariant="all" />
+               <Stars
+                  stars={Math.round((stars / reviewCount) * 10) / 10}
+                  className="label-bold"
+                  backgroundVariant="all"
+               />
                <IconText
                   text={`${sessionCount} ${t(
                      "photographer_page.photographer_session_count"

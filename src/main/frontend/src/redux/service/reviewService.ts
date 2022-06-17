@@ -1,4 +1,4 @@
-import { ReviewInfo } from "redux/types/api";
+import { ReviewInfo, addReviewRequest } from "redux/types/api";
 import { api } from "./api";
 
 const ReviewService = api.injectEndpoints({
@@ -16,7 +16,16 @@ const ReviewService = api.injectEndpoints({
             method: "GET",
          }),
       }),
+
+      addReview: builder.mutation<void, addReviewRequest>({
+         query: (data) => ({
+            url: `/profile/review`,
+            method: "POST",
+            body: data,
+         }),
+      }),
    }),
 });
 
-export const { useLikeReviewMutation, useGetReviewByIdQuery } = ReviewService;
+export const { useLikeReviewMutation, useGetReviewByIdQuery, useAddReviewMutation } =
+   ReviewService;

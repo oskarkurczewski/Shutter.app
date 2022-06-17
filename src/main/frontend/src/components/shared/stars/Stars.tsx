@@ -17,7 +17,7 @@ export const Stars: React.FC<Props> = ({
    setStars,
 }) => {
    const fullStars = Math.floor(stars / 2);
-   const halfStars = stars % 2;
+   const halfStars = Math.floor(stars % 2);
    const countingStars = (stars: number) => {
       const result = [];
 
