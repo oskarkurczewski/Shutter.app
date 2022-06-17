@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
@@ -65,19 +66,46 @@ public class ReviewEndpoint extends AbstractEndpoint {
         newReview.setContent(review.getContent());
         newReview.setLikeCount(0L);
         reviewService.addPhotographerReview(newReview);
-        profileService.updateScore(photographer, review.getScore());
+        profileService.updateScore(photographer, review.getScore(), +1L);
     }
 
+    /**
+     * Usuwa recenzje dodana przez zalogowanego użytkownika
+     *
+     * @param reviewId id recenzji fotografa
+     *
+     * @throws BaseApplicationException w przypadku niepowodzenia operacji
+     *
+     */
     @RolesAllowed(deleteOwnPhotographerReview)
     public void deleteOwnPhotographerReview(Long reviewId)
-            throws NoAuthenticatedAccountFound, NoReviewFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        Review review = reviewService.findById(reviewId);
+        String user = authCtx.getCurrentUsersLogin();
+        Account account = accountService.findByLogin(user);
+        if (!review.getAccount().equals(account)) {
+            throw ExceptionFactory.noAuthenticatedAccountFound();
+        }
+        PhotographerInfo photographer = review.getPhotographer();
+        reviewService.deletePhotographerReview(review);
+        profileService.updateScore(photographer, -review.getScore(), -1L);
     }
 
+    /**
+     * Usuwa recenzje dodana przez dowolnego użytkownika
+     *
+     * @param reviewId id recenzji fotografa
+     *
+     * @throws BaseApplicationException w przypadku niepowodzenia operacji
+     *
+     */
     @RolesAllowed(deleteSomeonesPhotographerReview)
     public void deleteSomeonesPhotographerReview(Long reviewId)
-            throws NoReviewFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        Review review = reviewService.findById(reviewId);
+        PhotographerInfo photographer = review.getPhotographer();
+        reviewService.deletePhotographerReview(review);
+        profileService.updateScore(photographer, -review.getScore(), -1L);
     }
 
     /**
