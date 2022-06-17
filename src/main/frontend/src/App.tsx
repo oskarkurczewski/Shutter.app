@@ -24,6 +24,7 @@ import * as TokenBased from "pages/token-based";
 import { PhotographersListPage } from "pages/photographers";
 import { SuspenseLoader } from "components/suspense-loader";
 import { PhotographerProfilePage } from "pages/photographers";
+import { PhotographerGallery } from "pages/photographers/gallery";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -110,6 +111,8 @@ function App() {
                   />
 
                   <Route path=":login/profile" element={<PhotographerProfilePage />} />
+
+                  <Route path=":login/gallery" element={<PhotographerGallery />} />
 
                   <Route
                      path="settings"
