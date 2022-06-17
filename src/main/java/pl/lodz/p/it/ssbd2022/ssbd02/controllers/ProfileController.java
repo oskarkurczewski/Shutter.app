@@ -97,7 +97,7 @@ public class ProfileController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
-    @POST
+    @DELETE
     @Path("/review/{id}")
     public Response deleteOwnPhotographerReview(@PathParam("id") Long reviewId)
             throws BaseApplicationException {
@@ -105,7 +105,7 @@ public class ProfileController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
-    @POST
+    @DELETE
     @Path("/review/{id}/admin")
     public Response deleteSomeonesPhotographerReview(@PathParam("id") Long reviewId)
             throws BaseApplicationException {
