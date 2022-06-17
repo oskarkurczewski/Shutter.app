@@ -75,9 +75,14 @@ export interface changeOwnUserDataRequest {
    surname: string;
 }
 
-export interface changeOwnPasswordRequest {
+export interface changePasswordRequest {
    password: string;
-   oldPassword: string;
+   oldPassword?: string;
+}
+
+export interface changeSomeonesPasswordRequest {
+   login: string;
+   data: changePasswordRequest;
 }
 
 export interface changeOwnEmailRequest {
@@ -105,6 +110,7 @@ export interface changeAccountInfoAsAdminRequest {
       name: string;
       surname: string;
       login: string;
+      active: boolean;
    };
    etag: etag;
 }

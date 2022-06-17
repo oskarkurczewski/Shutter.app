@@ -14,6 +14,12 @@
          "repeat_email": "Powtórz adres email",
          "active": "Aktywny",
          "registered": "Zarejestrowany"
+      },
+      "roles": {
+         "admin": "ADMINISTRATOR",
+         "moderator": "MODERATOR",
+         "client": "CLIENT",
+         "photographer": "PHOTOGRAPHER"
       }
    },
    "exception": {
@@ -115,8 +121,51 @@
          "advanced_search": "Rozszerzone wyszukiwanie"
       }
    },
-   "create_user_account_page": {
-      "create_account": "Utwórz konto"
+   "edit_account_page": {
+      "title": "Edit account info",
+      "confirm": "Save",
+      "close": "Close",
+      "basic_info": {
+         "title": "Basic info",
+         "login": "Login",
+         "registered": "Registered",
+         "active": "Active",
+         "name": "Name",
+         "surname": "Surname",
+         "email": "Email",
+         "repeat_email": "Repeat email",
+         "name_validation": {
+            "max": "Name cannot be longer than 63 characters",
+            "regex": "Name can only contain capital and lowercase letters",
+            "first_letter": "First letter must be capital"
+         },
+         "surname_validation": {
+            "max": "Surname cannot be longer than 63 characters",
+            "regex": "Surname can only contain capital and lowercase letters",
+            "first_letter": "First letter must be capital"
+         },
+         "email_validation": {
+            "min": "Email cannot be shorter than 1 character",
+            "max": "Email cannot be longer than 64 characters",
+            "format": "Email must be in format example@domain.com",
+            "repeat": "Email and repeat email must be the same"
+         }
+      },
+      "password": {
+         "title": "Password",
+         "password": "Password",
+         "repeat_password": "Repeat password",
+         "cant_change": "When account i unregistered password cannot be changed",
+         "password_validation": {
+            "min": "Password cannot be shorter than 6 characters",
+            "max": "Password cannot be longer than 64 characters",
+            "regex": "Password must contain at least one capital and lowercase letter, number and special character",
+            "repeat": "Password and repeat password must be the same"
+         }
+      },
+      "roles": {
+         "title": "Roles"
+      }
    },
    "settings_page": {
       "title": "Ustawienia",
@@ -179,20 +228,5 @@
       "modification_date": "Data modyfikacji",
       "modification_author": "Autor modyfikacji",
       "modification_type": "Typ modyfikacji"
-   },
-   "photographer_page": {
-      "title": "Profil Fotografa",
-      "photographer_session_count": "Liczba skończonych rezerwacji",
-      "photographer_photos_count": "Liczba zdjęć fotografa",
-      "photographer_review_count": "Liczba recenzji fotografa",
-      "specializations": "Specjalizacje",
-      "description": "Opis",
-      "reviews": "Recenzje"
-   },
-   "photographer_specialization": {
-      "specialization_studio": "Fotografia studyjna",
-      "specialization_photoreport": "Fotoreportaż",
-      "specialization_product": "Fotografia produktowa",
-      "specialization_landscape": "Fotografia krajobrazowa"
    }
 }

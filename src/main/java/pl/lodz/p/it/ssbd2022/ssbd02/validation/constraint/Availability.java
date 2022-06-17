@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 
 @ReportAsSingleViolation
 public @interface Availability {
-    String message() default "validator.incorrect.availability.time";
+    String message() default "validator.incorrect.availability_time";
 
     Class<?>[] groups() default {};
 

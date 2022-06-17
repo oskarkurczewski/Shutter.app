@@ -27,7 +27,6 @@ public class AccountReport extends ManagedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @NotNull
     private Long id;
 
     @ManyToOne(optional = false)

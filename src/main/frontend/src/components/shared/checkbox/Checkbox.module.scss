@@ -4,6 +4,7 @@
    display: flex;
    align-items: center;
    gap: 5px;
+   color: variables.$gray-200;
 
    input[type="checkbox"] {
       appearance: none;
@@ -16,9 +17,12 @@
          background-size: cover;
          background-repeat: no-repeat;
       }
+      &:disabled {
+         opacity: 0.35;
+      }
    }
 
-   p.required {
+   .required {
       &::after {
          content: "*";
          color: variables.$red-200;

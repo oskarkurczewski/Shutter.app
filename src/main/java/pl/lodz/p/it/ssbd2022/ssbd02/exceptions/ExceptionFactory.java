@@ -68,8 +68,8 @@ public class ExceptionFactory {
         return new NoAvailabilityFoundException("exception.availability_not_found");
     }
 
-    public static InvalidReservationTimeExcpetion invalidReservationTimeException() {
-        return new InvalidReservationTimeExcpetion("exception.reservation_invalid_time");
+    public static InvalidReservationTimeException invalidReservationTimeException(String message) {
+        return new InvalidReservationTimeException(message);
     }
 
     public static NoReservationFoundException noReservationFoundException() {
@@ -129,6 +129,14 @@ public class ExceptionFactory {
         return new WrongParameterException("exception.search_wrong_parameter");
     }
 
+    public static WrongParameterException wrongCauseNameException() {
+        return new WrongParameterException("exception.wrong_cause_name");
+    }
+
+    public static CannotChangeException photographerAlreadyReportedException() {
+        return new CannotChangeException("exception.photographer_already_reported");
+    }
+
     public static UserNotInGroupException userNotInGroupException() {
         return new UserNotInGroupException("exception.user_not_in_group");
     }
@@ -159,5 +167,13 @@ public class ExceptionFactory {
 
     public static LikeException alreadyUnlikedException() {
         return new LikeException("exception.already_unliked");
+    }
+
+    public static SelfReportException selfReportException() {
+        return new SelfReportException("exception.self_report");
+    }
+
+    public static NoAccountFound noAccountFound(String message) {
+        return new NoAccountFound(message);
     }
 }

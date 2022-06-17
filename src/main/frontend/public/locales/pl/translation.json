@@ -20,10 +20,20 @@
          "review-count": "Liczba Recenzji",
          "longitude": "Dług",
          "latitude": "Szer",
-         "loading": "Ładowanie"
+         "loading": "Ładowanie",
+         "submit": "Potwierdź",
+         "cancel": "Anuluj",
+         "choose_file": "Wybierz Plik"
+      },
+      "roles": {
+         "admin": "ADMINISTRATOR",
+         "moderator": "MODERATOR",
+         "client": "KLIENT",
+         "photographer": "FOTOGRAF"
       }
    },
    "exception": {
+      "invalid_credentials": "Niepoprawne dane logowania",
       "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
       "database": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "cannot_change": "Wybrany zasób jest już w tym stanie.",
@@ -57,7 +67,8 @@
       "reservation_not_found": "TODO",
       "reservation_invalid_time": "TODO",
       "availability_not_found": "TODO",
-      "availability_overlap": "TODO"
+      "availability_overlap": "TODO",
+      "photo_upload_error": "Nie udało się dodać zdjęcia"
    },
    "navigation": {
       "home": "Strona główna",
@@ -75,7 +86,17 @@
       "unblock_account": "Odblokuj konto",
       "confirm_registration": "Potwierdź rejestrację",
       "password_reset": "Zmiana hasła",
-      "photographers": "Fotografowie"
+      "photographers": "Fotografowie",
+      "gallery": "Galeria",
+      "change_availability": "Zmiana godzin dostępności"
+   },
+   "toast": {
+      "renew": "Przedłuż",
+      "success_update": "Pomyślnie zmodyfikowano",
+      "success_login_message": "Pomyślnie zalogowano.",
+      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+      "success_like": "Pomyślnie polubiono",
+      "error_like": "Polubienie nie powiodło się"
    },
    "navbar": {
       "title": "shutter.app",
@@ -91,17 +112,25 @@
          "logout": "Wyloguj się"
       }
    },
+   "calendar": {
+      "calendar": "Kalendarz",
+      "availability": "Godziny Dostępności",
+      "reservation": "Rezerwacja"
+   },
    "login_page": {
-      "send_2fa_code": "Wyślij kod",
-      "2fa_code": "6-cyfrowy kod",
       "form_title": "Logowanie",
+      "send_2fa_code": "Wyślij kod",
+      "2fa_code": "Kod uwierzytelniający",
       "recover_password": "Przypomnij hasło",
       "sign_in": "Zaloguj się",
       "sign_up": "Zarejestruj się",
-      "inviting_message": "Załóż je teraz, to zupełnie darmowe!",
-      "not_user_message": "Nie masz jeszcze konta?",
+      "not_user_message_up": "Nie masz",
+      "not_user_message_down": "Jeszcze konta?",
+      "inviting_message_up": "Załóż je teraz,",
+      "inviting_message_down": "to zupełnie darmowe!",
       "login_code": "Twój kod do logowania został wysłany.",
-      "loading": "Trwa próba zalogowania..."
+      "loading": "Trwa próba zalogowania...",
+      "twoFA_desc": "Podaj kod dwustopniowego logowania wysłany na Twój adres email w celu potwierdzenia swojej tożsamości."
    },
    "register_page": {
       "form_title": "Rejestracja",
@@ -192,9 +221,51 @@
          "error_message": "Coś poszło nie tak"
       }
    },
-   "edit_user_account_page": {
-      "confirm": "Zatwierdź",
-      "access_level": "Poziom dostępu"
+   "edit_account_page": {
+      "title": "Edycja danych użytkownika",
+      "confirm": "Zapisz",
+      "close": "Zamknij",
+      "basic_info": {
+         "title": "Podstawowe informacje",
+         "login": "Login",
+         "registered": "Zarejestrowane",
+         "active": "Aktywne",
+         "name": "Imię",
+         "surname": "Nazwisko",
+         "email": "Email",
+         "repeat_email": "Powtórz email",
+         "name_validation": {
+            "max": "Imię nie może mieć więcej niż 63 znaki",
+            "regex": "Imię może zawierać tylko wielkie i małe litery",
+            "first_letter": "Pierwsza litera imienia musi być wielka"
+         },
+         "surname_validation": {
+            "max": "Nazwisko nie może mieć więcej niż 63 znaki",
+            "regex": "Nazwisko może zawierać tylko wielkie i małe litery",
+            "first_letter": "Pierwsza litera nazwiska musi być wielka"
+         },
+         "email_validation": {
+            "min": "Email musi mieć przynajmniej 1 znak",
+            "max": "Email nie może mieć więcej niż 64 znaki",
+            "format": "Email musi być w formacie example@domain.com",
+            "repeat": "Adresy email muszą być takie same"
+         }
+      },
+      "password": {
+         "title": "Hasło",
+         "password": "Hasło",
+         "repeat_password": "Powtórz hasło",
+         "cant_change": "Nie można zmienić hasła gdy użytkownik jest niezarejestrowany",
+         "password_validation": {
+            "min": "Hasło musi mieć przynajmniej 6 znaków",
+            "max": "Hasło nie może mieć więcej niż 64 znaki",
+            "regex": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
+            "repeat": "Hasła muszą być takie same"
+         }
+      },
+      "roles": {
+         "title": "Role"
+      }
    },
    "confirm_register_page": {
       "title": "Rejestracja konta",
@@ -256,6 +327,45 @@
             "REVIEW_REPORT_OBSCENE_CONTENT": "Zawiera niedozwolone treści",
             "REVIEW_REPORT_SPAM": "Spam",
             "REVIEW_REPORT_FAKE_REVIEW": "Fałszywa recenzja"
+         }
+      }
+   },
+   "photographer_page": {
+      "title": "Profil Fotografa",
+      "photographer_session_count": "Liczba skończonych rezerwacji",
+      "photographer_photos_count": "Liczba zdjęć fotografa",
+      "photographer_review_count": "Liczba recenzji fotografa",
+      "specializations": "Specjalizacje",
+      "description": "Opis",
+      "reviews": "Recenzje",
+      "add_review": "Dodaj recenzję",
+      "report_button": "Zgłoś",
+      "delete_button": "Usuń",
+      "report_review_modal_title": "Zgłaszanie recenzji",
+      "report_review_dropdown": "Przyczyna zgłoszenia:"
+   },
+   "photographer_specialization": {
+      "specialization_studio": "Fotografia studyjna",
+      "specialization_photoreport": "Fotoreportaż",
+      "specialization_product": "Fotografia produktowa",
+      "specialization_landscape": "Fotografia krajobrazowa"
+   },
+   "photographer_gallery_page": {
+      "photo_title": "Tytuł zdjęcia",
+      "photo_description": "Opis zdjęcia",
+      "add_photo": "Dodaj zdjecie",
+      "choose_file": "Wybierz zdjęcie",
+      "photo_title_empty": "Tytuł zdjęcia nie może być pusty",
+      "photo_data_empty": "Wybierz zdjęcie w formacie PNG do umieszczenia w galerii",
+      "uploading_photo": "Dodawanie zdjęcia..."
+   },
+   "change_availability_page": {
+      "availability_hours": "Godziny Dostępności",
+      "no_availability": "Brak dostępności",
+      "calendar_title": "Kalendarz",
+      "validator": {
+         "incorrect": {
+            "availability_time": "Podano niepoprawny zakres"
          }
       }
    }

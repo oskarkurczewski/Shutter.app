@@ -36,7 +36,10 @@ export const PhotographerProfilePage = () => {
                      description={data?.description}
                   />
 
-                  <PhotographerReviewsCardWrapper />
+                  <PhotographerReviewsCardWrapper
+                     reviewCount={data.reviewCount}
+                     photographerLogin={login}
+                  />
                </div>
             </div>
          )}

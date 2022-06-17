@@ -1,16 +1,14 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import "./style.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { ProtectedRoute } from "components/routes";
 import { PageLayout } from "layout";
-import { Button } from "components/shared";
-import { getLoginPayload, getTokenExp } from "util/loginUtil";
 import { AccessLevel } from "types/AccessLevel";
+import { SuspenseLoader } from "components/suspense-loader";
+import { getLoginPayload, getTokenExp } from "util/loginUtil";
+import { useAppDispatch } from "redux/hooks";
 import { login, logout } from "redux/slices/authSlice";
-import { push, remove } from "redux/slices/toastSlice";
-import { useRefreshTokenMutation } from "redux/service/authService";
 
 import { DashboardPage } from "pages/dashboard";
 import { HomePage } from "pages/home";
@@ -21,58 +19,21 @@ import { ResetPasswordPage } from "pages/token-based/reset-password";
 import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
-import { PhotographersListPage } from "pages/photographers";
-import { SuspenseLoader } from "components/suspense-loader";
-import { PhotographerProfilePage } from "pages/photographers";
-import { ReportsPage } from "pages/reports";
+import { PhotographerGalleryPage } from "pages/photographers/gallery";
+import {
+   PhotographersListPage,
+   PhotographerProfilePage,
+   ChangeAvailabilityPage,
+} from "pages/photographers";
 
 function App() {
    const dispatch = useAppDispatch();
-   const exp = useAppSelector((state) => state.auth.exp);
-   const [refreshToken] = useRefreshTokenMutation();
 
    if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
       dispatch(login(getLoginPayload()));
    } else {
       dispatch(logout());
    }
-
-   const data = {
-      name: "refreshToken",
-      label: "Powiadomienie",
-      text: "Twoja sesja niedługo wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć!",
-      content: (
-         <Button
-            onClick={async (e) => {
-               e.preventDefault();
-               try {
-                  const token = await refreshToken().unwrap();
-                  localStorage.setItem("token", token.token);
-                  dispatch(login(getLoginPayload()));
-                  dispatch(remove("refreshToken"));
-               } catch (err) {
-                  return;
-               }
-            }}
-         >
-            Przedłuż
-         </Button>
-      ),
-   };
-
-   useEffect(() => {
-      if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) dispatch(push(data));
-
-      const timeoutID = setInterval(() => {
-         if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) {
-            dispatch(push(data));
-         }
-      }, 1000 * 60 * 0.5);
-
-      return () => {
-         clearTimeout(timeoutID);
-      };
-   }, [exp]);
 
    return (
       <Suspense fallback={<SuspenseLoader />}>
@@ -82,6 +43,7 @@ function App() {
 
                <Route element={<PageLayout />}>
                   <Route path="" element={<HomePage />} />
+                  <Route path="dashboard" element={<DashboardPage />} />
 
                   <Route
                      path="login"
@@ -109,8 +71,6 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
-
-                  <Route path=":login/profile" element={<PhotographerProfilePage />} />
 
                   <Route
                      path="settings"
@@ -150,21 +110,26 @@ function App() {
                      />
 
                      <Route
-                        path=":login/edit"
-                        element={
-                           <ProtectedRoute roles={[AccessLevel.ADMINISTRATOR]}>
-                              <UserPages.EditUserAccountPage />
-                           </ProtectedRoute>
-                        }
-                     />
-
-                     <Route
                         path=":login/info"
                         element={
                            <ProtectedRoute
                               roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
                            >
                               <UserPages.UserAccountInfoPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                  </Route>
+
+                  {/* Photographer routes */}
+                  <Route path="profile">
+                     <Route path=":login" element={<PhotographerProfilePage />} />
+
+                     <Route
+                        path="change-availability"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <ChangeAvailabilityPage />
                            </ProtectedRoute>
                         }
                      />
@@ -181,10 +146,16 @@ function App() {
                      }
                   />
 
-                  <Route path="photographers" element={<PhotographersListPage />} />
+                  <Route
+                     path=":login/profile/gallery"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <PhotographerGalleryPage />
+                        </ProtectedRoute>
+                     }
+                  />
 
-                  <Route path="dashboard" element={<DashboardPage />} />
-                  <Route path="dashboard/:abc/login/:bcd" element={<DashboardPage />} />
+                  <Route path="photographers" element={<PhotographersListPage />} />
 
                   {/* Token-based routes */}
                   <Route
@@ -218,6 +189,8 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
+
+                  <Route path="photographers" element={<PhotographersListPage />} />
                </Route>
             </Routes>
          </BrowserRouter>

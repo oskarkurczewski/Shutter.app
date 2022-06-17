@@ -1,8 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeExcpetion;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReservationFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
 
@@ -24,8 +22,9 @@ public class ReservationController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createReservation(
             @NotNull @Valid CreateReservationDto createReservationDto
-    ) throws InvalidReservationTimeExcpetion {
-        throw new UnsupportedOperationException();
+    ) throws BaseApplicationException {
+        repeat(() -> reservationEndpoint.createReservation(createReservationDto), reservationEndpoint);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @DELETE
@@ -41,8 +40,9 @@ public class ReservationController extends AbstractController {
     @Path("/{id}/discard")
     public Response discardReservation(
             @NotNull @PathParam("id") Long reservationId
-    ) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    ) throws BaseApplicationException {
+        repeat(() -> reservationEndpoint.discardReservation(reservationId), reservationEndpoint);
+        return Response.ok().build();
     }
 
     @GET
@@ -62,7 +62,7 @@ public class ReservationController extends AbstractController {
     /**
      * Punkt końcowy pozwalający na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
-     * @param page strona listy, którą należy pozyskać
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji

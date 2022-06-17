@@ -1,6 +1,9 @@
 @use "variables.scss" as variables;
 
 div.text_input_wrapper {
+   position: relative;
+   display: flex;
+   flex-direction: column;
    p {
       margin-bottom: 5px;
       color: variables.$gray-300;
@@ -14,7 +17,7 @@ div.text_input_wrapper {
       }
    }
 
-   div {
+   .field {
       display: flex;
       border-radius: 10px;
       overflow: hidden;
@@ -30,7 +33,6 @@ div.text_input_wrapper {
       span {
          background-color: variables.$blue-gray-200;
       }
-
       input {
          background-color: variables.$blue-gray-100;
          font-weight: 500;
@@ -40,6 +42,31 @@ div.text_input_wrapper {
          color: variables.$gray-300;
          flex-grow: 1;
          outline-color: variables.$blue-gray-300;
+         
+         &:disabled {
+            background-color: variables.$gray-50;
+         }
+         &.invalid {
+            color: variables.$red-300;
+         }
+      }
+   }
+
+   .messages {
+      top: 100%;
+      position: absolute;
+      font-size: 11px;
+      height: 11px;
+      margin-top: 7px;
+      p {
+         padding-right: 7px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+         font-weight: bold;
+         color: variables.$red-300;
+         margin-left: 5px;
+         white-space: wrap;
       }
    }
 }

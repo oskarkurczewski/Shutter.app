@@ -1,7 +1,12 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -28,26 +33,54 @@ public class ReservationEndpoint extends AbstractEndpoint {
     private ReservationService reservationService;
 
     @Inject
-    private AuthenticationContext authCtx;
+    private AccountService accountService;
 
+    @Inject
+    private PhotographerService photographerService;
+
+    @Inject
+    private AuthenticationContext authenticationContext;
+
+    /**
+     * Metoda służąca do tworzenia rezerwacji.
+     *
+     * @param createReservationDto Dane potrzebne do utworzenia rezerwacji
+     * @throws BaseApplicationException W przypadku gdy nie można stworzyć rezerwacji
+     */
     @RolesAllowed(reservePhotographer)
-    public void createReservation(CreateReservationDto createReservationDto) throws InvalidReservationTimeExcpetion {
-        throw new UnsupportedOperationException();
+    public void createReservation(CreateReservationDto createReservationDto) throws BaseApplicationException {
+        Reservation reservation = new Reservation();
+        String login = authenticationContext.getCurrentUsersLogin();
+        if (login.equals(createReservationDto.getPhotographerLogin())) {
+            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_for_self");
+        }
+        reservation.setPhotographer(photographerService.getPhotographer(createReservationDto.getPhotographerLogin()));
+        reservation.setAccount(accountService.findByLogin(login));
+        reservation.setTimeFrom(createReservationDto.getFrom());
+        reservation.setTimeTo(createReservationDto.getTo());
+        reservationService.addReservation(reservation);
     }
 
     /**
      * Metoda do anulowania rezerwacji przez klienta
+     *
      * @param reservationId id rezerwacji, która ma być anulowana
      */
     @RolesAllowed(cancelReservation)
     public void cancelReservation(Long reservationId) throws BaseApplicationException {
-        String caller = authCtx.getCurrentUsersLogin();
+        String caller = authenticationContext.getCurrentUsersLogin();
         reservationService.cancelReservation(caller, reservationId);
     }
 
+    /**
+     * Metoda do anulowania rezerwacji przez fotografa
+     *
+     * @param reservationId id rezerwacji, która ma być anulowana
+     */
     @RolesAllowed(discardReservation)
-    public void discardReservation(Long reservationId) throws NoReservationFoundException {
-        throw new UnsupportedOperationException();
+    public void discardReservation(Long reservationId) throws BaseApplicationException {
+        String caller = authenticationContext.getCurrentUsersLogin();
+        reservationService.discardReservation(caller, reservationId);
     }
 
     @RolesAllowed(showReservations)
@@ -63,7 +96,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
-     * @param page strona listy, którą należy pozyskać
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji
@@ -87,9 +120,30 @@ public class ReservationEndpoint extends AbstractEndpoint {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których imię
+     * lub nazwisko zawiera szukaną frazę
+     *
+     * @param name szukana fraza
+     * @param page strona listy, którą należy pozyskać
+     * @param recordsPerPage ilość krotek fotografów na stronie
+     * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
-    public List<PhotographerListEntryDto> findPhotographerByName(String name) {
-        throw new UnsupportedOperationException();
+    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurname(String name, int page, int recordsPerPage) throws BaseApplicationException {
+        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurname(name, page, recordsPerPage);
+        Long photographerCount = (long) list.size();
+
+        return new MorListResponseDto(
+                page,
+                (int) Math.ceil(photographerCount.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                photographerCount,
+                list.stream()
+                        .map(PhotographerListEntryDto::new)
+                        .collect(Collectors.toList())
+        );
     }
 
     @PermitAll

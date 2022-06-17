@@ -1,16 +1,19 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
-import org.hibernate.service.spi.InjectService;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReportCause;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountReportCause;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReportService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReviewService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -42,16 +45,62 @@ public class ReportEndpoint extends AbstractEndpoint {
     @Inject
     private AuthenticationContext authenticationContext;
 
+    @Inject
+    private ProfileService profileService;
+
+    /**
+     * Tworzy zgłoszenie na podanego klienta.
+     *
+     * @param createAccountReportDto Obiekt przedstawiający login zgłoszonego klienta oraz powód zgłoszenia.
+     * @throws BaseApplicationException W przypadku niepowodzenia operacji.
+     */
     @RolesAllowed(reportClient)
-    public void reportAccount(CreateAccountReportDto createAccountReportDto)
-            throws NoAuthenticatedAccountFound, NoAccountFound {
-        throw new UnsupportedOperationException();
+    public void reportClientAccount(CreateAccountReportDto createAccountReportDto)
+            throws BaseApplicationException {
+        Account reported = accountService.findByLogin(createAccountReportDto.getReportedLogin());
+        AccountReportCause reportCause = reportService.getAccountReportCause(createAccountReportDto.getCause());
+        Account reportee = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
+
+        AccountReport accountReport = new AccountReport();
+        accountReport.setReported(reported);
+        accountReport.setCause(reportCause);
+        accountReport.setReportee(reportee);
+        accountReport.setReviewed(false);
+
+        reportService.addClientAccountReport(accountReport);
     }
 
+    /**
+     * Dodaje nowe zgłoszenie fotografa.
+     *
+     * @param createPhotographerReportDto obiekt DTO zgłoszenia fotografa
+     * @throws WrongParameterException  podano nieprawidłowy powód zgłoszenia
+     * @throws CannotChangeException    dany użytkownik zgłosił już danego fotografa
+     * @throws BaseApplicationException wystąpił nieznany błąd podczas dodawania do bazy danych
+     */
     @RolesAllowed(reportPhotographer)
     public void reportPhotographer(CreatePhotographerReportDto createPhotographerReportDto)
-            throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        String cause = createPhotographerReportDto.getCause();
+        if (!reportService.getAllPhotographerReportCauses().contains(cause)) {
+            throw ExceptionFactory.wrongCauseNameException();
+        }
+
+        List<PhotographerReport> reportOld = reportService.getPhotographerReportByPhotographerLoginAndReporterLogin(
+                createPhotographerReportDto.getPhotographerLogin(),
+                authenticationContext.getCurrentUsersLogin()
+        );
+
+        if (!reportOld.isEmpty()) {
+            throw ExceptionFactory.photographerAlreadyReportedException();
+        }
+
+        PhotographerReport report = new PhotographerReport();
+        report.setPhotographer(profileService.findPhotographerInfo(createPhotographerReportDto.getPhotographerLogin()));
+        report.setAccount(accountService.findByLogin(authenticationContext.getCurrentUsersLogin()));
+        report.setCause(reportService.getPhotographerReportCause(createPhotographerReportDto.getCause()));
+        report.setReviewed(false);
+        reportService.addPhotographerReport(report);
     }
 
     @RolesAllowed(reportReview)
@@ -128,5 +177,15 @@ public class ReportEndpoint extends AbstractEndpoint {
     @RolesAllowed(resolveReport)
     public void resolveReviewReport(Long reviewId) {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Pobiera listę wszystkich zgłoszeń fotografów
+     *
+     * @return lista zgłoszeń fotografów
+     */
+    @RolesAllowed(reportPhotographer)
+    public List<String> getAllPhotographerReportCauses() {
+        return reportService.getAllPhotographerReportCauses();
     }
 }

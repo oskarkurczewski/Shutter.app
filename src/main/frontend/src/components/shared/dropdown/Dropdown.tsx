@@ -21,7 +21,7 @@ export const Dropdown: React.FC<Props> = ({
    className,
 }) => {
    return (
-      <div className={styles.dropdown_wrapper}>
+      <div className={`${styles.dropdown_wrapper} ${className && className}`}>
          {children && <p className="label">{children}</p>}
          <select
             name={name}

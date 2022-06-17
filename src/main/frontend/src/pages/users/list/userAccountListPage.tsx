@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./userAccountListPage.module.scss";
-import { Card, Table } from "components/shared";
+import { Card, Modal, Table } from "components/shared";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaAngleRight, FaCheck, FaEdit } from "react-icons/fa";
 import {
@@ -10,7 +10,8 @@ import {
 } from "redux/service/usersManagementService";
 import { tableHeader } from "types/ComponentTypes";
 import { useTranslation } from "react-i18next";
-import { ListUsersFilter } from "components/list-users";
+import { ListUsersFilter } from "components/account-management/list-account";
+import EditAccountModal from "components/account-management/list-account/edit-modal/EditAccountModal";
 
 export const UserAccountListPage = () => {
    const { t } = useTranslation();
@@ -71,7 +72,13 @@ export const UserAccountListPage = () => {
          sort: null,
       },
    ]);
-
+   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
+   const [login, setLogin] = useState<string>("");
+   const closeEditModal = () => setEditModalIsOpen(false);
+   const openEditModal = (login: string) => {
+      setEditModalIsOpen(true);
+      setLogin(login);
+   };
    const [tableData, setTableData] = useState([]);
 
    const [query, setQuery] = useState<string>("");
@@ -159,11 +166,19 @@ export const UserAccountListPage = () => {
          item.isActive ? <FaCheck className="check" /> : <></>,
          item.isRegistered ? <FaCheck className="check" /> : <></>,
          <div key={item.login} className={styles.actions}>
-            <Link to={`/users/${item.login}/edit`}>
-               <div role="button" className={styles.edit}>
-                  <FaEdit />
-               </div>
-            </Link>
+            {/* <Link to={`/users/${item.login}/edit`}> */}
+            <div
+               role="button"
+               onKeyDown={() => openEditModal(item.login)}
+               className={styles.edit}
+               onClick={() => {
+                  openEditModal(item.login);
+               }}
+               tabIndex={0}
+            >
+               <FaEdit />
+            </div>
+            {/* </Link> */}
             <Link to={`/users/${item.login}/info`}>
                <div role="button" className={styles.info}>
                   <FaAngleRight />
@@ -201,6 +216,11 @@ export const UserAccountListPage = () => {
                }
             />
          </Card>
+         <EditAccountModal
+            login={login}
+            isOpen={editModalIsOpen}
+            onSubmit={closeEditModal}
+         />
       </div>
    );
 };

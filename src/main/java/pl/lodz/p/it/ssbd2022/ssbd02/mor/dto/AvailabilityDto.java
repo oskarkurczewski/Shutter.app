@@ -9,15 +9,19 @@ import java.time.LocalTime;
 
 @Data
 public class AvailabilityDto {
+
     @NotNull
-    private WeekDay day;
+    private Long id;
+    @NotNull
+    private Integer day;
     @NotNull
     private LocalTime from;
     @NotNull
     private LocalTime to;
 
     public AvailabilityDto(Availability availability) {
-        this.day = availability.getDay();
+        this.id = availability.getId();
+        this.day = availability.getDay().ordinal();
         this.from = availability.getFrom();
         this.to = availability.getTo();
     }

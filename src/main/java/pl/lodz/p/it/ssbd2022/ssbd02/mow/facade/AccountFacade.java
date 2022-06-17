@@ -23,7 +23,7 @@ import java.util.List;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.listAllReports;
 
 @Stateless
-@Interceptors({LoggingInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class AccountFacade extends FacadeTemplate<Account> {
 
@@ -57,6 +57,7 @@ public class AccountFacade extends FacadeTemplate<Account> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
+
 
     @Override
     protected EntityManager getEm() {
