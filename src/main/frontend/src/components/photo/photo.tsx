@@ -25,7 +25,7 @@ export const Photo: React.FC<Props> = ({
    const { t } = useTranslation();
 
    const likePhoto = () => {
-      console.log("polub zdj");
+      return;
    };
 
    return (

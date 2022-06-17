@@ -7,7 +7,6 @@
    overflow: hidden;
 
    .photo_picture {
-      object-fit: cover;
       width: 100%;
       height: 100%;
 
@@ -17,6 +16,12 @@
       }
    }
 
+   .photo_label {
+      display: none;
+   }
+}
+
+.photo_wrapper:hover {
    .photo_label {
       position: absolute;
       width: 100%;
@@ -28,6 +33,8 @@
       align-items: center;
       justify-content: space-between;
       border-radius: 10px;
+      animation-name: fadein;
+      animation-duration: 0.3s;
 
       p {
          user-select: none;
@@ -50,6 +57,7 @@
       .photo_label_likes {
          .photo_label_likes_button {
             background-color: transparent;
+            box-shadow: none;
             button {
                display: flex;
                flex-direction: row;
@@ -61,6 +69,16 @@
 
 img:hover {
    cursor: pointer;
-   -webkit-filter: brightness(70%);
-   transition: all 0.2s ease;
+   -webkit-filter: brightness(90%);
+   transition: all 0.3s ease;
+}
+
+@keyframes fadein {
+   from {
+      -webkit-filter: brightness(80%);
+   }
+
+   to {
+      -webkit-filter: brightness(100%);
+   }
 }

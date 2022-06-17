@@ -20,7 +20,8 @@
          "review-count": "Liczba Recenzji",
          "longitude": "Dług",
          "latitude": "Szer",
-         "loading": "Ładowanie"
+         "loading": "Ładowanie",
+         "delete": "Usuń"
       }
    },
    "exception": {

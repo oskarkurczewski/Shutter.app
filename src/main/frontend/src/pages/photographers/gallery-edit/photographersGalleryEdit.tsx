@@ -1,20 +1,18 @@
-import { Photo } from "components/photo";
-import { PhotoMasonry } from "components/photo-masonry";
-
+import { PhotoGrid } from "components/photo-grid/photoGrid";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import styles from "./photographerGallery.module.scss";
+import styles from "./photographerGalleryEdit.module.scss";
 
-export const PhotographerGallery = () => {
+export const PhotographerGalleryEdit = () => {
    const { t } = useTranslation();
    const { login } = useParams();
    // const { data, isError } = jakiestamquery()
 
    return (
-      <section className={styles.photographer_gallery_page_wrapper}>
+      <section className={styles.photographer_gallery_edit_page_wrapper}>
          <p className={styles.title}>{t("photographer_gallery_page.title")}</p>
-         <PhotoMasonry login={login} />
+         <PhotoGrid login={login} />
       </section>
    );
 };
