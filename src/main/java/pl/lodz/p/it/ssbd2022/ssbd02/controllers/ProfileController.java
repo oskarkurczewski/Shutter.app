@@ -70,10 +70,17 @@ public class ProfileController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Usuwa polubienie na wybranym zdjęciu
+     *
+     * @param photoId Id zdjęcia
+     * @throws BaseApplicationException W przypadku niepowodzenia akcji
+     */
     @POST
     @Path("/photo/{id}/unlike")
-    public Response unlikePhoto(@PathParam("id") Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
-        throw new UnsupportedOperationException();
+    public Response unlikePhoto(@PathParam("id") Long photoId) throws BaseApplicationException {
+        repeat(() -> photoEndpoint.unlikePhoto(photoId), photoEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     /**
@@ -94,8 +101,9 @@ public class ProfileController extends AbstractController {
     @DELETE
     @Path("/review/{id}")
     public Response deleteOwnPhotographerReview(@PathParam("id") Long reviewId)
-            throws NoAuthenticatedAccountFound, NoReviewFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.deleteOwnPhotographerReview(reviewId), reviewEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     @GET
@@ -108,8 +116,9 @@ public class ProfileController extends AbstractController {
     @DELETE
     @Path("/review/{id}/admin")
     public Response deleteSomeonesPhotographerReview(@PathParam("id") Long reviewId)
-            throws NoReviewFoundException {
-        throw new UnsupportedOperationException();
+            throws BaseApplicationException {
+        repeat(() -> reviewEndpoint.deleteSomeonesPhotographerReview(reviewId), reviewEndpoint);
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST

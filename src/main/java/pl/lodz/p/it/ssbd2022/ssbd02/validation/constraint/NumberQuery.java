@@ -1,15 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint;
 
-
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.REGEXP;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.lang.annotation.*;
 
 /**

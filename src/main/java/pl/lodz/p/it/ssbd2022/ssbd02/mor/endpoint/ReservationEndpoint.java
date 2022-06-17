@@ -4,9 +4,12 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.MorAccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -19,6 +22,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +37,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
     private ReservationService reservationService;
 
     @Inject
-    private AccountService accountService;
+    private MorAccountService accountService;
 
     @Inject
     private PhotographerService photographerService;
@@ -83,9 +87,31 @@ public class ReservationEndpoint extends AbstractEndpoint {
         reservationService.discardReservation(caller, reservationId);
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
+     *
+     * @param name           imię lub nazwisko do wyszukania
+     * @param page           numer strony
+     * @param recordsPerPage liczba recenzji na stronę
+     * @param order          kolejność sortowania względem kolumny time_from
+     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(showReservations)
-    public List<ReservationListEntryDto> listReservations() {
-        throw new UnsupportedOperationException();
+    public List<ReservationListEntryDto> listReservations(String name, int page, int recordsPerPage, String order, Boolean getAll)
+            throws BaseApplicationException {
+        String login = authenticationContext.getCurrentUsersLogin();
+        Account account = accountService.findByLogin(login);
+
+        List<Reservation> reservations = reservationService.listReservations(account, name, page, recordsPerPage, order, getAll);
+        List<ReservationListEntryDto> reservationDtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            reservationDtoList.add(new ReservationListEntryDto(reservation));
+        }
+
+        return reservationDtoList;
     }
 
     @RolesAllowed(showJobs)

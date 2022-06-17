@@ -4,6 +4,10 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.AvailabilityFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.PhotographerFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.ReservationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
@@ -27,12 +31,6 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class ReservationService {
 
-    /**
-     * Metoda wyszukująca rezerwację z danym numerem ID
-     *
-     * @param id id rezerwacji
-     * @return rezerwacja o wskazanym ID
-     */
     @Inject
     private PhotographerFacade photographerFacade;
 
@@ -45,6 +43,12 @@ public class ReservationService {
     @Inject
     private AvailabilityFacade availabilityFacade;
 
+    /**
+     * Metoda wyszukująca rezerwację z danym numerem ID
+     *
+     * @param id id rezerwacji
+     * @return rezerwacja o wskazanym ID
+     */
     @PermitAll
     public Reservation findById(Long id) throws BaseApplicationException {
         return Optional.ofNullable(reservationFacade.find(id)).orElseThrow(ExceptionFactory::noReservationFoundException);
@@ -112,9 +116,22 @@ public class ReservationService {
         emailService.sendReservationDiscardedEmail(r.getAccount().getEmail(), r.getId(), pInfo.getAccount().getLocale());
     }
 
+
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
+     *
+     * @param account        konto użytkownika, dla którego pobierane są rezerwacje
+     * @param page           numer strony
+     * @param recordsPerPage liczba recenzji na stronę
+     * @param order          kolejność sortowania względem kolumny time_from
+     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(showReservations)
-    public List<Reservation> listReservations(Account account) {
-        throw new UnsupportedOperationException();
+    public List<Reservation> listReservations(Account account, String name, int page, int recordsPerPage, String order, Boolean getAll)
+            throws BaseApplicationException {
+        return reservationFacade.getReservationsForUser(account, name, page, recordsPerPage, order, getAll);
     }
 
     @RolesAllowed(showJobs)

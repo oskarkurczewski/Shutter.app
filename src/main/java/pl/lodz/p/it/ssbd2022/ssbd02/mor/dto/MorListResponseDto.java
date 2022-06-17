@@ -13,19 +13,17 @@ import java.util.List;
 public class MorListResponseDto<T> {
 
     @NotNull
-    Integer pageNo;
+    private Integer pageNo;
 
     @NotNull
-    Integer allPages;
+    private Integer allPages;
 
     @NotNull
-    Integer recordsPerPage;
+    private Integer recordsPerPage;
 
     @NotNull
-    Long allRecords;
+    private Long allRecords;
 
     @NotNull
-    List<T> list;
-
-
+    private List<T> list;
 }

@@ -158,7 +158,11 @@ public class ExceptionFactory {
     }
 
     public static PhotoAlreadyLikedException photoAlreadyLikedException() {
-        return new PhotoAlreadyLikedException("photo.liked");
+        return new PhotoAlreadyLikedException("exception.photo_already_liked");
+    }
+
+    public static PhotoAlreadyUnlikedException photoAlreadyUnlikedException() {
+        return new PhotoAlreadyUnlikedException("exception.photo_already_unliked");
     }
 
     public static LikeException alreadyLikedException() {
