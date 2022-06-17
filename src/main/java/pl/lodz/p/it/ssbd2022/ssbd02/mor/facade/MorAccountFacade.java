@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 
+
 @Stateless
 @Interceptors({LoggingInterceptor.class, MorFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -43,6 +44,7 @@ public class MorAccountFacade extends FacadeTemplate<Account> {
     }
 
     @Override
+    @PermitAll
     protected EntityManager getEm() {
         return em;
     }

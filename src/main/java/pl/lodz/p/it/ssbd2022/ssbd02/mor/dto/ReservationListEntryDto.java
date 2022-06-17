@@ -1,18 +1,32 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
 public class ReservationListEntryDto {
+
     @NotNull
-    private final String photographerLogin;
+    private Long id;
     @NotNull
-    private final String clientLogin;
+    private String photographerLogin;
     @NotNull
-    private final LocalDateTime from;
+    private String clientLogin;
     @NotNull
-    private final LocalDateTime to;
+    private LocalDateTime from;
+    @NotNull
+    private LocalDateTime to;
+
+    public ReservationListEntryDto(Reservation reservation) {
+        this.id = reservation.getId();
+        this.photographerLogin = reservation.getPhotographer().getAccount().getLogin();
+        this.clientLogin = reservation.getAccount().getLogin();
+        this.from = reservation.getTimeFrom();
+        this.to = reservation.getTimeTo();
+    }
 }
