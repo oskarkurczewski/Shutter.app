@@ -13,14 +13,14 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.addPhotoToGallery;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.deletePhotoFromGallery;
-import javax.persistence.*;
 
 
 @Stateless
@@ -90,6 +90,65 @@ public class PhotoFacade extends FacadeTemplate<Photo> {
             return super.find(id);
         } catch (NoResultException e) {
             throw ExceptionFactory.noPhotoFoundException();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+
+    /**
+     * Metoda pozwalająca na pobieranie zdjęć fotografa
+     *
+     * @param photographerId konto fotografa, dla którego pobierane są zdjęcia
+     * @param page           numer strony
+     * @param recordsPerPage liczba recenzji na stronę
+     * @return List<Photo>      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public List<Photo> getPhotoList(Long photographerId, int page, int recordsPerPage) throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Photo> query = criteriaBuilder.createQuery(Photo.class);
+        Root<Photo> table = query.from(Photo.class);
+        query.where(criteriaBuilder.equal(table.get("photographer").get("id"), photographerId));
+        try {
+            return em.createQuery(query)
+                    .setFirstResult(recordsPerPage * (page - 1))
+                    .setMaxResults(recordsPerPage)
+                    .getResultList();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    /**
+     * Metoda pozwalająca na pobieranie zdjęć fotografa
+     *
+     * @param photographerId konto fotografa, dla którego pobierane są zdjęcia
+     * @return List<Photo>      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public Long getPhotoListSize(Long photographerId) throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Photo> table = query.from(Photo.class);
+        query.select(criteriaBuilder.count(table));
+        query.where(criteriaBuilder.equal(table.get("photographer").get("id"), photographerId));
+        try {
+            return em.createQuery(query).getSingleResult();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {

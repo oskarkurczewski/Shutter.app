@@ -6,6 +6,8 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyLikedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ListResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.PhotoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyUnlikedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
@@ -19,7 +21,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -114,5 +118,27 @@ public class PhotoService {
         account.getLikedPhotosList().remove(photo);
         photo.setLikeCount(photo.getLikeCount() - 1);
     }
+
+    /**
+     * Metoda pozwalająca na pobieranie zdjęć fotografa
+     *
+     * @param photographerInfo konto fotografa, dla którego pobierane są zdjęcia
+     * @param requestDto       dane do pobrania zdjęć
+     * @return List<Photo>      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public ListResponseDto<PhotoDto> getPhotoList(PhotographerInfo photographerInfo, int pageNo, int recordsPerPage) throws BaseApplicationException {
+        Long allRecords = photoFacade.getPhotoListSize(photographerInfo.getId());
+        List<Photo> list = photoFacade.getPhotoList(photographerInfo.getId(), pageNo, recordsPerPage);
+        return new ListResponseDto<>(
+                pageNo,
+                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                allRecords,
+                list.stream().map(PhotoDto::new).collect(Collectors.toList())
+        );
+    }
+
 
 }
