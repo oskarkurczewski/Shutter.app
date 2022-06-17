@@ -1,16 +1,17 @@
 import { Button } from "components/shared";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLikePhotoRequestMutation } from "redux/service/photoService";
 import styles from "./photo.module.scss";
 
 interface Props {
-   photo_id?: number;
-   img?: string;
-   title?: string;
+   photo_id: number;
+   img: string;
+   title: string;
    description?: string;
-   date?: string;
-   liked?: boolean;
-   likeCount?: number;
+   date: string;
+   liked: boolean;
+   likeCount: number;
 }
 
 export const Photo: React.FC<Props> = ({
@@ -22,11 +23,18 @@ export const Photo: React.FC<Props> = ({
    liked,
    likeCount,
 }) => {
-   const { t } = useTranslation();
+   const [likes, setLikes] = useState<number>(likeCount);
+   const [isLiked, setIsLiked] = useState<boolean>(liked);
+   const [likePhotoMutation, { isLoading, isError, isSuccess, error }] =
+      useLikePhotoRequestMutation();
 
    const likePhoto = () => {
-      return;
+      likePhotoMutation(photo_id);
    };
+
+   useEffect(() => {
+      isSuccess && setLikes(likes + 1);
+   }, [isSuccess]);
 
    return (
       <div className={styles.photo_wrapper}>
@@ -45,7 +53,7 @@ export const Photo: React.FC<Props> = ({
                   onClick={likePhoto}
                   icon="favorite"
                >
-                  321
+                  {likes}
                </Button>
             </div>
          </div>

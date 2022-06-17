@@ -313,7 +313,9 @@
       "report_button": "Zgłoś",
       "delete_button": "Usuń",
       "report_review_modal_title": "Zgłaszanie recenzji",
-      "report_review_dropdown": "Przyczyna zgłoszenia:"
+      "report_review_dropdown": "Przyczyna zgłoszenia:",
+      "gallery_title": "Galeria Zdjęć",
+      "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć."
    },
    "photographer_specialization": {
       "specialization_studio": "Fotografia studyjna",
@@ -331,6 +333,7 @@
       "photo_data_empty": "Wybierz zdjęcie w formacie PNG do umieszczenia w galerii",
       "uploading_photo": "Dodawanie zdjęcia...",
       "success_message": "Pomyślnie dodano zdjęcie",
+      "no_photos": "Aktualnie nie posiadasz żadnych zdjęć. Użyj pola wyżej by dodać zdjęcia.",
       "error": {
          "format": "Plik musi być w formacie png",
          "file_required": "Należy podać plik"
