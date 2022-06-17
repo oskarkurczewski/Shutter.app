@@ -106,7 +106,7 @@ public class PhotoService {
      */
     @RolesAllowed(unlikePhoto)
     public void unlikePhoto(Photo photo, Account account) throws PhotoAlreadyUnlikedException {
-        if (!photo.getLikesList().contains(account) || account.getLikedPhotosList().contains(photo)) {
+        if (!photo.getLikesList().contains(account) || !account.getLikedPhotosList().contains(photo)) {
             throw ExceptionFactory.photoAlreadyUnlikedException();
         }
 
