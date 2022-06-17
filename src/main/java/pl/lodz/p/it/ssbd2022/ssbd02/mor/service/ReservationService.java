@@ -90,6 +90,9 @@ public class ReservationService {
     @RolesAllowed(cancelReservation)
     public void cancelReservation(String caller, Long reservationId) throws BaseApplicationException {
         Reservation r = findById(reservationId);
+        if (!r.getTimeFrom().isAfter(LocalDateTime.now())) {
+            throw ExceptionFactory.cannotChangeException();
+        }
         if (!r.getAccount().getLogin().equals(caller)) {
             throw ExceptionFactory.noReservationFoundException();
         }
@@ -108,6 +111,9 @@ public class ReservationService {
     @RolesAllowed(discardReservation)
     public void discardReservation(String caller, Long reservationId) throws BaseApplicationException {
         Reservation r = findById(reservationId);
+        if (!r.getTimeFrom().isAfter(LocalDateTime.now())) {
+            throw ExceptionFactory.cannotChangeException();
+        }
         if (!r.getPhotographer().getAccount().getLogin().equals(caller)) {
             throw ExceptionFactory.noReservationFoundException();
         }
