@@ -38,6 +38,14 @@
       &:hover {
          background-color: variables.$blue-gray-200;
       }
+      .arrow {
+         font-size: 0.8rem;
+         transition: transform 0.2s ease-in-out;
+         transform: rotateX(0deg);
+         &.active {
+            transform: rotateX(180deg);
+         }
+      }
    }
 
    .option_list {

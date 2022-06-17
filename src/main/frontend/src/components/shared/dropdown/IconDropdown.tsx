@@ -1,5 +1,6 @@
 import React, { FC, useRef, useState } from "react";
 import { IoLanguage } from "react-icons/io5";
+import { VscTriangleDown } from "react-icons/vsc";
 import styles from "./IconDropdown.module.scss";
 
 interface Option {
@@ -10,9 +11,10 @@ interface Props {
    options: Option;
    value: string;
    onChange: (key: string) => void;
+   icon?: JSX.Element;
 }
 
-export const IconDropdown: FC<Props> = ({ options, value, onChange }) => {
+export const IconDropdown: FC<Props> = ({ options, value, onChange, icon }) => {
    const [active, setActive] = useState(false);
 
    const selectedElement = useRef(null);
@@ -36,8 +38,9 @@ export const IconDropdown: FC<Props> = ({ options, value, onChange }) => {
             }}
             ref={selectedElement}
          >
-            <IoLanguage />
+            {icon}
             <span className="label-bold">{options[value]}</span>
+            <VscTriangleDown className={`${styles.arrow} ${active && styles.active}`} />
          </button>
          {active && (
             <div

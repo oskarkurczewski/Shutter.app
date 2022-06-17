@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import styles from "./reportsPage.module.scss";
 import { useTranslation } from "react-i18next";
 import { MdComment } from "react-icons/md";
 import { HiCamera, HiUser } from "react-icons/hi";
-import { Card, Table } from "components/shared";
+import { Card, Dropdown, IconDropdown, Table } from "components/shared";
 import { tableHeader } from "types";
 import * as headers from "./headers";
 import { useGetAccountReportListQuery } from "redux/service/usersManagementService";
@@ -12,6 +12,10 @@ import {
    useGetPhotographerReportListQuery,
    useGetReviewReportListQuery,
 } from "redux/service/photographerManagementService";
+import { DateTime } from "luxon";
+import { FaCheck } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { BiLink } from "react-icons/bi";
 
 export const ReportsPage = () => {
    const { t } = useTranslation();
@@ -19,6 +23,12 @@ export const ReportsPage = () => {
       USERS = "userReports",
       PHOTOGRAPHERS = "photographerReports",
       REVIEWS = "reviewReports",
+   }
+
+   enum filterValues {
+      ALL = "all",
+      REVIEWED = "reviewed",
+      UNREVIEWED = "unreviewed",
    }
    const [tabState, setTabState] = useState<tab>(tab.USERS);
    const sections = [
@@ -47,66 +57,98 @@ export const ReportsPage = () => {
    const [pageNo, setPageNo] = useState<number>(1);
    const [recordsPerPage, setRecordsPerPage] = useState<number>(10);
 
+   const [filter, setFilter] = useState<number>(0);
+
    const accountReports = useGetAccountReportListQuery({
       order: accountHeaders[5].sort,
       page: pageNo,
       recordsPerPage: recordsPerPage,
+      reviewed: filter !== 0 ? (filter === 1 ? true : false) : undefined,
    });
 
    const photographerReports = useGetPhotographerReportListQuery({
       order: photographerHeaders[5].sort,
       page: pageNo,
       recordsPerPage: recordsPerPage,
+      reviewed: filter !== 0 ? (filter === 1 ? true : false) : undefined,
    });
 
    const reviewReports = useGetReviewReportListQuery({
       order: reviewHeaders[5].sort,
       page: pageNo,
       recordsPerPage: recordsPerPage,
+      reviewed: filter !== 0 ? (filter === 1 ? true : false) : undefined,
    });
 
-   const getData = (): string[][] => {
+   const generateDateNode = (date: Date) => {
+      const dateTime = DateTime.fromJSDate(new Date(date));
+      return (
+         <>
+            <p>{dateTime.toFormat("dd.MM.yyyy")}</p>
+            <p>{dateTime.toFormat("HH:mm:ss")}</p>
+         </>
+      );
+   };
+
+   const getData = (): (string | ReactNode)[][] => {
       if (accountReports.data) {
          if (tabState === tab.USERS) {
-            console.log(accountReports);
-            return accountReports?.data?.list.map((item: accountReport): string[] => {
-               return [
-                  item.id.toString(),
-                  item.reportedLogin,
-                  item.reporteeLogin,
-                  item.cause,
-                  item.reviewed.toString(),
-                  new Date(item.createdAt).toUTCString(),
-               ];
-            });
+            return accountReports?.data?.list.map(
+               (item: accountReport, index): (string | ReactNode)[] => {
+                  return [
+                     item.id.toString(),
+                     <Link
+                        key={index}
+                        to={`/users/${item.reportedLogin}/info`}
+                        className={styles.table_link}
+                     >
+                        <span>{item.reportedLogin}</span>
+                        <BiLink />
+                     </Link>,
+                     item.reporteeLogin,
+                     t(`reports_page.user.causes.${item.cause}`),
+                     item.reviewed && <FaCheck />,
+                     generateDateNode(item.createdAt),
+                  ];
+               }
+            );
          }
 
          if (tabState === tab.PHOTOGRAPHERS) {
             return photographerReports?.data?.list.map(
-               (item: photographerReport): string[] => {
+               (item: photographerReport, index): (string | ReactNode)[] => {
                   return [
                      item.id.toString(),
-                     item.photographerLogin,
+                     <Link
+                        key={index}
+                        to={`/${item.photographerLogin}/profile`}
+                        className={styles.table_link}
+                     >
+                        <span>{item.photographerLogin}</span>
+                        <BiLink />
+                     </Link>,
                      item.accountLogin,
-                     item.cause,
-                     item.reviewed.toString(),
-                     new Date(item.createdAt).toUTCString(),
+                     t(`reports_page.photographer.causes.${item.cause}`),
+                     item.reviewed && <FaCheck />,
+                     generateDateNode(item.createdAt),
                   ];
                }
             );
          }
 
          if (tabState === tab.REVIEWS) {
-            return reviewReports?.data?.list.map((item: reviewReport): string[] => {
-               return [
-                  item.id.toString(),
-                  item.reviewId.toString(),
-                  item.accountLogin,
-                  item.cause,
-                  item.reviewed.toString(),
-                  new Date(item.createdAt).toUTCString(),
-               ];
-            });
+            return reviewReports?.data?.list.map(
+               (item: reviewReport): (string | ReactNode)[] => {
+                  return [
+                     item.id.toString(),
+                     item.reviewId.toString(),
+                     item.accountLogin,
+                     t(`reports_page.review.causes.${item.cause}`),
+                     item.reviewed && <FaCheck />,
+                     generateDateNode(item.createdAt),
+                  ];
+               }
+            );
          }
       }
       return [];
@@ -142,6 +184,19 @@ export const ReportsPage = () => {
                   </div>
                ))}
             </div>
+            <div className={styles.separator} />
+            <Dropdown
+               values={Object.values(filterValues).map((value): string =>
+                  t(`reports_page.filter.${value}`)
+               )}
+               selectedValue={filter}
+               onChange={(e) => {
+                  setFilter(e.target.selectedIndex);
+               }}
+               name="filter"
+               id="reviewedFilter"
+               className={styles.filter}
+            />
          </div>
          <Card className={styles.card}>
             <Table
@@ -160,8 +215,20 @@ export const ReportsPage = () => {
                      ? setPhotographerHeaders
                      : setReviewHeaders
                }
-               allRecords={0}
-               allPages={4}
+               allRecords={
+                  tabState === tab.USERS
+                     ? accountReports?.data?.allRecords
+                     : tabState === tab.PHOTOGRAPHERS
+                     ? photographerReports?.data?.allRecords
+                     : reviewReports?.data?.allRecords
+               }
+               allPages={
+                  tabState === tab.USERS
+                     ? accountReports?.data?.allPages
+                     : tabState === tab.PHOTOGRAPHERS
+                     ? photographerReports?.data?.allPages
+                     : reviewReports?.data?.allPages
+               }
                pageNo={pageNo}
                setPageNo={setPageNo}
                recordsPerPage={recordsPerPage}

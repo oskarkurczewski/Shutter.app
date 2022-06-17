@@ -3,11 +3,12 @@ import styles from "./Dropdown.module.scss";
 
 interface Props {
    values: string[] | number[] | boolean[];
-   onChange?: (e?: React.ChangeEvent<HTMLSelectElement>) => void;
+   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
    selectedValue: string | number | boolean;
    name: string;
    id: string;
    children?: string;
+   className?: string;
 }
 
 export const Dropdown: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const Dropdown: React.FC<Props> = ({
    name,
    id,
    selectedValue,
+   className,
 }) => {
    return (
       <div className={styles.dropdown_wrapper}>
@@ -28,6 +30,7 @@ export const Dropdown: React.FC<Props> = ({
                onChange(e);
             }}
             defaultValue={selectedValue.toString()}
+            className={className ? className : ""}
          >
             {values.map((value, index) => {
                return (

@@ -106,7 +106,7 @@ const UsersManagementService = api.injectEndpoints({
          getListResponse<accountReport>,
          getReportListRequest
       >({
-         query: (params) => ({ url: `/report/list/review`, params }),
+         query: (params) => ({ url: `/report/list/account`, params }),
       }),
    }),
 });
