@@ -3,16 +3,21 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 import org.apache.commons.codec.binary.Base64;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Photo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotoFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ListResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.PhotoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotoService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -35,6 +40,9 @@ public class PhotoEndpoint extends AbstractEndpoint {
 
     @Inject
     private AccountService accountService;
+
+    @Inject
+    private PhotographerService photographerService;
 
     /**
      * Dodaje nowe zdjęcie do galerii obecnie uwierzytelnionego fotografa
@@ -75,5 +83,20 @@ public class PhotoEndpoint extends AbstractEndpoint {
     @RolesAllowed(unlikePhoto)
     public void unlikePhoto(Long photoId) throws NoAuthenticatedAccountFound, NoPhotoFoundException {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Metoda pozwalająca na pobieranie zdjęć fotografa
+     *
+     * @param login          login fotografa, dla którego pobierane są zdjęcia
+     * @param pageNo         numer strony do pobrania
+     * @param recordsPerPage liczba rekordów na stronie
+     * @return List<Photo>      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public ListResponseDto<PhotoDto> getPhotoList(String login, int pageNo, int recordsPerPage) throws BaseApplicationException {
+        PhotographerInfo photographerInfo = photographerService.findByLogin(login);
+        return photoService.getPhotoList(photographerInfo, pageNo, recordsPerPage);
     }
 }
