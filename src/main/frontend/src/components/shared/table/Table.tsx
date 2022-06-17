@@ -46,7 +46,8 @@ export const Table: React.FC<Props> = ({
 
       setHeaders(newHeaders(headers));
    };
-
+   console.log(headers);
+   console.log(data);
    return (
       <div className={styles.table_wrapper}>
          <table>

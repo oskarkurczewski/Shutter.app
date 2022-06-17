@@ -47,10 +47,10 @@ export const Stars: React.FC<Props> = ({
          <ul ref={starsElement}>
             {countingStars(stars).map((oneRepublic, index) => (
                <li key={index}>
-                  <div
-                     role="button"
-                     onClick={(e) => {
-                        if (setStars) {
+                  {setStars && (
+                     <div
+                        role="button"
+                        onClick={(e) => {
                            let half;
                            if (e.nativeEvent.offsetX < e.currentTarget.clientWidth / 3) {
                               half = 0;
@@ -63,18 +63,18 @@ export const Stars: React.FC<Props> = ({
                               half = 2;
                            }
                            setStars(index * 2 + half);
-                        }
-                     }}
-                     tabIndex={-1}
-                     onKeyDown={null}
-                  />
+                        }}
+                        tabIndex={-1}
+                        onKeyDown={null}
+                     />
+                  )}
                   {oneRepublic}
                </li>
             ))}
          </ul>
-         <p className={backgroundVariant === "score" ? styles.score : ""}>
+         <span className={backgroundVariant === "score" ? styles.score : ""}>
             {fullStars + halfStars * 0.5}/5
-         </p>
+         </span>
       </div>
    );
 };
