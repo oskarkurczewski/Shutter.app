@@ -22,6 +22,7 @@ export const DashboardPage = () => {
             </Button>
          )}
          <Calendar
+            title="Kalendarz"
             availability={availabilityHours}
             // reservations={reservations}
             onRangeSelection={(e) => console.log(e)}

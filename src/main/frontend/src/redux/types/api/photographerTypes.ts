@@ -1,21 +1,21 @@
-import internal from "stream";
+import { DateTime } from "luxon";
 import { basicUserInfoResponse } from "./accountTypes";
 
 export interface photographerTableEntry {
-    login: string,
-    email: string,
-    name: string,
-    surname: string,
-    reviewCount: number,
-    score: number,
-    specializations: string[],
-    longitude: number,
-    latitude: number
+   login: string;
+   email: string;
+   name: string;
+   surname: string;
+   reviewCount: number;
+   score: number;
+   specializations: string[];
+   longitude: number;
+   latitude: number;
 }
 
 export interface getPhotographersListRequest {
-    pageNo: number,
-    recordsPerPage: number,
+   pageNo: number;
+   recordsPerPage: number;
 }
 
 export interface basicPhotographerInfo extends basicUserInfoResponse {
@@ -25,4 +25,11 @@ export interface basicPhotographerInfo extends basicUserInfoResponse {
    latitude: number;
    longitude: number;
    specializationList: string[];
+}
+
+export interface availabilityResponse {
+   id: number;
+   day: number;
+   from: string;
+   to: string;
 }

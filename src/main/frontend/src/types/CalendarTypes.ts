@@ -6,12 +6,13 @@ export type RenderHourBoxElement = (
 
 export type HourBox = {
    from: DateTime;
+   to: DateTime;
    weekday: number;
    selected: boolean;
 };
 
 export type AvailabilityHour = {
-   id: number;
+   id?: number;
    day: number;
    from: DateTime;
    to: DateTime;

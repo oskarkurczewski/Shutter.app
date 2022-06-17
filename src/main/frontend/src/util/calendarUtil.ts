@@ -19,6 +19,9 @@ export const getWeekRange = (weekStartDay: DateTime) => {
       const from = weekStartDay.plus({
          minutes: 30 * i,
       });
+      const to = from.plus({
+         minutes: 30,
+      });
 
       const weekday = Math.floor(i / 48);
       const hour = i % 48;
@@ -26,6 +29,7 @@ export const getWeekRange = (weekStartDay: DateTime) => {
       items[weekday][hour] = {
          selected: false,
          from,
+         to,
          weekday,
       };
    }
@@ -33,13 +37,13 @@ export const getWeekRange = (weekStartDay: DateTime) => {
    return items;
 };
 
-export const formatWeekLabel = (week: HourBox[][]) => {
+export const formatWeekLabel = (week: HourBox[][], lang: string) => {
    const start = week[0][0].from;
    const end = week[6][0].from;
 
    let res = start.toFormat("dd");
    if (!start.hasSame(end, "month")) {
-      res += start.toFormat(" MMM");
+      res += start.setLocale(lang).toFormat(" MMM");
       if (!start.hasSame(end, "year")) {
          res += start.toFormat(" yyyy");
       }
@@ -48,6 +52,6 @@ export const formatWeekLabel = (week: HourBox[][]) => {
       res += "-";
    }
 
-   res += end.toFormat("dd MMM yyyy");
+   res += end.setLocale(lang).toFormat("dd MMM yyyy");
    return res;
 };

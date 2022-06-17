@@ -1,25 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ChangeAvailability.module.scss";
 import { Calendar } from "components/shared/calendar";
-import { availabilityHours } from "components/shared/calendar/dumbData";
 import { Button, Card } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { Info } from "luxon";
+import { useGetAvailabityHoursQuery } from "redux/service/photographerService";
+import { useAppSelector } from "redux/hooks";
+import { AvailabilityHour } from "types/CalendarTypes";
 
 export const ChangeAvailabilityPage = () => {
    const { t } = useTranslation();
+   const { username } = useAppSelector((state) => state.auth);
+
+   const { data } = useGetAvailabityHoursQuery(username);
+   const [newHours, setNewHours] = useState<AvailabilityHour[]>([]);
+
+   useEffect(() => {
+      data && setNewHours(data);
+   }, [data]);
 
    const weekdayData = Info.weekdays().map((weekday, index) => ({
       weekday,
-      data: availabilityHours.filter((availability) => availability.day === index),
+      data: newHours?.filter((availability) => availability.day === index),
    }));
 
    return (
       <section className={styles.change_availability_page_wrapper}>
          <Calendar
+            title={t("change_availability_page.calendar_title")}
             className={styles.calendar_wrapper}
-            availability={availabilityHours}
-            onRangeSelection={(e) => console.log(e)}
+            availability={newHours}
+            onRangeSelection={(selection) => {
+               setNewHours([
+                  ...newHours,
+                  {
+                     day: selection[0].weekday,
+                     from: selection[0].from,
+                     to: selection[selection.length - 1].to,
+                  },
+               ]);
+            }}
          />
 
          <div className={styles.list_wrapper}>
@@ -29,20 +49,22 @@ export const ChangeAvailabilityPage = () => {
 
             <Card className={styles.card_wrapper}>
                <div className={styles.week}>
-                  {weekdayData.map((day, index) => (
+                  {weekdayData?.map((day, index) => (
                      <div className={styles.day_wrapper} key={index}>
                         <p className="section-title">{day.weekday}</p>
                         <div className={styles.day}>
-                           {day.data.length > 0 ? (
+                           {day.data?.length > 0 ? (
                               day.data.map((availability, index) => (
                                  <div className={styles.row} key={index}>
                                     <p className="label">
                                        {`${availability.from.toFormat("HH:mm")}
                                         - ${availability.to.toFormat("HH:mm")}`}
                                     </p>
-                                    <span>{`${availability.to
-                                       .diff(availability.from)
-                                       .toFormat("h'h' mm'min'")}`}</span>
+                                    <span>
+                                       {`${availability.to
+                                          .diff(availability.from)
+                                          .toFormat("h'h' mm'min'")}`}
+                                    </span>
                                  </div>
                               ))
                            ) : (

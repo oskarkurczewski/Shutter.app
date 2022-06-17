@@ -92,6 +92,11 @@
          "logout": "Wyloguj się"
       }
    },
+   "calendar": {
+      "calendar": "Kalendarz",
+      "availability": "Godziny Dostępności",
+      "reservation": "Rezerwacja"
+   },
    "login_page": {
       "send_2fa_code": "Wyślij kod",
       "2fa_code": "6-cyfrowy kod",
@@ -231,6 +236,7 @@
    },
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",
-      "no_availability": "Brak dostępności"
+      "no_availability": "Brak dostępności",
+      "calendar_title": "Kalendarz"
    }
 }

@@ -4,6 +4,7 @@ import { useOnClickOutside } from "hooks";
 import { AvailabilityHour } from "types/CalendarTypes";
 import { InfoBox } from "../info-box";
 import { useTranslation } from "react-i18next";
+import { Info } from "luxon";
 
 interface Props {
    availability: AvailabilityHour;
@@ -13,6 +14,7 @@ interface Props {
 export const AvailabilityBox: React.FC<Props> = ({ availability, fullWidth }) => {
    const ref = useRef(null);
    const [infoBoxOpen, setInfoBoxOpen] = useState(false);
+   const { t } = useTranslation();
    const { i18n } = useTranslation();
 
    const offset = availability.from.hour + availability.from.minute / 60;
@@ -42,12 +44,10 @@ export const AvailabilityBox: React.FC<Props> = ({ availability, fullWidth }) =>
          />
          {infoBoxOpen && (
             <InfoBox className={styles.availability_info_wrapper}>
-               <p className="section-title">Godziny dostępności:</p>
+               <p className="section-title">{t("calendar.availability")}:</p>
                <div>
                   <p>
-                     {availability.from
-                        .setLocale(i18n.language)
-                        .toFormat("cccc - dd.LL.yyyy")}
+                     {Info.weekdays("long", { locale: i18n.language })[availability.day]}
                   </p>
                   <p>
                      {`${availability.from.toFormat("T")} - ${availability.to.toFormat(

@@ -13,7 +13,7 @@ interface Props {
 export const ReservationBox: React.FC<Props> = ({ reservation, fullWidth }) => {
    const ref = useRef(null);
    const [infoBoxOpen, setInfoBoxOpen] = useState(false);
-   const { i18n } = useTranslation();
+   const { t, i18n } = useTranslation();
 
    const offset = reservation.from.hour + reservation.from.minute / 60;
    const height = reservation.to.diff(reservation.from, "minutes").minutes / 60;
@@ -40,7 +40,7 @@ export const ReservationBox: React.FC<Props> = ({ reservation, fullWidth }) => {
          />
          {infoBoxOpen && (
             <InfoBox className={styles.reservation_info_wrapper}>
-               <p className="section-title">Rezerwacja</p>
+               <p className="section-title">{t("calendar.reservation")}</p>
                <div>
                   <p>
                      {reservation.from

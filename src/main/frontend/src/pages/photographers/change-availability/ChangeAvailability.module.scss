@@ -16,6 +16,10 @@
       flex-direction: column;
       gap: 10px;
 
+      & > p {
+         color: variables.$gray-300;
+      }
+
       .card_wrapper {
          display: flex;
          flex-direction: column;

@@ -6,8 +6,10 @@ import { CalendarHeader } from "../calendar-header";
 import { DateTime } from "luxon";
 import { DayColumn } from "../day-column";
 import { AvailabilityHour, HourBox, Reservation } from "types/CalendarTypes";
+import { useTranslation } from "react-i18next";
 
 interface Props {
+   title?: string;
    className?: string;
    availability?: AvailabilityHour[];
    reservations?: Reservation[];
@@ -15,12 +17,15 @@ interface Props {
 }
 
 export const Calendar: React.FC<Props> = ({
+   title,
    className = "",
    availability,
    reservations,
    onRangeSelection,
 }) => {
    const [selectedWeek, setSelectedWeek] = useState(DateTime.local().startOf("week"));
+
+   const { i18n } = useTranslation();
 
    const hours = useMemo(() => getHourRange(), []);
    const week = useMemo(() => {
@@ -38,9 +43,9 @@ export const Calendar: React.FC<Props> = ({
    return (
       <Card className={`${styles.calendar_wrapper} ${className}`}>
          <CalendarHeader
-            title="Kalendarz"
+            title={title}
             changeWeek={changeWeek}
-            weekLabel={formatWeekLabel(week)}
+            weekLabel={formatWeekLabel(week, i18n.language)}
          />
          <div className={styles.content}>
             <div>
@@ -57,9 +62,7 @@ export const Calendar: React.FC<Props> = ({
                         dayData={dayData}
                         key={index}
                         onRangeSelection={onRangeSelection}
-                        availabilityList={availability?.filter(
-                           (day) => day.from.weekday == index
-                        )}
+                        availabilityList={availability?.filter((day) => day.day == index)}
                         reservationsList={reservations?.filter((day) => {
                            return (
                               day.from.startOf("day").toUnixInteger() ==
