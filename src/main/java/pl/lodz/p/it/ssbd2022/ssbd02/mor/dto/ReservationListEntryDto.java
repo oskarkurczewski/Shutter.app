@@ -21,6 +21,15 @@ public class ReservationListEntryDto {
     private LocalDateTime from;
     @NotNull
     private LocalDateTime to;
+    @NotNull
+    private String photographerName;
+    @NotNull
+    private String photographerSurname;
+    @NotNull
+    private String clientName;
+    @NotNull
+    private String clientSurname;
+
 
     public ReservationListEntryDto(Reservation reservation) {
         this.id = reservation.getId();
@@ -28,5 +37,9 @@ public class ReservationListEntryDto {
         this.clientLogin = reservation.getAccount().getLogin();
         this.from = reservation.getTimeFrom();
         this.to = reservation.getTimeTo();
+        this.photographerName = reservation.getPhotographer().getAccount().getName();
+        this.photographerSurname = reservation.getPhotographer().getAccount().getSurname();
+        this.clientName = reservation.getAccount().getName();
+        this.clientSurname = reservation.getAccount().getSurname();
     }
 }
