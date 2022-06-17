@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -22,6 +24,7 @@ import java.util.List;
 import java.time.LocalDateTime;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.showJobs;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.showReservations;
 
 @Stateless
@@ -112,6 +115,35 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
         return "%" + s + "%";
     }
 
+    private <T> void addFilterQuery(CriteriaQuery<T> query, CriteriaBuilder criteriaBuilder, Root<Reservation> table, String order) throws WrongParameterException {
+        try {
+            switch (order) {
+                case "asc": {
+                    query.orderBy(criteriaBuilder.asc(table.get("timeFrom")));
+                    break;
+                }
+                case "desc": {
+                    query.orderBy(criteriaBuilder.desc(table.get("timeFrom")));
+                    break;
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            throw ExceptionFactory.wrongParameterException();
+        }
+    }
+
+    /**
+     * Dodaje do danej kwerendy szukanie po frazie znajdującej się w imieniu bądź nazwisku danego
+     * użytkownika
+     *
+     * @param query kwerenda, do której należy dodać wyszukiwanie po frazie
+     * @param table tabela, z której kwerenda będzie pobierać informacje kwerenda
+     * @param name  fraza, która ma być wyszukiwana w imieniu lub nazwisku
+     */
+    private <T> void addByNameSurnameSearchToQuery(CriteriaQuery<T> query, CriteriaBuilder criteriaBuilder, Root<Reservation> table, String name) {
+        query.where(criteriaBuilder.or(criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("name")), addPercent(name.toLowerCase())), criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("surname")), addPercent(name.toLowerCase()))));
+    }
+
 
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
@@ -125,60 +157,67 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)
-    public List<Reservation> getReservationsForUser(Account account, String name, int page, int recordsPerPage, String order, Boolean getAll)
-            throws BaseApplicationException {
+    public List<Reservation> getReservationsForUser(Account account, String name, int page, int recordsPerPage, String order, Boolean getAll) throws BaseApplicationException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
         Root<Reservation> table = query.from(Reservation.class);
         query.select(table);
 
-        try {
-            switch (order) {
-                case "asc": {
-                    query.orderBy(criteriaBuilder.asc(table.get("from")));
-                    break;
-                }
-                case "desc": {
-                    query.orderBy(criteriaBuilder.desc(table.get("from")));
-                    break;
-                }
-            }
-        } catch (IllegalArgumentException e) {
-            throw ExceptionFactory.wrongParameterException();
+        addFilterQuery(query, criteriaBuilder, table, order);
+
+        query.where(criteriaBuilder.equal(table.get("account"), account.getId()));
+
+        if (!getAll) {
+            query.where(criteriaBuilder.greaterThan(table.get("timeFrom"), LocalDateTime.now()));
         }
-
-        if (getAll) {
-            query.where(criteriaBuilder.equal(table.get("account"), account.getId()));
-        } else {
-            if (name != null && !name.equals("")) {
-                query.where(criteriaBuilder.and(
-                        criteriaBuilder.or(
-                                criteriaBuilder.like(
-                                        criteriaBuilder.lower(table.get("account").get("name")), addPercent(name.toLowerCase())),
-                                criteriaBuilder.like(
-                                        criteriaBuilder.lower(table.get("account").get("surname")), addPercent(name.toLowerCase()))
-                        )), (
-                        (criteriaBuilder.and(
-                                criteriaBuilder.equal(table.get("account"), account.getId()),
-                                criteriaBuilder.greaterThan(table.get("from"), LocalDateTime.now())
-                        ))
-
-                ));
-            } else {
-                query.where(criteriaBuilder.and(
-                        criteriaBuilder.equal(table.get("account"), account.getId()),
-                        criteriaBuilder.greaterThan(table.get("from"), LocalDateTime.now())
-                ));
-            }
-
+        if (name != null && !name.equals("")) {
+            addByNameSurnameSearchToQuery(query, criteriaBuilder, table, name);
         }
 
         try {
-            return em
-                    .createQuery(query)
-                    .setFirstResult(recordsPerPage * (page - 1))
-                    .setMaxResults(recordsPerPage)
-                    .getResultList();
+            return em.createQuery(query).setFirstResult(recordsPerPage * (page - 1)).setMaxResults(recordsPerPage).getResultList();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param photographerInfo konto fotografa, dla którego pobierane są rezerwacje
+     * @param page             numer strony
+     * @param recordsPerPage   liczba recenzji na stronę
+     * @param order            kolejność sortowania względem kolumny time_from
+     * @param getAll           flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @RolesAllowed(showJobs)
+    public List<Reservation> getJobsForPhotographer(PhotographerInfo photographerInfo, String name, int page, int recordsPerPage, String order, Boolean getAll) throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
+        Root<Reservation> table = query.from(Reservation.class);
+        query.select(table);
+
+        addFilterQuery(query, criteriaBuilder, table, order);
+
+        query.where(criteriaBuilder.equal(table.get("photographer").get("id"), photographerInfo.getId()));
+
+        if (!getAll) {
+            query.where(criteriaBuilder.greaterThan(table.get("timeFrom"), LocalDateTime.now()));
+        }
+        if (name != null && !name.equals("")) {
+            addByNameSurnameSearchToQuery(query, criteriaBuilder, table, name);
+        }
+
+        try {
+            return em.createQuery(query).setFirstResult(recordsPerPage * (page - 1)).setMaxResults(recordsPerPage).getResultList();
         } catch (NoResultException e) {
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {

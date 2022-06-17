@@ -114,9 +114,30 @@ public class ReservationEndpoint extends AbstractEndpoint {
         return reservationDtoList;
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param name           imię lub nazwisko do wyszukania
+     * @param page           numer strony
+     * @param recordsPerPage liczba recenzji na stronę
+     * @param order          kolejność sortowania względem kolumny time_from
+     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(showJobs)
-    public List<ReservationListEntryDto> listJobs() {
-        throw new UnsupportedOperationException();
+    public List<ReservationListEntryDto> listJobs(String name, int page, int recordsPerPage, String order, Boolean getAll) throws BaseApplicationException {
+        String login = authenticationContext.getCurrentUsersLogin();
+        PhotographerInfo photographerInfo = photographerService.getPhotographer(login);
+
+        List<Reservation> reservations = reservationService.listJobs(photographerInfo, name, page, recordsPerPage, order, getAll);
+        List<ReservationListEntryDto> reservationDtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            reservationDtoList.add(new ReservationListEntryDto(reservation));
+        }
+
+        return reservationDtoList;
     }
 
     /**
@@ -150,8 +171,8 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których imię
      * lub nazwisko zawiera szukaną frazę
      *
-     * @param name szukana fraza
-     * @param page strona listy, którą należy pozyskać
+     * @param name           szukana fraza
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
      * @throws BaseApplicationException niepowodzenie operacji

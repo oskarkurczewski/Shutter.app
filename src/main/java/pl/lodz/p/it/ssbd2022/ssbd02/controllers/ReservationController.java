@@ -63,19 +63,36 @@ public class ReservationController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationListEntryDto> listReservations(
             @NameSurnameQuery @QueryParam("name") String name,
-            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
-            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("pageNo") @DefaultValue("1") Integer pageNo,
+            @QueryParam("recordsPerPage") @NotNull Integer recordsPerPage,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
             @QueryParam("all") @DefaultValue("false") Boolean getAll
     ) throws BaseApplicationException {
         return reservationEndpoint.listReservations(name, pageNo, recordsPerPage, order, getAll);
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param name           imię lub nazwisko do wyszukania
+     * @param pageNo         numer strony
+     * @param recordsPerPage liczba recenzji na stronę
+     * @param order          kolejność sortowania względem kolumny time_from
+     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @GET
     @Path("/my-jobs")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReservationListEntryDto> listJobs() {
-        throw new UnsupportedOperationException();
+    public List<ReservationListEntryDto> listJobs(
+            @NameSurnameQuery @QueryParam("name") String name,
+            @QueryParam("pageNo") @DefaultValue("1") Integer pageNo,
+            @QueryParam("recordsPerPage") @NotNull Integer recordsPerPage,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("all") @DefaultValue("false") Boolean getAll
+    ) throws BaseApplicationException {
+        return reservationEndpoint.listJobs(name, pageNo, recordsPerPage, order, getAll);
     }
 
     /**

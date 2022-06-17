@@ -134,9 +134,21 @@ public class ReservationService {
         return reservationFacade.getReservationsForUser(account, name, page, recordsPerPage, order, getAll);
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param photographerInfo konto użytkownika, dla którego pobierane są rezerwacje
+     * @param page             numer strony
+     * @param recordsPerPage   liczba recenzji na stronę
+     * @param order            kolejność sortowania względem kolumny time_from
+     * @param getAll           flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(showJobs)
-    public List<Reservation> listJobs(PhotographerInfo photographer) {
-        throw new UnsupportedOperationException();
+    public List<Reservation> listJobs(PhotographerInfo photographerInfo, String name, int page, int recordsPerPage, String order, Boolean getAll)
+            throws BaseApplicationException {
+        return reservationFacade.getJobsForPhotographer(photographerInfo, name, page, recordsPerPage, order, getAll);
     }
 
     /**
