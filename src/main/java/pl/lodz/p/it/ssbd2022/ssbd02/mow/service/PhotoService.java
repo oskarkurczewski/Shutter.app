@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyLikedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyUnlikedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -96,9 +97,22 @@ public class PhotoService {
         photo.setLikeCount(photo.getLikeCount() + 1);
     }
 
+    /**
+     * Usuwa polubienie użytkownika na zdjęciu o danym Id
+     *
+     * @param photo Wybrane zdjęcie
+     * @param account Użytkownik
+     * @throws PhotoAlreadyUnlikedException zdjęcie zostało już polubione przez danego użytkownika
+     */
     @RolesAllowed(unlikePhoto)
-    public void unlikePhoto(Photo photo) {
-        throw new UnsupportedOperationException();
+    public void unlikePhoto(Photo photo, Account account) throws PhotoAlreadyUnlikedException {
+        if (!photo.getLikesList().contains(account) || account.getLikedPhotosList().contains(photo)) {
+            throw ExceptionFactory.photoAlreadyUnlikedException();
+        }
+
+        photo.getLikesList().remove(account);
+        account.getLikedPhotosList().remove(photo);
+        photo.setLikeCount(photo.getLikeCount() - 1);
     }
 
 }
