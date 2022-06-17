@@ -34,26 +34,15 @@ const AddReviewModal: React.FC<Props> = ({
       text: t("toast.success_review"),
    };
 
-   const errorToast: Toast = {
-      type: ToastTypes.ERROR,
-      text: t("toast.error_review"),
-   };
-
    useEffect(() => {
       if (addReviewMutationState.isSuccess) {
          dispatch(push(successToast));
          onSubmit();
       }
       if (addReviewMutationState.isError) {
-         dispatch(push(errorToast));
          setNotification({
             type: "error",
-            content: t(
-               parseError(
-                  addReviewMutationState.error as ErrorResponse,
-                  "photographer_page.add_review"
-               )
-            ),
+            content: t("toast.error_review"),
          });
       }
    }, [addReviewMutationState]);
@@ -73,6 +62,7 @@ const AddReviewModal: React.FC<Props> = ({
          onCancel={onCancel}
          title={t("photographer_page.add_review")}
          submitText={t("photographer_page.add_review")}
+         notification={notification}
       >
          <div className={styles.review_form}>
             <p>{t("photographer_page.your_opinion")}</p>
