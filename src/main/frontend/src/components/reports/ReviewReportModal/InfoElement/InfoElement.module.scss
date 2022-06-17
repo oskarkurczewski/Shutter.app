@@ -1,0 +1,21 @@
+@use "variables.scss" as variables;
+
+.info_element_wrapper {
+   display: flex;
+   gap: 1rem;
+   align-items: center;
+   color: variables.$gray-200;
+   .icon {
+      display: flex;
+      font-size: 1.6rem;
+      background-color: variables.$blue-gray-100;
+      padding: 8px;
+      height: auto;
+      aspect-ratio: 1/1;
+      border-radius: 5px;
+   }
+
+   .text {
+      font-weight: bold;
+   }
+}

@@ -299,6 +299,37 @@
       "modification_author": "Autor modyfikacji",
       "modification_type": "Typ modyfikacji"
    },
+   "reports_page": {
+      "title": "Zgłoszenia",
+      "filter": {
+         "all": "Wszystkie",
+         "reviewed": "Przeczytane",
+         "unreviewed": "Nieprzeczytane"
+      },
+      "user": {
+         "title": "Zgłoszenia użytkowników",
+         "causes": {
+            "USER_REPORT_DIDNT_PAY_ON_TIME": "Nie zapłacił zgodnie z terminem",
+            "USER_REPORT_DIDNT_SHOW_UP": "Nie pojawił się"
+         }
+      },
+      "photographer": {
+         "title": "Zgłoszenia fotografów",
+         "causes": {
+            "PHOTOGRAPHER_REPORT_DIDNT_SHOW_UP": "Nie pojawił się",
+            "PHOTOGRAPHER_REPORT_FALSE_DESCRIPTION": "Opis niezgodny z prawdą",
+            "PHOTOGRAPHER_REPORT_PRIVACY_VIOLATION": "Naruszenie prywatności"
+         }
+      },
+      "review": {
+         "title": "Zgłoszenia recenzji",
+         "causes": {
+            "REVIEW_REPORT_OBSCENE_CONTENT": "Zawiera niedozwolone treści",
+            "REVIEW_REPORT_SPAM": "Spam",
+            "REVIEW_REPORT_FAKE_REVIEW": "Fałszywa recenzja"
+         }
+      }
+   },
    "photographer_page": {
       "title": "Profil Fotografa",
       "photographer_session_count": "Liczba skończonych rezerwacji",

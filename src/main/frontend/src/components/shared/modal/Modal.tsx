@@ -11,7 +11,7 @@ type Props =
         isOpen: boolean;
         onCancel: () => void;
         onSubmit: () => void;
-        title: string;
+        title: string | JSX.Element;
         children: JSX.Element | JSX.Element[];
         cancelText?: string;
         submitText?: string;
@@ -22,7 +22,7 @@ type Props =
         isOpen: boolean;
         onCancel?: never;
         onSubmit: () => void;
-        title: string;
+        title: string | JSX.Element;
         children: JSX.Element | JSX.Element[];
         cancelText?: never;
         submitText?: string;

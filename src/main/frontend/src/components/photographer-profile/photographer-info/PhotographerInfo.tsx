@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PhotographerInfo.module.scss";
 import { Card, IconText } from "components/shared";
 import { IoLocationSharp } from "react-icons/io5";
 import { IoMdImage } from "react-icons/io";
 import { RiFileList2Fill } from "react-icons/ri";
 import { MdFactCheck } from "react-icons/md";
-import { PhotographerStars } from "../photographer-stars";
+import { Stars } from "../../shared/stars";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -41,7 +41,7 @@ export const PhotographerInfo: React.FC<Props> = ({
             <div className={styles.label_wrapper}>
                <p className="section-title">{`${name} ${surname}`}</p>
                <IconText text={location} Icon={IoLocationSharp} className="label-bold" />
-               <PhotographerStars stars={stars} className="label-bold" />
+               <Stars stars={stars} className="label-bold" backgroundVariant="all" />
                <IconText
                   text={`${sessionCount} ${t(
                      "photographer_page.photographer_session_count"

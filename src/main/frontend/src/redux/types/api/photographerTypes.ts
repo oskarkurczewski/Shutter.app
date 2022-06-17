@@ -1,15 +1,6 @@
 import { basicUserInfoResponse } from "./accountTypes";
 import { ReviewReportCause } from "types/ReviewReportCause";
 
-export interface basicPhotographerInfo extends basicUserInfoResponse {
-   score: number;
-   reviewCount: number;
-   description: string;
-   latitude: number;
-   longitude: number;
-   specializationList: string[];
-}
-
 export interface photographerTableEntry {
    login: string;
    email: string;
@@ -39,6 +30,24 @@ export interface basicPhotographerInfo extends basicUserInfoResponse {
    latitude: number;
    longitude: number;
    specializationList: string[];
+}
+
+export interface photographerReport {
+   id: number;
+   accountLogin: string;
+   photographerLogin: string;
+   cause: string;
+   reviewed: boolean;
+   createdAt: Date;
+}
+
+export interface reviewReport {
+   id: number;
+   accountLogin: string;
+   reviewId: number;
+   cause: string;
+   reviewed: boolean;
+   createdAt: Date;
 }
 
 export interface getPhotographerReviewsResponse {
@@ -71,4 +80,15 @@ export interface AvailabilityRequest {
    day: string;
    from: string;
    to: string;
+}
+
+export interface ReviewInfo {
+   id: number;
+   photographerLogin: string;
+   reviewerLogin: string;
+   score: number;
+   likeCount: number;
+   content: string;
+   active: boolean;
+   createdAt: Date;
 }
