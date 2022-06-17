@@ -74,14 +74,15 @@ export const ChangeAvailabilityPage = () => {
 
    return (
       <section className={styles.change_availability_page_wrapper}>
-         <Calendar
-            title={t("change_availability_page.calendar_title")}
-            showWeekNavigation={false}
-            className={styles.calendar_wrapper}
-            availability={newHours}
-            onRangeSelection={addAvailability}
-            onAvailabilityRemove={(availability) => removeAvailability(availability)}
-         />
+         <Card className={styles.calendar_wrapper}>
+            <Calendar
+               title={t("change_availability_page.calendar_title")}
+               showWeekNavigation={false}
+               availability={newHours}
+               onRangeSelection={addAvailability}
+               onAvailabilityRemove={(availability) => removeAvailability(availability)}
+            />
+         </Card>
 
          <div className={styles.list_wrapper}>
             <p className="category-title">
