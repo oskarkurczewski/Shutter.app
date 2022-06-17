@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Pattern(regexp = REGEXP.PHOTO_TITLE_PATTERN)
 @Size(max = 64)
 public @interface PhotoTitle {
-    String message() default "validator.incorrect.photo.title.regexp";
+    String message() default "validator.incorrect.title.regexp";
 
     Class<?>[] groups() default {};
 

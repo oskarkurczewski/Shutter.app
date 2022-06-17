@@ -23,7 +23,8 @@
          "loading": "Ładowanie",
          "submit": "Potwierdź",
          "cancel": "Anuluj",
-         "choose_file": "Wybierz Plik"
+         "choose_file": "Wybierz Plik",
+         "submit_operation": "Potwierdź wykonanie operacji"
       },
       "roles": {
          "admin": "ADMINISTRATOR",
@@ -33,6 +34,7 @@
       }
    },
    "exception": {
+      "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
       "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
       "database": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
@@ -320,13 +322,26 @@
       "specialization_landscape": "Fotografia krajobrazowa"
    },
    "photographer_gallery_page": {
-      "photo_title": "Tytuł zdjęcia",
-      "photo_description": "Opis zdjęcia",
+      "photo_file": "Plik",
+      "photo_title": "Tytuł",
+      "photo_description": "Opis",
       "add_photo": "Dodaj zdjecie",
       "choose_file": "Wybierz zdjęcie",
       "photo_title_empty": "Tytuł zdjęcia nie może być pusty",
       "photo_data_empty": "Wybierz zdjęcie w formacie PNG do umieszczenia w galerii",
-      "uploading_photo": "Dodawanie zdjęcia..."
+      "uploading_photo": "Dodawanie zdjęcia...",
+      "success_message": "Pomyślnie dodano zdjęcie",
+      "error": {
+         "format": "Plik musi być w formacie png",
+         "file_required": "Należy podać plik"
+      },
+      "validator": {
+         "incorrect": {
+            "title": {
+               "regexp": "Tytuł powinien mieć od 1 do 64 znaków"
+            }
+         }
+      }
    },
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",
