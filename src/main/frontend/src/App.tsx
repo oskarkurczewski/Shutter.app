@@ -153,7 +153,16 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
-                  
+
+                  <Route
+                     path=":login/profile/gallery"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                           <PhotographerGalleryPage />
+                        </ProtectedRoute>
+                     }
+                  />
+
                   <Route path="photographers" element={<PhotographersListPage />} />
 
                   {/* Token-based routes */}

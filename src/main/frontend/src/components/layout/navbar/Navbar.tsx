@@ -25,7 +25,7 @@ export const Navbar = () => {
 
    const [expanded, setExpanded] = useState(false);
 
-   const { accessLevel } = useAppSelector((state) => state.auth);
+   const { accessLevel = AccessLevel.GUEST } = useAppSelector((state) => state.auth);
 
    let btn_list;
    if (accessLevel) {

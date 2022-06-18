@@ -19,9 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.listAllAccounts;
-
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reviewPhotographer;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
@@ -76,6 +74,7 @@ public class ReviewFacade extends FacadeTemplate<Review> {
     }
 
     @Override
+    @RolesAllowed({deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
     public Review update(Review entity) throws BaseApplicationException {
         try {
             return super.update(entity);

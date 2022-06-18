@@ -3,7 +3,7 @@ import styles from "./InfoElement.module.scss";
 
 interface Props {
    icon: JSX.Element;
-   children: string | number;
+   children: string | number | JSX.Element;
 }
 export const InfoElement: React.FC<Props> = ({ icon, children }) => {
    return (

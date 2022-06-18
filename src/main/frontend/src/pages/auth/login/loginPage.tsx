@@ -51,7 +51,7 @@ export const LoginPage: React.FC = () => {
       if (loginMutationState.isError) {
          const err = loginMutationState.error as ErrorResponse;
 
-         if (err.data.message == "exception.2_fa_code_required") {
+         if (err.data?.message == "exception.2_fa_code_required") {
             setShow2FAPage(true);
          } else {
             const successToast: Toast = {

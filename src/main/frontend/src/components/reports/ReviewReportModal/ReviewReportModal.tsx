@@ -1,12 +1,20 @@
-import { Modal } from "components/shared";
-import React from "react";
+import { Button, Checkbox, Modal, SquareButton, Stars } from "components/shared";
+import React, { useEffect } from "react";
 import styles from "./ReviewReportModal.module.scss";
-import { useGetReviewByIdQuery } from "redux/service/reviewService";
+import {
+   useGetReviewByIdQuery,
+   useRemoveSomeonesPhotographerReviewMutation,
+} from "redux/service/reviewService";
 import { DateTime } from "luxon";
 import { MdThumbUp } from "react-icons/md";
 import { HiCamera, HiClock, HiUser } from "react-icons/hi";
 import { InfoElement } from "./InfoElement";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaCheck, FaEye } from "react-icons/fa";
+import { ImBin } from "react-icons/im";
+import { Toast } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { useAppDispatch } from "redux/hooks";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    isOpen: boolean;
@@ -15,55 +23,78 @@ interface Props {
 }
 
 export const ReviewReportModal: React.FC<Props> = ({ isOpen, onSubmit, reviewId }) => {
+   const { t } = useTranslation();
+   const dispatch = useAppDispatch();
+
    const reviewData = useGetReviewByIdQuery(reviewId);
-   console.log(reviewData);
+
+   const [removeMutation, removeMutationState] =
+      useRemoveSomeonesPhotographerReviewMutation();
+
    return (
       <Modal
-         type="info"
+         type={"info"}
          isOpen={isOpen}
          onSubmit={onSubmit}
-         //  title={`Recenzja ${} `}
-         title={
-            <div className={styles.title}>
-               Recenzja {reviewData?.data?.id}{" "}
-               {reviewData?.data?.active ? (
-                  <FaEye className={styles.eye} />
-               ) : (
-                  <FaEyeSlash className={styles.eye} />
-               )}
-            </div>
-         }
+         title={`${t("reports_page.review.modal.title")} ${reviewId}`}
          className={styles.review_report_modal_wrapper}
+         submitText={t("reports_page.review.modal.submit")}
+         notification={
+            removeMutationState.isSuccess
+               ? {
+                    type: "success",
+                    content: t("reports_page.review.modal.success_message"),
+                 }
+               : removeMutationState.isError
+               ? { type: "error", content: t("reports_page.review.modal.error_message") }
+               : undefined
+         }
       >
          <section>
-            <div className={styles.info}>
-               <InfoElement icon={<HiUser />}>
-                  {reviewData?.data?.reviewerLogin}
-               </InfoElement>
-               <InfoElement icon={<HiCamera />}>
-                  {reviewData?.data?.photographerLogin}
-               </InfoElement>
-               <InfoElement icon={<MdThumbUp />}>
-                  {reviewData?.data?.likeCount}
-               </InfoElement>
-               <InfoElement icon={<HiClock />}>
-                  {DateTime.fromJSDate(new Date(reviewData?.data?.createdAt)).toFormat(
-                     "dd.MM.yyyy, HH.mm.ss"
-                  )}
-               </InfoElement>
+            <div className={styles.main}>
+               <div className={styles.info}>
+                  <InfoElement icon={<FaEye />}>
+                     {reviewData?.data?.active
+                        ? t("reports_page.review.modal.visible")
+                        : t("reports_page.review.modal.invisible")}
+                  </InfoElement>
+                  <InfoElement icon={<HiUser />}>
+                     {reviewData?.data?.reviewerLogin}
+                  </InfoElement>
+                  <InfoElement icon={<HiCamera />}>
+                     {reviewData?.data?.photographerLogin}
+                  </InfoElement>
+                  <InfoElement icon={<HiClock />}>
+                     {DateTime.fromJSDate(new Date(reviewData?.data?.createdAt)).toFormat(
+                        "dd.MM.yyyy, HH:mm"
+                     )}
+                  </InfoElement>
+                  <InfoElement icon={<MdThumbUp />}>
+                     {reviewData?.data?.likeCount}
+                  </InfoElement>
+                  <div className={styles.buttons}></div>
+               </div>
+               <div className={styles.content}>
+                  <Stars
+                     stars={reviewData?.data?.score}
+                     className={styles.stars}
+                     backgroundVariant="none"
+                  />
+                  <p>{reviewData?.data?.content}</p>
+               </div>
             </div>
-            <div className={styles.content}>
-               <div>Gwiazdki</div>
-               <p>
-                  Senny ptaki Dobra zegar. Owoce łono niém Szła niéj. Nikt chce piorunowym
-                  polu roli wysmukłą zły francuskim źwierząt. Rzeźbiarstwie chleba wkoło
-                  replik Roskrzyżował wyciągniętą pieszo kartą nieuszanowanie
-                  niedźwiedziem. Też skrzydłami najpierwéj jest Tyle ptak krzyknęła
-                  przysłowie Zaś węzłowate robi podniosłem. Smycze Podniesionemi pasach
-                  zadać książeczkę nadzwyczajnie Kazał dramatycznych wstąg Parafianowicz
-                  pierś Przywołując.
-               </p>
-            </div>
+            <Button
+               className={styles.button}
+               disabled={!reviewData?.data?.active}
+               onClick={() => {
+                  removeMutation(reviewData?.data?.id).then(() => {
+                     reviewData.refetch();
+                  });
+               }}
+               loading={removeMutationState.isLoading}
+            >
+               Usuń
+            </Button>
          </section>
       </Modal>
    );

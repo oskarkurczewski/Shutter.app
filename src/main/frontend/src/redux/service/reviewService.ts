@@ -17,6 +17,13 @@ const ReviewService = api.injectEndpoints({
          }),
       }),
 
+      removeSomeonesPhotographerReview: builder.mutation<void, number>({
+         query: (reviewId) => ({
+            url: `/profile/review/${reviewId}/admin`,
+            method: "DELETE",
+         }),
+      }),
+
       addReview: builder.mutation<void, addReviewRequest>({
          query: (data) => ({
             url: `/profile/review`,
@@ -27,5 +34,9 @@ const ReviewService = api.injectEndpoints({
    }),
 });
 
-export const { useLikeReviewMutation, useGetReviewByIdQuery, useAddReviewMutation } =
-   ReviewService;
+export const {
+   useLikeReviewMutation,
+   useGetReviewByIdQuery,
+   useRemoveSomeonesPhotographerReviewMutation,
+   useAddReviewMutation,
+} = ReviewService;

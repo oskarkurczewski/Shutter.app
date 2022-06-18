@@ -44,7 +44,13 @@
       padding: 0 20px;
 
       .label_wrapper {
-         margin-top: 10px;
+         margin-top: 1.2rem;
+
+         button {
+            background-color: variables.$blue-300;
+            font-size: 1rem;
+            padding: 0.5rem;
+         }
       }
 
       .auth_card_photo {

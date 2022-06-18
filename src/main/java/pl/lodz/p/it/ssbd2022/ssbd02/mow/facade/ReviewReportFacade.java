@@ -52,7 +52,32 @@ public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
         } catch (PersistenceException ex) {
             throw ExceptionFactory.databaseException();
         } catch (Exception ex) {
-            System.out.println(ex);
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    public ReviewReport update(ReviewReport entity) throws BaseApplicationException {
+        try {
+            return super.update(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    public ReviewReport find(Long id) throws BaseApplicationException {
+        try {
+            return super.find(id);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
@@ -91,17 +116,17 @@ public class ReviewReportFacade extends FacadeTemplate<ReviewReport> {
         Root<ReviewReport> table = query.from(ReviewReport.class);
         query.select(table);
 
-            switch (order) {
-                case "asc": {
-                    query.orderBy(criteriaBuilder.asc(table.get("createdAt")));
-                    break;
+        switch (order) {
+            case "asc": {
+                query.orderBy(criteriaBuilder.asc(table.get("createdAt")));
+                break;
 
-                }
-                case "desc": {
-                    query.orderBy(criteriaBuilder.desc(table.get("createdAt")));
-                    break;
-                }
             }
+            case "desc": {
+                query.orderBy(criteriaBuilder.desc(table.get("createdAt")));
+                break;
+            }
+        }
 
         if (reviewed != null) query.where(criteriaBuilder.equal(table.get("reviewed"), reviewed));
         return getEm()

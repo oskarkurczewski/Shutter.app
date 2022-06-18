@@ -3,15 +3,15 @@
 .text_wrapper {
    border-radius: 4px;
    display: flex;
-   // justify-content: center;
-   // align-items: center;
+   justify-content: flex-start;
+   align-items: flex-start;
    font-weight: bold;
-   padding: 7px 10px;
-   font-size: 14px;
+   font-size: 20px;
    gap: 5px;
 
    &.all {
       background-color: variables.$blue-gray-100;
+      padding: 7px 10px;
    }
 
    svg {
@@ -34,11 +34,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            cursor: pointer;
          }
       }
    }
-   & > p {
+   & > span {
       margin-left: 0.4rem;
+      font-size: 15px;
+      align-self: center;
       &.score {
          background-color: variables.$blue-gray-100;
          padding: 0.5rem 0.6rem;

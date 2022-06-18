@@ -13,8 +13,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changePhotographerDescription;
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reviewPhotographer;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class})
@@ -31,15 +30,15 @@ public class ProfileService {
 
     /**
      * Metoda aktualizująca wynik i ilość recenzji u fotografa
-     *
      * @param photographer fotograf, którego wynik i ilość recenzji zmieniamy
-     * @param score        wynik fotografa
+     * @param score wynik fotografa
+     * @param reviewCount o ile zmieniona ma byc ilosc recenzji (-1, +1)
      * @throws BaseApplicationException niepowodzenie operacji
      */
-    @RolesAllowed(reviewPhotographer)
-    public void updateScore(PhotographerInfo photographer, Long score) throws BaseApplicationException {
+    @RolesAllowed({reviewPhotographer, deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
+    public void updateScore(PhotographerInfo photographer, Long score, Long reviewCount) throws BaseApplicationException {
         photographer.setScore(photographer.getScore() + score);
-        photographer.setReviewCount(photographer.getReviewCount() + 1);
+        photographer.setReviewCount(photographer.getReviewCount() + reviewCount);
         facade.update(photographer);
     }
 
