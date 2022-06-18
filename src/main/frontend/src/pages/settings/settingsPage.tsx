@@ -18,13 +18,20 @@ import { BsKeyFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
+type Section = {
+   icon: JSX.Element;
+   id: string;
+   label: string;
+   roles?: AccessLevel[];
+};
+
 export const SettingsPage: React.FC = () => {
    const { t } = useTranslation();
    const location = useLocation();
 
    const roles = useAppSelector((state) => state.auth.roles);
 
-   const sections = [
+   const sections: Section[] = [
       {
          icon: <IoSettingsSharp />,
          id: "main-settings",
@@ -46,9 +53,10 @@ export const SettingsPage: React.FC = () => {
          label: t("settings_page.photographer_settings.title"),
       },
       {
-         icon: <BsChatSquareTextFill/>,
+         icon: <BsChatSquareTextFill />,
          id: "change-description",
-         label: t("settings_page.change_description.title")
+         label: t("settings_page.change_description.title"),
+         roles: [AccessLevel.PHOTOGRAPHER],
       },
    ];
 
@@ -57,16 +65,26 @@ export const SettingsPage: React.FC = () => {
          <div className={styles.nav}>
             <p className="category-title">{t("settings_page.title")}</p>
             <div className={styles.links}>
-               {sections.map((section, index) => (
-                  <a
-                     key={index}
-                     href={`#${section.id}`}
-                     className={location.hash.includes(section.id) ? styles.active : ""}
-                  >
-                     {section.icon}
-                     <p className="label-bold">{section.label}</p>
-                  </a>
-               ))}
+               {sections.map((section, index) => {
+                  if (
+                     section.roles &&
+                     section.roles.some((role) => roles.indexOf(role))
+                  ) {
+                     return;
+                  }
+                  return (
+                     <a
+                        key={index}
+                        href={`#${section.id}`}
+                        className={
+                           location.hash.includes(section.id) ? styles.active : ""
+                        }
+                     >
+                        {section.icon}
+                        <p className="label-bold">{section.label}</p>
+                     </a>
+                  );
+               })}
             </div>
          </div>
          <div className={styles.content}>
@@ -74,11 +92,12 @@ export const SettingsPage: React.FC = () => {
             <ChangeEmailSettings />
             <ChangePasswordSettings />
             {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
-               <><StopBeingPhotographerSettings />
-               <ChangeDescriptionSettings /> </>
+               <>
+                  <StopBeingPhotographerSettings />
+                  <ChangeDescriptionSettings />
+               </>
             ) : (
                <BecomePhotographerSettings />
-
             )}
          </div>
       </section>
