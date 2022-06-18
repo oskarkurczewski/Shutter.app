@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ReservationBox.module.scss";
 import { ReservationResponse } from "redux/types/api";
-import { Button } from "components/shared";
+import { Avatar, Button } from "components/shared";
 import { DateTime } from "luxon";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
@@ -34,9 +34,12 @@ export const ReservationBox: React.FC<Props> = ({
          >
             <div className={styles.content}>
                <div className={styles.avatar_wrapper}>
-                  <img
-                     src="https://atlas.it.p.lodz.pl/bitbucket/users/229874/avatar.png?s=64&v=1655392225748"
-                     alt="avatar"
+                  <Avatar
+                     email={
+                        reservationFor == "client"
+                           ? reservation.photographer.email
+                           : reservation.client.email
+                     }
                   />
                </div>
                <div>

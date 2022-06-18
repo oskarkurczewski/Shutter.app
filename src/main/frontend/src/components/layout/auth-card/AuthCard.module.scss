@@ -43,6 +43,10 @@
       column-gap: 10px;
       padding: 0 20px;
 
+      img {
+         background-color: variables.$white;
+      }
+
       .label_wrapper {
          margin-top: 1.2rem;
 

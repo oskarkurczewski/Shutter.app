@@ -4,14 +4,16 @@ import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useGetUserInfoQuery } from "redux/service/usersManagementService";
 import { setUserInfo } from "redux/slices/authSlice";
-import { Button } from "components/shared";
+import { Avatar, Button } from "components/shared";
 import { useNavigate } from "react-router-dom";
 
 export const AuthCard: FC = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
 
-   const { accessLevel, name, surname, username } = useAppSelector((state) => state.auth);
+   const { accessLevel, name, surname, username, email } = useAppSelector(
+      (state) => state.auth
+   );
    const { data } = useGetUserInfoQuery(username, { skip: !username });
 
    useEffect(() => {
@@ -25,7 +27,7 @@ export const AuthCard: FC = () => {
             <img src="/images/auth-image.png" alt="user sidebar" />
          </div>
          <div className={styles.data_wrapper}>
-            <img src="/images/avatar.png" alt="user" className={styles.auth_card_photo} />
+            <Avatar email={email} className={styles.auth_card_photo} />
             <div className={styles.label_wrapper}>
                <p className="label-bold">
                   {name} {surname}
