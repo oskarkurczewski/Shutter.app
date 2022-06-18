@@ -1,5 +1,4 @@
-import React, { FC, useRef, useState } from "react";
-import { IoLanguage } from "react-icons/io5";
+import React, { FC } from "react";
 import styles from "./MenuDropdownItem.module.scss";
 
 interface Props {

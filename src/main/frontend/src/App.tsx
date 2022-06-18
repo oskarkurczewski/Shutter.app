@@ -125,7 +125,6 @@ function App() {
                   {/* Photographer routes */}
                   <Route path="profile">
                      <Route path=":login" element={<PhotographerProfilePage />} />
-
                      <Route
                         path="change-availability"
                         element={
@@ -134,6 +133,7 @@ function App() {
                            </ProtectedRoute>
                         }
                      />
+                  
 
                      <Route
                         path="gallery"
@@ -153,6 +153,8 @@ function App() {
                         }
                      />
                   </Route>
+
+</Route>
 
                   <Route path="photographers" element={<PhotographersListPage />} />
 
