@@ -1,41 +1,57 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./photographersListPage.module.scss";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Button, Card, IconText, TextInput } from "components/shared";
 import { FaSearch } from "react-icons/fa";
-import { BasicPhotographerInfo } from "redux/types/api";
+import { DetailedPhotographerInfo, PhotographerListRequest } from "redux/types/api";
 import { Specialization } from "types/Specializations";
 import { useNavigate } from "react-router-dom";
 import type { NavigateFunction } from "react-router-dom";
+import { useGetPhotographerListMutation } from "redux/service/photographerService";
+import useDebounce from "hooks/useDebounce";
 
 export const PhotographersListPage = () => {
    const { t } = useTranslation();
    const navigate = useNavigate();
 
-   const [photographerSearchQuery, setPhotographerSearchQuery] = useState("");
+   const [photographerSearchFilters, setPhotographerSearchFilters] =
+      useState<PhotographerListRequest>({
+         query: "",
+         pageNo: 1,
+         recordsPerPage: 25,
+      });
    const [expandFilters, setExpandFilters] = useState(true);
 
-   const role = t("photographer_list_page.photographer");
+   const debouncedFilters = useDebounce<PhotographerListRequest>(
+      photographerSearchFilters,
+      200
+   );
 
-   const data = {
-      version: 0,
-      login: "majster2",
-      email: "dis@ork.pl",
-      name: "Norbert",
-      surname: "Gierczak",
-      score: 4.52137,
-      reviewCount: 2137,
-      description: "opis",
-      latitude: 0,
-      longitude: 0,
-      specializationList: [
-         Specialization.SPECIALIZATION_LANDSCAPE,
-         Specialization.SPECIALIZATION_PHOTOREPORT,
-         Specialization.SPECIALIZATION_PRODUCT,
-         Specialization.SPECIALIZATION_STUDIO,
-      ],
+   const [
+      getPhotographers,
+      {
+         data: photographersListResponse = {
+            allPages: 0,
+            allRecords: 0,
+            pageNo: 1,
+            recordsPerPage: 25,
+            list: [],
+         },
+      },
+   ] = useGetPhotographerListMutation();
+
+   useEffect(() => {
+      getPhotographers(photographerSearchFilters);
+   }, [debouncedFilters]);
+
+   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+      const name = e.target.name;
+      setPhotographerSearchFilters({
+         ...photographerSearchFilters,
+         [name]: e.target.value,
+      });
    };
 
    return (
@@ -56,10 +72,11 @@ export const PhotographersListPage = () => {
                      {t("photographer_list_page.search_photographer")}
                   </p>
                   <TextInput
+                     name="query"
                      className={styles.input}
                      icon={<FaSearch />}
-                     value={photographerSearchQuery}
-                     onChange={(e) => setPhotographerSearchQuery(e.target.value)}
+                     value={photographerSearchFilters.query}
+                     onChange={handleChange}
                   />
                </Card>
             </div>
@@ -78,9 +95,12 @@ export const PhotographersListPage = () => {
                </div>
             </div>
             <div className={`${styles.content} ${styles.list}`}>
+               {photographersListResponse.list?.map((obj) => (
+                  <ListElement data={obj} t={t} navigate={navigate} key={obj.login} />
+               ))}
+               {/* <ListElement role={role} data={data} t={t} navigate={navigate} />
                <ListElement role={role} data={data} t={t} navigate={navigate} />
-               <ListElement role={role} data={data} t={t} navigate={navigate} />
-               <ListElement role={role} data={data} t={t} navigate={navigate} />
+               <ListElement role={role} data={data} t={t} navigate={navigate} /> */}
             </div>
          </section>
       </>
@@ -101,14 +121,13 @@ const DisabledDropdown: FC<DisabledDropdownProps> = ({ label }) => {
 };
 
 interface ListElementProps {
-   data?: BasicPhotographerInfo;
-   role: string;
+   data?: DetailedPhotographerInfo;
    t: TFunction<"translation", undefined>;
    navigate: NavigateFunction;
 }
 
-const ListElement: FC<ListElementProps> = ({ data, role, t, navigate }) => {
-   const { name, surname, specializationList, score, reviewCount, login } = data;
+const ListElement: FC<ListElementProps> = ({ data, t, navigate }) => {
+   const { name, surname, specializations, score, reviewCount, login } = data;
 
    return (
       <Card className={`${styles.card} ${styles["list_element"]}`}>
@@ -123,11 +142,11 @@ const ListElement: FC<ListElementProps> = ({ data, role, t, navigate }) => {
                <p className="section-title">
                   {name} {surname}
                </p>
-               <p className="label">{role}</p>
+               <p className="label">{t("photographer_list_page.photographer")}</p>
             </div>
          </div>
          <div className={styles.specialization_container}>
-            {specializationList.map((v) => (
+            {specializations.map((v) => (
                <SpecializationTag
                   key={v}
                   text={t(`global.specialization.${v.toLocaleLowerCase()}`)}
@@ -146,7 +165,7 @@ const ListElement: FC<ListElementProps> = ({ data, role, t, navigate }) => {
          <div className={styles.button_container}>
             <Button
                className={styles.gallery_button}
-               onClick={() => navigate(`/profile/${login}/#gallery`)}
+               onClick={() => navigate(`/profile/${login}`)}
             >
                {t("photographer_list_page.profile")}
             </Button>

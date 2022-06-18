@@ -1,5 +1,4 @@
 import { BasicUserInfoResponse } from "./accountTypes";
-import { ReviewReportCause } from "types/ReviewReportCause";
 import { Specialization } from "types/Specializations";
 
 export interface BasicPhotographerInfo extends BasicUserInfoResponse {
@@ -64,4 +63,28 @@ export interface AvailabilityRequest {
    day: string;
    from: string;
    to: string;
+}
+
+export interface DetailedPhotographerInfo extends BasicUserInfoResponse {
+   login: string;
+   score: number;
+   reviewCount: number;
+   description: string;
+   latitude: number;
+   longitude: number;
+   specializations: Specialization[];
+}
+
+export interface PhotographerListResponse {
+   allPages: number;
+   allRecords: number;
+   pageNo: number;
+   recordsPerPage: number;
+   list: DetailedPhotographerInfo[];
+}
+
+export interface PhotographerListRequest {
+   query: string;
+   pageNo: number;
+   recordsPerPage: number;
 }

@@ -2,6 +2,8 @@ import { api } from "./api";
 import {
    BasicPhotographerInfo,
    AvailabilityResponse,
+   PhotographerListRequest,
+   PhotographerListResponse,
 } from "redux/types/api/photographerTypes";
 import { AvailabilityHour } from "types/CalendarTypes";
 import { parseToAvailabilityHour, parseToAvailabilityRequest } from "redux/converters";
@@ -26,6 +28,17 @@ const PhotographerService = api.injectEndpoints({
             body: parseToAvailabilityRequest(availability),
          }),
       }),
+
+      getPhotographerList: builder.mutation<
+         PhotographerListResponse,
+         PhotographerListRequest
+      >({
+         query: (filter) => ({
+            url: "/photographer/by-name-surname",
+            method: "GET",
+            params: filter,
+         }),
+      }),
    }),
 });
 
@@ -33,4 +46,5 @@ export const {
    useGetPhotographerDetailedInfoQuery,
    useGetAvailabityHoursQuery,
    useUpdateAvailabilityHoursMutation,
+   useGetPhotographerListMutation,
 } = PhotographerService;

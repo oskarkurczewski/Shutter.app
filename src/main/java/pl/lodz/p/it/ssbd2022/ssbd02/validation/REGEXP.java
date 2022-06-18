@@ -36,5 +36,5 @@ public final class REGEXP {
 
     public static final String CAUSE_PATTERN = "^[A-Z_]{0,128}$";
 
-    public static final String NAME_SURNAME_QUERY_PATTERN = "[a-ząćęńśłóżźA-ZĄĆĘŃŚŁÓŻŹ]{1,63}";
+    public static final String NAME_SURNAME_QUERY_PATTERN = "[a-ząćęńśłóżźA-ZĄĆĘŃŚŁÓŻŹ]{0,63}";
 }

@@ -142,7 +142,7 @@ public class PhotographerController extends AbstractController {
     @Path("/by-name-surname")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhotographerByNameSurname(
-            @NotNull @NameSurnameQuery @QueryParam("name") String name,
+            @NotNull @NameSurnameQuery @QueryParam("query") String name,
             @NumberQuery @QueryParam("pageNo") @DefaultValue("1") Integer page,
             @NumberQuery @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage
 
