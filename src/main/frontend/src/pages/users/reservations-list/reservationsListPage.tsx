@@ -1,34 +1,28 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styles from "./jobsListPage.module.scss";
+import styles from "./reservationsListPage.module.scss";
 import { Calendar } from "components/shared/calendar";
 import { Button, Card, TextInput } from "components/shared";
-import {
-   useGetAvailabityHoursQuery,
-   useGetJobListMutation,
-} from "redux/service/photographerService";
 import { useTranslation } from "react-i18next";
 import { DateTime } from "luxon";
 import { ReservationBox } from "components/reservations";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { AvailabilityHour, ErrorResponse, Reservation, Toast } from "types";
-import { parseToAvailabilityHour } from "redux/converters";
+import { useAppDispatch } from "redux/hooks";
+import { ErrorResponse, Reservation, Toast } from "types";
 import { parseError } from "util/errorUtil";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { useGetReservationsListMutation } from "redux/service/usersManagementService";
 
-export const JobsListPage = () => {
+export const ReservationsListPage = () => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
-   const { username } = useAppSelector((state) => state.auth);
 
    const [filter, setFilter] = useState("");
    const [dateFrom, setDateFrom] = useState(DateTime.local().startOf("week"));
-   const [availability, setAvailability] = useState<AvailabilityHour[]>([]);
 
-   const availabilityQuery = useGetAvailabityHoursQuery(username);
-   const [getJobsMutation, getJobsMutationState] = useGetJobListMutation();
+   const [getReservationsMutation, getReservationsMutationState] =
+      useGetReservationsListMutation();
 
    const sendRequest = () => {
-      getJobsMutation({
+      getReservationsMutation({
          date: dateFrom.toFormat("yyyy-LL-dd"),
          name: filter ? filter : undefined,
       });
@@ -38,23 +32,17 @@ export const JobsListPage = () => {
       console.log("reservation to remove", id);
    };
 
-   // Parse availability
-   useEffect(() => {
-      availabilityQuery.data &&
-         setAvailability(parseToAvailabilityHour(availabilityQuery.data));
-   }, [availabilityQuery.data]);
-
    // Parse reservations
    const reservations: Reservation[] = useMemo(
       () =>
-         getJobsMutationState.data?.map((reservation) => ({
+         getReservationsMutationState.data?.map((reservation) => ({
             id: reservation.id,
             photographer: reservation.photographer.login,
             client: reservation.client.login,
             from: DateTime.fromISO(reservation.from),
             to: DateTime.fromISO(reservation.to),
          })),
-      [getJobsMutationState.data]
+      [getReservationsMutationState.data]
    );
 
    // Send request on date change
@@ -65,26 +53,22 @@ export const JobsListPage = () => {
    // Handle errors
    useEffect(() => {
       let err: string;
-
-      availabilityQuery.isError &&
-         (err = parseError(availabilityQuery.error as ErrorResponse));
-      getJobsMutationState.isError &&
-         (err = parseError(getJobsMutationState.error as ErrorResponse));
+      getReservationsMutationState.isError &&
+         (err = parseError(getReservationsMutationState.error as ErrorResponse));
 
       const errorToast: Toast = {
          type: ToastTypes.ERROR,
          text: t(err),
       };
       err && dispatch(push(errorToast));
-   }, [availabilityQuery.isError, getJobsMutationState.isError]);
+   }, [getReservationsMutationState.isError]);
 
    return (
-      <section className={styles.jobs_list_page_wrapper}>
+      <section className={styles.reservations_list_page_wrapper}>
          <Card className={styles.calendar_wrapper}>
             <Calendar
                title={t("global.label.calendar")}
-               availability={availability}
-               isLoading={getJobsMutationState.isLoading}
+               isLoading={getReservationsMutationState.isLoading}
                reservations={reservations}
                className={styles.calendar_wrapper}
                onDateChange={(monday) => setDateFrom(monday)}
@@ -99,7 +83,7 @@ export const JobsListPage = () => {
                </div>
                <Card className={styles.filter_card}>
                   <p className="section-title">
-                     {t("photographer_jobs_page.search_client")}
+                     {t("user_reservations_page.search_client")}
                   </p>
                   <form
                      onSubmit={(e) => {
@@ -122,19 +106,21 @@ export const JobsListPage = () => {
 
                   {(function renderReservations() {
                      if (
-                        getJobsMutationState.data?.length == 0 ||
-                        getJobsMutationState.isError
+                        getReservationsMutationState.data?.length == 0 ||
+                        getReservationsMutationState.isError
                      ) {
-                        return <p>{t("photographer_jobs_page.no_reservations")}</p>;
+                        return <p>{t("user_reservations_page.no_reservations")}</p>;
                      }
-                     return getJobsMutationState.data?.map((reservation, index) => (
-                        <ReservationBox
-                           key={index}
-                           reservation={reservation}
-                           reservationFor="photogapher"
-                           onCancel={() => cancelReservation(reservation.id)}
-                        />
-                     ));
+                     return getReservationsMutationState.data?.map(
+                        (reservation, index) => (
+                           <ReservationBox
+                              key={index}
+                              reservation={reservation}
+                              reservationFor="client"
+                              onCancel={() => cancelReservation(reservation.id)}
+                           />
+                        )
+                     );
                   })()}
                </div>
             </Card>

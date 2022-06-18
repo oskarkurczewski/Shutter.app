@@ -26,6 +26,7 @@ import {
    ChangeAvailabilityPage,
    JobsListPage,
 } from "pages/photographers";
+import { ReservationsListPage } from "pages/users";
 
 function App() {
    const dispatch = useAppDispatch();
@@ -88,6 +89,17 @@ function App() {
                         </ProtectedRoute>
                      }
                   ></Route>
+
+                  <Route path="photographers" element={<PhotographersListPage />} />
+
+                  <Route
+                     path="reservations"
+                     element={
+                        <ProtectedRoute roles={[AccessLevel.CLIENT]}>
+                           <ReservationsListPage />
+                        </ProtectedRoute>
+                     }
+                  />
 
                   <Route path="users">
                      <Route
@@ -187,8 +199,6 @@ function App() {
                         </ProtectedRoute>
                      }
                   />
-
-                  <Route path="photographers" element={<PhotographersListPage />} />
                </Route>
             </Routes>
          </BrowserRouter>

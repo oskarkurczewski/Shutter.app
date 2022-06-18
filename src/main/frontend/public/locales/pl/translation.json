@@ -41,6 +41,7 @@
       }
    },
    "exception": {
+      "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
       "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
       "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
@@ -105,7 +106,8 @@
       "photographers": "Fotografowie",
       "gallery": "Galeria",
       "change_availability": "Zmiana godzin dostępności",
-      "jobs": "Rezerwacje"
+      "jobs": "Rezerwacje",
+      "reservations": "Rezerwacje"
    },
    "toast": {
       "renew": "Przedłuż",
@@ -359,6 +361,10 @@
       }
    },
    "photographer_jobs_page": {
+      "search_client": "Wyszukaj klienta",
+      "no_reservations": "Brak rezerwacji na ten tydzień"
+   },
+   "user_reservations_page": {
       "search_client": "Wyszukaj klienta",
       "no_reservations": "Brak rezerwacji na ten tydzień"
    },

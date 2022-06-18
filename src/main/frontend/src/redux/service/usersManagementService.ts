@@ -12,6 +12,8 @@ import {
    getAccountChangeLogRequest,
    getBasicUserListRequest,
    changeSomeonesPasswordRequest,
+   ReservationResponse,
+   ReservationRequest,
 } from "redux/types/api";
 import { EtagData, getListResponse } from "redux/types/api/dataTypes";
 
@@ -105,6 +107,13 @@ const UsersManagementService = api.injectEndpoints({
             body: data.data,
          }),
       }),
+
+      getReservationsList: builder.mutation<ReservationResponse[], ReservationRequest>({
+         query: (data) => ({
+            url: "/reservation/my-reservations",
+            params: data,
+         }),
+      }),
    }),
 });
 
@@ -119,4 +128,5 @@ export const {
    useGetAccountListPreferencesMutation,
    useGetBasicUserListMutation,
    useChangeSomeonesPasswordMutation,
+   useGetReservationsListMutation,
 } = UsersManagementService;
