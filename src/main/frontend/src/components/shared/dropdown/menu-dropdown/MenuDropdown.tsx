@@ -1,19 +1,21 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, ReactNode, useRef, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
+import { MenuDropdownItem } from "./menu-dropdown-item";
 import styles from "./MenuDropdown.module.scss";
 
 interface Props {
-   children: any | any[];
+   children: ReactNode;
+   className?: string;
 }
 
-export const MenuDropdown: FC<Props> = ({ children }) => {
+export const MenuDropdown: FC<Props> = ({ children, className }) => {
    const [active, setActive] = useState(false);
 
    const selectedElement = useRef(null);
 
    return (
       <div
-         className={styles.container}
+         className={`${styles.container}  ${className && className}`}
          onBlur={(e) => {
             if (
                !e.relatedTarget ||
