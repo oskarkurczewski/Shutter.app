@@ -14,7 +14,9 @@ interface Props {
    availability?: AvailabilityHour[];
    reservations?: Reservation[];
    showWeekNavigation?: boolean;
+   isLoading?: boolean;
    onRangeSelection?: (selection?: HourBox[]) => void;
+   onDateChange?: (monday?: DateTime) => void;
    onAvailabilityRemove?: (availability: AvailabilityHour) => void;
    onReservationRemove?: (reservation: Reservation) => void;
 }
@@ -25,7 +27,9 @@ export const Calendar: React.FC<Props> = ({
    availability,
    reservations,
    showWeekNavigation = true,
+   isLoading = false,
    onRangeSelection,
+   onDateChange,
    onAvailabilityRemove,
    onReservationRemove,
 }) => {
@@ -39,11 +43,12 @@ export const Calendar: React.FC<Props> = ({
    }, [selectedWeek]);
 
    const changeWeek = (diff: 1 | -1) => {
-      setSelectedWeek(
-         selectedWeek.plus({
-            weeks: diff,
-         })
-      );
+      const newWeek = selectedWeek.plus({
+         weeks: diff,
+      });
+
+      setSelectedWeek(newWeek);
+      onDateChange(newWeek);
    };
 
    return (
@@ -68,6 +73,7 @@ export const Calendar: React.FC<Props> = ({
                      <DayColumn
                         showWeekNavigation={showWeekNavigation}
                         dayData={dayData}
+                        isLoading={isLoading}
                         key={index}
                         availabilityList={availability?.filter(
                            (day) => day.day == index + 1

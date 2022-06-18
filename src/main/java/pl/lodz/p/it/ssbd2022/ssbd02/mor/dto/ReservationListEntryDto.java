@@ -14,32 +14,19 @@ public class ReservationListEntryDto {
     @NotNull
     private Long id;
     @NotNull
-    private String photographerLogin;
-    @NotNull
-    private String clientLogin;
-    @NotNull
     private LocalDateTime from;
     @NotNull
     private LocalDateTime to;
     @NotNull
-    private String photographerName;
+    private UserDataDto client;
     @NotNull
-    private String photographerSurname;
-    @NotNull
-    private String clientName;
-    @NotNull
-    private String clientSurname;
-
+    private UserDataDto photographer;
 
     public ReservationListEntryDto(Reservation reservation) {
         this.id = reservation.getId();
-        this.photographerLogin = reservation.getPhotographer().getAccount().getLogin();
-        this.clientLogin = reservation.getAccount().getLogin();
         this.from = reservation.getTimeFrom();
         this.to = reservation.getTimeTo();
-        this.photographerName = reservation.getPhotographer().getAccount().getName();
-        this.photographerSurname = reservation.getPhotographer().getAccount().getSurname();
-        this.clientName = reservation.getAccount().getName();
-        this.clientSurname = reservation.getAccount().getSurname();
+        this.photographer = new UserDataDto(reservation.getPhotographer().getAccount());
+        this.client = new UserDataDto(reservation.getAccount());
     }
 }

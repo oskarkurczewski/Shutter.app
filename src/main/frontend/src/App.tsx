@@ -24,6 +24,7 @@ import {
    PhotographersListPage,
    PhotographerProfilePage,
    ChangeAvailabilityPage,
+   JobsListPage,
 } from "pages/photographers";
 
 function App() {
@@ -133,16 +134,25 @@ function App() {
                            </ProtectedRoute>
                         }
                      />
-                  </Route>
 
-                  <Route
-                     path=":login/profile/gallery"
-                     element={
-                        <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                     <Route
+                        path="gallery"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
                               <PhotographerGalleryPage />
-                        </ProtectedRoute>
-                     }
-                  />
+                           </ProtectedRoute>
+                        }
+                     />
+
+                     <Route
+                        path="jobs"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <JobsListPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                  </Route>
 
                   <Route path="photographers" element={<PhotographersListPage />} />
 

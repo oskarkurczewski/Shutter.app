@@ -23,6 +23,11 @@
          "loading": "Ładowanie",
          "submit": "Potwierdź",
          "cancel": "Anuluj",
+         "reject": "Odwołaj",
+         "report": "Zgłoś",
+         "show": "Wyświetl",
+         "search": "Szukaj",
+         "filters": "Filtry",
          "choose_file": "Wybierz Plik"
       },
       "roles": {
@@ -89,7 +94,8 @@
       "password_reset": "Zmiana hasła",
       "photographers": "Fotografowie",
       "gallery": "Galeria",
-      "change_availability": "Zmiana godzin dostępności"
+      "change_availability": "Zmiana godzin dostępności",
+      "jobs": "Rezerwacje"
    },
    "toast": {
       "renew": "Przedłuż",
@@ -328,6 +334,10 @@
       "photo_title_empty": "Tytuł zdjęcia nie może być pusty",
       "photo_data_empty": "Wybierz zdjęcie w formacie PNG do umieszczenia w galerii",
       "uploading_photo": "Dodawanie zdjęcia..."
+   },
+   "photographer_jobs_page": {
+      "search_client": "Wyszukaj klienta",
+      "no_reservations": "Brak rezerwacji na ten tydzień"
    },
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",

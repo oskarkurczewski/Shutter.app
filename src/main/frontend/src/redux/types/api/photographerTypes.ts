@@ -32,15 +32,6 @@ export interface reportPhotographerReviewRequest {
    cause: string;
 }
 
-export interface basicPhotographerInfo extends basicUserInfoResponse {
-   score: number;
-   reviewCount: number;
-   description: string;
-   latitude: number;
-   longitude: number;
-   specializationList: string[];
-}
-
 export interface getPhotographerReviewsResponse {
    pageNo: number;
    recordsPerPage: number;
@@ -69,6 +60,28 @@ export interface AvailabilityResponse {
 
 export interface AvailabilityRequest {
    day: string;
+   from: string;
+   to: string;
+}
+
+export interface ReservationRequest {
+   name?: string;
+   order?: "asc" | "desc";
+   all?: boolean;
+   date: string;
+}
+
+export interface UserData {
+   login: string;
+   name: string;
+   surname: string;
+   email: string;
+}
+
+export interface ReservationResponse {
+   id: number;
+   photographer: UserData;
+   client: UserData;
    from: string;
    to: string;
 }

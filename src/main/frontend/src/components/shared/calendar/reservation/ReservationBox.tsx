@@ -4,6 +4,7 @@ import { useOnClickOutside } from "hooks";
 import { Reservation } from "types/CalendarTypes";
 import { InfoBox } from "../info-box";
 import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
    reservation: Reservation;
@@ -21,41 +22,48 @@ export const ReservationBox: React.FC<Props> = ({ reservation, fullWidth }) => {
    useOnClickOutside(ref, () => setInfoBoxOpen(false));
 
    return (
-      <div
-         ref={ref}
-         className={`${styles.reservation_wrapper} ${fullWidth ? styles.full_width : ""}`}
-         style={{
-            top: offset * 48,
-         }}
-      >
-         <div
-            className={styles.reservation}
+      <AnimatePresence>
+         <motion.div
+            ref={ref}
+            className={`${styles.reservation_wrapper} ${
+               fullWidth ? styles.full_width : ""
+            }`}
             style={{
-               height: height * 48,
+               top: offset * 48,
             }}
-            role="button"
-            tabIndex={-1}
-            onClick={() => setInfoBoxOpen(true)}
-            onKeyDown={() => setInfoBoxOpen(true)}
-         />
-         {infoBoxOpen && (
-            <InfoBox className={styles.reservation_info_wrapper}>
-               <p className="section-title">{t("calendar.reservation")}</p>
-               <div>
-                  <p>
-                     {reservation.from
-                        .setLocale(i18n.language)
-                        .toFormat("cccc - dd.LL.yyyy")}
-                  </p>
-                  <p>
-                     {`${reservation.from.toFormat("T")} - ${reservation.to.toFormat(
-                        "T"
-                     )}`}
-                  </p>
-               </div>
-               <div className={styles.actions}></div>
-            </InfoBox>
-         )}
-      </div>
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+         >
+            <div
+               className={styles.reservation}
+               style={{
+                  height: height * 48,
+               }}
+               role="button"
+               tabIndex={-1}
+               onClick={() => setInfoBoxOpen(true)}
+               onKeyDown={() => setInfoBoxOpen(true)}
+            />
+            {infoBoxOpen && (
+               <InfoBox className={styles.reservation_info_wrapper}>
+                  <p className="section-title">{t("calendar.reservation")}</p>
+                  <div>
+                     <p>
+                        {reservation.from
+                           .setLocale(i18n.language)
+                           .toFormat("cccc - dd.LL.yyyy")}
+                     </p>
+                     <p>
+                        {`${reservation.from.toFormat("T")} - ${reservation.to.toFormat(
+                           "T"
+                        )}`}
+                     </p>
+                  </div>
+                  <div className={styles.actions}></div>
+               </InfoBox>
+            )}
+         </motion.div>
+      </AnimatePresence>
    );
 };

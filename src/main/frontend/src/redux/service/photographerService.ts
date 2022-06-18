@@ -2,9 +2,11 @@ import { api } from "./api";
 import {
    basicPhotographerInfo,
    AvailabilityResponse,
+   ReservationResponse,
+   ReservationRequest,
 } from "redux/types/api/photographerTypes";
 import { AvailabilityHour } from "types/CalendarTypes";
-import { parseToAvailabilityHour, parseToAvailabilityRequest } from "redux/converters";
+import {  parseToAvailabilityRequest } from "redux/converters";
 
 const PhotographerService = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -12,11 +14,8 @@ const PhotographerService = api.injectEndpoints({
          query: (login) => ({ url: `/photographer/${login}/info` }),
       }),
 
-      getAvailabityHours: builder.query<AvailabilityHour[], string>({
+      getAvailabityHours: builder.query<AvailabilityResponse[], string>({
          query: (login) => ({ url: `/availability/${login}` }),
-         transformResponse(data: AvailabilityResponse[]) {
-            return parseToAvailabilityHour(data);
-         },
       }),
 
       updateAvailabilityHours: builder.mutation<void, AvailabilityHour[]>({
@@ -26,6 +25,13 @@ const PhotographerService = api.injectEndpoints({
             body: parseToAvailabilityRequest(availability),
          }),
       }),
+
+      getJobList: builder.mutation<ReservationResponse[], ReservationRequest>({
+         query: (data) => ({
+            url: "/reservation/my-jobs",
+            params: data,
+         }),
+      }),
    }),
 });
 
@@ -33,4 +39,5 @@ export const {
    useGetPhotographerDetailedInfoQuery,
    useGetAvailabityHoursQuery,
    useUpdateAvailabilityHoursMutation,
+   useGetJobListMutation,
 } = PhotographerService;
