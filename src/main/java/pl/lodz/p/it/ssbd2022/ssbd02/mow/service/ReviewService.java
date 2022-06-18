@@ -38,9 +38,20 @@ public class ReviewService {
         return reviewFacade.getReviewListByPhotographer(pageNo, recordsPerPage, id);
     }
 
+    /**
+     * Wykonuje operację usuniecia recenzji fotografa
+     *
+     * @param review recenzja, która ma być usunieta
+     *
+     * @throws BaseApplicationException Gdy operacja się nie powiedzie
+     */
     @RolesAllowed({deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
-    public void deletePhotographerReview(Review review) {
-        throw new UnsupportedOperationException();
+    public void deletePhotographerReview(Review review) throws BaseApplicationException {
+        if (review.getActive() == false) {
+            throw ExceptionFactory.cannotChangeException();
+        }
+        review.setActive(false);
+        reviewFacade.update(review);
     }
 
     /**
