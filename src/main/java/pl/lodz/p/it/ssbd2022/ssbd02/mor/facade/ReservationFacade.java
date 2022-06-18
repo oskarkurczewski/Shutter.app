@@ -18,8 +18,10 @@ import javax.interceptor.Interceptors;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
@@ -133,25 +135,23 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
      * Dodaje do danej kwerendy szukanie po frazie znajdującej się w imieniu bądź nazwisku danego
      * użytkownika
      *
-     * @param query kwerenda, do której należy dodać wyszukiwanie po frazie
      * @param table tabela, z której kwerenda będzie pobierać informacje kwerenda
      * @param name  fraza, która ma być wyszukiwana w imieniu lub nazwisku
      */
-    private <T> void addByNameSurnameSearchToQuery(CriteriaQuery<T> query, CriteriaBuilder criteriaBuilder, Root<Reservation> table, String name) {
-        query.where(criteriaBuilder.or(criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("name")), addPercent(name.toLowerCase())), criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("surname")), addPercent(name.toLowerCase()))));
+    private Predicate addByNameSurnameSearchToQuery(CriteriaBuilder criteriaBuilder, Root<Reservation> table, String name) {
+        return criteriaBuilder.or(criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("name")), addPercent(name.toLowerCase())), criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("surname")), addPercent(name.toLowerCase())));
     }
 
     /**
      * Dodaje do danej kwerendy szukanie po frazie znajdującej się w imieniu bądź nazwisku danego
      * użytkownika
      *
-     * @param query     kwerenda, do której należy dodać wyszukiwanie po frazie
      * @param table     tabela, z której kwerenda będzie pobierać informacje kwerenda
      * @param localDate tydzień, dla którego ma być wyszukiwana rezerwacja
      */
-    private <T> void addInWeekSearchToQuery(CriteriaQuery<T> query, CriteriaBuilder criteriaBuilder, Root<Reservation> table, LocalDate localDate) {
-        query.where(criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(table.get("timeFrom"), localDate.atStartOfDay())),
+    private Predicate addInWeekSearchToQuery(CriteriaBuilder criteriaBuilder, Root<Reservation> table, LocalDate localDate) {
+        return criteriaBuilder.and(
+                criteriaBuilder.greaterThanOrEqualTo(table.get("timeFrom"), localDate.atStartOfDay()),
                 criteriaBuilder.lessThan(table.get("timeTo"), localDate.plusDays(7).atStartOfDay()));
     }
 
@@ -170,17 +170,19 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
         CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
         Root<Reservation> table = query.from(Reservation.class);
         query.select(table);
-
+        List<Predicate> predicates = new ArrayList<Predicate>(3);
+        predicates.add(criteriaBuilder.equal(table.get("account"), account.getId()));
         addFilterQuery(query, criteriaBuilder, table, order);
 
-        query.where(criteriaBuilder.equal(table.get("account"), account.getId()));
-
         if (!getAll) {
-            addInWeekSearchToQuery(query, criteriaBuilder, table, localDate);
+            predicates.add(addInWeekSearchToQuery(criteriaBuilder, table, localDate));
         }
         if (name != null && !name.equals("")) {
-            addByNameSurnameSearchToQuery(query, criteriaBuilder, table, name);
+            predicates.add(addByNameSurnameSearchToQuery(criteriaBuilder, table, name));
         }
+        Predicate[] predArray = new Predicate[predicates.size()];
+        predicates.toArray(predArray);
+        query.where(predArray);
 
         try {
             return em.createQuery(query).getResultList();
@@ -210,17 +212,19 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
         CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
         Root<Reservation> table = query.from(Reservation.class);
         query.select(table);
-
+        List<Predicate> predicates = new ArrayList<Predicate>(3);
+        predicates.add(criteriaBuilder.equal(table.get("photographer").get("id"), photographerInfo.getId()));
         addFilterQuery(query, criteriaBuilder, table, order);
 
-        query.where(criteriaBuilder.equal(table.get("photographer").get("id"), photographerInfo.getId()));
-
         if (!getAll) {
-            addInWeekSearchToQuery(query, criteriaBuilder, table, localDate);
+            predicates.add(addInWeekSearchToQuery(criteriaBuilder, table, localDate));
         }
         if (name != null && !name.equals("")) {
-            addByNameSurnameSearchToQuery(query, criteriaBuilder, table, name);
+            predicates.add(addByNameSurnameSearchToQuery(criteriaBuilder, table, name));
         }
+        Predicate[] predArray = new Predicate[predicates.size()];
+        predicates.toArray(predArray);
+        query.where(predArray);
 
         try {
             return em.createQuery(query).getResultList();
