@@ -38,6 +38,10 @@ export const JobsListPage = () => {
       console.log("reservation to remove", id);
    };
 
+   const reportReservation = (id: number) => {
+      console.log("reservation to remove", id);
+   };
+
    // Parse availability
    useEffect(() => {
       availabilityQuery.data &&
@@ -108,6 +112,7 @@ export const JobsListPage = () => {
                      }}
                   >
                      <TextInput
+                        className={styles.text_input}
                         placeholder={t("global.label.search")}
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
@@ -133,6 +138,7 @@ export const JobsListPage = () => {
                            reservation={reservation}
                            reservationFor="photogapher"
                            onCancel={() => cancelReservation(reservation.id)}
+                           onReport={() => reportReservation(reservation.id)}
                         />
                      ));
                   })()}

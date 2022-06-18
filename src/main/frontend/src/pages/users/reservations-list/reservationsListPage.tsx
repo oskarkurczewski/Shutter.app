@@ -32,6 +32,10 @@ export const ReservationsListPage = () => {
       console.log("reservation to remove", id);
    };
 
+   const reportReservation = (id: number) => {
+      console.log("reservation to remove", id);
+   };
+
    // Parse reservations
    const reservations: Reservation[] = useMemo(
       () =>
@@ -92,6 +96,7 @@ export const ReservationsListPage = () => {
                      }}
                   >
                      <TextInput
+                        className={styles.text_input}
                         placeholder={t("global.label.search")}
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
@@ -118,6 +123,7 @@ export const ReservationsListPage = () => {
                               reservation={reservation}
                               reservationFor="client"
                               onCancel={() => cancelReservation(reservation.id)}
+                              onReport={() => reportReservation(reservation.id)}
                            />
                         )
                      );

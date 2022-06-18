@@ -30,9 +30,9 @@ export const AuthCard: FC = () => {
                <p className="label-bold">
                   {name} {surname}
                </p>
-               <p className="label">
+               <div>
                   {username ? (
-                     username
+                     <p className="label">{username}</p>
                   ) : (
                      <Button
                         onClick={() => {
@@ -42,7 +42,7 @@ export const AuthCard: FC = () => {
                         {t("navbar.buttons.login")}
                      </Button>
                   )}
-               </p>
+               </div>
             </div>
          </div>
       </div>

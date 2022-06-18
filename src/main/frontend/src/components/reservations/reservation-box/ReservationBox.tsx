@@ -6,19 +6,12 @@ import { DateTime } from "luxon";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 
-type Props =
-   | {
-        reservation: ReservationResponse;
-        onReport?: () => void;
-        onCancel?: never;
-        reservationFor: "photogapher" | "client";
-     }
-   | {
-        reservation: ReservationResponse;
-        onReport?: never;
-        onCancel?: () => void;
-        reservationFor: "photogapher" | "client";
-     };
+type Props = {
+   reservation: ReservationResponse;
+   onReport?: () => void;
+   onCancel?: () => void;
+   reservationFor: "photogapher" | "client";
+};
 
 export const ReservationBox: React.FC<Props> = ({
    reservation,
@@ -63,12 +56,12 @@ export const ReservationBox: React.FC<Props> = ({
                <Button className={styles.button} href={`#reservation-${reservation.id}`}>
                   {t("global.label.show")}
                </Button>
-               {onReport && (
+               {onReport && DateTime.now() > timeTo && (
                   <Button className={styles.button} onClick={onReport}>
                      {t("global.label.report")}
                   </Button>
                )}
-               {onCancel && (
+               {onCancel && DateTime.now() < timeTo && (
                   <Button className={styles.button} onClick={onCancel}>
                      {t("global.label.reject")}
                   </Button>
