@@ -8,8 +8,8 @@ import {
 import { useGetPhotographerDetailedInfoQuery } from "redux/service/photographerService";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PhotoGrid } from "components/photo-grid";
-import { PhotoMasonry } from "components/photo-masonry";
+import { Card } from "components/shared";
+import { PhotoMasonry } from "components/photos";
 
 export const PhotographerProfilePage = () => {
    const { t } = useTranslation();
@@ -46,10 +46,12 @@ export const PhotographerProfilePage = () => {
                   </div>
                </div>
                <div className={styles.photographer_gallery_container}>
-                  <p className={styles.gallery_title}>
-                     {t("photographer_page.gallery_title")}
-                  </p>
-                  <PhotoMasonry login={login} />
+                  <Card className={styles.photographer_gallery_card}>
+                     <p className={styles.gallery_title}>
+                        {t("photographer_page.gallery_title")}
+                     </p>
+                     <PhotoMasonry login={login} />
+                  </Card>
                </div>
             </div>
          )}

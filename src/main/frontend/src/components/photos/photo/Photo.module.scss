@@ -66,12 +66,12 @@
          }
       }
    }
-}
 
-img:hover {
-   cursor: pointer;
-   -webkit-filter: brightness(90%);
-   transition: all 0.3s ease;
+   img:hover {
+      cursor: pointer;
+      -webkit-filter: brightness(90%);
+      transition: all 0.3s ease;
+   }
 }
 
 @keyframes fadein {

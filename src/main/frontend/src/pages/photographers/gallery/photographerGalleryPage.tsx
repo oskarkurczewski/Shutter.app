@@ -1,5 +1,5 @@
-import { PhotoGrid } from "components/photo-grid";
 import { PhotographerAddImageModal } from "components/photographer-profile/photographer-add-image-modal";
+import { PhotoGrid } from "components/photos";
 import { Card, DragAndDrop } from "components/shared";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";

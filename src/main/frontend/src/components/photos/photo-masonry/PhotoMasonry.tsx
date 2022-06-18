@@ -1,24 +1,25 @@
-import { Photo } from "components/photo";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "redux/hooks";
 import { useGetPhotosRequestQuery } from "redux/service/photoService";
-import styles from "./photoGrid.module.scss";
+import { Photo } from "../photo/Photo";
+import styles from "./PhotoMasonry.module.scss";
 
-export const PhotoGrid = () => {
+interface Props {
+   login: string;
+}
+
+export const PhotoMasonry: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
-   const auth = useAppSelector((state) => state.auth);
-
    const { data } = useGetPhotosRequestQuery({
-      photographerLogin: auth.username,
+      photographerLogin: login,
    });
 
    return (
-      <div className={styles.photo_grid}>
+      <div className={styles.photo_masonry}>
          {data !== undefined && data.list.length > 0 ? (
             data.list.map((photo, i) => {
                return (
-                  <div key={i} className={styles.photo_grid_item}>
+                  <div key={i} className={styles.photo_masonry_item}>
                      <Photo
                         photo_id={photo.id}
                         img={photo.s3Url}
@@ -32,7 +33,9 @@ export const PhotoGrid = () => {
                );
             })
          ) : (
-            <h4 className={styles.no_photos}>{t("photographer_gallery_page")}</h4>
+            <h4 className={styles.no_photos}>
+               {t("photographer_page.gallery_no_photos.no_photos")}
+            </h4>
          )}
       </div>
    );

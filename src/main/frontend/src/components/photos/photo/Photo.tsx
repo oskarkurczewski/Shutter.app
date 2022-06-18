@@ -2,7 +2,8 @@ import { Button } from "components/shared";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLikePhotoRequestMutation } from "redux/service/photoService";
-import styles from "./photo.module.scss";
+import styles from "./Photo.module.scss";
+import { DateTime } from "luxon";
 
 interface Props {
    photo_id: number;
@@ -45,7 +46,9 @@ export const Photo: React.FC<Props> = ({
          <div className={styles.photo_label}>
             <div className={styles.photo_label_content}>
                <p className={styles.photo_label_title}>{title}</p>
-               <p className={styles.photo_label_date}>{date}</p>
+               <p className={styles.photo_label_date}>
+                  {DateTime.fromISO(date).toFormat("yyyy.MM.dd")}
+               </p>
             </div>
             <div className={styles.photo_label_likes}>
                <Button
@@ -53,7 +56,7 @@ export const Photo: React.FC<Props> = ({
                   onClick={likePhoto}
                   icon="favorite"
                >
-                  {likes}
+                  {`${likes}`}
                </Button>
             </div>
          </div>
