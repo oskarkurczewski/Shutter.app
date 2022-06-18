@@ -1,9 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotoEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReviewEndpoint;
@@ -130,10 +128,9 @@ public class ProfileController extends AbstractController {
     /**
      * Punkt końcowy zwracający listę recenzji dla danego fotografa
      *
-     * @param pageNo         numer strony do pobrania
-     * @param recordsPerPage liczba rekordów na stronie
+     * @param pageNo            numer strony do pobrania
+     * @param recordsPerPage    liczba rekordów na stronie
      * @param photographerLogin login fotografa którego dotyczą recenzje
-
      * @return lista recenzji
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
@@ -147,5 +144,26 @@ public class ProfileController extends AbstractController {
             @QueryParam("photographerLogin") @NotNull String photographerLogin
     ) throws BaseApplicationException {
         return repeat(() -> reviewEndpoint.getReviewsByPhotographerLogin(pageNo, recordsPerPage, photographerLogin), reviewEndpoint);
+    }
+
+    /**
+     * Punkt końcowy zwracający listę zdjęc danego fotografa
+     *
+     * @param pageNo            numer strony do pobrania
+     * @param recordsPerPage    liczba rekordów na stronie
+     * @param photographerLogin login fotografa
+     * @return lista recenzji
+     * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
+     */
+    @GET
+    @Path("photo/list")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListResponseDto<PhotoDto> getPhotoList(
+            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
+            @QueryParam("recordsPerPage") @DefaultValue("10") int recordsPerPage,
+            @QueryParam("photographerLogin") @NotNull String photographerLogin
+    ) throws BaseApplicationException {
+        return repeat(() -> photoEndpoint.getPhotoList(photographerLogin, pageNo, recordsPerPage), reviewEndpoint);
     }
 }
