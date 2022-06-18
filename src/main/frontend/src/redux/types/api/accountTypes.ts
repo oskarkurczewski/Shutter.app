@@ -38,7 +38,7 @@ export interface tableAccountData {
    surname: string;
 }
 
-export interface getAdvancedUserListRequest {
+export interface getBasicUserListRequest {
    pageNo: number;
    recordsPerPage: number;
    columnName: string;
@@ -46,7 +46,7 @@ export interface getAdvancedUserListRequest {
    q?: string;
 }
 
-export interface getBasicUserListRequest {
+export interface getAdvancedUserListRequest {
    pageNo: number;
    recordsPerPage: number;
    columnName: string;

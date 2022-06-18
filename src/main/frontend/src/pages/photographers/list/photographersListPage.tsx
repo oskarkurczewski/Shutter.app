@@ -2,79 +2,72 @@ import React, { useEffect, useState } from "react";
 import styles from "./photographersListPage.module.scss";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useGetActivePhotographersMutation } from "redux/service/photographerManagementService";
+import { useGetActivePhotographersQuery } from "redux/service/photographerManagementService";
 import { tableHeader } from "types/ComponentTypes";
 import { Card, Table } from "components/shared";
 
 export const PhotographersListPage = () => {
-
    const { t } = useTranslation();
+   const location = useLocation();
+   const navigate = useNavigate();
+   const queryParams = new URLSearchParams(location.search);
 
+   const [tableData, setTableData] = useState([]);
    const [headers, setHeaders] = useState<tableHeader[]>([
       {
          id: "login",
          label: t("photographer_list_page.login"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
       {
          id: "name",
          label: t("photographer_list_page.name"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
       {
          id: "surname",
          label: t("photographer_list_page.surname"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
       {
          id: "score",
          label: t("photographer_list_page.score"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
       {
          id: "reviewCount",
          label: t("photographer_list_page.review-count"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
       {
          id: "specializations",
          label: t("photographer_list_page.specializations"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
       {
          id: "longitude",
          label: t("photographer_list_page.longitude"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
       {
          id: "latitutde",
          label: t("photographer_list_page.latitude"),
          sortable: false,
-         sort: "asc"
+         sort: "asc",
       },
-   ])
-   
-   const [tableData, setTableData] = useState([]);
-   
-   const [params, setParams] = useState({
-      pageNo: 1,
-      recordsPerPage: 25
-   })
+   ]);
 
-   const location = useLocation();
-   const navigate = useNavigate();
-   const queryParams = new URLSearchParams(location.search)
+   const pageNo = parseInt(queryParams.get("pageNo")) || 1;
+   const recordsPerPage = parseInt(queryParams.get("records")) || 25;
 
-   const [fetchList, { data: data }] = useGetActivePhotographersMutation();
-   const allRecords = data?.allRecords || 0;
-   const allPages = data?.allPages || 0;
+   const { data } = useGetActivePhotographersQuery({ pageNo, recordsPerPage });
 
    const setQueryParam = (key: string, value: string) => {
       queryParams.set(key, value);
@@ -85,17 +78,8 @@ export const PhotographersListPage = () => {
    };
 
    useEffect(() => {
-      setQueryParam("pageNo", String(params.pageNo));
-      setQueryParam("recordsPerPage", String(params.recordsPerPage));
-   })
-
-   useEffect(() => {
-      setParams({ ...params });
-   }, [headers])
-
-   useEffect(() => {
-      fetchList(params);
-   }, [params])
+      setQueryParam("pageNo", "1");
+   }, [headers]);
 
    useEffect(() => {
       const list = data?.list?.map((item) => [
@@ -110,7 +94,7 @@ export const PhotographersListPage = () => {
             ))}
          </>,
          item.longitude,
-         item.latitude
+         item.latitude,
       ]);
 
       list && setTableData(list);
@@ -123,17 +107,17 @@ export const PhotographersListPage = () => {
                data={tableData}
                headers={headers}
                setHeaders={setHeaders}
-               allRecords={allRecords}
-               allPages={allPages}
-               pageNo={params.pageNo}
-               setPageNo={(num) => setParams({ ...params, pageNo: num})}
-               recordsPerPage={params.recordsPerPage}
-               setRecordsPerPage={(num) =>
-                  setParams({ ...params, pageNo: 1, recordsPerPage: num})
-               }
+               allRecords={data?.allRecords || 0}
+               allPages={data?.allPages || 0}
+               pageNo={pageNo}
+               setPageNo={(num) => setQueryParam("pageNo", num.toString())}
+               recordsPerPage={recordsPerPage}
+               setRecordsPerPage={(num) => {
+                  setQueryParam("records", num.toString());
+                  setQueryParam("pageNo", "1");
+               }}
             />
          </Card>
       </div>
-   )
+   );
 };
-

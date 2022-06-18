@@ -10,7 +10,7 @@ import { getListResponse } from "redux/types/api/dataTypes";
 
 const PhotographerManagementService = api.injectEndpoints({
    endpoints: (builder) => ({
-      getActivePhotographers: builder.mutation<
+      getActivePhotographers: builder.query<
          getListResponse<photographerTableEntry>,
          getPhotographersListRequest
       >({
@@ -32,7 +32,7 @@ const PhotographerManagementService = api.injectEndpoints({
 });
 
 export const {
-   useGetActivePhotographersMutation,
+   useGetActivePhotographersQuery,
    useReportPhotographerReviewMutation,
    useGetPhotographerReviewsQuery,
 } = PhotographerManagementService;
