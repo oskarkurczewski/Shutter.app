@@ -68,9 +68,6 @@ export const ReservationBox: React.FC<Props> = ({
                <Button className={styles.button} href={`#reservation-${reservation.id}`}>
                   {t("global.label.show")}
                </Button>
-               {/* <a href={`#reservation-${reservation.id}`}>
-                  <p className="label-bold">SHOW</p>
-               </a> */}
                {onReport && (
                   <Button className={styles.button} onClick={onReport}>
                      {t("global.label.report")}

@@ -47,13 +47,15 @@ export const JobsListPage = () => {
 
    return (
       <section className={styles.jobs_list_page_wrapper}>
-         <Calendar
-            availability={availabilityData}
-            isLoading={getJobsMutationState.isLoading}
-            reservations={reservations}
-            className={styles.calendar_wrapper}
-            onDateChange={(monday) => setDateFrom(monday)}
-         />
+         <Card className={styles.calendar_wrapper}>
+            <Calendar
+               availability={availabilityData}
+               isLoading={getJobsMutationState.isLoading}
+               reservations={reservations}
+               className={styles.calendar_wrapper}
+               onDateChange={(monday) => setDateFrom(monday)}
+            />
+         </Card>
 
          <div className={styles.list_wrapper}>
             <div className={styles.filters}>

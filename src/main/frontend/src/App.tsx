@@ -133,7 +133,6 @@ function App() {
                            </ProtectedRoute>
                         }
                      />
-                  
 
                      <Route
                         path="gallery"
@@ -153,8 +152,6 @@ function App() {
                         }
                      />
                   </Route>
-
-</Route>
 
                   <Route path="photographers" element={<PhotographersListPage />} />
 
