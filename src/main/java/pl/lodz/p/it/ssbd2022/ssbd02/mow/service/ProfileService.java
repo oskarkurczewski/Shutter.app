@@ -56,7 +56,8 @@ public class ProfileService {
         photographer.setDescription(newDescription);
         facade.update(photographer);
     }
-    
+
+    @RolesAllowed(changeSpecializations)
     public void changeSpecializations(PhotographerInfo photographer, List<Specialization> newSpecializations) throws BaseApplicationException {
         photographer.setSpecializationList(newSpecializations);
         facade.update(photographer);

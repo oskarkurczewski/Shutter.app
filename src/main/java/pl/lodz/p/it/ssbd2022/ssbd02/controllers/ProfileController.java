@@ -166,8 +166,15 @@ public class ProfileController extends AbstractController {
     ) throws BaseApplicationException {
         return repeat(() -> photoEndpoint.getPhotoList(photographerLogin, pageNo, recordsPerPage), reviewEndpoint);
     }
-    
-    
+
+
+    /**
+     * Punkt końcowy pozwalający edytować listę specjalizacji fotografa
+     *
+     * @param specializations lista specjalizacji
+     * @return status
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
     @PUT
     @Path("/specializations")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -176,14 +183,26 @@ public class ProfileController extends AbstractController {
         repeat(() -> profileEndpoint.changeSpecializations(specializations), profileEndpoint);
         return Response.status(Response.Status.OK).build();
     }
-    
+
+    /**
+     * Punkt końcowy zwracający listę specjalizacji fotografa
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
     @GET
     @Path("/specializations")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> getSpecializations() throws BaseApplicationException {
         return repeat(() -> profileEndpoint.getOwnSpecializations(), profileEndpoint);
     }
-    
+
+    /**
+     * Punkt końcowy zwracający listę wszystkich dostępnych specjalizacji
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
     @GET
     @Path("/specialization-list")
     @Produces(MediaType.APPLICATION_JSON)

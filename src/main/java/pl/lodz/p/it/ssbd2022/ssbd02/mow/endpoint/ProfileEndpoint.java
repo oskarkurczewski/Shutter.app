@@ -48,6 +48,12 @@ public class ProfileEndpoint extends AbstractEndpoint {
         profileService.changeDescription(pInfo, newDescString);
     }
 
+    /**
+     * Zmienia listę specjalizacji dla zalogowanego fotografa
+     *
+     * @param newSpecializations lista nowych specjalizacji
+     * @throws BaseApplicationException w przypadku wystąpienia błędu
+     */
     @RolesAllowed(changeSpecializations)
     public void changeSpecializations(List<String> newSpecializations) throws BaseApplicationException {
 
@@ -73,6 +79,12 @@ public class ProfileEndpoint extends AbstractEndpoint {
         profileService.changeSpecializations(photographerInfo, newSpecializationsConverted);
     }
 
+    /**
+     * Zwraca listę specjalizacji dla zalogowanego fotografa
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException w przypadku wystąpienia błędu
+     */
     @RolesAllowed(changeSpecializations)
     public List<String> getOwnSpecializations() throws BaseApplicationException {
         String caller = authCtx.getCurrentUsersLogin();
@@ -80,6 +92,12 @@ public class ProfileEndpoint extends AbstractEndpoint {
         return photographerInfo.getSpecializationList().stream().map(Specialization::getName).collect(Collectors.toList());
     }
 
+    /**
+     * Zwraca wszystkie dostepne specjalizacje
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException w przypadku wystąpienia błędu
+     */
     @RolesAllowed(changeSpecializations)
     public List<String> getAllSpecializations() throws BaseApplicationException {
         List<Specialization> specializations = profileService.getSpecializationList();
