@@ -22,7 +22,7 @@ public class ProfileController extends AbstractController {
     PhotoEndpoint photoEndpoint;
 
     @Inject
-    ProfileEndpoint photographerEndpoint;
+    ProfileEndpoint profileEndpoint;
 
     @Inject
     ReviewEndpoint reviewEndpoint;
@@ -165,5 +165,29 @@ public class ProfileController extends AbstractController {
             @QueryParam("photographerLogin") @NotNull String photographerLogin
     ) throws BaseApplicationException {
         return repeat(() -> photoEndpoint.getPhotoList(photographerLogin, pageNo, recordsPerPage), reviewEndpoint);
+    }
+    
+    
+    @PUT
+    @Path("/specializations")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateSpecializations(@NotNull @Valid List<String> specializations)
+            throws BaseApplicationException {
+        repeat(() -> profileEndpoint.changeSpecializations(specializations), profileEndpoint);
+        return Response.status(Response.Status.OK).build();
+    }
+    
+    @GET
+    @Path("/specializations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getSpecializations() throws BaseApplicationException {
+        return repeat(() -> profileEndpoint.getOwnSpecializations(), profileEndpoint);
+    }
+    
+    @GET
+    @Path("/specialization-list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getAllSpecializations() throws BaseApplicationException {
+        return repeat(() -> profileEndpoint.getAllSpecializations(), profileEndpoint);
     }
 }

@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
@@ -12,6 +13,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+
+import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -53,4 +56,22 @@ public class ProfileService {
         photographer.setDescription(newDescription);
         facade.update(photographer);
     }
+    
+    public void changeSpecializations(PhotographerInfo photographer, List<Specialization> newSpecializations) throws BaseApplicationException {
+        photographer.setSpecializationList(newSpecializations);
+        facade.update(photographer);
+    }
+    
+    /**
+     * Pobiera listę wszystkich dostępnych specjalizacji
+     *
+     * @return lista specjalizacji
+     */
+    @RolesAllowed(changeSpecializations)
+    public List<Specialization> getSpecializationList() throws BaseApplicationException {
+        return facade.getSpecializationList();
+    }
+    
+   
+    
 }

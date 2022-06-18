@@ -180,4 +180,8 @@ public class ExceptionFactory {
     public static NoAccountFound noAccountFound(String message) {
         return new NoAccountFound(message);
     }
+
+    public static WrongParameterException specializationNotFoundException() {
+        return new WrongParameterException("exception.specialization_not_found");
+    }
 }
