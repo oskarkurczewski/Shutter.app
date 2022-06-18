@@ -68,10 +68,6 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
    }, [nameIsValid, surnameIsValid, emailIsValid]);
 
    useEffect(() => {
-      console.log(email, emailIsValid);
-   }, [email]);
-
-   useEffect(() => {
       setLogin(userInfoData?.data.login || "");
       setActive(userInfoData?.data.active || false);
       setRegistered(userInfoData?.data.registered || false);

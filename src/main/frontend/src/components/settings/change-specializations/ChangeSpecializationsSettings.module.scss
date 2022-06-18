@@ -1,0 +1,36 @@
+@use "variables.scss" as variables;
+
+.change_specializations_wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+
+   .title,
+   .label {
+      color: variables.$gray-300;
+   }
+
+   .specializations {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 4px variables.$blue-gray-100 dashed;
+      svg {
+         // font-weight: bold;
+         color: variables.$blue-gray-100;
+         font-size: 33px;
+      }
+      .specialization_wrapper {
+         cursor: pointer;
+         user-select: none;
+      }
+   }
+
+   .footer {
+      display: flex;
+      justify-content: space-between;
+   }
+}

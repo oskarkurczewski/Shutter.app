@@ -94,6 +94,7 @@
    "toast": {
       "renew": "Przedłuż",
       "success_update": "Pomyślnie zmodyfikowano",
+      "error_update": "Modyfikacja nie powiodła się",
       "success_login_message": "Pomyślnie zalogowano.",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
       "success_like": "Pomyślnie polubiono",
@@ -220,6 +221,12 @@
          "confirm": "Zatwierdź",
          "success_message": "Zmiana wykonana pomyślnie",
          "error_message": "Coś poszło nie tak"
+      },
+      "change_specializations": {
+         "title": "Zmiana specjalizacji",
+         "description": "Specjalizacje reprezentują kategorie, w których specjalizujesz się jako fotograf. Wybranie ich pomoże przy wyszukiwaniu twojego profilu. Możesz mieć jednocześnie wybranych wiele specjalizacji.",
+         "select": "Wybierz specjalizacje",
+         "confirm": "Zatwierdź"
       }
    },
    "edit_account_page": {
