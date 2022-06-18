@@ -63,10 +63,14 @@ export const ChangeAvailabilityPage = () => {
       }
 
       if (updateMutationState.isError) {
-         const err = updateMutationState.error as ErrorResponse;
          const errorToast: Toast = {
             type: ToastTypes.ERROR,
-            text: t(`change_availability_page.${parseError(err.data.message)}`),
+            text: t(
+               parseError(
+                  updateMutationState.error as ErrorResponse,
+                  "change_availability_page"
+               )
+            ),
          };
          dispatch(push(errorToast));
       }
@@ -74,14 +78,15 @@ export const ChangeAvailabilityPage = () => {
 
    return (
       <section className={styles.change_availability_page_wrapper}>
-         <Calendar
-            title={t("change_availability_page.calendar_title")}
-            showWeekNavigation={false}
-            className={styles.calendar_wrapper}
-            availability={newHours}
-            onRangeSelection={addAvailability}
-            onAvailabilityRemove={(availability) => removeAvailability(availability)}
-         />
+         <Card className={styles.calendar_wrapper}>
+            <Calendar
+               title={t("change_availability_page.calendar_title")}
+               showWeekNavigation={false}
+               availability={newHours}
+               onRangeSelection={addAvailability}
+               onAvailabilityRemove={(availability) => removeAvailability(availability)}
+            />
+         </Card>
 
          <div className={styles.list_wrapper}>
             <p className="category-title">
