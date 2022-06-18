@@ -2,11 +2,11 @@ import React from "react";
 import Gravatar from "react-gravatar";
 
 interface Props {
-   email: string;
+   email?: string;
    className?: string;
 }
 
-export const Avatar: React.FC<Props> = ({ email, className = "" }) => {
+export const Avatar: React.FC<Props> = ({ email = "", className = "" }) => {
    return (
       <Gravatar
          className={className}
