@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
@@ -53,7 +54,10 @@ public class PhotographerEndpoint extends AbstractEndpoint {
     @PermitAll
     public BasePhotographerInfoDto getPhotographerInfo(String login) throws BaseApplicationException {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
-        return new BasePhotographerInfoDto(photographerService.getPhotographerInfo(photographerInfo));
+        if(photographerInfo.getVisible()) {
+            return new BasePhotographerInfoDto(photographerInfo);
+        }
+        throw ExceptionFactory.noPhotographerFound();
     }
 
     /**

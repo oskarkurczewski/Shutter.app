@@ -27,10 +27,11 @@
          "submit_operation": "Potwierdź wykonanie operacji"
       },
       "roles": {
-         "admin": "ADMINISTRATOR",
-         "moderator": "MODERATOR",
-         "client": "KLIENT",
-         "photographer": "FOTOGRAF"
+         "administrator": "Administrator",
+         "moderator": "Moderator",
+         "client": "Klient",
+         "photographer": "Fotograf",
+         "guest": "Niezalogowany"
       }
    },
    "exception": {
@@ -96,7 +97,9 @@
       "renew": "Przedłuż",
       "success_update": "Pomyślnie zmodyfikowano",
       "success_login_message": "Pomyślnie zalogowano.",
-      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć."
+      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+      "success_like": "Pomyślnie polubiono",
+      "error_like": "Polubienie nie powiodło się"
    },
    "navbar": {
       "title": "shutter.app",
@@ -350,5 +353,8 @@
             "availability_time": "Podano niepoprawny zakres"
          }
       }
+   },
+   "sidebar": {
+      "changed_role_message": "Pomyślnie zmieniono rolę na {{role}}"
    }
 }

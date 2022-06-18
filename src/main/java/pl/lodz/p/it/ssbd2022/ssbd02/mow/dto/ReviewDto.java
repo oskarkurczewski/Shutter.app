@@ -14,13 +14,15 @@ public class ReviewDto {
     private Long score;
     private String content;
     private Long likeCount;
+    private boolean liked;
 
-    public ReviewDto(Review review) {
+    public ReviewDto(Review review, boolean isLiked) {
         this.id = review.getId();
         this.name = review.getPhotographer().getAccount().getName();
         this.surname = review.getPhotographer().getAccount().getSurname();;
         this.score = review.getScore();
         this.content = review.getContent();
         this.likeCount = review.getLikeCount();
+        this.liked = isLiked;
     }
 }

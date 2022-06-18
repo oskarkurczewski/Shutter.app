@@ -30,8 +30,8 @@ import java.util.Optional;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
-@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@Interceptors({LoggingInterceptor.class})
 public class ReportEndpoint extends AbstractEndpoint {
     @Inject
     ReviewService reviewService;
@@ -126,20 +126,43 @@ public class ReportEndpoint extends AbstractEndpoint {
         reportService.addReviewReport(report);
     }
 
+
+    /**
+     * Pobiera listę zgłoszeń kont
+     *
+     * @param req obiekt dto zapytania
+     * @return lista zgłoszeń kont
+     * @throws WrongParameterException niepoprawna kolejność sortowania
+     */
     @RolesAllowed(listAllReports)
-    public List<AccountReportDto> listAllAccountReports() {
-        throw new UnsupportedOperationException();
+    public ListResponseDto<AccountReportDto> getAccountReportList(GetReportRequestDto req) throws WrongParameterException {
+        return reportService.getAccountReportList(req);
     }
 
+    /**
+     * Pobiera listę zgłoszeń fotografów
+     *
+     * @param req obiekt dto zapytania
+     * @return lista zgłoszeń fotografów
+     * @throws WrongParameterException niepoprawna kolejność sortowania
+     */
     @RolesAllowed(listAllReports)
-    public List<PhotographerReportDto> listAllPhotographerReports() {
-        throw new UnsupportedOperationException();
+    public ListResponseDto<PhotographerReportDto> getPhotographerReportList(GetReportRequestDto req) throws WrongParameterException {
+        return reportService.getPhotographerReportList(req);
     }
 
+    /**
+     * Pobiera listę zgłoszeń recenzji
+     *
+     * @param req obiekt dto zapytania
+     * @return lista zgłoszeń recenzji
+     * @throws WrongParameterException niepoprawna kolejność sortowania
+     */
     @RolesAllowed(listAllReports)
-    public List<ReviewReportDto> listAllReviewReports() {
-        throw new UnsupportedOperationException();
+    public ListResponseDto<ReviewReportDto> getReviewReportList(GetReportRequestDto req) throws WrongParameterException {
+        return reportService.getReviewReportList(req);
     }
+
 
     @RolesAllowed(resolveReport)
     public void resolveAccountReport(Long reportId) {
