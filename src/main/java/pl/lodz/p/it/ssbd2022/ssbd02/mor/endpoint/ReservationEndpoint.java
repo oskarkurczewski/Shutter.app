@@ -1,15 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.InvalidReservationTimeException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AccountService;
-import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.MorAccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.ReservationService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -22,6 +20,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,21 +89,19 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param name           imię lub nazwisko do wyszukania
-     * @param page           numer strony
-     * @param recordsPerPage liczba recenzji na stronę
-     * @param order          kolejność sortowania względem kolumny time_from
-     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param name   imię lub nazwisko do wyszukania
+     * @param order  kolejność sortowania względem kolumny time_from
+     * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
      * @return ReservationListEntryDto      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)
-    public List<ReservationListEntryDto> listReservations(String name, int page, int recordsPerPage, String order, Boolean getAll)
+    public List<ReservationListEntryDto> listReservations(String name, String order, Boolean getAll, LocalDate localDate)
             throws BaseApplicationException {
         String login = authenticationContext.getCurrentUsersLogin();
         Account account = accountService.findByLogin(login);
 
-        List<Reservation> reservations = reservationService.listReservations(account, name, page, recordsPerPage, order, getAll);
+        List<Reservation> reservations = reservationService.listReservations(account, name, order, getAll, localDate);
         List<ReservationListEntryDto> reservationDtoList = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
@@ -114,9 +111,28 @@ public class ReservationEndpoint extends AbstractEndpoint {
         return reservationDtoList;
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param name   imię lub nazwisko do wyszukania
+     * @param order  kolejność sortowania względem kolumny time_from
+     * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(showJobs)
-    public List<ReservationListEntryDto> listJobs() {
-        throw new UnsupportedOperationException();
+    public List<ReservationListEntryDto> listJobs(String name, String order, Boolean getAll, LocalDate localDate) throws BaseApplicationException {
+        String login = authenticationContext.getCurrentUsersLogin();
+        PhotographerInfo photographerInfo = photographerService.getPhotographer(login);
+
+        List<Reservation> reservations = reservationService.listJobs(photographerInfo, name, order, getAll, localDate);
+        List<ReservationListEntryDto> reservationDtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            reservationDtoList.add(new ReservationListEntryDto(reservation));
+        }
+
+        return reservationDtoList;
     }
 
     /**
@@ -150,8 +166,8 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których imię
      * lub nazwisko zawiera szukaną frazę
      *
-     * @param name szukana fraza
-     * @param page strona listy, którą należy pozyskać
+     * @param name           szukana fraza
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
      * @throws BaseApplicationException niepowodzenie operacji
