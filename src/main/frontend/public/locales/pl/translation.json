@@ -28,6 +28,7 @@
          "show": "Wyświetl",
          "search": "Szukaj",
          "filters": "Filtry",
+         "calendar": "Kalendarz",
          "choose_file": "Wybierz Plik",
          "submit_operation": "Potwierdź wykonanie operacji"
       },
@@ -77,6 +78,13 @@
       "availability_not_found": "TODO",
       "availability_overlap": "TODO",
       "photo_upload_error": "Nie udało się dodać zdjęcia"
+   },
+   "validator": {
+      "incorrect": {
+         "name_surname_query": {
+            "regexp": "Podano niepoprawną wartość"
+         }
+      }
    },
    "navigation": {
       "home": "Strona główna",
@@ -357,7 +365,6 @@
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",
       "no_availability": "Brak dostępności",
-      "calendar_title": "Kalendarz",
       "validator": {
          "incorrect": {
             "availability_time": "Podano niepoprawny zakres"

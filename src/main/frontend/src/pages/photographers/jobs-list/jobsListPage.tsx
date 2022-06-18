@@ -34,6 +34,10 @@ export const JobsListPage = () => {
       });
    };
 
+   // const cancelReservation = () => {
+
+   // }
+
    // Parse availability
    useEffect(() => {
       availabilityQuery.data &&
@@ -78,11 +82,13 @@ export const JobsListPage = () => {
       <section className={styles.jobs_list_page_wrapper}>
          <Card className={styles.calendar_wrapper}>
             <Calendar
+               title={t("global.label.calendar")}
                availability={availability}
                isLoading={getJobsMutationState.isLoading}
                reservations={reservations}
                className={styles.calendar_wrapper}
                onDateChange={(monday) => setDateFrom(monday)}
+               // onReservationRemove={() => {}}
             />
          </Card>
 
@@ -115,7 +121,10 @@ export const JobsListPage = () => {
                   <p className="section-title">Rezerwacje</p>
 
                   {(function renderReservations() {
-                     if (getJobsMutationState.data?.length == 0) {
+                     if (
+                        getJobsMutationState.data?.length == 0 ||
+                        getJobsMutationState.isError
+                     ) {
                         return <p>{t("photographer_jobs_page.no_reservations")}</p>;
                      }
                      return getJobsMutationState.data?.map((reservation, index) => (

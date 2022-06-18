@@ -81,7 +81,7 @@ export const ChangeAvailabilityPage = () => {
       <section className={styles.change_availability_page_wrapper}>
          <Card className={styles.calendar_wrapper}>
             <Calendar
-               title={t("change_availability_page.calendar_title")}
+               title={t("global.label.calendar")}
                showWeekNavigation={false}
                availability={newHours}
                onRangeSelection={addAvailability}
