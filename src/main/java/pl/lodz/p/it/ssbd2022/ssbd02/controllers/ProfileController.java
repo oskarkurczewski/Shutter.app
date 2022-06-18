@@ -22,7 +22,7 @@ public class ProfileController extends AbstractController {
     PhotoEndpoint photoEndpoint;
 
     @Inject
-    ProfileEndpoint photographerEndpoint;
+    ProfileEndpoint profileEndpoint;
 
     @Inject
     ReviewEndpoint reviewEndpoint;
@@ -165,5 +165,48 @@ public class ProfileController extends AbstractController {
             @QueryParam("photographerLogin") @NotNull String photographerLogin
     ) throws BaseApplicationException {
         return repeat(() -> photoEndpoint.getPhotoList(photographerLogin, pageNo, recordsPerPage), reviewEndpoint);
+    }
+
+
+    /**
+     * Punkt końcowy pozwalający edytować listę specjalizacji fotografa
+     *
+     * @param specializations lista specjalizacji
+     * @return status
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
+    @PUT
+    @Path("/specializations")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateSpecializations(@NotNull @Valid List<String> specializations)
+            throws BaseApplicationException {
+        repeat(() -> profileEndpoint.changeSpecializations(specializations), profileEndpoint);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    /**
+     * Punkt końcowy zwracający listę specjalizacji fotografa
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
+    @GET
+    @Path("/specializations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getSpecializations() throws BaseApplicationException {
+        return repeat(() -> profileEndpoint.getOwnSpecializations(), profileEndpoint);
+    }
+
+    /**
+     * Punkt końcowy zwracający listę wszystkich dostępnych specjalizacji
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException przy niepowodzeniu operacji
+     */
+    @GET
+    @Path("/specialization-list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getAllSpecializations() throws BaseApplicationException {
+        return repeat(() -> profileEndpoint.getAllSpecializations(), profileEndpoint);
     }
 }

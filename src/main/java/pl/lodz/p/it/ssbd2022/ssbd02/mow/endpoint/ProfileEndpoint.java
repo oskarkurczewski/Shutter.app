@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -14,9 +16,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changePhotographerDescription;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeSpecializations;
 
 @Stateful
 @Interceptors({LoggingInterceptor.class})
@@ -40,5 +46,61 @@ public class ProfileEndpoint extends AbstractEndpoint {
         PhotographerInfo pInfo = profileService.findPhotographerInfo(caller);
         String newDescString = Optional.ofNullable(newDescription.getContent()).orElse("");
         profileService.changeDescription(pInfo, newDescString);
+    }
+
+    /**
+     * Zmienia listę specjalizacji dla zalogowanego fotografa
+     *
+     * @param newSpecializations lista nowych specjalizacji
+     * @throws BaseApplicationException w przypadku wystąpienia błędu
+     */
+    @RolesAllowed(changeSpecializations)
+    public void changeSpecializations(List<String> newSpecializations) throws BaseApplicationException {
+
+        List<Specialization> specializations = profileService.getSpecializationList();
+        List<String> specializationsConverted = specializations.stream().map(Specialization::getName).collect(Collectors.toList());
+
+        List<Specialization> newSpecializationsConverted = new ArrayList<>();
+
+        try {
+            newSpecializations.forEach(newSpecialization -> {
+                if (specializationsConverted.contains(newSpecialization)) {
+                    newSpecializationsConverted.add(specializations.stream().filter(specialization -> specialization.getName().equals(newSpecialization)).findFirst().get());
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            });
+        } catch (IllegalArgumentException e) {
+            throw ExceptionFactory.specializationNotFoundException();
+        }
+
+        String caller = authCtx.getCurrentUsersLogin();
+        PhotographerInfo photographerInfo = profileService.findPhotographerInfo(caller);
+        profileService.changeSpecializations(photographerInfo, newSpecializationsConverted);
+    }
+
+    /**
+     * Zwraca listę specjalizacji dla zalogowanego fotografa
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException w przypadku wystąpienia błędu
+     */
+    @RolesAllowed(changeSpecializations)
+    public List<String> getOwnSpecializations() throws BaseApplicationException {
+        String caller = authCtx.getCurrentUsersLogin();
+        PhotographerInfo photographerInfo = profileService.findPhotographerInfo(caller);
+        return photographerInfo.getSpecializationList().stream().map(Specialization::getName).collect(Collectors.toList());
+    }
+
+    /**
+     * Zwraca wszystkie dostepne specjalizacje
+     *
+     * @return lista specjalizacji
+     * @throws BaseApplicationException w przypadku wystąpienia błędu
+     */
+    @RolesAllowed(changeSpecializations)
+    public List<String> getAllSpecializations() throws BaseApplicationException {
+        List<Specialization> specializations = profileService.getSpecializationList();
+        return specializations.stream().map(Specialization::getName).collect(Collectors.toList());
     }
 }
