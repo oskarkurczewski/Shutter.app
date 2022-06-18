@@ -1,0 +1,23 @@
+@use "variables.scss" as variables;
+
+.upload_form {
+   min-width: 40rem;
+
+   .content {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      padding-top: 0;
+      gap: 20px;
+
+      .file_input {
+         align-self: flex-start;
+      }
+
+      .desc_field {
+         textarea {
+            min-height: 150px;
+         }
+      }
+   }
+}

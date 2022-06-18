@@ -125,12 +125,19 @@ function App() {
                   {/* Photographer routes */}
                   <Route path="profile">
                      <Route path=":login" element={<PhotographerProfilePage />} />
-
                      <Route
                         path="change-availability"
                         element={
                            <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
                               <ChangeAvailabilityPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                     <Route
+                        path="gallery"
+                        element={
+                           <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
+                              <PhotographerGalleryPage />
                            </ProtectedRoute>
                         }
                      />

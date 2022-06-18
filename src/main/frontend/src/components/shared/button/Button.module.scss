@@ -10,6 +10,7 @@
    user-select: none;
    background-color: variables.$purple-100;
    width: fit-content;
+   overflow: hidden;
 
    button {
       border: none;
@@ -56,10 +57,11 @@
       }
    }
 
-   &:enabled:not(.loading):active {
+   &:not(:disabled):not(.loading):active {
       transform: translateY(4px);
       box-shadow: none;
    }
+
    &:disabled {
       cursor: not-allowed;
       background-color: variables.$blue-gray-300;
