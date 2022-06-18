@@ -1,16 +1,18 @@
-import { basicUserInfoResponse } from "./accountTypes";
+import { BasicUserInfoResponse } from "./accountTypes";
 import { ReviewReportCause } from "types/ReviewReportCause";
+import { Specialization } from "types/Specializations";
 
-export interface basicPhotographerInfo extends basicUserInfoResponse {
+export interface BasicPhotographerInfo extends BasicUserInfoResponse {
+   login: string;
    score: number;
    reviewCount: number;
    description: string;
    latitude: number;
    longitude: number;
-   specializationList: string[];
+   specializationList: Specialization[];
 }
 
-export interface photographerTableEntry {
+export interface PhotographerTableEntry {
    login: string;
    email: string;
    name: string;
@@ -22,26 +24,17 @@ export interface photographerTableEntry {
    latitude: number;
 }
 
-export interface getPhotographersListRequest {
+export interface GetPhotographersListRequest {
    pageNo: number;
    recordsPerPage: number;
 }
 
-export interface reportPhotographerReviewRequest {
+export interface ReportPhotographerReviewRequest {
    reviewId: number;
    cause: string;
 }
 
-export interface basicPhotographerInfo extends basicUserInfoResponse {
-   score: number;
-   reviewCount: number;
-   description: string;
-   latitude: number;
-   longitude: number;
-   specializationList: string[];
-}
-
-export interface getPhotographerReviewsResponse {
+export interface GetPhotographerReviewsResponse {
    pageNo: number;
    recordsPerPage: number;
    list: {
@@ -54,7 +47,7 @@ export interface getPhotographerReviewsResponse {
    }[];
 }
 
-export interface getPhotographerReviewsRequest {
+export interface GetPhotographerReviewsRequest {
    pageNo: number;
    recordsPerPage?: number;
    photographerLogin: string;

@@ -1,31 +1,31 @@
 import { api } from "./api";
 import {
-   getPhotographerReviewsRequest,
-   getPhotographerReviewsResponse,
-   getPhotographersListRequest,
-   photographerTableEntry,
-   reportPhotographerReviewRequest,
+   GetPhotographerReviewsRequest,
+   GetPhotographerReviewsResponse,
+   GetPhotographersListRequest,
+   PhotographerTableEntry,
+   ReportPhotographerReviewRequest,
 } from "redux/types/api/photographerTypes";
 import { getListResponse } from "redux/types/api/dataTypes";
 
 const PhotographerManagementService = api.injectEndpoints({
    endpoints: (builder) => ({
       getActivePhotographers: builder.mutation<
-         getListResponse<photographerTableEntry>,
-         getPhotographersListRequest
+         getListResponse<PhotographerTableEntry>,
+         GetPhotographersListRequest
       >({
          query: (data) => ({ url: "reservation/photographers", params: data }),
       }),
       getPhotographerReviews: builder.query<
-         getPhotographerReviewsResponse,
-         getPhotographerReviewsRequest
+         GetPhotographerReviewsResponse,
+         GetPhotographerReviewsRequest
       >({
          query: (data) => ({
             url: "profile/review/list",
             params: data,
          }),
       }),
-      reportPhotographerReview: builder.mutation<void, reportPhotographerReviewRequest>({
+      reportPhotographerReview: builder.mutation<void, ReportPhotographerReviewRequest>({
          query: (data) => ({ url: `report/review`, method: "POST", body: data }),
       }),
    }),

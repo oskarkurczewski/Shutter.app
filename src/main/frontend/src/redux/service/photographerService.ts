@@ -1,6 +1,6 @@
 import { api } from "./api";
 import {
-   basicPhotographerInfo,
+   BasicPhotographerInfo,
    AvailabilityResponse,
 } from "redux/types/api/photographerTypes";
 import { AvailabilityHour } from "types/CalendarTypes";
@@ -8,7 +8,7 @@ import { parseToAvailabilityHour, parseToAvailabilityRequest } from "redux/conve
 
 const PhotographerService = api.injectEndpoints({
    endpoints: (builder) => ({
-      getPhotographerDetailedInfo: builder.query<basicPhotographerInfo, string>({
+      getPhotographerDetailedInfo: builder.query<BasicPhotographerInfo, string>({
          query: (login) => ({ url: `/photographer/${login}/info` }),
       }),
 

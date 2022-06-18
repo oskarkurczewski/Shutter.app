@@ -29,7 +29,7 @@ export const PhotographerDescription: React.FC<Props> = ({
                         return (
                            <li key={index}>
                               <IconText
-                                 Icon={specProps.icon}
+                                 icon={specProps.icon}
                                  color={specProps.color}
                                  text={t(
                                     `photographer_specialization.${spec.toLowerCase()}`

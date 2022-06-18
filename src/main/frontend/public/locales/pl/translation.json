@@ -30,6 +30,12 @@
          "moderator": "MODERATOR",
          "client": "KLIENT",
          "photographer": "FOTOGRAF"
+      },
+      "specialization": {
+         "specialization_studio": "Fotografia studyjna",
+         "specialization_photoreport": "Fotoreportaż",
+         "specialization_product": "Fotografia produktowa",
+         "specialization_landscape": "Fotografia krajobrazowa"
       }
    },
    "exception": {
@@ -173,6 +179,15 @@
       }
    },
    "photographer_list_page": {
+      "search_photographer": "Wyszukaj fotografa",
+      "photographers": "Fotografowie",
+      "results": "{{count}} wyników",
+      "photographer": "Fotograf",
+      "reviews": "{{count}} opinii",
+      "profile": "Profil",
+      "hire": "Wynajmij"
+   },
+   "photographer_list_admin_page": {
       "login": "Login",
       "email": "Email",
       "name": "Imię",

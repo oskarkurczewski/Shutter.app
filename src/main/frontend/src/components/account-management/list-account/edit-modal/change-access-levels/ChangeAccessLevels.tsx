@@ -2,13 +2,13 @@ import { Card, Checkbox } from "components/shared";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useChangeAccessLevelMutation } from "redux/service/usersManagementService";
-import { advancedUserInfoResponse } from "redux/types/api";
+import { AdvancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
 import { AccessLevel } from "types";
 import styles from "./ChangeAccessLevels.module.scss";
 
 interface Props {
-   userInfoData: EtagData<advancedUserInfoResponse>;
+   userInfoData: EtagData<AdvancedUserInfoResponse>;
 }
 
 export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
