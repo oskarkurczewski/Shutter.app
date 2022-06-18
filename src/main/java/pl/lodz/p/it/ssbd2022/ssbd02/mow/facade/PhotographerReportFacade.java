@@ -54,6 +54,32 @@ public class PhotographerReportFacade extends FacadeTemplate<PhotographerReport>
         }
     }
 
+    @Override
+    public PhotographerReport update(PhotographerReport entity) throws BaseApplicationException {
+        try {
+            return super.update(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    public PhotographerReport find(Long id) throws BaseApplicationException {
+        try {
+            return super.find(id);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
     /**
      * Pobiera listę wszystkich zgłoszeń fotografów
      *

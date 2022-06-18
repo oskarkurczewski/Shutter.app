@@ -62,18 +62,17 @@ public class ReportService {
     private AccountFacade accountFacade;
 
     @PermitAll
-    public AccountReport findAccountReportById(Long id) throws NoAccountReportFoundException {
-        throw new UnsupportedOperationException();
+    public AccountReport findAccountReportById(Long id) throws BaseApplicationException {
+        return accountReportFacade.find(id);
     }
 
     @PermitAll
-    public PhotographerReport findPhotographerReportById(Long id) throws NoPhotographerReportFoundException {
-        throw new UnsupportedOperationException();
-    }
+    public PhotographerReport findPhotographerReportById(Long id) throws BaseApplicationException {
+        return photographerReportFacade.find(id);}
 
     @PermitAll
-    public ReviewReport findReviewReportById(Long id) throws NoReviewReportFoundException {
-        throw new UnsupportedOperationException();
+    public ReviewReport findReviewReportById(Long id) throws BaseApplicationException {
+        return reviewReportFacade.find(id);
     }
 
     @PermitAll
@@ -179,18 +178,21 @@ public class ReportService {
 
 
     @RolesAllowed(resolveReport)
-    public void resolveReviewReport(ReviewReport report) {
-        throw new UnsupportedOperationException();
+    public void resolveReviewReport(ReviewReport report) throws BaseApplicationException {
+        report.setReviewed(true);
+        reviewReportFacade.update(report);
     }
 
     @RolesAllowed(resolveReport)
-    public void resolvePhotographerReport(PhotographerReport report) {
-        throw new UnsupportedOperationException();
+    public void resolvePhotographerReport(PhotographerReport report) throws BaseApplicationException {
+        report.setReviewed(true);
+        photographerReportFacade.update(report);
     }
 
     @RolesAllowed(resolveReport)
-    public void resolveAccountReport(AccountReport report) {
-        throw new UnsupportedOperationException();
+    public void resolveAccountReport(AccountReport report) throws BaseApplicationException {
+        report.setReviewed(true);
+        accountReportFacade.update(report);
     }
 
     /**

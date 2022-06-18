@@ -16,7 +16,18 @@ const ReviewService = api.injectEndpoints({
             method: "GET",
          }),
       }),
+
+      removeSomeonesPhotographerReview: builder.mutation<void, number>({
+         query: (reviewId) => ({
+            url: `/profile/review/${reviewId}/admin`,
+            method: "DELETE",
+         }),
+      }),
    }),
 });
 
-export const { useLikeReviewMutation, useGetReviewByIdQuery } = ReviewService;
+export const {
+   useLikeReviewMutation,
+   useGetReviewByIdQuery,
+   useRemoveSomeonesPhotographerReviewMutation,
+} = ReviewService;

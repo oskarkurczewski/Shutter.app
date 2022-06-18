@@ -3,7 +3,7 @@ import styles from "./reportsPage.module.scss";
 import { useTranslation } from "react-i18next";
 import { MdComment } from "react-icons/md";
 import { HiCamera, HiUser } from "react-icons/hi";
-import { Card, Dropdown, IconDropdown, Table } from "components/shared";
+import { Card, Dropdown } from "components/shared";
 import { AccountReportTable } from "components/reports/AccountReportTable";
 import { PhotographerReportTable } from "components/reports/PhotographerReportTable";
 import { ReviewReportTable } from "components/reports/ReviewReportTable";

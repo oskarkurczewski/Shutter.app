@@ -117,6 +117,10 @@ const UsersManagementService = api.injectEndpoints({
             body: data.data,
          }),
       }),
+
+      resolveAccountReport: builder.mutation<void, number>({
+         query: (id) => ({ url: `/report/account/${id}/resolve`, method: "POST" }),
+      }),
    }),
 });
 
@@ -132,4 +136,5 @@ export const {
    useGetBasicUserListMutation,
    useGetAccountReportListQuery,
    useChangeSomeonesPasswordMutation,
+   useResolveAccountReportMutation,
 } = UsersManagementService;

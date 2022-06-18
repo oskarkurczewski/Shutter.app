@@ -9,28 +9,43 @@
 
    section {
       color: variables.$gray-200;
-      display: flex;
       //   flex-direction: column;
-      gap: 1.2rem;
 
-      .info {
+      .main {
          display: flex;
-         flex-direction: column;
-         gap: 0.7rem;
-      }
-      .separator {
-         width: 1px;
-         background-color: variables.$gray-100;
+         gap: 1.2rem;
+
+         .info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+
+            .buttons {
+               // margin-top: 1rem;
+               display: flex;
+               gap: 1rem;
+            }
+         }
+         .content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+
+            p {
+               max-width: 30rem;
+               min-width: 20rem;
+            }
+         }
       }
 
-      .content {
-         display: flex;
-         flex-direction: column;
-         gap: 0.7rem;
+      .button {
+         margin-left: auto;
+         background-color: variables.$blue-300;
+         overflow: hidden;
 
-         p {
-            max-width: 30rem;
-            min-width: 20rem;
+         button:disabled {
+            cursor: not-allowed;
+            background-color: variables.$gray-200;
          }
       }
    }

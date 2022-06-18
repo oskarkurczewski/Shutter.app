@@ -1,13 +1,18 @@
-import { Table } from "components/shared";
+import { Checkbox, Table } from "components/shared";
 import { DateTime } from "luxon";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BiLink } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useGetPhotographerReportListQuery } from "redux/service/photographerManagementService";
+import { useAppDispatch } from "redux/hooks";
+import {
+   useGetPhotographerReportListQuery,
+   useResolvePhotographerReportMutation,
+} from "redux/service/photographerManagementService";
+import { push, ToastTypes } from "redux/slices/toastSlice";
 import { photographerReport } from "redux/types/api";
-import { tableHeader } from "types";
+import { tableHeader, Toast } from "types";
 import styles from "./PhotographerReportTable.module.scss";
 
 interface Props {
@@ -16,14 +21,40 @@ interface Props {
 
 export const PhotographerReportTable: React.FC<Props> = ({ filter }) => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
 
    const [headers, setHeaders] = useState<tableHeader[]>([
-      { id: "id", label: "ID", sort: null, sortable: false },
-      { id: "photographer", label: "Photographer", sort: null, sortable: false },
-      { id: "reportee", label: "Reportee", sort: null, sortable: false },
-      { id: "cause", label: "Cause", sort: null, sortable: false },
-      { id: "reviewed", label: "Reviewed", sort: null, sortable: false },
-      { id: "date", label: "Report date", sort: "asc", sortable: true },
+      { id: "id", label: t("reports_page.columns.id"), sort: null, sortable: false },
+      {
+         id: "photographer",
+         label: t("reports_page.columns.photographer"),
+         sort: null,
+         sortable: false,
+      },
+      {
+         id: "reportee",
+         label: t("reports_page.columns.reportee"),
+         sort: null,
+         sortable: false,
+      },
+      {
+         id: "cause",
+         label: t("reports_page.columns.cause"),
+         sort: null,
+         sortable: false,
+      },
+      {
+         id: "reviewed",
+         label: t("reports_page.columns.reviewed"),
+         sort: null,
+         sortable: false,
+      },
+      {
+         id: "date",
+         label: t("reports_page.columns.report_time"),
+         sort: "asc",
+         sortable: true,
+      },
    ]);
    const [pageNo, setPageNo] = useState<number>(1);
    const [recordsPerPage, setRecordsPerPage] = useState<number>(25);
@@ -34,6 +65,8 @@ export const PhotographerReportTable: React.FC<Props> = ({ filter }) => {
       recordsPerPage: recordsPerPage,
       reviewed: filter,
    });
+
+   const [resolveMutation, resolveMutationState] = useResolvePhotographerReportMutation();
 
    const generateDateNode = (date: Date) => {
       const dateTime = DateTime.fromJSDate(new Date(date));
@@ -60,12 +93,32 @@ export const PhotographerReportTable: React.FC<Props> = ({ filter }) => {
                </Link>,
                item.accountLogin,
                t(`reports_page.photographer.causes.${item.cause}`),
-               item.reviewed && <FaCheck />,
+               <Checkbox
+                  id={index.toString()}
+                  key={index}
+                  value={item.reviewed}
+                  onChange={() => {
+                     resolveMutation(item.id).then(() => {
+                        photographerReports.refetch();
+                     });
+                  }}
+                  disabled={item.reviewed}
+               />,
                generateDateNode(item.createdAt),
             ];
          }
       );
    };
+
+   useEffect(() => {
+      if (resolveMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_update"),
+         };
+         dispatch(push(successToast));
+      }
+   }, [resolveMutationState]);
 
    return (
       photographerReports?.isSuccess && (

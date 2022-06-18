@@ -44,6 +44,14 @@ const PhotographerManagementService = api.injectEndpoints({
       reportPhotographerReview: builder.mutation<void, reportPhotographerReviewRequest>({
          query: (data) => ({ url: `report/review`, method: "POST", body: data }),
       }),
+
+      resolvePhotographerReport: builder.mutation<void, number>({
+         query: (id) => ({ url: `/report/photographer/${id}/resolve`, method: "POST" }),
+      }),
+
+      resolveReviewReport: builder.mutation<void, number>({
+         query: (id) => ({ url: `/report/review/${id}/resolve`, method: "POST" }),
+      }),
    }),
 });
 
@@ -53,4 +61,6 @@ export const {
    useGetActivePhotographersMutation,
    useReportPhotographerReviewMutation,
    useGetPhotographerReviewsQuery,
+   useResolvePhotographerReportMutation,
+   useResolveReviewReportMutation,
 } = PhotographerManagementService;

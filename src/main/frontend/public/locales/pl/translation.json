@@ -91,11 +91,13 @@
       "password_reset": "Zmiana hasła",
       "photographers": "Fotografowie",
       "gallery": "Galeria",
-      "change_availability": "Zmiana godzin dostępności"
+      "change_availability": "Zmiana godzin dostępności",
+      "reports": "Zgłoszenia"
    },
    "toast": {
       "renew": "Przedłuż",
       "success_update": "Pomyślnie zmodyfikowano",
+      "error_update": "Modyfikacja nie powiodła się",
       "success_login_message": "Pomyślnie zalogowano.",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
       "success_like": "Pomyślnie polubiono",
@@ -309,6 +311,16 @@
          "reviewed": "Przeczytane",
          "unreviewed": "Nieprzeczytane"
       },
+      "columns": {
+         "id": "ID",
+         "photographer": "Fotograf",
+         "review_id": "ID recenzji",
+         "reported": "Zgłoszony",
+         "reportee": "Zgłaszający",
+         "cause": "Przyczyna",
+         "reviewed": "Rozpatrzono",
+         "report_time": "Czas zgłoszenia"
+      },
       "user": {
          "title": "Zgłoszenia użytkowników",
          "causes": {
@@ -330,6 +342,15 @@
             "REVIEW_REPORT_OBSCENE_CONTENT": "Zawiera niedozwolone treści",
             "REVIEW_REPORT_SPAM": "Spam",
             "REVIEW_REPORT_FAKE_REVIEW": "Fałszywa recenzja"
+         },
+         "modal": {
+            "title": "Recenzja",
+            "visible": "Widoczna",
+            "invisible": "Niewidoczna",
+            "submit": "Zamknij",
+            "cancel": "Usuń",
+            "success_message": "Recenzja została usunięta pomyślnie",
+            "error_message": "Wystąpił błąd podczas usuwania recenzji"
          }
       }
    },
