@@ -6,10 +6,26 @@
    position: relative;
    align-items: flex-end;
 
+   &.disabled {
+      button {
+         background-color: variables.$blue-gray-100;
+         color: variables.$gray-200;
+      }
+
+      svg:last-child {
+         visibility: hidden;
+      }
+
+      button:hover {
+         cursor: not-allowed;
+         background-color: variables.$blue-gray-100;
+      }
+   }
+
    button {
       color: variables.$gray-300;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       border-radius: 5px;
       padding: 0.5rem 1rem;
@@ -30,12 +46,21 @@
 
    .option_wrapper {
       background-color: variables.$blue-gray-100;
+      padding-right: 5px;
 
       svg {
          font-size: 1.5rem;
       }
 
       &:hover {
+         background-color: variables.$blue-gray-200;
+      }
+
+      .expand {
+         transform: rotate(90deg);
+      }
+
+      &.active {
          background-color: variables.$blue-gray-200;
       }
    }
@@ -55,6 +80,18 @@
       border: 0.5px solid variables.$blue-gray-100;
       width: fit-content;
       max-width: 130px;
+      max-height: calc((2.3rem + 5px) * 5);
+      overflow-y: auto;
+      z-index: 3;
+
+      &:empty {
+         display: none;
+      }
+
+      &::-webkit-scrollbar {
+         width: 6px;
+         height: 6px;
+      }
 
       .option {
          width: 100%;
@@ -63,11 +100,11 @@
          padding: 0.7rem 0.5rem;
 
          &:hover,
-         &:focus {
+         &.selected {
             background-color: variables.$blue-gray-100;
          }
 
-         &:focus {
+         &:focus-visible {
             outline: 2px solid variables.$gray-200;
          }
       }

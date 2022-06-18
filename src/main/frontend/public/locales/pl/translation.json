@@ -26,10 +26,11 @@
          "choose_file": "Wybierz Plik"
       },
       "roles": {
-         "admin": "ADMINISTRATOR",
-         "moderator": "MODERATOR",
-         "client": "KLIENT",
-         "photographer": "FOTOGRAF"
+         "administrator": "Administrator",
+         "moderator": "Moderator",
+         "client": "Klient",
+         "photographer": "Fotograf",
+         "guest": "Niezalogowany"
       }
    },
    "exception": {
@@ -337,5 +338,8 @@
             "availability_time": "Podano niepoprawny zakres"
          }
       }
+   },
+   "sidebar": {
+      "changed_role_message": "Pomyślnie zmieniono rolę na {{role}}"
    }
 }

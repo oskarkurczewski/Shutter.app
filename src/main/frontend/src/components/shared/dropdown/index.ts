@@ -1,3 +1,4 @@
 export * from "./Dropdown";
-export * from "./IconDropdown";
-export * from "./LanguageDropdown";
+export * from "./multi-select-dropdown";
+export * from "./menu-dropdown";
+export * from "./icon-dropdown";
