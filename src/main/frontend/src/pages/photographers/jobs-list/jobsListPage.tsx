@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "./jobsListPage.module.scss";
 import { Calendar } from "components/shared/calendar";
-import { Button, Card, Loader, TextInput } from "components/shared";
+import { Button, Card, TextInput } from "components/shared";
 import {
    useGetAvailabityHoursQuery,
    useGetJobListMutation,
@@ -9,30 +9,38 @@ import {
 import { useTranslation } from "react-i18next";
 import { DateTime } from "luxon";
 import { ReservationBox } from "components/reservations";
-import { useAppSelector } from "redux/hooks";
-import { AvailabilityHour, Reservation } from "types";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { AvailabilityHour, ErrorResponse, Reservation, Toast } from "types";
 import { parseToAvailabilityHour } from "redux/converters";
+import { parseError } from "util/errorUtil";
+import { push, ToastTypes } from "redux/slices/toastSlice";
 
 export const JobsListPage = () => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
    const { username } = useAppSelector((state) => state.auth);
 
    const [filter, setFilter] = useState("");
    const [dateFrom, setDateFrom] = useState(DateTime.local().startOf("week"));
+   const [availability, setAvailability] = useState<AvailabilityHour[]>([]);
 
-   const { data: availability } = useGetAvailabityHoursQuery(username);
+   const availabilityQuery = useGetAvailabityHoursQuery(username);
    const [getJobsMutation, getJobsMutationState] = useGetJobListMutation();
 
-   const [availabilityData, setAvailabilityData] = useState<AvailabilityHour[]>([]);
+   const sendRequest = () => {
+      getJobsMutation({
+         date: dateFrom.toFormat("yyyy-LL-dd"),
+         name: filter ? filter : undefined,
+      });
+   };
 
+   // Parse availability
    useEffect(() => {
-      availability && setAvailabilityData(parseToAvailabilityHour(availability));
-   }, [availability]);
+      availabilityQuery.data &&
+         setAvailability(parseToAvailabilityHour(availabilityQuery.data));
+   }, [availabilityQuery.data]);
 
-   useEffect(() => {
-      getJobsMutation({ date: dateFrom.toFormat("yyyy-LL-dd") });
-   }, [filter, dateFrom]);
-
+   // Parse reservations
    const reservations: Reservation[] = useMemo(
       () =>
          getJobsMutationState.data?.map((reservation) => ({
@@ -45,11 +53,32 @@ export const JobsListPage = () => {
       [getJobsMutationState.data]
    );
 
+   // Send request on date change
+   useEffect(() => {
+      sendRequest();
+   }, [dateFrom]);
+
+   // Handle errors
+   useEffect(() => {
+      let err: string;
+
+      availabilityQuery.isError &&
+         (err = parseError(availabilityQuery.error as ErrorResponse));
+      getJobsMutationState.isError &&
+         (err = parseError(getJobsMutationState.error as ErrorResponse));
+
+      const errorToast: Toast = {
+         type: ToastTypes.ERROR,
+         text: t(err),
+      };
+      err && dispatch(push(errorToast));
+   }, [availabilityQuery.isError, getJobsMutationState.isError]);
+
    return (
       <section className={styles.jobs_list_page_wrapper}>
          <Card className={styles.calendar_wrapper}>
             <Calendar
-               availability={availabilityData}
+               availability={availability}
                isLoading={getJobsMutationState.isLoading}
                reservations={reservations}
                className={styles.calendar_wrapper}
@@ -66,20 +95,19 @@ export const JobsListPage = () => {
                   <p className="section-title">
                      {t("photographer_jobs_page.search_client")}
                   </p>
-                  <div>
+                  <form
+                     onSubmit={(e) => {
+                        e.preventDefault();
+                        sendRequest();
+                     }}
+                  >
                      <TextInput
                         placeholder={t("global.label.search")}
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
                      />
-                     <Button
-                        onClick={() => {
-                           console.log("Szukaj");
-                        }}
-                     >
-                        Szukaj
-                     </Button>
-                  </div>
+                     <Button onClick={() => sendRequest()}>Szukaj</Button>
+                  </form>
                </Card>
             </div>
             <Card className={`${styles.card_wrapper} ${styles.content}`}>
@@ -95,7 +123,6 @@ export const JobsListPage = () => {
                            key={index}
                            reservation={reservation}
                            reservationFor="photogapher"
-                           onShow={() => console.log("show")}
                            onCancel={() => console.log("cancel")}
                         />
                      ));

@@ -5,19 +5,16 @@ import { Button } from "components/shared";
 import { DateTime } from "luxon";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 type Props =
    | {
         reservation: ReservationResponse;
-        onShow: () => void;
         onReport?: () => void;
         onCancel?: never;
         reservationFor: "photogapher" | "client";
      }
    | {
         reservation: ReservationResponse;
-        onShow: () => void;
         onReport?: never;
         onCancel?: () => void;
         reservationFor: "photogapher" | "client";
@@ -26,12 +23,10 @@ type Props =
 export const ReservationBox: React.FC<Props> = ({
    reservation,
    reservationFor,
-   onShow,
    onReport,
    onCancel,
 }) => {
    const { t, i18n } = useTranslation();
-   const navigate = useNavigate();
 
    const timeFrom = DateTime.fromISO(reservation.from);
    const timeTo = DateTime.fromISO(reservation.from);
