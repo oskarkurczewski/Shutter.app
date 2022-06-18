@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Availability;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.time.LocalTime;
 
 public class AvailabilityValidator implements ConstraintValidator<Availability, EditAvailabilityDto> {
 
@@ -15,6 +16,6 @@ public class AvailabilityValidator implements ConstraintValidator<Availability, 
 
     @Override
     public boolean isValid(EditAvailabilityDto dto, ConstraintValidatorContext ctx) {
-        return dto.getFrom().isBefore(dto.getTo());
+        return dto.getFrom().isBefore(dto.getTo()) || dto.getTo().equals(LocalTime.MIDNIGHT);
     }
 }
