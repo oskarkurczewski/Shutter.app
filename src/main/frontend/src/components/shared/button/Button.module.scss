@@ -12,8 +12,10 @@
    width: fit-content;
    overflow: hidden;
 
-   button {
+   button,
+   a {
       border: none;
+      color: variables.$white;
       background-color: transparent;
       font-size: 1rem;
       padding: 0.66rem;

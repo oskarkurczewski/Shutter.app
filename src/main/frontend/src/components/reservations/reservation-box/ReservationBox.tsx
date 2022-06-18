@@ -5,6 +5,7 @@ import { Button } from "components/shared";
 import { DateTime } from "luxon";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 type Props =
    | {
@@ -30,6 +31,7 @@ export const ReservationBox: React.FC<Props> = ({
    onCancel,
 }) => {
    const { t, i18n } = useTranslation();
+   const navigate = useNavigate();
 
    const timeFrom = DateTime.fromISO(reservation.from);
    const timeTo = DateTime.fromISO(reservation.from);
@@ -63,9 +65,12 @@ export const ReservationBox: React.FC<Props> = ({
                </div>
             </div>
             <div className={styles.footer}>
-               <Button className={styles.button} onClick={onShow}>
+               <Button className={styles.button} href={`#reservation-${reservation.id}`}>
                   {t("global.label.show")}
                </Button>
+               {/* <a href={`#reservation-${reservation.id}`}>
+                  <p className="label-bold">SHOW</p>
+               </a> */}
                {onReport && (
                   <Button className={styles.button} onClick={onReport}>
                      {t("global.label.report")}
