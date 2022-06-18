@@ -57,6 +57,13 @@ public class ProfileService {
         facade.update(photographer);
     }
 
+    /**
+     * Metoda zmieniająca specjalizacje wskazanego fotografa
+     *
+     * @param photographer       fotograf, którego specjalizacje zmieniamy
+     * @param newSpecializations nowa lista specjalizacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(changeSpecializations)
     public void changeSpecializations(PhotographerInfo photographer, List<Specialization> newSpecializations) throws BaseApplicationException {
         photographer.setSpecializationList(newSpecializations);
