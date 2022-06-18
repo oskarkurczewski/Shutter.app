@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./dashboardPage.module.scss";
-import { Button, Card, TimeInput } from "components/shared";
+import { Button, Card } from "components/shared";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
 
@@ -20,9 +20,6 @@ export const DashboardPage = () => {
                Logout
             </Button>
          )}
-         <Card>
-            <TimeInput value={time} onChange={(value) => setTime(value)} />
-         </Card>
       </section>
    );
 };

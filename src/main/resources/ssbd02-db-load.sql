@@ -57,7 +57,7 @@ ON CONFLICT DO NOTHING;
 
 INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible,
                                       created_at)
-VALUES (1, 3, 5, 2137, 'Zucchini can be seasoned with shredded strawberries, also try soaking the stew with tea.', 10,
+VALUES (1, 3, 5, 1, 'Zucchini can be seasoned with shredded strawberries, also try soaking the stew with tea.', 10,
         20, true, current_timestamp)
 ON CONFLICT DO NOTHING;
 

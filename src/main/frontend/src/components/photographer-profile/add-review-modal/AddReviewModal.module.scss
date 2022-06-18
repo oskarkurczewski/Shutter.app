@@ -1,0 +1,31 @@
+@use "variables.scss" as variables;
+
+.add_review_modal {
+   .review_form {
+      min-width: 40rem;
+      > * {
+         margin: 1rem;
+      }
+
+      .review_stars {
+         align-items: flex-start;
+         justify-content: flex-start;
+         width: fit-content;
+      }
+
+      p {
+         font-size: 1rem;
+         margin-bottom: 5px;
+         color: variables.$gray-300;
+         font-weight: 600;
+      }
+
+      .desc_field {
+         div {
+            textarea {
+               min-height: 10rem !important;
+            }
+         }
+      }
+   }
+}

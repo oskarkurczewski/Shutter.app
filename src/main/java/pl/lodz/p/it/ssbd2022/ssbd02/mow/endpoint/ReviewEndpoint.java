@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.GetReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
@@ -134,6 +135,13 @@ public class ReviewEndpoint extends AbstractEndpoint {
         String user = authCtx.getCurrentUsersLogin();
         Account account = accountService.findByLogin(user);
         reviewService.unlikeReview(account, review);
+    }
+    
+    
+    @RolesAllowed(listAllReports)
+    public GetReviewDto getReviewById(Long reviewId) throws BaseApplicationException {
+        Review review = reviewService.findById(reviewId);
+        return new GetReviewDto(review);
     }
 
     @PermitAll

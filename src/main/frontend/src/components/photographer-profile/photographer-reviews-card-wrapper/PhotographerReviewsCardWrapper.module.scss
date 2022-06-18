@@ -43,8 +43,15 @@
                }
 
                .add_review_button {
+                  background: none;
                   button {
                      padding: 19px;
+                     border-radius: 7px;
+                     display: flex;
+                     flex-direction: row;
+                     height: 2.3rem;
+                     justify-content: center;
+                     align-items: center;
                   }
                }
             }

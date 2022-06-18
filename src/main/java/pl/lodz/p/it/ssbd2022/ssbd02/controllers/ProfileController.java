@@ -2,6 +2,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.GetReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotoEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReviewEndpoint;
@@ -101,6 +105,13 @@ public class ProfileController extends AbstractController {
             throws BaseApplicationException {
         repeat(() -> reviewEndpoint.deleteOwnPhotographerReview(reviewId), reviewEndpoint);
         return Response.status(Response.Status.OK).build();
+    }
+
+    @GET
+    @Path("/review/{id}")
+    public GetReviewDto getReviewById(@PathParam("id") Long reviewId)
+            throws BaseApplicationException {
+        return repeat(() -> reviewEndpoint.getReviewById(reviewId), reviewEndpoint);
     }
 
     @DELETE
