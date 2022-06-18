@@ -3,7 +3,10 @@
 .sidebar_wrapper {
    grid-area: sidebar;
    padding: 10px;
-
+   position: fixed;
+   right: 0;
+   top: 0;
+   height: 100%;
    background-color: variables.$white;
    box-shadow: 0px 4px 10px 0px #00000026;
    display: flex;

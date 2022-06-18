@@ -6,10 +6,10 @@ import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useRefreshTokenMutation } from "redux/service/authService";
-import { login } from "redux/slices/authSlice";
+import { login, logout } from "redux/slices/authSlice";
 import { ToastTypes, push } from "redux/slices/toastSlice";
 import { Toast } from "types";
-import { getLoginPayload } from "util/loginUtil";
+import { getLoginPayload, getTokenExp } from "util/loginUtil";
 
 export const PageLayout: React.FC = () => {
    const { t } = useTranslation();
@@ -37,9 +37,21 @@ export const PageLayout: React.FC = () => {
       [t]
    );
 
+   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
+      dispatch(login(getLoginPayload()));
+   } else {
+      dispatch(logout());
+   }
+
    useEffect(() => {
       if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) dispatch(push(sessionToast));
       const timeoutID = setInterval(() => {
+         // logout automatically
+         if (exp < Date.now()) {
+            return dispatch(logout());
+         }
+
+         // push notification for session renewal
          if (exp !== 0 && exp - Date.now() < 1000 * 60 * 2) {
             dispatch(push(sessionToast));
          }

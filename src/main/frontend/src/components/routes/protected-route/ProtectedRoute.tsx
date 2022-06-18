@@ -14,9 +14,13 @@ export const ProtectedRoute = ({ roles, children }: Props) => {
 
    useEffect(() => {
       if (!roles.includes(level)) {
-         navigate(-1);
+         if (level == AccessLevel.GUEST) {
+            navigate("/login");
+         } else {
+            navigate("/");
+         }
       }
-   }, []);
+   }, [level]);
 
    return <>{children}</>;
 };

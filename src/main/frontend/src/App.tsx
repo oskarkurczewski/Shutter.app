@@ -29,14 +29,6 @@ import {
 import { ReservationsListPage } from "pages/users";
 
 function App() {
-   const dispatch = useAppDispatch();
-
-   if (localStorage.getItem("token") && Date.now() < getTokenExp()) {
-      dispatch(login(getLoginPayload()));
-   } else {
-      dispatch(logout());
-   }
-
    return (
       <Suspense fallback={<SuspenseLoader />}>
          <BrowserRouter>
