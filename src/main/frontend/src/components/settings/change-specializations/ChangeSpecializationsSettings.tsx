@@ -39,7 +39,7 @@ export const ChangeSpecializationsSettings: React.FC = () => {
       if (editSpecializationsMutationState.isError) {
          const errorToast: Toast = {
             type: ToastTypes.ERROR,
-            text: t("exception.error_update"),
+            text: t("toast.error_update"),
          };
          dispatch(push(errorToast));
       }
