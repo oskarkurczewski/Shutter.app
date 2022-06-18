@@ -1,4 +1,5 @@
 import { PhotographerAddImageModal } from "components/photographer-profile/photographer-add-image-modal";
+import { PhotoGrid } from "components/photos";
 import { Card, DragAndDrop } from "components/shared";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,6 +28,7 @@ export const PhotographerGalleryPage = () => {
                onCancel={() => setModalOpen(false)}
                onSubmit={() => setModalOpen(false)}
             />
+            <PhotoGrid />
          </Card>
       </div>
    );

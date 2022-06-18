@@ -1,0 +1,27 @@
+@use "variables.scss" as variables;
+
+.photo_grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   grid-auto-rows: 270px;
+   background-color: variables.$white;
+   margin-top: 1.5rem;
+   gap: 1.5rem;
+
+   .photo_grid_item {
+      & > div {
+         width: 100%;
+      }
+      img {
+         object-fit: cover;
+         height: 270px;
+      }
+   }
+
+   .no_photos {
+      display: flex;
+      grid-column: 2;
+      align-items: center;
+      text-align: center;
+   }
+}
