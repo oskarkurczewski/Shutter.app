@@ -1,20 +1,17 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./photographersListPage.module.scss";
 import { useTranslation } from "react-i18next";
-import type { TFunction } from "react-i18next";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { Button, Card, IconText, TextInput } from "components/shared";
+import { Card, TextInput } from "components/shared";
 import { FaSearch } from "react-icons/fa";
-import { DetailedPhotographerInfo, PhotographerListRequest } from "redux/types/api";
-import { Specialization } from "types/Specializations";
-import { useNavigate } from "react-router-dom";
-import type { NavigateFunction } from "react-router-dom";
+import { PhotographerListRequest } from "redux/types/api";
 import { useGetPhotographerListMutation } from "redux/service/photographerService";
 import useDebounce from "hooks/useDebounce";
+import { DisabledDropdown, ListElement } from "components/photographers-list";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const PhotographersListPage = () => {
    const { t } = useTranslation();
-   const navigate = useNavigate();
 
    const [photographerSearchFilters, setPhotographerSearchFilters] =
       useState<PhotographerListRequest>({
@@ -54,6 +51,11 @@ export const PhotographersListPage = () => {
       });
    };
 
+   const variants = {
+      initial: { opacity: 0 },
+      visible: { opacity: 1 },
+   };
+
    return (
       <>
          <section className={`${styles.container}`}>
@@ -82,7 +84,7 @@ export const PhotographersListPage = () => {
             </div>
          </section>
 
-         <section className={styles.container}>
+         <div className={styles.container}>
             <div className={styles.header}>
                <span className="category-title">
                   {t("photographer_list_page.photographers")}
@@ -90,109 +92,18 @@ export const PhotographersListPage = () => {
                <div className={styles.delimiter} />
                <div className={styles.functional}>
                   <p>{t("photographer_list_page.results", { count: 69 })}</p>
-                  <DisabledDropdown label="LIST" />
-                  <DisabledDropdown label="A-Z" />
+                  <DisabledDropdown label="LIST" className={styles.dropdown} />
+                  <DisabledDropdown label="A-Z" className={styles.dropdown} />
                </div>
             </div>
             <div className={`${styles.content} ${styles.list}`}>
-               {photographersListResponse.list?.map((obj) => (
-                  <ListElement data={obj} t={t} navigate={navigate} key={obj.login} />
-               ))}
-               {/* <ListElement role={role} data={data} t={t} navigate={navigate} />
-               <ListElement role={role} data={data} t={t} navigate={navigate} />
-               <ListElement role={role} data={data} t={t} navigate={navigate} /> */}
+               <AnimatePresence>
+                  {photographersListResponse.list?.map((obj, i) => (
+                     <ListElement custom={i} data={obj} key={obj.login} styles={styles} />
+                  ))}
+               </AnimatePresence>
             </div>
-         </section>
+         </div>
       </>
    );
-};
-
-interface DisabledDropdownProps {
-   label: string;
-}
-
-const DisabledDropdown: FC<DisabledDropdownProps> = ({ label }) => {
-   return (
-      <div className={styles.dropdown}>
-         <p className="label">{label}</p>
-         <MdKeyboardArrowRight />
-      </div>
-   );
-};
-
-interface ListElementProps {
-   data?: DetailedPhotographerInfo;
-   t: TFunction<"translation", undefined>;
-   navigate: NavigateFunction;
-}
-
-const ListElement: FC<ListElementProps> = ({ data, t, navigate }) => {
-   const { name, surname, specializations, score, reviewCount, login } = data;
-
-   return (
-      <Card className={`${styles.card} ${styles["list_element"]}`}>
-         <div className={styles["avatar_wrapper"]}>
-            <div className={styles.avatar}>
-               <img
-                  src="https://cdn.galleries.smcloud.net/t/galleries/gf-hTB5-Uktt-KEJc_norbert-dis-gierczak-664x442.jpg"
-                  alt="fotograf"
-               />
-            </div>
-            <div>
-               <p className="section-title">
-                  {name} {surname}
-               </p>
-               <p className="label">{t("photographer_list_page.photographer")}</p>
-            </div>
-         </div>
-         <div className={styles.specialization_container}>
-            {specializations.map((v) => (
-               <SpecializationTag
-                  key={v}
-                  text={t(`global.specialization.${v.toLocaleLowerCase()}`)}
-                  specialization={v}
-               />
-            ))}
-         </div>
-
-         <div className={styles.score_container}>
-            <p className="label">
-               {score.toPrecision(2)} (
-               {t("photographer_list_page.reviews", { count: reviewCount })})
-            </p>
-         </div>
-
-         <div className={styles.button_container}>
-            <Button
-               className={styles.gallery_button}
-               onClick={() => navigate(`/profile/${login}`)}
-            >
-               {t("photographer_list_page.profile")}
-            </Button>
-            <Button onClick={() => navigate(`/profile/${login}/#callendar`)}>
-               {t("photographer_list_page.hire")}
-            </Button>
-         </div>
-      </Card>
-   );
-};
-
-interface SpecializationTagProps {
-   text: string;
-   specialization: Specialization;
-}
-
-const SpecializationTag: FC<SpecializationTagProps> = ({ text, specialization }) => {
-   switch (specialization) {
-      case Specialization.SPECIALIZATION_LANDSCAPE:
-         return <IconText className={styles.specialization} color="green" text={text} />;
-      case Specialization.SPECIALIZATION_PHOTOREPORT:
-         return <IconText className={styles.specialization} color="red" text={text} />;
-      case Specialization.SPECIALIZATION_PRODUCT:
-         return <IconText className={styles.specialization} color="blue" text={text} />;
-      case Specialization.SPECIALIZATION_STUDIO:
-         return <IconText className={styles.specialization} color="purple" text={text} />;
-      default:
-         return <IconText className={styles.specialization} text="..." />;
-   }
 };

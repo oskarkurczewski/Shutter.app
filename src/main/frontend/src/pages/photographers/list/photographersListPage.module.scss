@@ -90,6 +90,10 @@
          row-gap: 15px;
       }
 
+      .card_wrapper {
+         width: 100%;
+      }
+
       .card {
          display: flex;
          flex-direction: column;
@@ -99,10 +103,10 @@
 
          &.list_element {
             width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
+            display: grid;
+            grid-template-columns: 2fr 4fr 1fr 1fr;
+            grid-template-areas: "avatar specializations score buttons";
+
             column-gap: 10px;
             padding-right: 25px;
 
@@ -111,6 +115,7 @@
                justify-content: space-between;
                column-gap: 15px;
                align-items: center;
+               grid-area: avatar;
 
                .avatar {
                   height: 70px;
@@ -133,11 +138,11 @@
                flex-direction: row;
                flex-wrap: wrap;
                gap: 8px 10px;
-               max-width: 50%;
+               grid-area: specializations;
 
                .specialization {
                   border-radius: 100vmax;
-                  width: fit-content;
+                  height: min-content;
 
                   p {
                      font-size: 0.9rem;
@@ -151,20 +156,22 @@
                height: 100%;
                display: flex;
                flex-direction: column;
-               align-items: center;
+               align-items: flex-end;
                justify-content: center;
                white-space: nowrap;
+               justify-self: end;
+               grid-area: score;
             }
 
             .button_container {
                display: flex;
                flex-direction: row;
-               justify-content: center;
+               justify-content: flex-end;
 
                align-items: center;
                gap: 10px 15px;
-               flex-grow: 2;
                flex-wrap: wrap;
+               grid-area: buttons;
 
                @include variables.xxl {
                   flex-wrap: nowrap;
