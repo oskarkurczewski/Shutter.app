@@ -7,7 +7,6 @@ import { RiFileList2Fill } from "react-icons/ri";
 import { MdFactCheck } from "react-icons/md";
 import { Stars } from "../../shared/stars";
 import { useTranslation } from "react-i18next";
-import { review } from "pages/reports/headers";
 
 interface Props {
    name: string;
