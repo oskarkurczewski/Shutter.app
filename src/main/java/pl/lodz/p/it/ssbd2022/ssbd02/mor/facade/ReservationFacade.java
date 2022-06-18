@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -16,13 +18,13 @@ import javax.interceptor.Interceptors;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.showReservations;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MorFacadeAccessInterceptor.class})
@@ -112,73 +114,120 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
         return "%" + s + "%";
     }
 
-
-    /**
-     * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
-     *
-     * @param account        konto użytkownika, dla którego pobierane są rezerwacje
-     * @param page           numer strony
-     * @param recordsPerPage liczba recenzji na stronę
-     * @param order          kolejność sortowania względem kolumny time_from
-     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
-     * @return Reservation      lista rezerwacji
-     * @throws BaseApplicationException niepowodzenie operacji
-     */
-    @RolesAllowed(showReservations)
-    public List<Reservation> getReservationsForUser(Account account, String name, int page, int recordsPerPage, String order, Boolean getAll)
-            throws BaseApplicationException {
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
-        Root<Reservation> table = query.from(Reservation.class);
-        query.select(table);
-
+    private <T> void addFilterQuery(CriteriaQuery<T> query, CriteriaBuilder criteriaBuilder, Root<Reservation> table, String order) throws WrongParameterException {
         try {
             switch (order) {
                 case "asc": {
-                    query.orderBy(criteriaBuilder.asc(table.get("from")));
+                    query.orderBy(criteriaBuilder.asc(table.get("timeFrom")));
                     break;
                 }
                 case "desc": {
-                    query.orderBy(criteriaBuilder.desc(table.get("from")));
+                    query.orderBy(criteriaBuilder.desc(table.get("timeFrom")));
                     break;
                 }
             }
         } catch (IllegalArgumentException e) {
             throw ExceptionFactory.wrongParameterException();
         }
+    }
 
-        if (getAll) {
-            query.where(criteriaBuilder.equal(table.get("account"), account.getId()));
-        } else {
-            if (name != null && !name.equals("")) {
-                query.where(criteriaBuilder.and(
-                        criteriaBuilder.or(
-                                criteriaBuilder.like(
-                                        criteriaBuilder.lower(table.get("account").get("name")), addPercent(name.toLowerCase())),
-                                criteriaBuilder.like(
-                                        criteriaBuilder.lower(table.get("account").get("surname")), addPercent(name.toLowerCase()))
-                        )), (
-                        (criteriaBuilder.and(
-                                criteriaBuilder.equal(table.get("account"), account.getId()),
-                                criteriaBuilder.greaterThan(table.get("from"), LocalDateTime.now())
-                        ))
+    /**
+     * Dodaje do danej kwerendy szukanie po frazie znajdującej się w imieniu bądź nazwisku danego
+     * użytkownika
+     *
+     * @param table tabela, z której kwerenda będzie pobierać informacje kwerenda
+     * @param name  fraza, która ma być wyszukiwana w imieniu lub nazwisku
+     */
+    private Predicate addByNameSurnameSearchToQuery(CriteriaBuilder criteriaBuilder, Root<Reservation> table, String name) {
+        return criteriaBuilder.or(criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("name")), addPercent(name.toLowerCase())), criteriaBuilder.like(criteriaBuilder.lower(table.get("account").get("surname")), addPercent(name.toLowerCase())));
+    }
 
-                ));
-            } else {
-                query.where(criteriaBuilder.and(
-                        criteriaBuilder.equal(table.get("account"), account.getId()),
-                        criteriaBuilder.greaterThan(table.get("from"), LocalDateTime.now())
-                ));
-            }
+    /**
+     * Dodaje do danej kwerendy szukanie po frazie znajdującej się w imieniu bądź nazwisku danego
+     * użytkownika
+     *
+     * @param table     tabela, z której kwerenda będzie pobierać informacje kwerenda
+     * @param localDate tydzień, dla którego ma być wyszukiwana rezerwacja
+     */
+    private Predicate addInWeekSearchToQuery(CriteriaBuilder criteriaBuilder, Root<Reservation> table, LocalDate localDate) {
+        return criteriaBuilder.and(
+                criteriaBuilder.greaterThanOrEqualTo(table.get("timeFrom"), localDate.atStartOfDay()),
+                criteriaBuilder.lessThan(table.get("timeTo"), localDate.plusDays(7).atStartOfDay()));
+    }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
+     *
+     * @param account konto użytkownika, dla którego pobierane są rezerwacje
+     * @param order   kolejność sortowania względem kolumny time_from
+     * @param getAll  flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @RolesAllowed(showReservations)
+    public List<Reservation> getReservationsForUser(Account account, String name, String order, Boolean getAll, LocalDate localDate) throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
+        Root<Reservation> table = query.from(Reservation.class);
+        query.select(table);
+        List<Predicate> predicates = new ArrayList<Predicate>(3);
+        predicates.add(criteriaBuilder.equal(table.get("account"), account.getId()));
+        addFilterQuery(query, criteriaBuilder, table, order);
+
+        if (!getAll) {
+            predicates.add(addInWeekSearchToQuery(criteriaBuilder, table, localDate));
         }
+        if (name != null && !name.equals("")) {
+            predicates.add(addByNameSurnameSearchToQuery(criteriaBuilder, table, name));
+        }
+        Predicate[] predArray = new Predicate[predicates.size()];
+        predicates.toArray(predArray);
+        query.where(predArray);
 
         try {
-            return em
-                    .createQuery(query)
-                    .setFirstResult(recordsPerPage * (page - 1))
-                    .setMaxResults(recordsPerPage)
-                    .getResultList();
+            return em.createQuery(query).getResultList();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param photographerInfo konto fotografa, dla którego pobierane są rezerwacje
+     * @param order            kolejność sortowania względem kolumny time_from
+     * @param getAll           flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @RolesAllowed(showJobs)
+    public List<Reservation> getJobsForPhotographer(PhotographerInfo photographerInfo, String name, String order, Boolean getAll, LocalDate localDate) throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
+        Root<Reservation> table = query.from(Reservation.class);
+        query.select(table);
+        List<Predicate> predicates = new ArrayList<Predicate>(3);
+        predicates.add(criteriaBuilder.equal(table.get("photographer").get("id"), photographerInfo.getId()));
+        addFilterQuery(query, criteriaBuilder, table, order);
+
+        if (!getAll) {
+            predicates.add(addInWeekSearchToQuery(criteriaBuilder, table, localDate));
+        }
+        if (name != null && !name.equals("")) {
+            predicates.add(addByNameSurnameSearchToQuery(criteriaBuilder, table, name));
+        }
+        Predicate[] predArray = new Predicate[predicates.size()];
+        predicates.toArray(predArray);
+        query.where(predArray);
+
+        try {
+            return em.createQuery(query).getResultList();
         } catch (NoResultException e) {
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {

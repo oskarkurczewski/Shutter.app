@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NameSurnameQuery;
@@ -12,6 +13,9 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Path("/reservation")
@@ -50,11 +54,10 @@ public class ReservationController extends AbstractController {
     /**
      * Punkt końcowy pozwalający na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param name           imię lub nazwisko do wyszukania
-     * @param pageNo         numer strony
-     * @param recordsPerPage liczba recenzji na stronę
-     * @param order          kolejność sortowania względem kolumny time_from
-     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param name   imię lub nazwisko do wyszukania
+     * @param order  kolejność sortowania względem kolumny time_from
+     * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param date   poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
      * @return ReservationListEntryDto      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -63,19 +66,53 @@ public class ReservationController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationListEntryDto> listReservations(
             @NameSurnameQuery @QueryParam("name") String name,
-            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
-            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
-            @QueryParam("all") @DefaultValue("false") Boolean getAll
+            @QueryParam("all") @DefaultValue("false") Boolean getAll,
+            @QueryParam("date") String date
     ) throws BaseApplicationException {
-        return reservationEndpoint.listReservations(name, pageNo, recordsPerPage, order, getAll);
+        LocalDate localDate = null;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            localDate = LocalDate.parse(date, formatter);
+            if (!localDate.getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+                throw ExceptionFactory.wrongDateException();
+            }
+        } catch (Exception e) {
+            throw ExceptionFactory.wrongDateException();
+        }
+        return reservationEndpoint.listReservations(name, order, getAll, localDate);
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param name   imię lub nazwisko do wyszukania
+     * @param order  kolejność sortowania względem kolumny time_from
+     * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param date   poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @GET
     @Path("/my-jobs")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReservationListEntryDto> listJobs() {
-        throw new UnsupportedOperationException();
+    public List<ReservationListEntryDto> listJobs(
+            @NameSurnameQuery @QueryParam("name") String name,
+            @QueryParam("order") @Order @DefaultValue("asc") String order,
+            @QueryParam("all") @DefaultValue("false") Boolean getAll,
+            @QueryParam("date") String date
+    ) throws BaseApplicationException {
+        LocalDate localDate = null;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            localDate = LocalDate.parse(date, formatter);
+            if (!localDate.getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+                throw ExceptionFactory.wrongDateException();
+            }
+        } catch (Exception e) {
+            throw ExceptionFactory.wrongDateException();
+        }
+        return reservationEndpoint.listJobs(name, order, getAll, localDate);
     }
 
     /**

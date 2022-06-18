@@ -353,8 +353,8 @@ public class AccountController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public ListResponseDto<TableAccountDto> getAccountList(
-            @QueryParam("pageNo") @DefaultValue("1") int pageNo,
-            @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
+            @QueryParam("pageNo") @DefaultValue("1") Integer pageNo,
+            @QueryParam("recordsPerPage") @NotNull Integer recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
             @QueryParam("login") String login,

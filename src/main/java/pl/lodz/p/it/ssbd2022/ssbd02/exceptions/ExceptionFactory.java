@@ -129,6 +129,10 @@ public class ExceptionFactory {
         return new WrongParameterException("exception.search_wrong_parameter");
     }
 
+    public static WrongParameterException wrongDateException() {
+        return new WrongParameterException("exception.wrong_date_parameter");
+    }
+
     public static WrongParameterException wrongCauseNameException() {
         return new WrongParameterException("exception.wrong_cause_name");
     }
