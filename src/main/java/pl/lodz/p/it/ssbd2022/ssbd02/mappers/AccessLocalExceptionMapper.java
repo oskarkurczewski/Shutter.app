@@ -15,6 +15,6 @@ import javax.ws.rs.ext.Provider;
 public class AccessLocalExceptionMapper implements ExceptionMapper<AccessLocalException> {
     @Override
     public Response toResponse(AccessLocalException e) {
-        return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorDto("exception.account.unauthorized")).build();
+        return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorDto("exception.account_unauthorized")).build();
     }
 }

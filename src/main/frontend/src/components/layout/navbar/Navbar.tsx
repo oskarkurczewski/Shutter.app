@@ -16,6 +16,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { AccessLevel } from "types/AccessLevel";
 import { useAppSelector } from "redux/hooks";
 import { useTranslation } from "react-i18next";
+import { LogoutModal } from "../logout-modal/LogoutModal";
 
 export const Navbar = () => {
    const { t } = useTranslation();
@@ -24,6 +25,7 @@ export const Navbar = () => {
    const path = location.pathname;
 
    const [expanded, setExpanded] = useState(false);
+   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
    const { accessLevel = AccessLevel.GUEST } = useAppSelector((state) => state.auth);
 
@@ -79,11 +81,10 @@ export const Navbar = () => {
                   />
                ) : (
                   <BarButton
-                     to="dashboard"
+                     onClick={() => setLogoutModalOpen(true)}
                      icon={<RiLogoutBoxRLine />}
                      text={t("navbar.buttons.logout")}
                      expanded={expanded}
-                     active={path === "/dashboard"}
                   />
                )}
             </div>
@@ -94,6 +95,8 @@ export const Navbar = () => {
          >
             <MdKeyboardArrowRight />
          </div>
+
+         <LogoutModal isOpen={logoutModalOpen} setIsOpen={setLogoutModalOpen} />
       </div>
    );
 };

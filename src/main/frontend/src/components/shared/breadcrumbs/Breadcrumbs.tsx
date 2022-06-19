@@ -19,7 +19,7 @@ export const Breadcrumbs = () => {
          fullURL += `${crumb}/`;
          return {
             fullURL,
-            url: crumb.replace("-", "_"),
+            url: crumb.split("-").join("_"),
          };
       });
 
