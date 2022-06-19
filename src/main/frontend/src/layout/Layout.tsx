@@ -10,6 +10,13 @@ import { login, logout } from "redux/slices/authSlice";
 import { ToastTypes, push } from "redux/slices/toastSlice";
 import { Toast } from "types";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
+import { motion } from "framer-motion";
+
+const variants = {
+   hidden: { opacity: 0, x: -200, y: 0 },
+   enter: { opacity: 1, x: 0, y: 0 },
+   exit: { opacity: 0, x: 0, y: -100 },
+};
 
 export const PageLayout: React.FC = () => {
    const { t } = useTranslation();
@@ -66,7 +73,16 @@ export const PageLayout: React.FC = () => {
          <Navbar />
          <div className={styles.content}>
             <Breadcrumbs />
-            <Outlet />
+            <motion.div
+               className={styles.wrapper}
+               variants={variants}
+               initial="hidden"
+               animate="enter"
+               exit="exit"
+               transition={{ type: "linear" }}
+            >
+               <Outlet />
+            </motion.div>
             <ToastHandler />
          </div>
          <Sidebar />

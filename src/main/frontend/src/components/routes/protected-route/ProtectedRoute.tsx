@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
+import { motion } from "framer-motion";
 
 interface Props {
    roles: AccessLevel[];
