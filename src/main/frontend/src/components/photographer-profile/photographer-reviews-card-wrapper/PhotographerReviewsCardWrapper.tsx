@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styles from "./PhotographerReviewsCardWrapper.module.scss";
 import { Button, Card, SquareButton } from "components/shared";
 import { useTranslation } from "react-i18next";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { PhotographerReview } from "../photographer-review";
 import { useGetPhotographerReviewsQuery } from "redux/service/reviewService";
 import AddReviewModal from "../add-review-modal/AddReviewModal";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 interface Props {
    photographerLogin: string;
    reviewCount: number;
@@ -44,39 +44,37 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
    };
 
    return (
-      <div className={styles.photographer_reviews_card_wrapper}>
-         <Card className={styles.data_wrapper}>
-            <div className={styles.reviews_wrapper}>
-               <div className={styles.top_wrapper}>
-                  <p className="section-title">{t("photographer_page.reviews")}</p>
-                  <div className={styles.top_buttons_wrapper}>
-                     <Button
-                        className={styles.add_review_button}
-                        onClick={openReviewModal}
-                        icon="add_box"
-                     >
-                        {t("photographer_page.add_review")}
-                     </Button>
-                     <SquareButton onClick={showPreviousReview}>
-                        <FaArrowLeft />
-                     </SquareButton>
-                     <SquareButton onClick={showNextReview}>
-                        <FaArrowRight />
-                     </SquareButton>
-                  </div>
+      <>
+         <Card className={styles.reviews_wrapper}>
+            <div className={styles.header}>
+               <p className="section-title">{t("photographer_page.reviews")}</p>
+               <div className={styles.top_buttons_wrapper}>
+                  <Button
+                     className={styles.add_review_button}
+                     onClick={openReviewModal}
+                     icon="add_box"
+                  >
+                     {t("photographer_page.add_review")}
+                  </Button>
+                  <SquareButton onClick={showPreviousReview}>
+                     <MdKeyboardArrowLeft />
+                  </SquareButton>
+                  <SquareButton onClick={showNextReview}>
+                     <MdKeyboardArrowRight />
+                  </SquareButton>
                </div>
-               {data && (
-                  <PhotographerReview
-                     id={data[0]?.id}
-                     name={data[0]?.name}
-                     surname={data[0]?.surname}
-                     stars={data[0]?.score}
-                     description={data[0]?.content}
-                     likeCount={data[0]?.likeCount}
-                     liked={data[0]?.liked}
-                  />
-               )}
             </div>
+            {data && (
+               <PhotographerReview
+                  id={data[0]?.id}
+                  name={data[0]?.name}
+                  surname={data[0]?.surname}
+                  stars={data[0]?.score}
+                  description={data[0]?.content}
+                  likeCount={data[0]?.likeCount}
+                  liked={data[0]?.liked}
+               />
+            )}
          </Card>
          <AddReviewModal
             isOpen={reviewModalIsOpen}
@@ -84,6 +82,6 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
             onSubmit={addReview}
             onCancel={closeReviewModal}
          />
-      </div>
+      </>
    );
 };
