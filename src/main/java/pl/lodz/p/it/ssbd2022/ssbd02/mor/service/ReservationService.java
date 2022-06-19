@@ -123,9 +123,9 @@ public class ReservationService {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param account        konto użytkownika, dla którego pobierane są rezerwacje
-     * @param order          kolejność sortowania względem kolumny time_from
-     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param account konto użytkownika, dla którego pobierane są rezerwacje
+     * @param order   kolejność sortowania względem kolumny time_from
+     * @param getAll  flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -147,6 +147,18 @@ public class ReservationService {
     @RolesAllowed(showJobs)
     public List<Reservation> listJobs(PhotographerInfo photographerInfo, String name, String order, Boolean getAll, LocalDate localDate) throws BaseApplicationException {
         return reservationFacade.getJobsForPhotographer(photographerInfo, name, order, getAll, localDate);
+    }
+
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
+     *
+     * @param photographerInfo konto użytkownika, dla którego pobierane są rezerwacje
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public List<Reservation> listPhotographerJobs(PhotographerInfo photographerInfo, LocalDate localDate) throws BaseApplicationException {
+        return reservationFacade.getJobsForPhotographer(photographerInfo, localDate);
     }
 
     /**

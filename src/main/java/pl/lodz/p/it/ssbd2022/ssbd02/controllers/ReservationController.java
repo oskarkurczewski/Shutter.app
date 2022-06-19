@@ -116,6 +116,33 @@ public class ReservationController extends AbstractController {
     }
 
     /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
+     *
+     * @param date poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @GET
+    @Path("/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ReservationCalendarEntryDto> listPhotographerJobs(
+            @NotNull @PathParam("login") String photographerLogin,
+            @QueryParam("date") String date
+    ) throws BaseApplicationException {
+        LocalDate localDate = null;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            localDate = LocalDate.parse(date, formatter);
+            if (!localDate.getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+                throw ExceptionFactory.wrongDateException();
+            }
+        } catch (Exception e) {
+            throw ExceptionFactory.wrongDateException();
+        }
+        return reservationEndpoint.listPhotographerJobs(photographerLogin, localDate);
+    }
+
+    /**
      * Punkt końcowy pozwalający na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
      * @param page           strona listy, którą należy pozyskać
