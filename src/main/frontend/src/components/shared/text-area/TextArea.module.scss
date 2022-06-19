@@ -36,10 +36,11 @@ div.text_area_wrapper {
          min-height: 43px;
          max-height: 350px;
          min-width: 250px;
+         border-radius: 10px;
          background-color: variables.$blue-gray-100;
          border: none;
          outline-color: variables.$blue-gray-300;
-         padding-left: 1rem;
+         padding: 1rem;
          font-weight: 500;
          color: variables.$gray-300;
          flex-grow: 1;

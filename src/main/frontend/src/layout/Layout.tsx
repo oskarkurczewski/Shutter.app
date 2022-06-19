@@ -74,7 +74,7 @@ export const PageLayout: React.FC = () => {
          <div className={styles.content}>
             <Breadcrumbs />
             <motion.div
-               className={styles.wrapper}
+               className={styles.animation_wrapper}
                variants={variants}
                initial="hidden"
                animate="enter"
