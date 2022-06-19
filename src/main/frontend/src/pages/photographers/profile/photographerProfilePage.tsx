@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./PhotographerProfilePage.module.scss";
 import {
    PhotographerDescription,
@@ -26,7 +26,7 @@ export const PhotographerProfilePage = () => {
                   <PhotographerInfo
                      name={data?.name}
                      surname={data?.surname}
-                     location="Lodz"
+                     email={data?.email}
                      stars={data?.score}
                      sessionCount={30}
                      photosCount={546}

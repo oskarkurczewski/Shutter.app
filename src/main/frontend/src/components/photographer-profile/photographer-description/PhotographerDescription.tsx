@@ -3,8 +3,6 @@ import styles from "./PhotographerDescription.module.scss";
 import { Card, IconText, MenuDropdown } from "components/shared";
 import { getSpecializationProps } from "util/photographerUtil";
 import { useTranslation } from "react-i18next";
-import { IoWarning } from "react-icons/io5";
-import { FaEllipsisH } from "react-icons/fa";
 import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
 import { PhotographerReportModal } from "../photographer-report-modal";
 
@@ -22,7 +20,7 @@ export const PhotographerDescription: React.FC<Props> = ({
    const [reportModalIsVisible, setReportModalIsVisible] = useState<boolean>(false);
 
    return (
-      <div className={styles.photographer_description_wrapper}>
+      <>
          <Card className={styles.data_wrapper}>
             <div className={styles.specialization_wrapper}>
                <div className={styles.specialization_column}>
@@ -69,6 +67,6 @@ export const PhotographerDescription: React.FC<Props> = ({
                setReportModalIsVisible(false);
             }}
          />
-      </div>
+      </>
    );
 };
