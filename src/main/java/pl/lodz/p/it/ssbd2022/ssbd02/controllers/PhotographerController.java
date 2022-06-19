@@ -20,6 +20,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NameSurnameQuery;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NumberQuery;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Specialization;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -130,10 +131,12 @@ public class PhotographerController extends AbstractController {
     /**
      * Punkt końcowy pozwalający na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których
      * imię lub nazwisko zawiera szukaną frazę
+     * Opcjonalnie szuka również po specjalizacji
      *
      * @param name           szukana fraza
      * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
+     * @param spec           specjalizacja
      * @return stronicowana lista aktywnych fotografów obecnych
      * systemie, których imię lub nazwisko zawiera podaną frazę
      * @throws BaseApplicationException niepowodzenie operacji
@@ -141,16 +144,17 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/by-name-surname")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPhotographerByNameSurname(
-            @NotNull @NameSurnameQuery @QueryParam("name") String name,
+    public Response getPhotographerByNameSurnameSpecialization(
+            @NameSurnameQuery @QueryParam("name") String name,
             @NumberQuery @QueryParam("pageNo") @DefaultValue("1") Integer page,
-            @NumberQuery @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage
-
+            @NumberQuery @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage,
+            @Specialization @QueryParam("specialization") String spec
     ) throws BaseApplicationException {
-        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurname(
+        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurnameSpecialization(
                 name,
                 page,
-                recordsPerPage
+                recordsPerPage,
+                spec
         );
         return Response.status(Response.Status.OK).entity(responseDto).build();
     }
