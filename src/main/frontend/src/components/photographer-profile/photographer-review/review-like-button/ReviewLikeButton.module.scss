@@ -1,0 +1,26 @@
+@use "variables.scss" as variables;
+
+.button_wrapper {
+   background-color: variables.$blue-gray-100;
+
+   button {
+      display: flex;
+      padding: 5px;
+      align-items: center;
+      justify-content: center;
+
+      span,
+      p {
+         color: variables.$gray-300;
+      }
+   }
+
+   &.liked {
+      background-color: variables.$red-200;
+
+      span,
+      p {
+         color: variables.$white;
+      }
+   }
+}

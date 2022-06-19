@@ -13,6 +13,7 @@ import {
 import { Toast } from "types";
 import { useAppDispatch } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ReviewLikeButton } from "./review-like-button";
 
 interface Props {
    id?: number;
@@ -35,48 +36,6 @@ export const PhotographerReview: React.FC<Props> = ({
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
-   const dispatch = useAppDispatch();
-
-   const [likeMutation, likeMutationState] = useLikeReviewMutation();
-   const [unlikeMutation, unlikeMutationState] = useUnlikeReviewMutation();
-
-   useEffect(() => {
-      if (likeMutationState.isSuccess) {
-         const successToast: Toast = {
-            type: ToastTypes.SUCCESS,
-            text: t("toast.success_like"),
-         };
-
-         dispatch(push(successToast));
-      }
-      if (likeMutationState.isError) {
-         const errorToast: Toast = {
-            type: ToastTypes.ERROR,
-            text: t("toast.error_like"),
-         };
-
-         dispatch(push(errorToast));
-      }
-   }, [likeMutationState]);
-
-   useEffect(() => {
-      if (unlikeMutationState.isSuccess) {
-         const successToast: Toast = {
-            type: ToastTypes.SUCCESS,
-            text: t("toast.success_unlike"),
-         };
-
-         dispatch(push(successToast));
-      }
-      if (unlikeMutationState.isError) {
-         const errorToast: Toast = {
-            type: ToastTypes.ERROR,
-            text: t("toast.error_unlike"),
-         };
-
-         dispatch(push(errorToast));
-      }
-   }, [unlikeMutationState]);
 
    const reportReview = () => {
       setEditReportModalIsOpen(true);
@@ -111,15 +70,7 @@ export const PhotographerReview: React.FC<Props> = ({
                   onClick={deleteReview}
                />
             </MenuDropdown>
-            <Button
-               className={styles.button_wrapper}
-               onClick={() => {
-                  liked ? unlikeMutation(id) : likeMutation(id);
-               }}
-               icon="thumb_up"
-            >
-               {likeCount?.toString()}
-            </Button>
+            <ReviewLikeButton id={id} likeCount={likeCount} liked={liked} />
          </div>
          <PhotographerReviewReportModal
             reviewId={id}
