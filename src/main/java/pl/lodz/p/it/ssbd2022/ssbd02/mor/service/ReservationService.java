@@ -51,6 +51,12 @@ public class ReservationService {
         return Optional.ofNullable(reservationFacade.find(id)).orElseThrow(ExceptionFactory::noReservationFoundException);
     }
 
+    /**
+     * Metoda wyszukująca specjalizację po nazwie
+     *
+     * @param specialization nazwa specjalizacji
+     * @return specjalizacja
+     */
     @PermitAll
     public Specialization getSpecialization(String specialization) throws BaseApplicationException {
         return photographerFacade.getSpecialization(specialization);
