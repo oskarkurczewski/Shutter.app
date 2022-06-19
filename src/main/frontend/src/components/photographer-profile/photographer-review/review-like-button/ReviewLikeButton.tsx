@@ -1,6 +1,6 @@
 import { Button } from "components/shared";
 import styles from "./ReviewLikeButton.module.scss";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
    useLikeReviewMutation,
    useUnlikeReviewMutation,
@@ -9,6 +9,8 @@ import { Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "redux/hooks";
+import Animation from "assets/animations/like_boom.json";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 interface Props {
    id: number;
@@ -23,6 +25,17 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
    const [likeMutation, likeMutationState] = useLikeReviewMutation();
    const [unlikeMutation, unlikeMutationState] = useUnlikeReviewMutation();
 
+   const [showAnimation, setShowAnimation] = useState(false);
+
+   // Remove animation after 1s
+   useEffect(() => {
+      if (showAnimation) {
+         setTimeout(() => {
+            setShowAnimation(false);
+         }, 1000);
+      }
+   }, [showAnimation]);
+
    useEffect(() => {
       if (likeMutationState.isSuccess) {
          const successToast: Toast = {
@@ -30,6 +43,7 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
             text: t("toast.success_like"),
          };
 
+         setShowAnimation(true);
          dispatch(push(successToast));
       }
       if (likeMutationState.isError) {
@@ -62,14 +76,17 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
    }, [unlikeMutationState]);
 
    return (
-      <Button
-         className={`${styles.button_wrapper} ${liked ? styles.liked : ""}`}
-         onClick={() => {
-            liked ? unlikeMutation(id) : likeMutation(id);
-         }}
-         icon="favorite"
-      >
-         {likeCount?.toString()}
-      </Button>
+      <div className={styles.wrapper}>
+         {showAnimation && <Player autoplay src={Animation} background="transparent" />}
+         <Button
+            className={`${styles.button_wrapper} ${liked ? styles.liked : ""}`}
+            onClick={() => {
+               liked ? unlikeMutation(id) : likeMutation(id);
+            }}
+            icon="favorite"
+         >
+            {likeCount?.toString()}
+         </Button>
+      </div>
    );
 };
