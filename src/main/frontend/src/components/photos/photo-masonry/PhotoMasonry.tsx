@@ -44,6 +44,7 @@ export const PhotoMasonry: React.FC<Props> = ({ login }) => {
                         date={photo.createdAt}
                         likeCount={photo.likeCount}
                         liked={photo.liked}
+                        showDeleteButton={false}
                      ></Photo>
                   </div>
                );

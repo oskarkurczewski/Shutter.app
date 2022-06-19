@@ -1,7 +1,7 @@
 import { Button } from "components/shared";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLikePhotoRequestMutation } from "redux/service/photoService";
+import { useDeletePhotoRequestMutation, useLikePhotoRequestMutation } from "redux/service/photoService";
 import styles from "./Photo.module.scss";
 import { DateTime } from "luxon";
 
@@ -14,6 +14,8 @@ interface Props {
    date: string;
    liked: boolean;
    likeCount: number;
+   showDeleteButton: boolean;
+   onDelete?: (number) => void;
 }
 
 export const Photo: React.FC<Props> = ({
@@ -25,6 +27,8 @@ export const Photo: React.FC<Props> = ({
    date,
    liked,
    likeCount,
+   showDeleteButton,
+   onDelete,
 }) => {
    const [likes, setLikes] = useState<number>(likeCount);
    const [isLiked, setIsLiked] = useState<boolean>(liked);
@@ -34,6 +38,7 @@ export const Photo: React.FC<Props> = ({
    const likePhoto = () => {
       likePhotoMutation(photo_id);
    };
+
 
    useEffect(() => {
       isSuccess && setLikes(likes + 1);
@@ -60,9 +65,18 @@ export const Photo: React.FC<Props> = ({
                   onClick={likePhoto}
                   icon="favorite"
                >
-                  {`${likes}`}
+               {`${likes}`}
                </Button>
             </div>
+            {showDeleteButton && (
+            <div className={styles.photo_label_delete}>
+                  <Button
+                     className={styles.photo_label_delete_button}
+                     onClick={() => onDelete(photo_id)}
+                     icon="delete"
+                  > </Button>
+            </div>
+            )}
          </div>
       </div>
    );

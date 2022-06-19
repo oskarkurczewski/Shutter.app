@@ -65,6 +65,17 @@
             }
          }
       }
+      .photo_label_delete {
+         .photo_label_delete_button {
+            background-color: transparent;
+            box-shadow: none;
+
+            button {
+               display: flex;
+               flex-direction: row;
+            }
+         }
+      }
    }
 
    img:hover {
