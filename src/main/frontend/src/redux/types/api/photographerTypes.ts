@@ -54,6 +54,7 @@ export interface reviewReport {
 export interface getPhotographerReviewsResponse {
    pageNo: number;
    recordsPerPage: number;
+   allPages: number;
    list: {
       id: number;
       name: string;
@@ -61,7 +62,8 @@ export interface getPhotographerReviewsResponse {
       email: string;
       score: number;
       content: string;
-      likeCount: string;
+      likeCount: number;
+      liked: boolean;
    }[];
 }
 

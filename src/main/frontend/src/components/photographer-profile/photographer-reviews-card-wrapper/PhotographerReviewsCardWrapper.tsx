@@ -38,7 +38,7 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
    };
 
    const showNextReview = () => {
-      if (reviewPage < reviewCount) {
+      if (reviewPage < data?.allPages) {
          setReviewPage(reviewPage + 1);
       }
    };
@@ -56,26 +56,33 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
                   >
                      {t("photographer_page.add_review")}
                   </Button>
-                  <SquareButton onClick={showPreviousReview}>
+                  <SquareButton disabled={data?.pageNo == 1} onClick={showPreviousReview}>
                      <MdKeyboardArrowLeft />
                   </SquareButton>
-                  <SquareButton onClick={showNextReview}>
+                  <SquareButton
+                     disabled={data?.pageNo == data?.allPages}
+                     onClick={showNextReview}
+                  >
                      <MdKeyboardArrowRight />
                   </SquareButton>
                </div>
             </div>
-            {data && (
-               <PhotographerReview
-                  id={data[0]?.id}
-                  name={data[0]?.name}
-                  surname={data[0]?.surname}
-                  email={data[0]?.email}
-                  stars={data[0]?.score}
-                  description={data[0]?.content}
-                  likeCount={data[0]?.likeCount}
-                  liked={data[0]?.liked}
-               />
-            )}
+            <>
+               {data &&
+                  data?.list?.map((review, index) => (
+                     <PhotographerReview
+                        key={index}
+                        id={review.id}
+                        name={review.name}
+                        surname={review.surname}
+                        email={review.email}
+                        stars={review.score}
+                        description={review.content}
+                        likeCount={review.likeCount}
+                        liked={review.liked}
+                     />
+                  ))}
+            </>
          </Card>
          <AddReviewModal
             isOpen={reviewModalIsOpen}
