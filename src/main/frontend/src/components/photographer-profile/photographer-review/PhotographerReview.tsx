@@ -6,13 +6,19 @@ import { MenuDropdown } from "components/shared/dropdown/menu-dropdown";
 import { Button } from "components/shared/button";
 import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
 import { useTranslation } from "react-i18next";
-import { useLikeReviewMutation } from "redux/service/reviewService";
+import {
+   useLikeReviewMutation,
+   useRemoveOwnPhotographerReviewMutation,
+   useRemoveSomeonesPhotographerReviewMutation,
+} from "redux/service/reviewService";
 import { Toast } from "types";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { AccessLevel } from "types";
 
 interface Props {
    id?: number;
+   authorLogin: string;
    name: string;
    surname: string;
    stars: number;
@@ -23,6 +29,7 @@ interface Props {
 
 export const PhotographerReview: React.FC<Props> = ({
    id,
+   authorLogin,
    name,
    surname,
    stars,
@@ -32,43 +39,82 @@ export const PhotographerReview: React.FC<Props> = ({
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
-
-   const [mutation, { isLoading, isError, isSuccess, error }] = useLikeReviewMutation();
-
-   const likeReview = () => {
-      return mutation(id);
-   };
-
+   const { username, accessLevel } = useAppSelector((state) => state.auth);
+   const [likeReviewMutation, likeReviewMutationState] = useLikeReviewMutation();
+   const [removeOwnReviewMutation, removeOwnReviewMutationState] =
+      useRemoveOwnPhotographerReviewMutation();
+   const [removeSomeonesReviewMutation, removeSomeonesReviewMutationState] =
+      useRemoveSomeonesPhotographerReviewMutation();
    const dispatch = useAppDispatch();
-
-   useEffect(() => {
-      if (isSuccess) {
-         dispatch(push(successToast));
-      }
-   }, [isSuccess]);
-
-   useEffect(() => {
-      if (isError) {
-         dispatch(push(errorToast));
-      }
-   }, [isError]);
 
    const reportReview = () => {
       setEditReportModalIsOpen(true);
    };
 
-   const deleteReview = () => {
-      //TODO: delete review
+   // polubienie recenzji
+
+   const likeReview = () => {
+      return likeReviewMutation(id);
    };
 
-   const successToast: Toast = {
+   useEffect(() => {
+      if (likeReviewMutationState.isSuccess) {
+         dispatch(push(likeSuccessToast));
+      }
+   }, [likeReviewMutationState.isSuccess]);
+
+   useEffect(() => {
+      if (likeReviewMutationState.isError) {
+         dispatch(push(likeErrorToast));
+      }
+   }, [likeReviewMutationState.isError]);
+
+   const likeSuccessToast: Toast = {
       type: ToastTypes.SUCCESS,
       text: t("toast.success_like"),
    };
 
-   const errorToast: Toast = {
+   const likeErrorToast: Toast = {
       type: ToastTypes.ERROR,
       text: t("toast.error_like"),
+   };
+
+   // usuwanie recenzji
+   const deleteReview = () => {
+      if (username === authorLogin) {
+         removeOwnReviewMutation(id);
+      }
+      if (accessLevel === AccessLevel.ADMINISTRATOR) {
+         removeSomeonesReviewMutation(id);
+      }
+   };
+
+   useEffect(() => {
+      if (
+         removeOwnReviewMutationState.isSuccess ||
+         removeSomeonesReviewMutationState.isSuccess
+      ) {
+         dispatch(push(removeReviewSuccessToast));
+      }
+   }, [removeOwnReviewMutationState.isSuccess]);
+
+   useEffect(() => {
+      if (
+         removeOwnReviewMutationState.isError ||
+         removeSomeonesReviewMutationState.isError
+      ) {
+         dispatch(push(removeReviewErrorToast));
+      }
+   }, [removeOwnReviewMutationState.isError]);
+
+   const removeReviewSuccessToast: Toast = {
+      type: ToastTypes.SUCCESS,
+      text: t("toast.success_remove_review"),
+   };
+
+   const removeReviewErrorToast: Toast = {
+      type: ToastTypes.ERROR,
+      text: t("toast.error_remove_review"),
    };
 
    return (
@@ -95,10 +141,13 @@ export const PhotographerReview: React.FC<Props> = ({
                   value={t("photographer_page.report_button")}
                   onClick={reportReview}
                />
-               <MenuDropdownItem
-                  value={t("photographer_page.delete_button")}
-                  onClick={deleteReview}
-               />
+               {((username === authorLogin && accessLevel === AccessLevel.CLIENT) ||
+                  accessLevel === AccessLevel.ADMINISTRATOR) && (
+                  <MenuDropdownItem
+                     value={t("photographer_page.delete_button")}
+                     onClick={deleteReview}
+                  />
+               )}
             </MenuDropdown>
             <Button
                className={`${styles.review_like_button} ${
