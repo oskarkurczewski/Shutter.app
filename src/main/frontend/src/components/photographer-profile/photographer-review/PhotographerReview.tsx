@@ -31,8 +31,6 @@ export const PhotographerReview: React.FC<Props> = ({
    liked,
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
-   const [likes, setLikes] = useState<number>(likeCount);
-   const [isLiked, setIsLiked] = useState<boolean>(liked);
    const { t } = useTranslation();
 
    const [mutation, { isLoading, isError, isSuccess, error }] = useLikeReviewMutation();
@@ -45,8 +43,6 @@ export const PhotographerReview: React.FC<Props> = ({
 
    useEffect(() => {
       if (isSuccess) {
-         setLikes(likes + 1);
-         setIsLiked(!liked);
          dispatch(push(successToast));
       }
    }, [isSuccess]);
@@ -109,9 +105,9 @@ export const PhotographerReview: React.FC<Props> = ({
                   liked ? styles.review_like_button_liked : ""
                }`}
                onClick={likeReview}
-               icon="thumb_up"
+               icon="favorite"
             >
-               {likes?.toString()}
+               {likeCount?.toString()}
             </Button>
          </div>
          <PhotographerReviewReportModal
