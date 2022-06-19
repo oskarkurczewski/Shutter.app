@@ -98,3 +98,8 @@ export interface ReviewInfo {
    active: boolean;
    createdAt: Date;
 }
+
+export interface ReportPhotographerRequest {
+   photographerLogin: string;
+   cause: string;
+}

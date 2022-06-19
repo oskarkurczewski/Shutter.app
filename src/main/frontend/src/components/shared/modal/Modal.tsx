@@ -66,13 +66,13 @@ export const Modal: React.FC<Props> = ({
                onClick={() => onCancel()}
             />
             <div className={styles.content}>
-               <Card className={`${styles.card_wrapper} ${className && className}`}>
+               <Card className={`${styles.card_wrapper}`}>
                   {title && (
                      <div className={styles.modal_header}>
                         <p className="category-title">{title}</p>
                      </div>
                   )}
-                  <div>{children}</div>
+                  <div className={`${className && className}`}>{children}</div>
                   <div className={styles.modal_footer}>
                      {type === "confirm" && (
                         <Button
