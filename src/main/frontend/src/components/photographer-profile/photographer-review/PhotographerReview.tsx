@@ -6,7 +6,10 @@ import { MenuDropdown } from "components/shared/dropdown/menu-dropdown";
 import { Button } from "components/shared/button";
 import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
 import { useTranslation } from "react-i18next";
-import { useLikeReviewMutation } from "redux/service/reviewService";
+import {
+   useLikeReviewMutation,
+   useUnlikeReviewMutation,
+} from "redux/service/reviewService";
 import { Toast } from "types";
 import { useAppDispatch } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
@@ -18,6 +21,7 @@ interface Props {
    stars?: number;
    description?: string;
    likeCount: number;
+   liked: boolean;
 }
 
 export const PhotographerReview: React.FC<Props> = ({
@@ -27,29 +31,52 @@ export const PhotographerReview: React.FC<Props> = ({
    stars,
    description,
    likeCount,
+   liked,
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
-
-   const [mutation, { isLoading, isError, isSuccess, error }] = useLikeReviewMutation();
-
-   const likeReview = () => {
-      return mutation(id);
-   };
-
    const dispatch = useAppDispatch();
 
-   useEffect(() => {
-      if (isSuccess) {
-         dispatch(push(successToast));
-      }
-   }, [isSuccess]);
+   const [likeMutation, likeMutationState] = useLikeReviewMutation();
+   const [unlikeMutation, unlikeMutationState] = useUnlikeReviewMutation();
 
    useEffect(() => {
-      if (isError) {
+      if (likeMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_like"),
+         };
+
+         dispatch(push(successToast));
+      }
+      if (likeMutationState.isError) {
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t("toast.error_like"),
+         };
+
          dispatch(push(errorToast));
       }
-   }, [isError]);
+   }, [likeMutationState]);
+
+   useEffect(() => {
+      if (unlikeMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_unlike"),
+         };
+
+         dispatch(push(successToast));
+      }
+      if (unlikeMutationState.isError) {
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t("toast.error_unlike"),
+         };
+
+         dispatch(push(errorToast));
+      }
+   }, [unlikeMutationState]);
 
    const reportReview = () => {
       setEditReportModalIsOpen(true);
@@ -57,16 +84,6 @@ export const PhotographerReview: React.FC<Props> = ({
 
    const deleteReview = () => {
       //TODO: delete review
-   };
-
-   const successToast: Toast = {
-      type: ToastTypes.SUCCESS,
-      text: t("toast.success_like"),
-   };
-
-   const errorToast: Toast = {
-      type: ToastTypes.ERROR,
-      text: t("toast.error_like"),
    };
 
    return (
@@ -96,7 +113,9 @@ export const PhotographerReview: React.FC<Props> = ({
             </MenuDropdown>
             <Button
                className={styles.button_wrapper}
-               onClick={likeReview}
+               onClick={() => {
+                  liked ? unlikeMutation(id) : likeMutation(id);
+               }}
                icon="thumb_up"
             >
                {likeCount?.toString()}

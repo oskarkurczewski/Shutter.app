@@ -94,6 +94,7 @@ export interface ReviewInfo {
    reviewerLogin: string;
    score: number;
    likeCount: number;
+   liked: boolean;
    content: string;
    active: boolean;
    createdAt: Date;

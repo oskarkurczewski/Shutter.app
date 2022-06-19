@@ -50,7 +50,7 @@ export const PhotoMasonry: React.FC<Props> = ({ login }) => {
             })
          ) : (
             <h4 className={styles.no_photos}>
-               {t("photographer_page.gallery_no_photos.no_photos")}
+               {t("photographer_page.gallery_no_photos")}
             </h4>
          )}
          {photoData && (

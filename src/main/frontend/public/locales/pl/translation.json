@@ -127,6 +127,8 @@
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
+      "success_unlike": "Pomyślnie cofnięto polubienie",
+      "error_unlike": "Cofnięcie polubienia nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
       "error_review": "Dodanie recenzji nie powiodło się",
       "success_report": "Zgłoszenie zostało wysłane"

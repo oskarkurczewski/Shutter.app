@@ -4,7 +4,6 @@ import { Button, Card, SquareButton } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { PhotographerReview } from "../photographer-review";
-import { getPhotographerReviewsRequest } from "redux/types/api";
 import { useGetPhotographerReviewsQuery } from "redux/service/photographerManagementService";
 import AddReviewModal from "../add-review-modal/AddReviewModal";
 interface Props {
@@ -74,6 +73,7 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
                      stars={data[0]?.score}
                      description={data[0]?.content}
                      likeCount={data[0]?.likeCount}
+                     liked={data[0]?.liked}
                   />
                )}
             </div>
