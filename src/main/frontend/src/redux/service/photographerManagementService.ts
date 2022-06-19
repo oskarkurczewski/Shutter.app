@@ -52,6 +52,15 @@ const PhotographerManagementService = api.injectEndpoints({
       resolveReviewReport: builder.mutation<void, number>({
          query: (id) => ({ url: `/report/review/${id}/resolve`, method: "POST" }),
       }),
+      getAvailableSpecializations: builder.query<string[], void>({
+         query: () => ({ url: "profile/specialization-list" }),
+      }),
+      getOwnSpecializations: builder.query<string[], void>({
+         query: () => ({ url: "profile/specializations" }),
+      }),
+      editOwnSpecializations: builder.mutation<void, string[]>({
+         query: (data) => ({ url: "profile/specializations", method: "PUT", body: data }),
+      }),
    }),
 });
 
@@ -63,4 +72,7 @@ export const {
    useGetPhotographerReviewsQuery,
    useResolvePhotographerReportMutation,
    useResolveReviewReportMutation,
+   useGetAvailableSpecializationsQuery,
+   useGetOwnSpecializationsQuery,
+   useEditOwnSpecializationsMutation,
 } = PhotographerManagementService;
