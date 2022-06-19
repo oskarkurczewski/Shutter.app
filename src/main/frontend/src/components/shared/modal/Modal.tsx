@@ -70,7 +70,7 @@ export const Modal: React.FC<Props> = ({
                <motion.div
                   className={styles.content}
                   initial={{ top: -300, opacity: 0.5 }}
-                  animate={{ top: 20, opacity: 1 }}
+                  animate={{ top: 80, opacity: 1 }}
                   exit={{ top: 2000, opacity: 0 }}
                >
                   <Card className={`${styles.card_wrapper} ${className && className}`}>

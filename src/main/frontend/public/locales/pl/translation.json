@@ -379,5 +379,10 @@
    },
    "sidebar": {
       "changed_role_message": "Pomyślnie zmieniono rolę na {{role}}"
+   },
+   "logout_modal": {
+      "title": "Wyloguj się",
+      "description": "Czy na pewno chcesz się wylogować z aplikacji?",
+      "successfully_logged_out": "Pomyślnie wylogowano"
    }
 }

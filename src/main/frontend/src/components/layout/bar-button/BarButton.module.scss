@@ -13,6 +13,12 @@
    white-space: nowrap;
    transition: width 1.3s;
 
+   &:is(button) {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+   }
+
    .hide_text {
       visibility: hidden;
       opacity: 0;
