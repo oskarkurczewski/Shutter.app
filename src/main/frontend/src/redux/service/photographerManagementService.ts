@@ -1,7 +1,5 @@
 import { api } from "./api";
 import {
-   getPhotographerReviewsRequest,
-   getPhotographerReviewsResponse,
    getPhotographersListRequest,
    photographerTableEntry,
    reportPhotographerReviewRequest,
@@ -32,15 +30,6 @@ const PhotographerManagementService = api.injectEndpoints({
          getReportListRequest
       >({
          query: (params) => ({ url: `/report/list/review`, params }),
-      }),
-      getPhotographerReviews: builder.query<
-         getPhotographerReviewsResponse,
-         getPhotographerReviewsRequest
-      >({
-         query: (data) => ({
-            url: "profile/review/list",
-            params: data,
-         }),
       }),
       reportPhotographerReview: builder.mutation<void, reportPhotographerReviewRequest>({
          query: (data) => ({ url: `report/review`, method: "POST", body: data }),
@@ -86,7 +75,6 @@ export const {
    useGetPhotographerReportListQuery,
    useGetReviewReportListQuery,
    useReportPhotographerReviewMutation,
-   useGetPhotographerReviewsQuery,
    useResolvePhotographerReportMutation,
    useResolveReviewReportMutation,
    useGetAvailableSpecializationsQuery,
