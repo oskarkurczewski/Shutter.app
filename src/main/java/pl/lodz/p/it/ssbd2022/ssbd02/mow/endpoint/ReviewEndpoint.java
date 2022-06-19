@@ -7,9 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.GetReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
@@ -145,19 +143,8 @@ public class ReviewEndpoint extends AbstractEndpoint {
     }
 
     @PermitAll
-    public List<ReviewDto> getReviewsByPhotographerLogin(int pageNo, int recordsPerPage, String photographerLogin)
+    public ListResponseDto<ReviewDto> getReviewsByPhotographerLogin(int pageNo, int recordsPerPage, String photographerLogin)
             throws BaseApplicationException {
-        Long photographerId = photographerService.findByLogin(photographerLogin).getId();
-        List<Review> reviews = reviewService.listReviewsByPhotographerId(pageNo, recordsPerPage, photographerId);
-        List<ReviewDto> reviewDtoList = new ArrayList<>();
-
-        String login = authCtx.getCurrentUsersLogin();
-
-        for (Review review: reviews) {
-            boolean liked = review.getLikedList().stream().anyMatch(r -> r.getLogin().equals(login));
-            reviewDtoList.add(new ReviewDto(review, liked));
-        }
-
-        return reviewDtoList;
+        return reviewService.listReviewsByPhotographerLogin(pageNo, recordsPerPage, photographerLogin);
     }
 }
