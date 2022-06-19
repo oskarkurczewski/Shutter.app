@@ -82,12 +82,29 @@ export const PhotographerCalendar = () => {
          dispatch(push(errorToast));
          return;
       }
+
       const from = selection[0].from;
       const to = selection[selection.length - 1].to;
-      // const isConflict = reservations.find(
-      //    (reservation) => from < reservation.to && to > reservation.from
-      // );
-      setReservation({ ...reservation, from, to });
+
+      const isConflict = reservations.find(
+         (reservation) => from < reservation.to && to > reservation.from
+      );
+
+      const isAvailabilityValid = availability.find(
+         (availability) =>
+            availability.from.set({
+               weekNumber: from.weekNumber,
+               weekYear: from.weekYear,
+            }) <= from &&
+            to <=
+               availability.to.set({
+                  weekNumber: to.weekNumber,
+                  weekYear: to.weekYear,
+               })
+      );
+
+      // !isConflict
+      isAvailabilityValid && !isConflict && setReservation({ ...reservation, from, to });
       // modal
    };
 
