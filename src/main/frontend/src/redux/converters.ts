@@ -4,7 +4,7 @@ import {
    AddReservationRequest,
    AvailabilityRequest,
    AvailabilityResponse,
-   ReservationCalendarEntryResponse,
+   SimpleReservation,
 } from "./types/api";
 import { Weekday } from "./types/api/dataTypes";
 
@@ -21,13 +21,11 @@ export const parseToAvailabilityHour = (data: AvailabilityResponse[]) => {
    }));
 };
 
-export const praseToCalendarReservation = (
-   data: ReservationCalendarEntryResponse[]
-): Reservation[] => {
+export const praseToCalendarReservation = (data: SimpleReservation[]): Reservation[] => {
    return data.map((reservation) => ({
       id: reservation.id,
-      client: "unknown",
-      photographer: "unknown",
+      client: "",
+      photographer: "",
       from: DateTime.fromISO(reservation.from),
       to: DateTime.fromISO(reservation.to),
    }));

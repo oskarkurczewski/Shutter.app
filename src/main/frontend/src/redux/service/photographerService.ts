@@ -4,6 +4,7 @@ import {
    AvailabilityResponse,
    ReservationResponse,
    ReservationRequest,
+   AddReservationRequest,
 } from "redux/types/api/photographerTypes";
 import { AvailabilityHour, Reservation } from "types/CalendarTypes";
 import { parseToAvailabilityRequest } from "redux/converters";
@@ -37,11 +38,15 @@ const PhotographerService = api.injectEndpoints({
          }),
       }),
 
-      createReservation: builder.mutation<void, Reservation>({
+      createReservation: builder.mutation<void, AddReservationRequest>({
          query: (reservation) => ({
             url: "/reservation",
             method: "POST",
-            body: reservation,
+            body: {
+               photographerLogin: reservation.photographerLogin,
+               from: reservation.from.toFormat("yyyy-MM-dd'T'HH:mm:ss"),
+               to: reservation.to.toFormat("yyyy-MM-dd'T'HH:mm:ss"),
+            },
          }),
       }),
    }),

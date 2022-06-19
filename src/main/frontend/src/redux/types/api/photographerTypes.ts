@@ -93,13 +93,7 @@ export interface ReservationResponse {
    to: string;
 }
 
-export interface ReservationCalendarEntryResponse {
-   id: number;
-   from: string;
-   to: string;
-}
-
-export interface CalendarReservationResponse {
+export interface SimpleReservation {
    id: number;
    from: string;
    to: string;

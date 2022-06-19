@@ -78,7 +78,8 @@
       "reservation_invalid_time": "TODO",
       "availability_not_found": "TODO",
       "availability_overlap": "TODO",
-      "photo_upload_error": "Nie udało się dodać zdjęcia"
+      "photo_upload_error": "Nie udało się dodać zdjęcia",
+      "reservation_already_exists": "Rezerwacje już istnieje"
    },
    "validator": {
       "incorrect": {
@@ -115,7 +116,8 @@
       "success_login_message": "Pomyślnie zalogowano.",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
       "success_like": "Pomyślnie polubiono",
-      "error_like": "Polubienie nie powiodło się"
+      "error_like": "Polubienie nie powiodło się",
+      "success_reservation_create": "Pomyślnie utworzono rezerwację"
    },
    "navbar": {
       "title": "shutter.app",
@@ -330,7 +332,22 @@
       "report_button": "Zgłoś",
       "delete_button": "Usuń",
       "report_review_modal_title": "Zgłaszanie recenzji",
-      "report_review_dropdown": "Przyczyna zgłoszenia:"
+      "report_review_dropdown": "Przyczyna zgłoszenia:",
+      "calendar_title": "Kalendarz",
+
+      "calendar": {
+         "past_date": "Wybrano datę z przeszłości",
+         "no_avalibility": "Brak dostępności fotografa",
+         "conflict_reservation_time": "Konflikt z inną rezerwacją",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
+      },
+
+      "modal": {
+         "create_reservation": "Utwórz rezerwację",
+         "user": "Osoba rezerwująca",
+         "photographer": "Rezerwowany fotograf",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
+      }
    },
    "photographer_specialization": {
       "specialization_studio": "Fotografia studyjna",

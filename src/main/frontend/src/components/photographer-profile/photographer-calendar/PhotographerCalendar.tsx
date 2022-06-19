@@ -19,11 +19,16 @@ import { ErrorResponse, Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { parseError } from "util/errorUtil";
-import { parseToAvailabilityHour, praseToCalendarReservation } from "redux/converters";
+import { parseToAvailabilityHour } from "redux/converters";
 import { ExpandableCard } from "components/shared";
-import { AddReservationRequest } from "redux/types/api";
+import { PhotographerAddReservationModal } from "../photographer-add-reservation-modal";
+import { UserData } from "redux/types/api";
 
-export const PhotographerCalendar = () => {
+interface Props {
+   photographer: UserData;
+}
+
+export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
    const { t } = useTranslation();
    const { login } = useParams();
    const { username } = useAppSelector((state) => state.auth);
@@ -37,8 +42,8 @@ export const PhotographerCalendar = () => {
       date: dateFrom.toFormat("yyyy-LL-dd"),
       name: login,
    });
-   const [createReservation, createReservationState] = useCreateReservationMutation();
-
+   // const [createReservation, createReservationState] = useCreateReservationMutation();
+   const [modalOpen, setModalOpen] = useState<boolean>(false);
    const [availability, setAvailability] = useState<AvailabilityHour[]>();
    const [calendarOpen, setCalendarOpen] = useState(false);
    const [reservation, setReservation] = useState<Reservation>({
@@ -74,10 +79,18 @@ export const PhotographerCalendar = () => {
 
    // add reservations function
    const addReservation = (selection: HourBox[]) => {
+      if (username === "") {
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t("photographer_page.calendar.user_not_logged_in"),
+         };
+         dispatch(push(errorToast));
+         return;
+      }
       if (selection[0].from < DateTime.now()) {
          const errorToast: Toast = {
             type: ToastTypes.ERROR,
-            text: t("test"),
+            text: t("photographer_page.calendar.past_date"),
          };
          dispatch(push(errorToast));
          return;
@@ -102,35 +115,25 @@ export const PhotographerCalendar = () => {
                   weekYear: to.weekYear,
                })
       );
-
-      // !isConflict
-      isAvailabilityValid && !isConflict && setReservation({ ...reservation, from, to });
-      // modal
-   };
-
-   // Handle request response
-   useEffect(() => {
-      if (createReservationState.isSuccess) {
-         const successToast: Toast = {
-            type: ToastTypes.SUCCESS,
-            text: t("toast.success_update"),
-         };
-         dispatch(push(successToast));
-      }
-
-      if (createReservationState.isError) {
+      if (!isConflict) {
+         if (isAvailabilityValid) {
+            setReservation({ ...reservation, from, to });
+            setModalOpen(true);
+         } else {
+            const errorToast: Toast = {
+               type: ToastTypes.ERROR,
+               text: t("photographer_page.calendar.no_avalibility"),
+            };
+            dispatch(push(errorToast));
+         }
+      } else {
          const errorToast: Toast = {
             type: ToastTypes.ERROR,
-            text: t(
-               parseError(
-                  createReservationState.error as ErrorResponse,
-                  "create_reservation_failed"
-               )
-            ),
+            text: t("photographer_page.calendar.conflict_reservation_time"),
          };
          dispatch(push(errorToast));
       }
-   }, [createReservationState]);
+   };
 
    // Handle errors
    useEffect(() => {
@@ -149,23 +152,27 @@ export const PhotographerCalendar = () => {
    }, [availabilityQuery.isError, getReservationsQuery.isError]);
 
    return (
-      <ExpandableCard
-         className={styles.calendar_wrapper}
-         isOpen={calendarOpen}
-         setIsOpen={setCalendarOpen}
-      >
+      <ExpandableCard isOpen={calendarOpen} setIsOpen={setCalendarOpen}>
          {reservations && (
-            <Calendar
-               title={t("change_availability_page.calendar_title")}
-               showWeekNavigation={true}
-               className={styles.calendar_wrapper}
-               isLoading={getReservationsQuery.isLoading}
-               availability={availability}
-               reservations={[...reservations, reservation]}
-               //    reservations={reservations}
-               onDateChange={(monday) => setDateFrom(monday)}
-               onRangeSelection={addReservation}
-            />
+            <>
+               <Calendar
+                  title={t("photographer_page.calendar_title")}
+                  showWeekNavigation={true}
+                  isLoading={getReservationsQuery.isLoading}
+                  availability={availability}
+                  reservations={[...reservations, reservation]}
+                  onDateChange={(monday) => setDateFrom(monday)}
+                  onRangeSelection={addReservation}
+               />
+               <PhotographerAddReservationModal
+                  reservation={reservation}
+                  setReservation={setReservation}
+                  photographer={photographer}
+                  isOpen={modalOpen}
+                  onCancel={() => setModalOpen(false)}
+                  onSubmit={() => setModalOpen(false)}
+               />
+            </>
          )}
       </ExpandableCard>
    );

@@ -15,6 +15,13 @@ export const PhotographerProfilePage = () => {
    const { login } = useParams();
    const { data, isError } = useGetPhotographerDetailedInfoQuery(login);
 
+   const photographer = {
+      login: data?.login,
+      name: data?.name,
+      surname: data?.surname,
+      email: data?.email,
+   };
+
    return (
       <section className={styles.photographer_info_page_wrapper}>
          <p className="category-title">{t("photographer_page.title")}</p>
@@ -42,11 +49,9 @@ export const PhotographerProfilePage = () => {
                         reviewCount={data.reviewCount}
                         photographerLogin={login}
                      />
-                  </div>
-               </div>
 
-               <div className={styles.column}>
-                  <PhotographerCalendar />
+                     <PhotographerCalendar photographer={photographer} />
+                  </div>
                </div>
             </section>
          )}

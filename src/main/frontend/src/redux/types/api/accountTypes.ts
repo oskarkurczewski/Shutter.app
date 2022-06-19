@@ -9,6 +9,7 @@ interface traceable {
 }
 
 export interface basicUserInfoResponse {
+   login?: string;
    version: number;
    email: string;
    name: string;
