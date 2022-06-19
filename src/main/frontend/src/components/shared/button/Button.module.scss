@@ -12,8 +12,15 @@
    width: fit-content;
    overflow: hidden;
 
-   button {
+   a {
+      font-family: "Open Sans", sans-serif;
+      font-weight: 600;
+   }
+
+   button,
+   a {
       border: none;
+      color: variables.$white;
       background-color: transparent;
       font-size: 1rem;
       padding: 0.66rem;

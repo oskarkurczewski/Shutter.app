@@ -5,8 +5,8 @@ interface Props {
    values: string[] | number[] | boolean[];
    onChange?: React.ChangeEventHandler<HTMLSelectElement>;
    selectedValue: string | number | boolean;
-   name: string;
-   id: string;
+   name?: string;
+   id?: string;
    children?: string;
    className?: string;
 }

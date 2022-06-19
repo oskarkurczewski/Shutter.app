@@ -73,6 +73,13 @@ public class ReportController extends AbstractController {
         repeat(() -> reportEndpoint.reportReview(createReviewReportDto), reportEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
+    
+    @GET
+    @Path("/review/report-causes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getAllReviewReportCauses() throws BaseApplicationException {
+        return repeat(() -> reportEndpoint.getAllReviewReportCauses(), reportEndpoint);
+    }
 
 
     /**

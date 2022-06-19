@@ -52,6 +52,18 @@ public class ReservationService {
     }
 
     /**
+     * Metoda wyszukująca specjalizację po nazwie
+     *
+     * @param specialization nazwa specjalizacji
+     * @return specjalizacja
+     */
+    @PermitAll
+    public Specialization getSpecialization(String specialization) throws BaseApplicationException {
+        return photographerFacade.getSpecialization(specialization);
+    }
+
+
+    /**
      * Metoda służąca do tworzenia rezerwacji.
      * <p>
      * Jeżeli nie ma wolnych terminów, to nie rezerwacja nie może być utworzona.
@@ -175,6 +187,7 @@ public class ReservationService {
 
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
+     * Według imienia i nazwiska oraz specjalizacji
      *
      * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
@@ -182,8 +195,8 @@ public class ReservationService {
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
-    public List<PhotographerInfo> findPhotographerByNameSurname(String name, int page, int recordsPerPage) throws BaseApplicationException {
-        return photographerFacade.getAllVisiblePhotographersByNameSurname(name, page, recordsPerPage);
+    public List<PhotographerInfo> findPhotographerByNameSurnameSpecialization(String name, int page, int recordsPerPage, Specialization spec) throws BaseApplicationException {
+        return photographerFacade.getAllVisiblePhotographersByNameSurnameSpecialization(name, page, recordsPerPage, spec);
     }
 
     @PermitAll

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PhotographerReview.module.scss";
 import { Stars } from "../../shared/stars";
-import { PhotographerReviewReportModal } from "../photographer-report-modal";
+import { PhotographerReviewReportModal } from "../photographer-review-report-modal";
 import { MenuDropdown } from "components/shared/dropdown/menu-dropdown";
 import { Button } from "components/shared/button";
 import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
@@ -105,7 +105,6 @@ export const PhotographerReview: React.FC<Props> = ({
          <PhotographerReviewReportModal
             reviewId={id}
             isOpen={editReportModalIsOpen}
-            onSubmit={() => setEditReportModalIsOpen(false)}
             onCancel={() => setEditReportModalIsOpen(false)}
          />
       </div>

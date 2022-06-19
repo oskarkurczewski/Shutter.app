@@ -1,1 +1,1 @@
-export * from "./PhotographerReviewReportModal";
+export * from "./PhotographerReportModal";

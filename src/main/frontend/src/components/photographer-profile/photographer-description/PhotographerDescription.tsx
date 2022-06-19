@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PhotographerDescription.module.scss";
-import { Card, IconText } from "components/shared";
+import { Card, IconText, MenuDropdown } from "components/shared";
 import { getSpecializationProps } from "util/photographerUtil";
 import { useTranslation } from "react-i18next";
+import { IoWarning } from "react-icons/io5";
+import { FaEllipsisH } from "react-icons/fa";
+import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
+import { PhotographerReportModal } from "../photographer-report-modal";
 
 interface Props {
    specializationList?: string[];
@@ -14,6 +18,8 @@ export const PhotographerDescription: React.FC<Props> = ({
    description,
 }) => {
    const { t } = useTranslation();
+
+   const [reportModalIsVisible, setReportModalIsVisible] = useState<boolean>(false);
 
    return (
       <div className={styles.photographer_description_wrapper}>
@@ -41,12 +47,28 @@ export const PhotographerDescription: React.FC<Props> = ({
                      })}
                   </ul>
                </div>
-               <div>
-                  <p className="section-title">{t("photographer_page.description")}</p>
-                  <p>{description}</p>
+               <div className={styles.description_column}>
+                  <div>
+                     <p className="section-title">{t("photographer_page.description")}</p>
+                     <p>{description}</p>
+                  </div>
+                  <MenuDropdown>
+                     <MenuDropdownItem
+                        onClick={() => {
+                           setReportModalIsVisible(true);
+                        }}
+                        value="Report"
+                     />
+                  </MenuDropdown>
                </div>
             </div>
          </Card>
+         <PhotographerReportModal
+            isOpen={reportModalIsVisible}
+            onCancel={() => {
+               setReportModalIsVisible(false);
+            }}
+         />
       </div>
    );
 };

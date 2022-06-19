@@ -23,7 +23,14 @@
          "loading": "Ładowanie",
          "submit": "Potwierdź",
          "cancel": "Anuluj",
-         "choose_file": "Wybierz Plik"
+         "reject": "Odwołaj",
+         "report": "Zgłoś",
+         "show": "Wyświetl",
+         "search": "Szukaj",
+         "filters": "Filtry",
+         "calendar": "Kalendarz",
+         "choose_file": "Wybierz Plik",
+         "submit_operation": "Potwierdź wykonanie operacji"
       },
       "roles": {
          "administrator": "Administrator",
@@ -34,6 +41,8 @@
       }
    },
    "exception": {
+      "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
+      "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
       "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
       "database": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
@@ -69,7 +78,22 @@
       "reservation_invalid_time": "TODO",
       "availability_not_found": "TODO",
       "availability_overlap": "TODO",
-      "photo_upload_error": "Nie udało się dodać zdjęcia"
+      "photo_upload_error": "Nie udało się dodać zdjęcia",
+      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony"
+   },
+   "validator": {
+      "incorrect": {
+         "cause": {
+            "null": "Nie podano przyczyny zgłoszenia"
+         }
+      }
+   },
+   "validator": {
+      "incorrect": {
+         "name_surname_query": {
+            "regexp": "Podano niepoprawną wartość"
+         }
+      }
    },
    "navigation": {
       "home": "Strona główna",
@@ -90,6 +114,9 @@
       "photographers": "Fotografowie",
       "gallery": "Galeria",
       "change_availability": "Zmiana godzin dostępności",
+      "jobs": "Rezerwacje",
+      "reservations": "Rezerwacje",
+      "change_availability": "Zmiana godzin dostępności",
       "reports": "Zgłoszenia"
    },
    "toast": {
@@ -101,7 +128,8 @@
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
-      "error_review": "Dodanie recenzji nie powiodło się"
+      "error_review": "Dodanie recenzji nie powiodło się",
+      "success_report": "Zgłoszenie zostało wysłane"
    },
    "navbar": {
       "title": "shutter.app",
@@ -376,7 +404,12 @@
       "report_review_modal_title": "Zgłaszanie recenzji",
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
-      "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć."
+      "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
+      "report": {
+         "success_message": "Zgłoszenie zostało wysłane pomyślnie",
+         "review_title": "Zgłaszanie recenzji",
+         "photographer_title": "Zgłaszanie fotografa"
+      }
    },
    "photographer_specialization": {
       "specialization_studio": "Fotografia studyjna",
@@ -409,10 +442,17 @@
          }
       }
    },
+   "photographer_jobs_page": {
+      "search_client": "Wyszukaj klienta",
+      "no_reservations": "Brak rezerwacji na ten tydzień"
+   },
+   "user_reservations_page": {
+      "search_client": "Wyszukaj klienta",
+      "no_reservations": "Brak rezerwacji na ten tydzień"
+   },
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",
       "no_availability": "Brak dostępności",
-      "calendar_title": "Kalendarz",
       "validator": {
          "incorrect": {
             "availability_time": "Podano niepoprawny zakres"
@@ -421,5 +461,10 @@
    },
    "sidebar": {
       "changed_role_message": "Pomyślnie zmieniono rolę na {{role}}"
+   },
+   "logout_modal": {
+      "title": "Wyloguj się",
+      "description": "Czy na pewno chcesz się wylogować z aplikacji?",
+      "successfully_logged_out": "Pomyślnie wylogowano"
    }
 }

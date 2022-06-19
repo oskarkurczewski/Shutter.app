@@ -7,13 +7,21 @@ import { motion } from "framer-motion";
 
 export interface ToastType {
    text: string;
+   name?: string;
    icon?: JSX.Element;
    buttons?: JSX.Element;
    className?: string;
    id: number;
 }
 
-export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id }) => {
+export const Toast: React.FC<ToastType> = ({
+   icon,
+   name,
+   text,
+   buttons,
+   className,
+   id,
+}) => {
    const dispatch = useAppDispatch();
 
    const timeout = useRef(null);

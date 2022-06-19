@@ -1,0 +1,12 @@
+@use "variables.scss" as variables;
+.photographer_review_report_modal_wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 0.7rem;
+   padding-top: 0rem;
+   padding-bottom: 1rem;
+   min-width: 25rem;
+   .icon_dropdown > button {
+      width: 100%;
+   }
+}
