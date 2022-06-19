@@ -150,6 +150,22 @@
       "availability": "Godziny Dostępności",
       "reservation": "Rezerwacja"
    },
+   "main_page": {
+      "welcome": "Miło Cię widzieć",
+      "description": "Witaj w aplikacji Shutter.app. Zaloguj się, lub jeśli nie posiadasz u nas konta, zarejestruj:",
+      "quick_access": "Szybki dostęp:",
+      "sign_up": "Zarejestruj się",
+      "sign_in": "Zaloguj się",
+      "photographers": "Fotografowie",
+      "settings": "Ustawienia",
+      "gallery": "Galeria",
+      "photographer_profile": "Profil fotografa",
+      "users": "Użytkownicy"
+   },
+   "not_found": {
+      "not_found_message": "Nie znaleziono",
+      "go_back_message": "Wróć do strony głównej"
+   },
    "login_page": {
       "form_title": "Logowanie",
       "send_2fa_code": "Wyślij kod",
