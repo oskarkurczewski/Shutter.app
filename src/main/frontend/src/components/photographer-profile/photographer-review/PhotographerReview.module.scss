@@ -20,7 +20,16 @@
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
+      text-align: center;
       font-weight: bold;
+      white-space: nowrap;
+
+      .review_info_stars {
+         align-self: center;
+         & > span {
+            display: none;
+         }
+      }
    }
 
    .review_description {
@@ -29,9 +38,53 @@
    }
 
    .review_buttons {
+      position: relative;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
-      justify-content: space-between;
+      align-items: center;
+      justify-content: center;
+
+      .review_more_button {
+         position: absolute;
+         top: 0;
+         right: 0;
+         & > button {
+            background-color: transparent;
+            padding: 0;
+            color: variables.$gray-200;
+            width: 1rem;
+         }
+
+         & > button:focus,
+         & > button:hover {
+            color: variables.$gray-100;
+         }
+      }
+
+      .review_like_button {
+         background-color: variables.$blue-gray-100;
+
+         button {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            padding: 0.3rem 0.5rem;
+         }
+
+         p {
+            color: variables.$gray-300;
+            padding-left: 0;
+         }
+
+         span {
+            color: variables.$gray-100;
+         }
+      }
+
+      .review_like_button_liked {
+         span {
+            color: variables.$gray-300;
+         }
+      }
    }
 }

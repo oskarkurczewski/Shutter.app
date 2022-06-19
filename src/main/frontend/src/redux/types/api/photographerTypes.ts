@@ -48,6 +48,7 @@ export interface reviewReport {
    cause: string;
    reviewed: boolean;
    createdAt: Date;
+   liked: boolean;
 }
 
 export interface getPhotographerReviewsResponse {

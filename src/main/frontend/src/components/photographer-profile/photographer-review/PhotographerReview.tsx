@@ -13,11 +13,12 @@ import { push, ToastTypes } from "redux/slices/toastSlice";
 
 interface Props {
    id?: number;
-   name?: string;
-   surname?: string;
-   stars?: number;
-   description?: string;
+   name: string;
+   surname: string;
+   stars: number;
+   description: string;
    likeCount: number;
+   liked: boolean;
 }
 
 export const PhotographerReview: React.FC<Props> = ({
@@ -27,6 +28,7 @@ export const PhotographerReview: React.FC<Props> = ({
    stars,
    description,
    likeCount,
+   liked,
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
@@ -80,11 +82,15 @@ export const PhotographerReview: React.FC<Props> = ({
             <p>
                {name} {surname}
             </p>
-            <Stars stars={stars} backgroundVariant="score" />
+            <Stars
+               className={styles.review_info_stars}
+               stars={stars}
+               backgroundVariant="score"
+            />
          </div>
          <p className={styles.review_description}>{description}</p>
          <div className={styles.review_buttons}>
-            <MenuDropdown>
+            <MenuDropdown className={styles.review_more_button}>
                <MenuDropdownItem
                   value={t("photographer_page.report_button")}
                   onClick={reportReview}
@@ -95,9 +101,11 @@ export const PhotographerReview: React.FC<Props> = ({
                />
             </MenuDropdown>
             <Button
-               className={styles.button_wrapper}
+               className={`${styles.review_like_button} ${
+                  liked ? styles.review_like_button_liked : ""
+               }`}
                onClick={likeReview}
-               icon="thumb_up"
+               icon="favorite"
             >
                {likeCount?.toString()}
             </Button>
