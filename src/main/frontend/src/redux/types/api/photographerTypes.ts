@@ -58,6 +58,7 @@ export interface getPhotographerReviewsResponse {
       id: number;
       name: string;
       surname: string;
+      email: string;
       score: number;
       content: string;
       likeCount: string;

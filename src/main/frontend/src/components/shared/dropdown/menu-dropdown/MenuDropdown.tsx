@@ -28,7 +28,6 @@ export const MenuDropdown: FC<Props> = ({ children, className }) => {
          }}
       >
          <button
-            className={styles.option_wrapper}
             onClick={() => {
                setActive(!active);
             }}

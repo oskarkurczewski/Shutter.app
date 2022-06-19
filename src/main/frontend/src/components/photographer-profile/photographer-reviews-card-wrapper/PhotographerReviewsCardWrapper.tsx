@@ -69,6 +69,7 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
                   id={data[0]?.id}
                   name={data[0]?.name}
                   surname={data[0]?.surname}
+                  email={data[0]?.email}
                   stars={data[0]?.score}
                   description={data[0]?.content}
                   likeCount={data[0]?.likeCount}

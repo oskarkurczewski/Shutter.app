@@ -14,11 +14,13 @@ import { Toast } from "types";
 import { useAppDispatch } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { ReviewLikeButton } from "./review-like-button";
+import { Avatar } from "components/shared";
 
 interface Props {
    id?: number;
    name: string;
    surname: string;
+   email: string;
    stars: number;
    description: string;
    likeCount: number;
@@ -29,6 +31,7 @@ export const PhotographerReview: React.FC<Props> = ({
    id,
    name,
    surname,
+   email,
    stars,
    description,
    likeCount,
@@ -47,15 +50,9 @@ export const PhotographerReview: React.FC<Props> = ({
 
    return (
       <div className={styles.review_wrapper}>
-         <img
-            src="/images/avatar.png"
-            alt="reviewer_photo"
-            className={styles.review_photo}
-         />
+         <Avatar className={styles.review_photo} email={email} />
          <div className={styles.review_info}>
-            <p>
-               {name} {surname}
-            </p>
+            <p className="section-title">{`${name} ${surname}`}</p>
             <Stars
                className={styles.review_info_stars}
                stars={stars}
@@ -64,7 +61,7 @@ export const PhotographerReview: React.FC<Props> = ({
          </div>
          <p className={styles.review_description}>{description}</p>
          <div className={styles.review_buttons}>
-            <MenuDropdown className={styles.review_more_button}>
+            <MenuDropdown>
                <MenuDropdownItem
                   value={t("photographer_page.report_button")}
                   onClick={reportReview}
