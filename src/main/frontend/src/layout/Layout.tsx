@@ -10,7 +10,7 @@ import { login, logout } from "redux/slices/authSlice";
 import { ToastTypes, push } from "redux/slices/toastSlice";
 import { Toast } from "types";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const variants = {
    hidden: { opacity: 0, x: -200, y: 0 },
@@ -24,6 +24,12 @@ export const PageLayout: React.FC = () => {
    const [refreshToken] = useRefreshTokenMutation();
 
    const location = useLocation();
+
+   const logoutToast: Toast = {
+      type: ToastTypes.SUCCESS,
+      name: "logout-success",
+      text: t("logout_modal.successfully_logged_out"),
+   };
 
    const sessionToast: Toast = useMemo(
       () => ({
@@ -58,6 +64,7 @@ export const PageLayout: React.FC = () => {
          // logout automatically
          if (exp < Date.now()) {
             return dispatch(logout());
+            dispatch(push(logoutToast));
          }
 
          // push notification for session renewal

@@ -29,6 +29,7 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}`,
             method: "GET",
          }),
+         providesTags: ["Review"],
       }),
 
       removeSomeonesPhotographerReview: builder.mutation<void, number>({
@@ -36,6 +37,7 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}/admin`,
             method: "DELETE",
          }),
+         invalidatesTags: ["Review"],
       }),
 
       addReview: builder.mutation<void, addReviewRequest>({
@@ -44,6 +46,7 @@ const ReviewService = api.injectEndpoints({
             method: "POST",
             body: data,
          }),
+         invalidatesTags: ["Review"],
       }),
       getPhotographerReviews: builder.query<
          getPhotographerReviewsResponse,
