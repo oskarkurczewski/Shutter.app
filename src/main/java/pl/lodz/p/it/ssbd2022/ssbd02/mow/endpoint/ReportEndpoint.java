@@ -17,6 +17,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -105,7 +106,7 @@ public class ReportEndpoint extends AbstractEndpoint {
         reportService.addPhotographerReport(report);
     }
 
-    @RolesAllowed(reportPhotographer)
+    @PermitAll
     public List<String> getAllReviewReportCauses() throws BaseApplicationException {
         return reportService.getReviewReportCauses().stream().map(ReviewReportCause::getCause).collect(Collectors.toList());
     }
@@ -191,7 +192,7 @@ public class ReportEndpoint extends AbstractEndpoint {
      *
      * @return lista zgłoszeń fotografów
      */
-    @RolesAllowed(reportPhotographer)
+    @PermitAll
     public List<String> getAllPhotographerReportCauses() {
         return reportService.getAllPhotographerReportCauses();
     }
