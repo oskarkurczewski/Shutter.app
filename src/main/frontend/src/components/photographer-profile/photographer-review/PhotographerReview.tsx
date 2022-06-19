@@ -17,10 +17,10 @@ import { ReviewLikeButton } from "./review-like-button";
 
 interface Props {
    id?: number;
-   name?: string;
-   surname?: string;
-   stars?: number;
-   description?: string;
+   name: string;
+   surname: string;
+   stars: number;
+   description: string;
    likeCount: number;
    liked: boolean;
 }
@@ -56,11 +56,15 @@ export const PhotographerReview: React.FC<Props> = ({
             <p>
                {name} {surname}
             </p>
-            <Stars stars={stars} backgroundVariant="score" />
+            <Stars
+               className={styles.review_info_stars}
+               stars={stars}
+               backgroundVariant="score"
+            />
          </div>
          <p className={styles.review_description}>{description}</p>
          <div className={styles.review_buttons}>
-            <MenuDropdown>
+            <MenuDropdown className={styles.review_more_button}>
                <MenuDropdownItem
                   value={t("photographer_page.report_button")}
                   onClick={reportReview}
