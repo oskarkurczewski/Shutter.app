@@ -140,7 +140,7 @@ public class PhotoService {
         List<PhotoDto> photoDtoList = new ArrayList<>();
         for (Photo photo : list) {
             boolean liked = photo.getLikesList().stream().anyMatch(p -> p.getLogin().equals(login));
-            photoDtoList.add(new PhotoDto(photo, liked));
+            photoDtoList.add(new PhotoDto(photo, liked, photographerInfo));
         }
 
         ListResponseDto<PhotoDto> listResponseDto = new ListResponseDto<>(

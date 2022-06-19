@@ -7,7 +7,8 @@ interface Props {
    children: string;
    className?: string;
    icon?: string;
-   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+   href?: string;
+   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
    title?: string;
    disabled?: boolean;
    loading?: boolean;
@@ -17,6 +18,7 @@ export const Button: React.FC<Props> = ({
    children,
    className,
    icon,
+   href,
    onClick,
    title,
    disabled,
@@ -28,10 +30,20 @@ export const Button: React.FC<Props> = ({
             className ? className : ""
          }`}
       >
-         <button onClick={(e) => onClick(e)} title={title} disabled={disabled}>
-            {icon ? <span className="material-icons">{icon}</span> : null}
-            <p>{children}</p>
-         </button>
+         {href ? (
+            <a href={href} title={title}>
+               {children}
+            </a>
+         ) : (
+            <button
+               onClick={(e) => onClick && onClick(e)}
+               title={title}
+               disabled={disabled}
+            >
+               {icon ? <span className="material-icons">{icon}</span> : null}
+               <p>{children}</p>
+            </button>
+         )}
          {loading && (
             <div className={styles.loading_wrapper}>
                <Player autoplay loop src={Animation} background="transparent" />

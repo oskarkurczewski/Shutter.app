@@ -99,3 +99,30 @@ export interface ReviewInfo {
    active: boolean;
    createdAt: Date;
 }
+
+export interface ReservationRequest {
+   name?: string;
+   order?: "asc" | "desc";
+   all?: boolean;
+   date: string;
+}
+
+export interface UserData {
+   login: string;
+   name: string;
+   surname: string;
+   email: string;
+}
+
+export interface ReservationResponse {
+   id: number;
+   photographer: UserData;
+   client: UserData;
+   from: string;
+   to: string;
+}
+
+export interface ReportPhotographerRequest {
+   photographerLogin: string;
+   cause: string;
+}

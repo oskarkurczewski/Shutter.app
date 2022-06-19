@@ -23,6 +23,7 @@ div.modal_wrapper {
 
    .content {
       display: flex;
+      position: absolute;
       flex-direction: column;
       gap: 0.5rem;
       align-self: flex-start;

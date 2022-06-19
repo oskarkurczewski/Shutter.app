@@ -6,6 +6,7 @@
    margin: 0;
    padding: 0;
    font-family: "Roboto", sans-serif;
+   scroll-behavior: smooth;
 }
 
 h1,
@@ -62,6 +63,7 @@ html {
    h3 {
       font-size: calc(variables.$scale-3 * 1rem);
       font-family: "Open Sans", sans-serif;
+      font-weight: normal;
    }
 
    h2 {

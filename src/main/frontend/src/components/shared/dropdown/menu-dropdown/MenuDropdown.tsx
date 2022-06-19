@@ -1,10 +1,12 @@
-import React, { FC, ReactNode, useRef, useState } from "react";
+import React, { FC, ReactElement, useRef, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
-import { MenuDropdownItem } from "./menu-dropdown-item";
 import styles from "./MenuDropdown.module.scss";
+import { MenuDropdownItem } from "./menu-dropdown-item";
 
 interface Props {
-   children: ReactNode;
+   children:
+      | ReactElement<typeof MenuDropdownItem>
+      | ReactElement<typeof MenuDropdownItem>[];
    className?: string;
 }
 

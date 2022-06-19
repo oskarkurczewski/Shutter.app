@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
@@ -164,17 +165,26 @@ public class ReservationEndpoint extends AbstractEndpoint {
 
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których imię
-     * lub nazwisko zawiera szukaną frazę
+     * lub nazwisko zawiera szukaną frazę oraz zajmują się podaną specjalizacją
      *
      * @param name           szukana fraza
+     * @param spec           specjalizacja
      * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
-    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurname(String name, int page, int recordsPerPage) throws BaseApplicationException {
-        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurname(name, page, recordsPerPage);
+    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurnameSpecialization(String name, int page, int recordsPerPage, String spec) throws BaseApplicationException {
+        Specialization specialization;
+
+        if (spec != null ) {
+            specialization = reservationService.getSpecialization(spec);
+        } else {
+            specialization = null;
+        }
+
+        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurnameSpecialization(name, page, recordsPerPage, specialization);
         Long photographerCount = (long) list.size();
 
         return new MorListResponseDto(

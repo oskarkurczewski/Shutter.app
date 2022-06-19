@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
+import { motion } from "framer-motion";
 
 interface Props {
    roles: AccessLevel[];
@@ -14,9 +15,13 @@ export const ProtectedRoute = ({ roles, children }: Props) => {
 
    useEffect(() => {
       if (!roles.includes(level)) {
-         navigate(-1);
+         if (level == AccessLevel.GUEST) {
+            navigate("/login", { replace: true });
+         } else {
+            navigate("/", { replace: true });
+         }
       }
-   }, []);
+   }, [level]);
 
    return <>{children}</>;
 };

@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { AvailabilityHour, ErrorResponse, HourBox, Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { parseError } from "util/errorUtil";
+import { parseToAvailabilityHour } from "redux/converters";
 
 export const ChangeAvailabilityPage = () => {
    const { t } = useTranslation();
@@ -24,7 +25,7 @@ export const ChangeAvailabilityPage = () => {
    const [newHours, setNewHours] = useState<AvailabilityHour[]>();
 
    useEffect(() => {
-      data && setNewHours(data);
+      data && setNewHours(parseToAvailabilityHour(data));
    }, [data]);
 
    // Parse to display
@@ -80,7 +81,7 @@ export const ChangeAvailabilityPage = () => {
       <section className={styles.change_availability_page_wrapper}>
          <Card className={styles.calendar_wrapper}>
             <Calendar
-               title={t("change_availability_page.calendar_title")}
+               title={t("global.label.calendar")}
                showWeekNavigation={false}
                availability={newHours}
                onRangeSelection={addAvailability}

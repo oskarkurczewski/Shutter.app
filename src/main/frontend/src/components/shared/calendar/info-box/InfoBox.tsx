@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getNthParent } from "util/domUtils";
 import styles from "./InfoBox.module.scss";
+import { getNthParent } from "util/domUtils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
    children: JSX.Element | JSX.Element[];
@@ -28,12 +29,17 @@ export const InfoBox: React.FC<Props> = ({ children, className }) => {
    }, [boxElement]);
 
    return (
-      <div
-         className={`${styles.info_box_wrapper} ${className ? className : ""}`}
-         ref={boxElement}
-         style={boxStyle}
-      >
-         {children}
-      </div>
+      <AnimatePresence>
+         <motion.div
+            className={`${styles.info_box_wrapper} ${className ? className : ""}`}
+            ref={boxElement}
+            style={boxStyle}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+         >
+            {children}
+         </motion.div>
+      </AnimatePresence>
    );
 };

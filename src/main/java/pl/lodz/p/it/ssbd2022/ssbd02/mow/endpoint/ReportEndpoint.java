@@ -26,6 +26,7 @@ import javax.interceptor.Interceptors;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -47,6 +48,7 @@ public class ReportEndpoint extends AbstractEndpoint {
 
     @Inject
     private ProfileService profileService;
+
 
     /**
      * Tworzy zgłoszenie na podanego klienta.
@@ -101,6 +103,11 @@ public class ReportEndpoint extends AbstractEndpoint {
         report.setCause(reportService.getPhotographerReportCause(createPhotographerReportDto.getCause()));
         report.setReviewed(false);
         reportService.addPhotographerReport(report);
+    }
+
+    @RolesAllowed(reportPhotographer)
+    public List<String> getAllReviewReportCauses() throws BaseApplicationException {
+        return reportService.getReviewReportCauses().stream().map(ReviewReportCause::getCause).collect(Collectors.toList());
     }
 
     @RolesAllowed(reportReview)

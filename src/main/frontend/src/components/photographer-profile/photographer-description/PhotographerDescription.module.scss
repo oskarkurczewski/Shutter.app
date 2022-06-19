@@ -32,6 +32,13 @@
                }
             }
          }
+         .description_column {
+            display: flex;
+
+            .menu_btn {
+               font-size: 40px;
+            }
+         }
       }
 
       .text_wrapper {

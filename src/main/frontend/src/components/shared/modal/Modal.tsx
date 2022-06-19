@@ -4,6 +4,7 @@ import { Button, Card } from "components/shared";
 import { ModalRoot } from "./ModalRoot";
 import { useTranslation } from "react-i18next";
 import { ModalNotification } from "./modal-notification";
+import { motion, AnimatePresence } from "framer-motion";
 
 export type Notification = {
    type?: "info" | "error" | "warning" | "success";
@@ -65,37 +66,44 @@ export const Modal: React.FC<Props> = ({
                onKeyDown={() => onCancel()}
                onClick={() => onCancel()}
             />
-            <div className={styles.content}>
-               <Card className={`${styles.card_wrapper} ${className && className}`}>
-                  {title && (
-                     <div className={styles.modal_header}>
-                        <p className="category-title">{title}</p>
-                     </div>
-                  )}
-                  <div>{children}</div>
-                  <div className={styles.modal_footer}>
-                     {type === "confirm" && (
-                        <Button
-                           className={styles.cancel}
-                           onClick={() => onCancel && onCancel()}
-                        >
-                           {cancelText ? cancelText : t("global.label.cancel")}
-                        </Button>
+            <AnimatePresence>
+               <motion.div
+                  className={styles.content}
+                  initial={{ top: -300, opacity: 0.5 }}
+                  animate={{ top: 80, opacity: 1 }}
+                  exit={{ top: 2000, opacity: 0 }}
+               >
+                  <Card className={`${styles.card_wrapper} ${className && className}`}>
+                     {title && (
+                        <div className={styles.modal_header}>
+                           <p className="category-title">{title}</p>
+                        </div>
                      )}
-                     <Button onClick={() => onSubmit()}>
-                        {submitText ? submitText : t("global.label.submit")}
-                     </Button>
-                  </div>
-               </Card>
-               {notification && (
-                  <ModalNotification
-                     className={styles.notification}
-                     onSubmit={notification.onSubmit}
-                     content={notification.content}
-                     type={notification.type}
-                  />
-               )}
-            </div>
+                     <div>{children}</div>
+                     <div className={styles.modal_footer}>
+                        {type === "confirm" && (
+                           <Button
+                              className={styles.cancel}
+                              onClick={() => onCancel && onCancel()}
+                           >
+                              {cancelText ? cancelText : t("global.label.cancel")}
+                           </Button>
+                        )}
+                        <Button onClick={() => onSubmit()}>
+                           {submitText ? submitText : t("global.label.submit")}
+                        </Button>
+                     </div>
+                  </Card>
+                  {notification && (
+                     <ModalNotification
+                        className={styles.notification}
+                        onSubmit={notification.onSubmit}
+                        content={notification.content}
+                        type={notification.type}
+                     />
+                  )}
+               </motion.div>
+            </AnimatePresence>
          </div>
       </ModalRoot>
    );

@@ -12,6 +12,7 @@ interface Props {
    dayData: HourBox[];
    availabilityList?: AvailabilityHour[];
    reservationsList?: Reservation[];
+   isLoading: boolean;
    onRangeSelection?: (selection: HourBox[]) => void;
    onAvailabilityRemove?: (availability: AvailabilityHour) => void;
    onReservationRemove?: (reservation: Reservation) => void;
@@ -22,6 +23,7 @@ export const DayColumn: React.FC<Props> = ({
    dayData,
    availabilityList,
    reservationsList,
+   isLoading,
    onRangeSelection,
    onAvailabilityRemove,
    onReservationRemove,
@@ -64,21 +66,23 @@ export const DayColumn: React.FC<Props> = ({
                   );
                })}
             </div>
-            {availabilityList?.map((availability, index) => (
-               <AvailabilityBox
-                  availability={availability}
-                  key={index}
-                  fullWidth={displayFullWidth}
-                  onRemove={onAvailabilityRemove}
-               />
-            ))}
-            {reservationsList?.map((reservation, index) => (
-               <ReservationBox
-                  reservation={reservation}
-                  key={index}
-                  fullWidth={displayFullWidth}
-               />
-            ))}
+            {!isLoading &&
+               availabilityList?.map((availability, index) => (
+                  <AvailabilityBox
+                     availability={availability}
+                     key={index}
+                     fullWidth={displayFullWidth}
+                     onRemove={onAvailabilityRemove}
+                  />
+               ))}
+            {!isLoading &&
+               reservationsList?.map((reservation, index) => (
+                  <ReservationBox
+                     reservation={reservation}
+                     key={index}
+                     fullWidth={displayFullWidth}
+                  />
+               ))}
          </div>
       </div>
    );
