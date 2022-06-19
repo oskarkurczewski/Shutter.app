@@ -98,3 +98,9 @@ export interface ReservationCalendarEntryResponse {
    from: string;
    to: string;
 }
+
+export interface CalendarReservationResponse {
+   id: number;
+   from: string;
+   to: string;
+}
