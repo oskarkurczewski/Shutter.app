@@ -1,0 +1,24 @@
+@use "../../../src/variables.scss" as variables;
+
+.not_found_page {
+   flex: 1;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   margin-bottom: 350px;
+   gap: 1rem;
+
+   h1 {
+      margin-bottom: -3rem;
+   }
+
+   .app_logo {
+      height: calc(variables.$scale-5 * 2rem);
+      width: calc(variables.$scale-5 * 2rem);
+   }
+
+   .go_back_button:hover {
+      cursor: pointer;
+   }
+}

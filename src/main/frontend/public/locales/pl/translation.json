@@ -130,6 +130,10 @@
       "photographer_profile": "Profil fotografa",
       "users": "Użytkownicy"
    },
+   "not_found": {
+      "not_found_message": "Nie znaleziono",
+      "go_back_message": "Wróć do strony głównej"
+   },
    "login_page": {
       "form_title": "Logowanie",
       "send_2fa_code": "Wyślij kod",

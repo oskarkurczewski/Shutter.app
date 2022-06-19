@@ -39,9 +39,8 @@ function App() {
       <Suspense fallback={<SuspenseLoader />}>
          <BrowserRouter>
             <Routes>
-               <Route path="*" element={<NotFoundPage />} />
-
                <Route element={<PageLayout />}>
+                  <Route path="*" element={<NotFoundPage />} />
                   <Route path="" element={<HomePage />} />
                   <Route path="dashboard" element={<DashboardPage />} />
 
@@ -139,7 +138,7 @@ function App() {
                      path=":login/profile/gallery"
                      element={
                         <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
-                              <PhotographerGalleryPage />
+                           <PhotographerGalleryPage />
                         </ProtectedRoute>
                      }
                   />

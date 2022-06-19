@@ -74,6 +74,12 @@ html {
       font-family: "Open Sans", sans-serif;
    }
 
+   .text-huge {
+      font-size: calc(variables.$scale-6 * 2rem);
+      font-family: "Open Sans", sans-serif;
+      color: variables.$purple-100;
+   }
+
    .label {
       font-size: 1rem;
       font-weight: 600;
