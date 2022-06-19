@@ -29,7 +29,7 @@ export const Dropdown: React.FC<Props> = ({
             onChange={(e) => {
                onChange(e);
             }}
-            defaultValue={selectedValue.toString()}
+            value={selectedValue.toString()}
          >
             {values.map((value, index) => {
                return (

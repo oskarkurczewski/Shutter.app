@@ -193,7 +193,9 @@
       "photographers": "Fotografowie",
       "photographer": "Fotograf",
       "profile": "Profil",
-      "hire": "Wynajmij"
+      "hire": "Wynajmij",
+      "list": "Lista",
+      "az": "A-Z"
    },
    "photographer_list_admin_page": {
       "login": "Login",

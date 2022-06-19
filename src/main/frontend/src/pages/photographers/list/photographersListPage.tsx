@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./photographersListPage.module.scss";
 import { useTranslation } from "react-i18next";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { Card, TextInput } from "components/shared";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { Card, Dropdown, TextInput } from "components/shared";
 import { FaSearch } from "react-icons/fa";
 import { PhotographerListRequest } from "redux/types/api";
 import { useGetPhotographerListMutation } from "redux/service/photographerService";
@@ -17,7 +17,7 @@ export const PhotographersListPage = () => {
       useState<PhotographerListRequest>({
          query: "",
          pageNo: 1,
-         recordsPerPage: 25,
+         recordsPerPage: 10,
       });
    const [expandFilters, setExpandFilters] = useState(true);
 
@@ -33,7 +33,7 @@ export const PhotographersListPage = () => {
             allPages: 0,
             allRecords: 0,
             pageNo: 1,
-            recordsPerPage: 25,
+            recordsPerPage: 10,
             list: [],
          },
          isSuccess: getPhotographersSuccess,
@@ -49,6 +49,14 @@ export const PhotographersListPage = () => {
       setPhotographerSearchFilters({
          ...photographerSearchFilters,
          [name]: e.target.value,
+      });
+   };
+
+   const handleDropdownChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+      const name = e.target.name;
+      setPhotographerSearchFilters({
+         ...photographerSearchFilters,
+         [name]: Number(e.target.value),
       });
    };
 
@@ -149,8 +157,54 @@ export const PhotographersListPage = () => {
                            count: photographersListResponse.allRecords,
                         })}
                   </p>
-                  <DisabledDropdown label="LIST" className={styles.dropdown} />
-                  <DisabledDropdown label="A-Z" className={styles.dropdown} />
+                  <DisabledDropdown
+                     label={t("photographer_list_page.list")}
+                     className={styles.disabled_dropdown}
+                  />
+                  <DisabledDropdown
+                     label={t("photographer_list_page.az")}
+                     className={styles.disabled_dropdown}
+                  />
+                  <Dropdown
+                     values={["10", "25", "50", "100"]}
+                     selectedValue={photographerSearchFilters.recordsPerPage}
+                     name="recordsPerPage"
+                     onChange={handleDropdownChange}
+                     id="recordsPerPage"
+                     className={styles.dropdown}
+                  />
+                  <div className={styles.pagination_controls}>
+                     <button
+                        disabled={photographerSearchFilters.pageNo === 1}
+                        onClick={() => {
+                           setPhotographerSearchFilters({
+                              ...photographerSearchFilters,
+                              pageNo: photographerSearchFilters.pageNo - 1,
+                           });
+                        }}
+                     >
+                        <MdKeyboardArrowLeft />
+                        <span className="label">poprz.</span>
+                     </button>
+                     <span className="label-bold">
+                        {photographerSearchFilters.pageNo}
+                     </span>
+                     <button
+                        disabled={
+                           photographerSearchFilters.pageNo ===
+                           photographersListResponse.allPages
+                        }
+                        onClick={() => {
+                           setPhotographerSearchFilters({
+                              ...photographerSearchFilters,
+                              pageNo: photographerSearchFilters.pageNo + 1,
+                           });
+                        }}
+                     >
+                        <span className="label">nast.</span>
+                        <MdKeyboardArrowRight />
+                     </button>
+                  </div>
                </div>
             </div>
             <div className={`${styles.content} ${styles.list}`}>

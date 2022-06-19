@@ -23,7 +23,47 @@
             white-space: nowrap;
          }
 
-         .dropdown {
+         .pagination_controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            border: 2px solid variables.$gray-100;
+            border-radius: 42px;
+            column-gap: 10px;
+
+            button {
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               min-width: 75px;
+
+               background: none;
+               color: variables.$gray-300;
+
+               span {
+                  font-size: 0.9rem;
+                  padding-bottom: 2px;
+               }
+
+               &:disabled {
+                  cursor: default;
+                  color: variables.$gray-100;
+
+                  span {
+                     color: variables.$gray-100;
+                  }
+               }
+            }
+
+            span {
+               color: variables.$gray-300;
+            }
+         }
+
+         .disabled_dropdown {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -32,13 +72,38 @@
             padding: 3px 0px 3px 10px;
             user-select: none;
 
+            p {
+               color: variables.$gray-300;
+               text-transform: uppercase;
+            }
+
             svg {
                font-size: 1.4rem;
-               color: variables.$gray-200;
+               color: variables.$gray-300;
             }
 
             border: 2px solid variables.$gray-100;
             border-radius: 42px;
+         }
+
+         .dropdown {
+            select {
+               height: auto;
+               padding: 2px 5px;
+               align-self: stretch;
+               min-width: 50px;
+
+               font-size: 1rem;
+               font-weight: 600;
+               font-family: "Open Sans", sans-serif;
+               color: variables.$gray-300;
+               border-radius: 42px;
+
+               cursor: pointer;
+
+               user-select: none;
+               background: transparent;
+            }
          }
       }
 
@@ -100,7 +165,7 @@
             grid-template-areas: "avatar specializations score buttons";
 
             column-gap: 10px;
-            padding-right: 25px;
+            padding: 20px 25px 20px 20px;
 
             .avatar_wrapper {
                display: flex;
