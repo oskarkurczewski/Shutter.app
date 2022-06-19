@@ -1,5 +1,6 @@
 import { basicUserInfoResponse } from "./accountTypes";
 import { ReviewReportCause } from "types/ReviewReportCause";
+import { DateTime } from "luxon";
 
 export interface basicPhotographerInfo extends basicUserInfoResponse {
    score: number;
@@ -64,6 +65,12 @@ export interface AvailabilityRequest {
    to: string;
 }
 
+export interface AddReservationRequest {
+   photographerLogin: string;
+   from: DateTime;
+   to: DateTime;
+}
+
 export interface ReservationRequest {
    name?: string;
    order?: "asc" | "desc";
@@ -82,6 +89,12 @@ export interface ReservationResponse {
    id: number;
    photographer: UserData;
    client: UserData;
+   from: string;
+   to: string;
+}
+
+export interface ReservationCalendarEntryResponse {
+   id: number;
    from: string;
    to: string;
 }

@@ -5,8 +5,8 @@ import {
    ReservationResponse,
    ReservationRequest,
 } from "redux/types/api/photographerTypes";
-import { AvailabilityHour } from "types/CalendarTypes";
-import {  parseToAvailabilityRequest } from "redux/converters";
+import { AvailabilityHour, Reservation } from "types/CalendarTypes";
+import { parseToAvailabilityRequest } from "redux/converters";
 
 const PhotographerService = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -16,6 +16,10 @@ const PhotographerService = api.injectEndpoints({
 
       getAvailabityHours: builder.query<AvailabilityResponse[], string>({
          query: (login) => ({ url: `/availability/${login}` }),
+      }),
+
+      getReservationsForUser: builder.query<AvailabilityResponse[], ReservationRequest>({
+         query: (data) => ({ url: `/reservation/${data.name}?date=${data.date}` }),
       }),
 
       updateAvailabilityHours: builder.mutation<void, AvailabilityHour[]>({
@@ -32,11 +36,21 @@ const PhotographerService = api.injectEndpoints({
             params: data,
          }),
       }),
+
+      createReservation: builder.mutation<void, Reservation>({
+         query: (reservation) => ({
+            url: "/reservation",
+            method: "POST",
+            body: reservation,
+         }),
+      }),
    }),
 });
 
 export const {
+   useCreateReservationMutation,
    useGetPhotographerDetailedInfoQuery,
+   useGetReservationsForUserQuery,
    useGetAvailabityHoursQuery,
    useUpdateAvailabilityHoursMutation,
    useGetJobListMutation,
