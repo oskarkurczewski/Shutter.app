@@ -57,16 +57,16 @@ export const Modal: React.FC<Props> = ({
    }
 
    return (
-      <AnimatePresence>
-         <ModalRoot>
-            <div className={styles.modal_wrapper}>
-               <div
-                  className={styles.backdrop}
-                  role="button"
-                  tabIndex={-1}
-                  onKeyDown={() => onCancel()}
-                  onClick={() => onCancel()}
-               />
+      <ModalRoot>
+         <div className={styles.modal_wrapper}>
+            <div
+               className={styles.backdrop}
+               role="button"
+               tabIndex={-1}
+               onKeyDown={() => onCancel()}
+               onClick={() => onCancel()}
+            />
+            <AnimatePresence>
                <motion.div
                   className={styles.content}
                   initial={{ top: -300, opacity: 0.5 }}
@@ -103,8 +103,8 @@ export const Modal: React.FC<Props> = ({
                      />
                   )}
                </motion.div>
-            </div>
-         </ModalRoot>
-      </AnimatePresence>
+            </AnimatePresence>
+         </div>
+      </ModalRoot>
    );
 };
