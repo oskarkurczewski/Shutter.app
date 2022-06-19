@@ -177,6 +177,11 @@ public class ReservationService {
     }
 
     @PermitAll
+    public Long countAllVisiblePhotographersByNameSurname(String name) throws BaseApplicationException {
+        return photographerFacade.countAllVisiblePhotographersByNameSurname(name);
+    }
+
+    @PermitAll
     public List<PhotographerInfo> findPhotographerBySpecialization(Specialization specialization) {
         throw new UnsupportedOperationException();
     }

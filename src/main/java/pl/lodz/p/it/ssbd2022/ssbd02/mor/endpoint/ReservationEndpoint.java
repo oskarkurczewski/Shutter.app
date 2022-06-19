@@ -158,8 +158,8 @@ public class ReservationEndpoint extends AbstractEndpoint {
      */
     @PermitAll
     public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurname(String name, int page, int recordsPerPage) throws BaseApplicationException {
+        Long photographerCount = reservationService.countAllVisiblePhotographersByNameSurname(name);
         List<PhotographerInfo> list = reservationService.findPhotographerByNameSurname(name, page, recordsPerPage);
-        Long photographerCount = (long) list.size();
 
         return new MorListResponseDto(
                 page,
