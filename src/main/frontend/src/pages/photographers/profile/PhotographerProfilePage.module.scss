@@ -16,4 +16,18 @@
       flex-direction: column;
       gap: 20px;
    }
+
+   .photographer_gallery_container {
+      margin-top: 4rem;
+
+      .photographer_gallery_card {
+         padding: 2rem 2.5rem;
+
+         .gallery_title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+         }
+      }
+   }
 }

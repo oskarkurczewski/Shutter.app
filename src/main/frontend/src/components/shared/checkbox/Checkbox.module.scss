@@ -12,6 +12,10 @@
       border-radius: 5px;
       padding: 0.5rem;
 
+      &:not(:disabled) {
+         cursor: pointer;
+      }
+
       &:checked {
          background-image: url("../../../assets/images/tick.svg");
          background-size: cover;

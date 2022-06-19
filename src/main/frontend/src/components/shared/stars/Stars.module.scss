@@ -1,0 +1,51 @@
+@use "variables.scss" as variables;
+
+.text_wrapper {
+   border-radius: 4px;
+   display: flex;
+   justify-content: flex-start;
+   align-items: flex-start;
+   font-weight: bold;
+   font-size: 20px;
+   gap: 5px;
+
+   &.all {
+      background-color: variables.$blue-gray-100;
+      padding: 7px 10px;
+   }
+
+   svg {
+      color: variables.$gray-200;
+   }
+
+   ul {
+      list-style-type: none;
+      display: flex;
+      gap: 3px;
+
+      li {
+         position: relative;
+         display: flex;
+         align-items: center;
+         div {
+            position: absolute;
+            height: 100%;
+            width: 125%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+         }
+      }
+   }
+   & > span {
+      margin-left: 0.4rem;
+      font-size: 15px;
+      align-self: center;
+      &.score {
+         background-color: variables.$blue-gray-100;
+         padding: 0.5rem 0.6rem;
+         border-radius: 4px;
+      }
+   }
+}

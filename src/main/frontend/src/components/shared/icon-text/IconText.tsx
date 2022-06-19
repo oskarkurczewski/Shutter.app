@@ -7,11 +7,16 @@ interface Props {
    className?: string;
    text?: string;
    Icon?: IconType;
+   onClick?: () => void;
 }
 
-export const IconText: React.FC<Props> = ({ color, className, text, Icon }) => {
+export const IconText: React.FC<Props> = ({ color, className, text, Icon, onClick }) => {
    return (
       <div
+         tabIndex={-1}
+         role="button"
+         onKeyDown={null}
+         onClick={onClick}
          className={`${styles.text_wrapper} ${color && styles[color]} ${
             className ? className : ""
          }`}

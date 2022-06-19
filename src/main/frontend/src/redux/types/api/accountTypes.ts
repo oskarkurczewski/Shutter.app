@@ -161,3 +161,12 @@ export interface changeDescriptionRequest {
 export interface GetAccountLocaleResponse {
    languageTag: Language;
 }
+
+export interface accountReport {
+   id: number;
+   reportedLogin: string;
+   reporteeLogin: string;
+   cause: string;
+   reviewed: boolean;
+   createdAt: Date;
+}

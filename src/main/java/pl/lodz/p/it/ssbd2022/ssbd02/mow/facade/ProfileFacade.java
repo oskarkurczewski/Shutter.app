@@ -1,8 +1,10 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -13,6 +15,11 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -87,4 +94,30 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
+
+    /**
+     * Pobiera listę wszystkich dostępnych specjalizacji
+     *
+     * @return lista specjalizacji
+     */
+    @RolesAllowed(changeSpecializations)
+    public List<Specialization> getSpecializationList() throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Specialization> query = criteriaBuilder.createQuery(Specialization.class);
+        Root<Specialization> root = query.from(Specialization.class);
+        query.select(root);
+        try {
+
+            return em.createQuery(query).getResultList();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.specializationNotFoundException();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+    
 }

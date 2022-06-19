@@ -4,10 +4,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.AvailabilityFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.PhotographerFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.ReservationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
@@ -20,6 +16,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -127,22 +124,29 @@ public class ReservationService {
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
      * @param account        konto użytkownika, dla którego pobierane są rezerwacje
-     * @param page           numer strony
-     * @param recordsPerPage liczba recenzji na stronę
      * @param order          kolejność sortowania względem kolumny time_from
      * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)
-    public List<Reservation> listReservations(Account account, String name, int page, int recordsPerPage, String order, Boolean getAll)
+    public List<Reservation> listReservations(Account account, String name, String order, Boolean getAll, LocalDate localDate)
             throws BaseApplicationException {
-        return reservationFacade.getReservationsForUser(account, name, page, recordsPerPage, order, getAll);
+        return reservationFacade.getReservationsForUser(account, name, order, getAll, localDate);
     }
 
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     *
+     * @param photographerInfo konto użytkownika, dla którego pobierane są rezerwacje
+     * @param order            kolejność sortowania względem kolumny time_from
+     * @param getAll           flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return Reservation      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(showJobs)
-    public List<Reservation> listJobs(PhotographerInfo photographer) {
-        throw new UnsupportedOperationException();
+    public List<Reservation> listJobs(PhotographerInfo photographerInfo, String name, String order, Boolean getAll, LocalDate localDate) throws BaseApplicationException {
+        return reservationFacade.getJobsForPhotographer(photographerInfo, name, order, getAll, localDate);
     }
 
     /**
@@ -172,7 +176,7 @@ public class ReservationService {
     /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
-     * @param page strona listy, którą należy pozyskać
+     * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji

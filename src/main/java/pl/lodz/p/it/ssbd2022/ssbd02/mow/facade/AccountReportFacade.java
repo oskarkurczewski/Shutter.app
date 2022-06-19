@@ -49,4 +49,30 @@ public class AccountReportFacade extends FacadeTemplate<AccountReport> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
+
+    @Override
+    public AccountReport update(AccountReport entity) throws BaseApplicationException {
+        try {
+            return super.update(entity);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+    @Override
+    public AccountReport find(Long id) throws BaseApplicationException {
+        try {
+            return super.find(id);
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
 }

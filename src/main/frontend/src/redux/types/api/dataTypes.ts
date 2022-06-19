@@ -25,3 +25,10 @@ export interface getListResponse<T> {
    pageNo: number;
    recordsPerPage: number;
 }
+
+export interface getReportListRequest {
+   reviewed?: boolean;
+   order: string;
+   page: number;
+   recordsPerPage: number;
+}

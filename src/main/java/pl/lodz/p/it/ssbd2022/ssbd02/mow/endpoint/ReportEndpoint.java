@@ -165,18 +165,18 @@ public class ReportEndpoint extends AbstractEndpoint {
 
 
     @RolesAllowed(resolveReport)
-    public void resolveAccountReport(Long reportId) {
-        throw new UnsupportedOperationException();
+    public void resolveAccountReport(Long reportId) throws BaseApplicationException {
+        reportService.resolveAccountReport(reportService.findAccountReportById(reportId));
     }
 
     @RolesAllowed(resolveReport)
-    public void resolvePhotographerReport(Long photographerId) {
-        throw new UnsupportedOperationException();
+    public void resolvePhotographerReport(Long photographerId) throws BaseApplicationException {
+        reportService.resolvePhotographerReport(reportService.findPhotographerReportById(photographerId));
     }
 
     @RolesAllowed(resolveReport)
-    public void resolveReviewReport(Long reviewId) {
-        throw new UnsupportedOperationException();
+    public void resolveReviewReport(Long reviewId) throws BaseApplicationException {
+        reportService.resolveReviewReport(reportService.findReviewReportById(reviewId));
     }
 
     /**

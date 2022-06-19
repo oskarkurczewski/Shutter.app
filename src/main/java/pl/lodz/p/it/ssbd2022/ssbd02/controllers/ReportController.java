@@ -142,19 +142,22 @@ public class ReportController extends AbstractController {
 
     @POST
     @Path("/account/{id}/resolve")
-    public Response resolveAccountReport(@PathParam("id") Long reportId) {
-        throw new UnsupportedOperationException();
+    public Response resolveAccountReport(@PathParam("id") Long reportId) throws BaseApplicationException {
+        reportEndpoint.resolveAccountReport(reportId);
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
     @Path("/photographer/{id}/resolve")
-    public Response resolvePhotographerReport(@PathParam("id") Long photographerId) {
-        throw new UnsupportedOperationException();
+    public Response resolvePhotographerReport(@PathParam("id") Long photographerId) throws BaseApplicationException {
+        reportEndpoint.resolvePhotographerReport(photographerId);
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
     @Path("/review/{id}/resolve")
-    public Response resolveReviewReport(@PathParam("id") Long reviewId) {
-        throw new UnsupportedOperationException();
+    public Response resolveReviewReport(@PathParam("id") Long reviewId) throws BaseApplicationException {
+        reportEndpoint.resolveReviewReport(reviewId);
+        return Response.status(Response.Status.OK).build();
     }
 }

@@ -11,12 +11,14 @@ import {
    ChangeEmailSettings,
    ChangePasswordSettings,
    ChangeDescriptionSettings,
+   ChangeSpecializationsSettings,
 } from "components/settings";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
 import { BsKeyFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { FaStar } from "react-icons/fa";
 
 export const SettingsPage: React.FC = () => {
    const { t } = useTranslation();
@@ -46,9 +48,14 @@ export const SettingsPage: React.FC = () => {
          label: t("settings_page.photographer_settings.title"),
       },
       {
-         icon: <BsChatSquareTextFill/>,
+         icon: <BsChatSquareTextFill />,
          id: "change-description",
-         label: t("settings_page.change_description.title")
+         label: t("settings_page.change_description.title"),
+      },
+      {
+         icon: <FaStar />,
+         id: "change-specializations",
+         label: t("settings_page.change_specializations.title"),
       },
    ];
 
@@ -74,11 +81,13 @@ export const SettingsPage: React.FC = () => {
             <ChangeEmailSettings />
             <ChangePasswordSettings />
             {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
-               <><StopBeingPhotographerSettings />
-               <ChangeDescriptionSettings /> </>
+               <>
+                  <StopBeingPhotographerSettings />
+                  <ChangeSpecializationsSettings />
+                  <ChangeDescriptionSettings />
+               </>
             ) : (
                <BecomePhotographerSettings />
-
             )}
          </div>
       </section>

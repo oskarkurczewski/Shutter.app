@@ -129,6 +129,10 @@ public class ExceptionFactory {
         return new WrongParameterException("exception.search_wrong_parameter");
     }
 
+    public static WrongParameterException wrongDateException() {
+        return new WrongParameterException("exception.wrong_date_parameter");
+    }
+
     public static WrongParameterException wrongCauseNameException() {
         return new WrongParameterException("exception.wrong_cause_name");
     }
@@ -179,5 +183,9 @@ public class ExceptionFactory {
 
     public static NoAccountFound noAccountFound(String message) {
         return new NoAccountFound(message);
+    }
+
+    public static WrongParameterException specializationNotFoundException() {
+        return new WrongParameterException("exception.specialization_not_found");
     }
 }

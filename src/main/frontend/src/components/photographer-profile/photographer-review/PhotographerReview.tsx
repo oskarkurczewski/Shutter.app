@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PhotographerReview.module.scss";
-import { PhotographerStars } from "../photographer-stars";
+import { Stars } from "../../shared/stars";
 import { PhotographerReviewReportModal } from "../photographer-report-modal";
 import { MenuDropdown } from "components/shared/dropdown/menu-dropdown";
-import { Button } from "components/shared/button"
+import { Button } from "components/shared/button";
 import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
 import { useTranslation } from "react-i18next";
-import {useLikeReviewMutation} from "redux/service/reviewService";
+import { useLikeReviewMutation } from "redux/service/reviewService";
 import { Toast } from "types";
 import { useAppDispatch } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
@@ -31,13 +31,11 @@ export const PhotographerReview: React.FC<Props> = ({
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
 
-
-   const [mutation, { isLoading, isError, isSuccess, error }] =
-   useLikeReviewMutation();
+   const [mutation, { isLoading, isError, isSuccess, error }] = useLikeReviewMutation();
 
    const likeReview = () => {
-   return mutation(id);
-};
+      return mutation(id);
+   };
 
    const dispatch = useAppDispatch();
 
@@ -45,13 +43,13 @@ export const PhotographerReview: React.FC<Props> = ({
       if (isSuccess) {
          dispatch(push(successToast));
       }
-   }, [isSuccess] )
+   }, [isSuccess]);
 
    useEffect(() => {
       if (isError) {
          dispatch(push(errorToast));
       }
-   }, [isError])
+   }, [isError]);
 
    const reportReview = () => {
       setEditReportModalIsOpen(true);
@@ -82,7 +80,7 @@ export const PhotographerReview: React.FC<Props> = ({
             <p>
                {name} {surname}
             </p>
-            <PhotographerStars stars={stars} />
+            <Stars stars={stars} backgroundVariant="score" />
          </div>
          <p className={styles.review_description}>{description}</p>
          <div className={styles.review_buttons}>
@@ -101,7 +99,7 @@ export const PhotographerReview: React.FC<Props> = ({
                onClick={likeReview}
                icon="thumb_up"
             >
-            {likeCount?.toString()}
+               {likeCount?.toString()}
             </Button>
          </div>
          <PhotographerReviewReportModal
