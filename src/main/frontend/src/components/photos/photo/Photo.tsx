@@ -9,6 +9,7 @@ interface Props {
    photo_id: number;
    img: string;
    title: string;
+   onClick?: () => void;
    description?: string;
    date: string;
    liked: boolean;
@@ -19,6 +20,7 @@ export const Photo: React.FC<Props> = ({
    photo_id,
    img,
    title,
+   onClick,
    description,
    date,
    liked,
@@ -39,10 +41,12 @@ export const Photo: React.FC<Props> = ({
 
    return (
       <div className={styles.photo_wrapper}>
-         <picture className={styles.photo_picture}>
-            <source media="(min-width: 0px)" srcSet={img} />
-            <img src={img} alt="photographers_photo_from_gallery" />
-         </picture>
+         <div tabIndex={-1} role="button" onKeyDown={null} onClick={onClick}>
+            <picture className={styles.photo_picture}>
+               <source media="(min-width: 0px)" srcSet={img} />
+               <img src={img} alt="photographers_photo_from_gallery" />
+            </picture>
+         </div>
          <div className={styles.photo_label}>
             <div className={styles.photo_label_content}>
                <p className={styles.photo_label_title}>{title}</p>
