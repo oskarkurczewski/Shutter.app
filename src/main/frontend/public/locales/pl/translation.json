@@ -1,5 +1,15 @@
 {
    "global": {
+      "query": {
+         "results_zero": "Brak wyników",
+         "results_one": "{{count}} wynik",
+         "results_few": "{{count}} wyniki",
+         "results_many": "{{count}} wyników",
+         "reviews_zero": "Brak opinii",
+         "reviews_one": "{{count}} opinia",
+         "reviews_few": "{{count}} opinie",
+         "reviews_many": "{{count}} opinii"
+      },
       "label": {
          "id": "Id",
          "login": "Login",
@@ -181,9 +191,7 @@
    "photographer_list_page": {
       "search_photographer": "Wyszukaj fotografa",
       "photographers": "Fotografowie",
-      "results": "{{count}} wyników",
       "photographer": "Fotograf",
-      "reviews": "{{count}} opinii",
       "profile": "Profil",
       "hire": "Wynajmij"
    },

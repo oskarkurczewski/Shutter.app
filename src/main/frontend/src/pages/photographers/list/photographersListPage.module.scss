@@ -63,14 +63,6 @@
          &:hover {
             cursor: pointer;
          }
-
-         svg {
-            transform: rotate(90deg);
-         }
-
-         svg.expanded {
-            transform: rotate(0);
-         }
       }
    }
 
