@@ -26,7 +26,7 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
       animate: (i) => ({
          y: 0,
          transition: {
-            delay: i * 0.2,
+            delay: i * 0.2 + 0.4,
             duration: 0.4,
             ease: "easeOut",
          },
@@ -34,7 +34,7 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
       animateOpacity: (i) => ({
          opacity: 1,
          transition: {
-            delay: i * 0.2,
+            delay: i * 0.2 + 0.4,
             duration: 0.3,
             ease: "easeOut",
          },
@@ -42,7 +42,8 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
       exit: {
          opacity: 0,
          transition: {
-            duration: 0.5,
+            duration: 0.3,
+            ease: "easeOut",
          },
       },
    };
@@ -51,10 +52,10 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
       <motion.div
          variants={variants}
          initial="initial"
-         animate={["animate", "animateOpacity"]}
-         exit="exit"
+         animate={["animateOpacity", "animate"]}
          className={styles.card_wrapper}
          custom={custom}
+         exit="exit"
       >
          <Card className={`${styles.card} ${styles["list_element"]}`}>
             <div className={styles["avatar_wrapper"]}>
@@ -74,7 +75,7 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
             <div className={styles.specialization_container}>
                {specializations.map((v) => (
                   <SpecializationTag
-                     key={v}
+                     key={`${v}${login}`}
                      text={t(`global.specialization.${v.toLocaleLowerCase()}`)}
                      specialization={v}
                      className={styles.specialization}

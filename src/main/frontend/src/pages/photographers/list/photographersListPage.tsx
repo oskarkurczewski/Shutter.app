@@ -13,12 +13,13 @@ import { AnimatePresence, motion } from "framer-motion";
 export const PhotographersListPage = () => {
    const { t } = useTranslation();
 
-   const [photographerSearchFilters, setPhotographerSearchFilters] =
-      useState<PhotographerListRequest>({
-         query: "",
-         pageNo: 1,
-         recordsPerPage: 25,
-      });
+   const [photographerSearchFilters, setPhotographerSearchFilters] = useState<
+      PhotographerListRequest
+   >({
+      query: "",
+      pageNo: 1,
+      recordsPerPage: 25
+   });
    const [expandFilters, setExpandFilters] = useState(true);
 
    const debouncedFilters = useDebounce<PhotographerListRequest>(
@@ -34,31 +35,50 @@ export const PhotographersListPage = () => {
             allRecords: 0,
             pageNo: 1,
             recordsPerPage: 25,
-            list: [],
-         },
-      },
+            list: []
+         }
+      }
    ] = useGetPhotographerListMutation();
 
    useEffect(() => {
-      getPhotographers(photographerSearchFilters);
+      getPhotographers(debouncedFilters);
    }, [debouncedFilters]);
 
-   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+   const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
       const name = e.target.name;
       setPhotographerSearchFilters({
          ...photographerSearchFilters,
-         [name]: e.target.value,
+         [name]: e.target.value
       });
    };
 
-   const variants = {
-      initial: { opacity: 0 },
-      visible: { opacity: 1 },
+   const filterCardVariants = {
+      initial: { opacity: 0, height: 0 },
+      animate: {
+         opacity: 1,
+         height: "auto",
+         transition: {
+            duration: 0.3
+         }
+      },
+      exit: {
+         opacity: 0,
+         transition: {
+            duration: 0.3
+         }
+      },
+      exitHeight: {
+         height: 0,
+         transition: {
+            delay: 0.3,
+            duration: 0.3
+         }
+      }
    };
 
    return (
       <>
-         <section className={`${styles.container}`}>
+         <div className={`${styles.container}`}>
             <div className={styles.header}>
                <span className="category-title">{t("global.label.filters")}</span>
                <div className={styles.delimiter} />
@@ -68,21 +88,135 @@ export const PhotographersListPage = () => {
                   />
                </button>
             </div>
-            <div className={`${styles.content} ${expandFilters ? "" : styles.hidden}`}>
-               <Card className={styles.card}>
-                  <p className="section-title">
-                     {t("photographer_list_page.search_photographer")}
-                  </p>
-                  <TextInput
-                     name="query"
-                     className={styles.input}
-                     icon={<FaSearch />}
-                     value={photographerSearchFilters.query}
-                     onChange={handleChange}
-                  />
-               </Card>
+            <div className={`${styles.content} ${expandFilters ? "" : styles.expanded}`}>
+               <AnimatePresence>
+                  {expandFilters && (
+                     <>
+                        <motion.div
+                           key="search-filter"
+                           variants={filterCardVariants}
+                           initial="initial"
+                           animate="animate"
+                           exit={["exit", "exitHeight"]}
+                        >
+                           <Card className={styles.card}>
+                              <p className="section-title">
+                                 {t("photographer_list_page.search_photographer")}
+                              </p>
+                              <TextInput
+                                 name="query"
+                                 className={styles.input}
+                                 icon={<FaSearch />}
+                                 value={photographerSearchFilters.query}
+                                 onChange={handleChange}
+                              />
+                           </Card>
+                        </motion.div>
+                        <motion.div
+                           key="search-filter"
+                           variants={filterCardVariants}
+                           initial="initial"
+                           animate="animate"
+                           exit={["exit", "exitHeight"]}
+                        >
+                           <Card className={styles.card}>
+                              <p className="section-title">
+                                 {t("photographer_list_page.search_photographer")}
+                              </p>
+                              <TextInput
+                                 name="query"
+                                 className={styles.input}
+                                 icon={<FaSearch />}
+                                 value={photographerSearchFilters.query}
+                                 onChange={handleChange}
+                              />
+                           </Card>
+                        </motion.div>
+                        <motion.div
+                           key="search-filter"
+                           variants={filterCardVariants}
+                           initial="initial"
+                           animate="animate"
+                           exit={["exit", "exitHeight"]}
+                        >
+                           <Card className={styles.card}>
+                              <p className="section-title">
+                                 {t("photographer_list_page.search_photographer")}
+                              </p>
+                              <TextInput
+                                 name="query"
+                                 className={styles.input}
+                                 icon={<FaSearch />}
+                                 value={photographerSearchFilters.query}
+                                 onChange={handleChange}
+                              />
+                           </Card>
+                        </motion.div>
+                        <motion.div
+                           key="search-filter"
+                           variants={filterCardVariants}
+                           initial="initial"
+                           animate="animate"
+                           exit={["exit", "exitHeight"]}
+                        >
+                           <Card className={styles.card}>
+                              <p className="section-title">
+                                 {t("photographer_list_page.search_photographer")}
+                              </p>
+                              <TextInput
+                                 name="query"
+                                 className={styles.input}
+                                 icon={<FaSearch />}
+                                 value={photographerSearchFilters.query}
+                                 onChange={handleChange}
+                              />
+                           </Card>
+                        </motion.div>
+                        <motion.div
+                           key="search-filter"
+                           variants={filterCardVariants}
+                           initial="initial"
+                           animate="animate"
+                           exit={["exit", "exitHeight"]}
+                        >
+                           <Card className={styles.card}>
+                              <p className="section-title">
+                                 {t("photographer_list_page.search_photographer")}
+                              </p>
+                              <TextInput
+                                 name="query"
+                                 className={styles.input}
+                                 icon={<FaSearch />}
+                                 value={photographerSearchFilters.query}
+                                 onChange={handleChange}
+                              />
+                           </Card>
+                        </motion.div>
+                        <motion.div
+                           key="search-filter"
+                           variants={filterCardVariants}
+                           initial="initial"
+                           animate="animate"
+                           exit={["exit", "exitHeight"]}
+                        >
+                           <Card className={styles.card}>
+                              <p className="section-title">
+                                 {t("photographer_list_page.search_photographer")}
+                              </p>
+                              <TextInput
+                                 name="query"
+                                 className={styles.input}
+                                 icon={<FaSearch />}
+                                 value={photographerSearchFilters.query}
+                                 onChange={handleChange}
+                              />
+                           </Card>
+                        </motion.div>
+                     </>
+                  )}
+               </AnimatePresence>
             </div>
-         </section>
+         </div>
 
          <div className={styles.container}>
             <div className={styles.header}>
@@ -97,7 +231,7 @@ export const PhotographersListPage = () => {
                </div>
             </div>
             <div className={`${styles.content} ${styles.list}`}>
-               <AnimatePresence>
+               <AnimatePresence exitBeforeEnter>
                   {photographersListResponse.list?.map((obj, i) => (
                      <ListElement custom={i} data={obj} key={obj.login} styles={styles} />
                   ))}
