@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "./jobsListPage.module.scss";
 import { Calendar } from "components/shared/calendar";
-import { Button, Card, TextInput } from "components/shared";
+import { Button, Card, Modal, TextInput } from "components/shared";
 import {
+   useDiscardJobMutation,
    useGetAvailabityHoursQuery,
    useGetJobListMutation,
 } from "redux/service/photographerService";
@@ -26,6 +27,9 @@ export const JobsListPage = () => {
 
    const availabilityQuery = useGetAvailabityHoursQuery(username);
    const [getJobsMutation, getJobsMutationState] = useGetJobListMutation();
+   const [discardJobMutation, discardJobMutationState] = useDiscardJobMutation();
+   const [modalOpen, setModalOpen] = useState<boolean>(false);
+   const [reservationId, setReservationId] = useState(null);
 
    const sendRequest = () => {
       getJobsMutation({
@@ -35,7 +39,8 @@ export const JobsListPage = () => {
    };
 
    const cancelReservation = (id: number) => {
-      console.log("reservation to remove", id);
+      setReservationId(id);
+      setModalOpen(true);
    };
 
    const reportReservation = (id: number) => {
@@ -61,10 +66,28 @@ export const JobsListPage = () => {
       [getJobsMutationState.data]
    );
 
+   // discard job function
+   const discardJob = () => {
+      discardJobMutation(reservationId);
+      setModalOpen(false);
+   };
+
    // Send request on date change
    useEffect(() => {
       sendRequest();
    }, [dateFrom]);
+
+   // Handle success
+   useEffect(() => {
+      if (discardJobMutationState.isSuccess) {
+         sendRequest();
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("photographer_jobs_page.discard_reservation.success"),
+         };
+         dispatch(push(successToast));
+      }
+   }, [discardJobMutationState.isSuccess]);
 
    // Handle errors
    useEffect(() => {
@@ -74,16 +97,33 @@ export const JobsListPage = () => {
          (err = parseError(availabilityQuery.error as ErrorResponse));
       getJobsMutationState.isError &&
          (err = parseError(getJobsMutationState.error as ErrorResponse));
+      discardJobMutationState.isError &&
+         (err = parseError(getJobsMutationState.error as ErrorResponse));
 
       const errorToast: Toast = {
          type: ToastTypes.ERROR,
          text: t(err),
       };
       err && dispatch(push(errorToast));
-   }, [availabilityQuery.isError, getJobsMutationState.isError]);
+   }, [
+      availabilityQuery.isError,
+      getJobsMutationState.isError,
+      discardJobMutationState.isError,
+   ]);
 
    return (
       <section className={styles.jobs_list_page_wrapper}>
+         <Modal
+            title={t("photographer_jobs_page.discard_reservation.modal.title")}
+            type="confirm"
+            isOpen={modalOpen}
+            onCancel={() => setModalOpen(false)}
+            onSubmit={() => discardJob()}
+            submitText={t("photographer_jobs_page.discard_reservation.modal.title")}
+         >
+            <p>{t("photographer_jobs_page.discard_reservation.modal.description")}</p>
+         </Modal>
+         ;
          <Card className={styles.calendar_wrapper}>
             <Calendar
                title={t("global.label.calendar")}
@@ -95,7 +135,6 @@ export const JobsListPage = () => {
                onReservationRemove={(reservation) => cancelReservation(reservation.id)}
             />
          </Card>
-
          <div className={styles.list_wrapper}>
             <div className={styles.filters}>
                <div>

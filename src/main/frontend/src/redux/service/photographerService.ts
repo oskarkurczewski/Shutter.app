@@ -6,7 +6,7 @@ import {
    ReservationRequest,
 } from "redux/types/api/photographerTypes";
 import { AvailabilityHour } from "types/CalendarTypes";
-import {  parseToAvailabilityRequest } from "redux/converters";
+import { parseToAvailabilityRequest } from "redux/converters";
 
 const PhotographerService = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -32,10 +32,18 @@ const PhotographerService = api.injectEndpoints({
             params: data,
          }),
       }),
+
+      discardJob: builder.mutation<void, number>({
+         query: (id) => ({
+            url: `/reservation/${id}/discard`,
+            method: "DELETE",
+         }),
+      }),
    }),
 });
 
 export const {
+   useDiscardJobMutation,
    useGetPhotographerDetailedInfoQuery,
    useGetAvailabityHoursQuery,
    useUpdateAvailabilityHoursMutation,
