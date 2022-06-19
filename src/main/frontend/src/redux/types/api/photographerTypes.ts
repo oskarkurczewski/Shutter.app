@@ -120,3 +120,8 @@ export interface ReservationResponse {
    from: string;
    to: string;
 }
+
+export interface ReportPhotographerRequest {
+   photographerLogin: string;
+   cause: string;
+}

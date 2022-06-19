@@ -78,7 +78,15 @@
       "reservation_invalid_time": "TODO",
       "availability_not_found": "TODO",
       "availability_overlap": "TODO",
-      "photo_upload_error": "Nie udało się dodać zdjęcia"
+      "photo_upload_error": "Nie udało się dodać zdjęcia",
+      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony"
+   },
+   "validator": {
+      "incorrect": {
+         "cause": {
+            "null": "Nie podano przyczyny zgłoszenia"
+         }
+      }
    },
    "validator": {
       "incorrect": {
@@ -120,7 +128,8 @@
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
-      "error_review": "Dodanie recenzji nie powiodło się"
+      "error_review": "Dodanie recenzji nie powiodło się",
+      "success_report": "Zgłoszenie zostało wysłane"
    },
    "navbar": {
       "title": "shutter.app",
@@ -395,7 +404,12 @@
       "report_review_modal_title": "Zgłaszanie recenzji",
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
-      "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć."
+      "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
+      "report": {
+         "success_message": "Zgłoszenie zostało wysłane pomyślnie",
+         "review_title": "Zgłaszanie recenzji",
+         "photographer_title": "Zgłaszanie fotografa"
+      }
    },
    "photographer_specialization": {
       "specialization_studio": "Fotografia studyjna",

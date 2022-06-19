@@ -7,6 +7,7 @@ import {
    reportPhotographerReviewRequest,
    photographerReport,
    reviewReport,
+   ReportPhotographerRequest,
 } from "redux/types/api/photographerTypes";
 import { getListResponse, getReportListRequest } from "redux/types/api/dataTypes";
 
@@ -61,6 +62,22 @@ const PhotographerManagementService = api.injectEndpoints({
       editOwnSpecializations: builder.mutation<void, string[]>({
          query: (data) => ({ url: "profile/specializations", method: "PUT", body: data }),
       }),
+
+      getPhotographerReportCauses: builder.query<string[], void>({
+         query: () => ({ url: "/report/photographer/report-causes", method: "GET" }),
+      }),
+
+      reportPhotographer: builder.mutation<void, ReportPhotographerRequest>({
+         query: (report) => ({
+            url: "/report/photographer",
+            method: "POST",
+            body: report,
+         }),
+      }),
+
+      getPhotographerReviewReportCauses: builder.query<string[], void>({
+         query: () => ({ url: "/report/review/report-causes", method: "GET" }),
+      }),
    }),
 });
 
@@ -75,4 +92,7 @@ export const {
    useGetAvailableSpecializationsQuery,
    useGetOwnSpecializationsQuery,
    useEditOwnSpecializationsMutation,
+   useReportPhotographerMutation,
+   useGetPhotographerReportCausesQuery,
+   useGetPhotographerReviewReportCausesQuery,
 } = PhotographerManagementService;
