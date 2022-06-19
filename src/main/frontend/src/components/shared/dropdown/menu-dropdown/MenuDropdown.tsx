@@ -7,16 +7,17 @@ interface Props {
    children:
       | ReactElement<typeof MenuDropdownItem>
       | ReactElement<typeof MenuDropdownItem>[];
+   className?: string;
 }
 
-export const MenuDropdown: FC<Props> = ({ children }) => {
+export const MenuDropdown: FC<Props> = ({ children, className }) => {
    const [active, setActive] = useState(false);
 
    const selectedElement = useRef(null);
 
    return (
       <div
-         className={styles.container}
+         className={`${styles.container}  ${className && className}`}
          onBlur={(e) => {
             if (
                !e.relatedTarget ||
