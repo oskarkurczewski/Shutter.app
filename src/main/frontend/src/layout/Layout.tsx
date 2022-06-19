@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import styles from "./Layout.module.scss";
 import { Navbar, Sidebar, ToastHandler } from "components/layout";
 import { Breadcrumbs } from "components/shared";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { useRefreshTokenMutation } from "redux/service/authService";
@@ -10,12 +10,11 @@ import { login, logout } from "redux/slices/authSlice";
 import { ToastTypes, push } from "redux/slices/toastSlice";
 import { Toast } from "types";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const variants = {
    hidden: { opacity: 0, x: -200, y: 0 },
    enter: { opacity: 1, x: 0, y: 0 },
-   exit: { opacity: 0, x: 0, y: -100 },
 };
 
 export const PageLayout: React.FC = () => {
@@ -24,10 +23,13 @@ export const PageLayout: React.FC = () => {
    const exp = useAppSelector((state) => state.auth.exp);
    const [refreshToken] = useRefreshTokenMutation();
 
+   const location = useLocation();
+
    const sessionToast: Toast = useMemo(
       () => ({
          type: ToastTypes.WARNING,
          text: t("toast.renew_session_message"),
+         name: "renew-session",
          confirm: {
             onClick: async () => {
                try {
@@ -73,7 +75,9 @@ export const PageLayout: React.FC = () => {
          <Navbar />
          <div className={styles.content}>
             <Breadcrumbs />
+
             <motion.div
+               key={location.pathname}
                className={styles.animation_wrapper}
                variants={variants}
                initial="hidden"
@@ -83,6 +87,7 @@ export const PageLayout: React.FC = () => {
             >
                <Outlet />
             </motion.div>
+
             <ToastHandler />
          </div>
          <Sidebar />

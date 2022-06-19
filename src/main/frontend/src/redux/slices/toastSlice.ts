@@ -38,6 +38,13 @@ export const toastSlice = createSlice({
       push: (state: ToastHandlerState, action: PayloadAction<Toast>) => {
          const item: ToastRenderType = { ...action.payload, id: state.id };
 
+         if (
+            action.payload.name &&
+            state.stack.some((t) => t.name === action.payload.name)
+         ) {
+            return;
+         }
+
          state.id++;
          state.stack = [...state.stack, item];
       },
