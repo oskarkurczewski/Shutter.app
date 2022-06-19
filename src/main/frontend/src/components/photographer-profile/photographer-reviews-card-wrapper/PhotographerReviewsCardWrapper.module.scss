@@ -53,6 +53,16 @@
             }
          }
 
+         .disabled {
+            button {
+               background-color: variables.$blue-gray-100;
+
+               svg {
+                  color: variables.$gray-100;
+               }
+            }
+         }
+
          .navigation {
             height: 100%;
          }

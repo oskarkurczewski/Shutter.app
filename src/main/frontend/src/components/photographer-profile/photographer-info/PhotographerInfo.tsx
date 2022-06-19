@@ -1,9 +1,7 @@
 import React from "react";
 import styles from "./PhotographerInfo.module.scss";
 import { Avatar, Card, IconText } from "components/shared";
-import { IoMdImage } from "react-icons/io";
 import { RiFileList2Fill } from "react-icons/ri";
-import { MdFactCheck } from "react-icons/md";
 import { Stars } from "../../shared/stars";
 import { useTranslation } from "react-i18next";
 
@@ -12,8 +10,6 @@ interface Props {
    surname: string;
    email: string;
    stars: number;
-   sessionCount: number;
-   photosCount: number;
    reviewCount: number;
 }
 
@@ -22,8 +18,6 @@ export const PhotographerInfo: React.FC<Props> = ({
    surname,
    email,
    stars,
-   sessionCount,
-   photosCount,
    reviewCount,
 }) => {
    const { t } = useTranslation();
@@ -37,18 +31,6 @@ export const PhotographerInfo: React.FC<Props> = ({
                stars={Math.round((stars / reviewCount) * 10) / 10}
                className={`label-bold ${styles.label}`}
                backgroundVariant="all"
-            />
-            <IconText
-               text={`${sessionCount} ${t(
-                  "photographer_page.photographer_session_count"
-               )}`}
-               Icon={MdFactCheck}
-               className={`label-bold ${styles.label}`}
-            />
-            <IconText
-               text={`${photosCount} ${t("photographer_page.photographer_photos_count")}`}
-               Icon={IoMdImage}
-               className={`label-bold ${styles.label}`}
             />
             <IconText
                text={`${reviewCount} ${t("photographer_page.photographer_review_count")}`}

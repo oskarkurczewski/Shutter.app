@@ -56,10 +56,15 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
                   >
                      {t("photographer_page.add_review")}
                   </Button>
-                  <SquareButton disabled={data?.pageNo == 1} onClick={showPreviousReview}>
+                  <SquareButton
+                     className={data?.pageNo == 1 ? styles.disabled : ""}
+                     disabled={data?.pageNo == 1}
+                     onClick={showPreviousReview}
+                  >
                      <MdKeyboardArrowLeft />
                   </SquareButton>
                   <SquareButton
+                     className={data?.pageNo == data?.allPages ? styles.disabled : ""}
                      disabled={data?.pageNo == data?.allPages}
                      onClick={showNextReview}
                   >

@@ -41,6 +41,7 @@
       }
    },
    "exception": {
+      "couldnt_fetch_data": "Nie udało się pobrać danych",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
       "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
@@ -85,11 +86,7 @@
       "incorrect": {
          "cause": {
             "null": "Nie podano przyczyny zgłoszenia"
-         }
-      }
-   },
-   "validator": {
-      "incorrect": {
+         },
          "name_surname_query": {
             "regexp": "Podano niepoprawną wartość"
          }
@@ -391,6 +388,7 @@
       }
    },
    "photographer_page": {
+      "not_found": "Nie znaleziono takiego fotografa",
       "title": "Profil Fotografa",
       "photographer_session_count": "Liczba skończonych rezerwacji",
       "photographer_photos_count": "Liczba zdjęć fotografa",

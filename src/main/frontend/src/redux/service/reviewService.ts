@@ -13,7 +13,6 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}/like`,
             method: "POST",
          }),
-         invalidatesTags: ["Review"],
       }),
 
       unlikeReview: builder.mutation<void, number>({
@@ -21,7 +20,6 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}/unlike`,
             method: "POST",
          }),
-         invalidatesTags: ["Review"],
       }),
 
       getReviewById: builder.query<ReviewInfo, number>({
@@ -29,7 +27,6 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}`,
             method: "GET",
          }),
-         providesTags: ["Review"],
       }),
 
       removeSomeonesPhotographerReview: builder.mutation<void, number>({
@@ -37,7 +34,6 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}/admin`,
             method: "DELETE",
          }),
-         invalidatesTags: ["Review"],
       }),
 
       addReview: builder.mutation<void, addReviewRequest>({
@@ -46,8 +42,8 @@ const ReviewService = api.injectEndpoints({
             method: "POST",
             body: data,
          }),
-         invalidatesTags: ["Review"],
       }),
+
       getPhotographerReviews: builder.query<
          getPhotographerReviewsResponse,
          getPhotographerReviewsRequest
@@ -56,7 +52,6 @@ const ReviewService = api.injectEndpoints({
             url: "profile/review/list",
             params: data,
          }),
-         providesTags: ["Review"],
       }),
    }),
 });

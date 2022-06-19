@@ -25,7 +25,14 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
    const [likeMutation, likeMutationState] = useLikeReviewMutation();
    const [unlikeMutation, unlikeMutationState] = useUnlikeReviewMutation();
 
+   const [isLiked, setIsLiked] = useState(false);
+   const [likeCounter, setLikeCounter] = useState(0);
    const [showAnimation, setShowAnimation] = useState(false);
+
+   useEffect(() => {
+      setIsLiked(liked);
+      setLikeCounter(likeCount);
+   }, []);
 
    // Remove animation after 1s
    useEffect(() => {
@@ -43,6 +50,8 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
             text: t("toast.success_like"),
          };
 
+         setIsLiked(true);
+         setLikeCounter(likeCounter + 1);
          setShowAnimation(true);
          dispatch(push(successToast));
       }
@@ -63,6 +72,8 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
             text: t("toast.success_unlike"),
          };
 
+         setIsLiked(false);
+         setLikeCounter(likeCounter - 1);
          dispatch(push(successToast));
       }
       if (unlikeMutationState.isError) {
@@ -79,13 +90,13 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
       <div className={styles.wrapper}>
          {showAnimation && <Player autoplay src={Animation} background="transparent" />}
          <Button
-            className={`${styles.button_wrapper} ${liked ? styles.liked : ""}`}
+            className={`${styles.button_wrapper} ${isLiked ? styles.liked : ""}`}
             onClick={() => {
-               liked ? unlikeMutation(id) : likeMutation(id);
+               isLiked ? unlikeMutation(id) : likeMutation(id);
             }}
             icon="favorite"
          >
-            {likeCount?.toString()}
+            {likeCounter?.toString()}
          </Button>
       </div>
    );
