@@ -9,26 +9,15 @@ export const useStateWithValidation = <T,>(
 
    const checkValue = useCallback((value: T, conditions: Condition<T>[]): string => {
       let check = "";
-      // if (show || !show) {
       conditions.forEach((condition, index) => {
          if (check === "" && !condition.function(value)) {
             check = condition.message;
          }
       });
-      // }
       return check;
    }, []);
    const [state, setState] = useState<T>(initialValue);
-   const [validationMessage, setValidationMessage] = useState<string>(() =>
-      checkValue(state, conditions)
-   );
-
-   useEffect(() => {
-      console.log(1, show);
-      if (!show) {
-         setShow(true);
-      }
-   }, [state]);
+   const [validationMessage, setValidationMessage] = useState<string>("");
 
    const onChange = useCallback<(value: T) => void>(
       (nextState: T) => {

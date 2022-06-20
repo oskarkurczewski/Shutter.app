@@ -32,8 +32,8 @@ export const useStateWithValidationAndComparison = <T,>(
       valueB: initialValues[1],
    });
    const [isValid, setIsValid] = useState<validType>({
-      valueA: checkValue(state.valueA, conditions),
-      valueB: state.valueA === state.valueB ? "" : t("validator.not_same"),
+      valueA: "",
+      valueB: "",
    });
 
    const onChange = useCallback<(value: stateType) => void>(
