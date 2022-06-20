@@ -123,8 +123,7 @@ export const JobsListPage = () => {
          >
             <p>{t("photographer_jobs_page.discard_reservation.modal.description")}</p>
          </Modal>
-         ;
-         <Card className={styles.calendar_wrapper}>
+                  <Card className={styles.calendar_wrapper}>
             <Calendar
                title={t("global.label.calendar")}
                availability={availability}
