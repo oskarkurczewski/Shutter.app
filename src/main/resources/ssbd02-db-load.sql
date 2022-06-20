@@ -75,7 +75,7 @@ VALUES (0, 3, 1, 3, current_timestamp)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.reservation (version, photographer_id, account_id, time_from, time_to)
-VALUES (0, 3, 4, '2022-06-14 16:00:00.000000', '2022-06-14 16:00:00.000000'),
+VALUES (0, 3, 4, '2022-06-14 15:00:00.000000', '2022-06-14 16:00:00.000000'),
        (0, 3, 4, '2022-06-13 16:00:00.000000', '2022-06-13 17:00:00.000000')
 ON CONFLICT DO NOTHING;
 

@@ -22,7 +22,7 @@ export const ReservationBox: React.FC<Props> = ({
    const { t, i18n } = useTranslation();
 
    const timeFrom = DateTime.fromISO(reservation.from);
-   const timeTo = DateTime.fromISO(reservation.from);
+   const timeTo = DateTime.fromISO(reservation.to);
 
    return (
       <AnimatePresence>

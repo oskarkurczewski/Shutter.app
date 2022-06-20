@@ -14,5 +14,6 @@ export * from "./loader";
 export * from "./drag-and-drop";
 export * from "./file-input";
 export * from "./text-area";
+export * from "./time-input";
 export * from "./calendar";
 export * from "./stars";
