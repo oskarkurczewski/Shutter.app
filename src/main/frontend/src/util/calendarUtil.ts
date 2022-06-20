@@ -13,6 +13,25 @@ export const getHourRange = () => {
    return items;
 };
 
+export const getHalfHourRange = () => {
+   const items: string[] = [];
+   for (let i = 0; i < 24; i++) {
+      items.push(
+         Duration.fromObject({
+            hours: i,
+            minutes: 0,
+         }).toFormat("hh:mm")
+      );
+      items.push(
+         Duration.fromObject({
+            hours: i,
+            minutes: 30,
+         }).toFormat("hh:mm")
+      );
+   }
+   return items;
+};
+
 export const getWeekRange = (weekStartDay: DateTime) => {
    const items: HourBox[][] = new Array(7).fill(0).map(() => new Array(48).fill(null));
    for (let i = 0; i < 336; i++) {

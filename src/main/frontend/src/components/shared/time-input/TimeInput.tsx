@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styles from "./TimeInput.module.scss";
-import { getHourRange } from "util/calendarUtil";
+import { getHalfHourRange, getHourRange } from "util/calendarUtil";
 import { IconDropdown } from "../dropdown";
 
 interface Option {
@@ -16,8 +16,8 @@ interface Props {
 export const TimeInput: React.FC<Props> = ({ className = "", onChange, value }) => {
    const options = useMemo(() => {
       const res: Option = {};
-      getHourRange().forEach((hour, index) => {
-         res[`hour-${index}`] = hour;
+      getHalfHourRange().forEach((halfHour, index) => {
+         res[`hour-${index}`] = halfHour;
       });
 
       return res;
