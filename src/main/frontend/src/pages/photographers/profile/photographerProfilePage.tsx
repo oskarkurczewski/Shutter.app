@@ -6,20 +6,23 @@ import {
    PhotographerReviewsCardWrapper,
 } from "components/photographer-profile";
 import { useGetPhotographerDetailedInfoQuery } from "redux/service/photographerService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Card } from "components/shared";
+import { Button, Card } from "components/shared";
 import { PhotoMasonry } from "components/photos";
 import { ErrorResponse, Toast } from "types";
 import { parseError } from "util/errorUtil";
 import { push, ToastTypes } from "redux/slices/toastSlice";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { PhotographerCalendar } from "components/photographer-profile/photographer-calendar";
 
 export const PhotographerProfilePage = () => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
+   const { username } = useAppSelector((state) => state.auth);
+   const navigate = useNavigate();
    const { login } = useParams();
+
    const { data, isError, error } = useGetPhotographerDetailedInfoQuery(login);
 
    if (isError) {
@@ -37,55 +40,70 @@ export const PhotographerProfilePage = () => {
 
       return;
    }
-
-   const photographer = {
-      login: data?.login,
-      name: data?.name,
-      surname: data?.surname,
-      email: data?.email,
-   };
-
    return (
       <section className={styles.photographer_info_page_wrapper}>
-         <p className="category-title">{t("photographer_page.title")}</p>
-         {data && (
-            <section>
-               <div className={styles.row}>
-                  <PhotographerInfo
-                     name={data?.name}
-                     surname={data?.surname}
-                     email={data?.email}
-                     stars={data?.score}
-                     reviewCount={data?.reviewCount}
-                  />
-
-                  <div className={styles.column}>
-                     <PhotographerDescription
-                        specializationList={data?.specializationList}
-                        description={data?.description}
+         <div className={styles.header}>
+            <p className="category-title">{t("photographer_page.title")}</p>
+            <div>
+               {login === username && (
+                  <>
+                     <Button onClick={() => navigate("/settings")}>
+                        {t("photographer_page.button.settings")}
+                     </Button>
+                     <Button onClick={() => navigate("/change-availability")}>
+                        {t("photographer_page.button.availability")}
+                     </Button>
+                     <Button onClick={() => navigate("/gallery")}>
+                        {t("photographer_page.button.gallery")}
+                     </Button>
+                  </>
+               )}
+            </div>
+         </div>
+         <div className={styles.photographer_info_container}>
+            {data && (
+               <div className={styles.content}>
+                  <div className={styles.row}>
+                     <PhotographerInfo
+                        name={data?.name}
+                        surname={data?.surname}
+                        email={data?.email}
+                        stars={data?.score}
+                        reviewCount={data?.reviewCount}
                      />
 
-                     <PhotographerReviewsCardWrapper
-                        reviewCount={data.reviewCount}
-                        photographerLogin={login}
-                     />
-
+                     <div className={styles.column}>
+                        <PhotographerDescription
+                           specializationList={data?.specializationList}
+                           description={data?.description}
+                        />
+                        <PhotographerReviewsCardWrapper
+                           reviewCount={data.reviewCount}
+                           photographerLogin={login}
+                        />
+                        <div className={styles.photographer_callendar_container}>
+                           <PhotographerCalendar
+                              photographer={{
+                                 login: data?.login,
+                                 name: data?.name,
+                                 surname: data?.surname,
+                                 email: data?.email,
+                              }}
+                           />
+                        </div>
+                     </div>
                   </div>
-
+                  <div className={styles.photographer_gallery_container}>
+                     <Card className={styles.photographer_gallery_card}>
+                        <p className={styles.gallery_title}>
+                           {t("photographer_page.gallery_title")}
+                        </p>
+                        <PhotoMasonry login={login} />
+                     </Card>
+                  </div>{" "}
                </div>
-               <div className={styles.photographer_callendar_container}>
-                  <PhotographerCalendar photographer={photographer} />
-               </div>
-               <div className={styles.photographer_gallery_container}>
-                  <Card className={styles.photographer_gallery_card}>
-                     <p className={styles.gallery_title}>
-                        {t("photographer_page.gallery_title")}
-                     </p>
-                     <PhotoMasonry login={login} />
-                  </Card>
-               </div>
-            </section>
-         )}
+            )}
+         </div>
       </section>
    );
 };

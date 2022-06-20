@@ -47,7 +47,7 @@ const AuthService = api.injectEndpoints({
          }),
       }),
 
-      getUserInfo: builder.query<EtagData<BasicUserInfoResponse>, void>({
+      getOwnUserInfo: builder.query<EtagData<BasicUserInfoResponse>, void>({
          query: () => ({ url: `account/info` }),
          transformResponse(data: BasicUserInfoResponse, meta) {
             return {

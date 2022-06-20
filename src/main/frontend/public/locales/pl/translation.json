@@ -502,6 +502,11 @@
       "gallery_title": "Galeria Zdjęć",
       "calendar_title": "Kalendarz",
       "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
+      "button": {
+         "settings": "Ustawienia",
+         "availability": "Godziny Dostępności",
+         "gallery": "Galeria"
+      },
       "report": {
          "success_message": "Zgłoszenie zostało wysłane pomyślnie",
          "review_title": "Zgłaszanie recenzji",

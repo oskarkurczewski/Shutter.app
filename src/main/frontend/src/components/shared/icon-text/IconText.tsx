@@ -22,7 +22,7 @@ export const IconText: React.FC<Props> = ({ color, className, text, icon, onClic
          }`}
       >
          <>
-            {icon}
+            {icon && icon}
             {text && <p>{text}</p>}
          </>
       </div>
