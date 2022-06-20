@@ -116,7 +116,6 @@
       "change_availability": "Zmiana godzin dostępności",
       "jobs": "Rezerwacje",
       "reservations": "Rezerwacje",
-      "change_availability": "Zmiana godzin dostępności",
       "reports": "Zgłoszenia"
    },
    "toast": {
@@ -128,6 +127,8 @@
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
+      "success_remove_review": "Pomyślnie usunięto recenzję",
+      "error_remove_review": "Usunięcie recenzji nie powiodło się",
       "error_review": "Dodanie recenzji nie powiodło się",
       "success_report": "Zgłoszenie zostało wysłane"
    },

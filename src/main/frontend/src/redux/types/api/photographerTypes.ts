@@ -55,6 +55,7 @@ export interface getPhotographerReviewsResponse {
    pageNo: number;
    recordsPerPage: number;
    list: {
+      authorLogin: string;
       id: number;
       name: string;
       surname: string;
