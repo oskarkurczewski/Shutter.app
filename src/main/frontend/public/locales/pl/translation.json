@@ -133,22 +133,23 @@
    },
    "toast": {
       "renew": "Przedłuż",
+      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
       "success_update": "Pomyślnie zmodyfikowano",
-      "error_update": "Modyfikacja nie powiodła się",
       "success_login_message": "Pomyślnie zalogowano.",
       "success_register_message": "Pomyślnie zarejestrowano. Potwierdź rejestrację za pomocą linku wysłanego na twój adres email",
       "success_send_reset_password_link_message": "Pomyślnie wysłano wiadomość",
-      "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+      "success_send_reset_email_link_message": "Pomyślnie wysłano wiadomość z linkiem zmiany adresu email",
       "success_become_photographer_message": "Pomyślnie zostano fotografem",
       "success_stop_being_photographer_message": "Pomyślnie przestano być fotografem",
       "success_like": "Pomyślnie polubiono",
-      "error_like": "Polubienie nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
       "success_remove_review": "Pomyślnie usunięto recenzję",
-      "error_remove_review": "Usunięcie recenzji nie powiodło się",
-      "error_review": "Dodanie recenzji nie powiodło się",
       "success_reservation_create": "Pomyślnie utworzono rezerwację",
-      "success_report": "Zgłoszenie zostało wysłane"
+      "success_report": "Zgłoszenie zostało wysłane",
+      "error_update": "Modyfikacja nie powiodła się",
+      "error_like": "Polubienie nie powiodło się",
+      "error_remove_review": "Usunięcie recenzji nie powiodło się",
+      "error_review": "Dodanie recenzji nie powiodło się"
    },
    "navbar": {
       "title": "shutter.app",
@@ -357,6 +358,7 @@
    },
    "change_own_email_page": {
       "title": "Zmiana adresu email",
+      "description": "Wprowadź swój nowy adres email. Od teraz twoje konto będzie przypisane do tego adresu.",
       "email_new": "Nowy adres email",
       "confirm": "Zatwierdź"
    },
