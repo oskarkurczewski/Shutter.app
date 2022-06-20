@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.facade;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Availability;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.WeekDay;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
@@ -18,7 +20,11 @@ import javax.persistence.*;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
 
@@ -200,28 +206,55 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
      * @param spec           specjalizacja szukanego fotografa
      * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
+     * @param weekDay        dzień tygodnia, w którym szukani są fotografowie
+     * @param fromTime       godzina, od której szukani są fotografowie
+     * @param toTime         godzina, do której szukani są fotografowie
      * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
-    public List<PhotographerInfo> getAllVisiblePhotographersByNameSurnameSpecialization(String name, int page, int recordsPerPage, Specialization spec) throws BaseApplicationException {
+    public List<PhotographerInfo> getAllVisiblePhotographersByNameSurnameSpecialization(
+            String name,
+            int page,
+            int recordsPerPage,
+            Specialization spec,
+            WeekDay weekDay,
+            LocalTime fromTime,
+            LocalTime toTime
+    ) throws BaseApplicationException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<PhotographerInfo> criteriaQuery = criteriaBuilder.createQuery(PhotographerInfo.class);
-
         Root<PhotographerInfo> from = criteriaQuery.from(PhotographerInfo.class);
-        Predicate predicate = null;
+        List<Predicate> predicates = new ArrayList<>();
+
         if (spec != null) {
             Metamodel m = em.getMetamodel();
             EntityType<PhotographerInfo> PhotographerInfo_ = m.entity(PhotographerInfo.class);
             EntityType<Specialization> Specialization_ = m.entity(Specialization.class);
 
-            Join<PhotographerInfo, Specialization> join = from.join(PhotographerInfo_.getList("specializationList", Specialization.class));
-            predicate = join.get(Specialization_.getId(Long.class)).in(spec.getId());
+            Join<PhotographerInfo, Specialization> joinSpecialization = from.join(PhotographerInfo_.getList("specializationList", Specialization.class));
+            predicates.add(
+                    joinSpecialization.get(Specialization_.getId(Long.class)).in(spec.getId())
+            );
+        }
+
+        if (fromTime != null && toTime != null && weekDay != null) {
+            Metamodel m = em.getMetamodel();
+            EntityType<PhotographerInfo> PhotographerInfo_ = m.entity(PhotographerInfo.class);
+            Join<PhotographerInfo, Availability> joinAvailability = from.join(PhotographerInfo_.getList("availability", Availability.class));
+            predicates.add(
+                    criteriaBuilder.and(
+                            criteriaBuilder.equal(joinAvailability.get("day"), weekDay),
+                            criteriaBuilder.lessThanOrEqualTo(joinAvailability.get("from"), fromTime),
+                            criteriaBuilder.greaterThanOrEqualTo(joinAvailability.get("to"), toTime)
+                    )
+            );
+
         }
 
         name = name != null ? name.toLowerCase() : "";
 
-        Predicate and = criteriaBuilder.and(
+        predicates.add(criteriaBuilder.and(
                 criteriaBuilder.equal(from.get("visible"), true),
                 criteriaBuilder.or(
                         criteriaBuilder.like(
@@ -229,18 +262,14 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
                         ),
                         criteriaBuilder.like(
                                 criteriaBuilder.lower(from.get("account").get("surname")), criteriaBuilder.parameter(String.class, "name")
+                        ),
+                        criteriaBuilder.and(
+
                         )
-                ));
-        if (predicate == null) {
-            criteriaQuery.where(
-                    and
-            );
-        } else {
-            criteriaQuery.where(
-                    and,
-                    predicate
-            );
-        }
+
+                )));
+        
+        criteriaQuery.select(from).where(predicates.toArray(new Predicate[predicates.size()]));
         criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.quot(from.get("score"), from.get("reviewCount"))));
 
         TypedQuery<PhotographerInfo> typedQuery = em.createQuery(criteriaQuery);

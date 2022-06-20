@@ -39,4 +39,7 @@ public final class REGEXP {
     public static final String NAME_SURNAME_QUERY_PATTERN = "[a-ząćęńśłóżźA-ZĄĆĘŃŚŁÓŻŹ]{1,63}";
 
     public static final String SPECIALIZATION = "[A-Za-z .:_]{0,64}";
+    
+    public static final String UNIX_TIMESTAMP_PATTERN = "^[0-9]{10}$";
+    public static final String TIME_PATTREN = "^(([01]?[0-9])|2[0-4]):[0-5][0-9]$";
 }

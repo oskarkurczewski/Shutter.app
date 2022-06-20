@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.WeekDay;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
@@ -11,11 +13,11 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NameSurnameQuery;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NumberQuery;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Specialization;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Time;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -24,6 +26,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalTime;
 
 @Path("/photographer")
 public class PhotographerController extends AbstractController {
@@ -129,6 +132,9 @@ public class PhotographerController extends AbstractController {
      * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
      * @param spec           specjalizacja
+     * @param weekDay        dzień tygodnia, w którym szukani są fotografowie
+     * @param from           godzina, od której szukani są fotografowie w formacie HH:mm
+     * @param to             godzina, do której szukani są fotografowie w formacie HH:mm
      * @return stronicowana lista aktywnych fotografów obecnych
      * systemie, których imię lub nazwisko zawiera podaną frazę
      * @throws BaseApplicationException niepowodzenie operacji
@@ -136,17 +142,32 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/by-name-surname")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPhotographerByNameSurnameSpecialization(
+    public Response getPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
             @NameSurnameQuery @QueryParam("name") String name,
             @NumberQuery @QueryParam("pageNo") @DefaultValue("1") Integer page,
             @NumberQuery @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage,
-            @Specialization @QueryParam("specialization") String spec
+            @Specialization @QueryParam("specialization") String spec,
+            @QueryParam("weekDay") String weekDay,
+            @Time @QueryParam("from") String from,
+            @Time @QueryParam("to") String to
     ) throws BaseApplicationException {
-        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurnameSpecialization(
+        WeekDay weekDayParsed =  null;
+        try{
+        weekDayParsed = WeekDay.valueOf(weekDay);
+            
+        } catch (IllegalArgumentException e) {
+            throw ExceptionFactory.wrongDayNameException();
+        }
+        LocalTime fromTime = from == null ? null : LocalTime.of(Integer.parseInt(from.split(":")[0]), Integer.parseInt(from.split(":")[1]));
+        LocalTime toTime = to == null ? null : LocalTime.of(Integer.parseInt(to.split(":")[0]), Integer.parseInt(to.split(":")[1]));
+        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
                 name,
                 page,
                 recordsPerPage,
-                spec
+                spec,
+                weekDayParsed,
+                fromTime,
+                toTime
         );
         return Response.status(Response.Status.OK).entity(responseDto).build();
     }
