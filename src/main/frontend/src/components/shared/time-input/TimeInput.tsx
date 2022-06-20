@@ -27,7 +27,7 @@ export const TimeInput: React.FC<Props> = ({ className = "", onChange, value }) 
       <IconDropdown
          className={`${styles.time_input_wrapper} ${className}`}
          value={value ? value : "08:00"}
-         onChange={onChange}
+         onChange={(key) => onChange(options[key])}
          options={options}
       />
    );

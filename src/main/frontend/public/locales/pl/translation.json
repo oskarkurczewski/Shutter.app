@@ -79,7 +79,8 @@
       "availability_not_found": "TODO",
       "availability_overlap": "TODO",
       "photo_upload_error": "Nie udało się dodać zdjęcia",
-      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony"
+      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony",
+      "reservation_already_exists": "Rezerwacje już istnieje"
    },
    "validator": {
       "incorrect": {
@@ -130,6 +131,7 @@
       "success_remove_review": "Pomyślnie usunięto recenzję",
       "error_remove_review": "Usunięcie recenzji nie powiodło się",
       "error_review": "Dodanie recenzji nie powiodło się",
+      "success_reservation_create": "Pomyślnie utworzono rezerwację",
       "success_report": "Zgłoszenie zostało wysłane"
    },
    "navbar": {
@@ -421,11 +423,24 @@
       "report_review_modal_title": "Zgłaszanie recenzji",
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
+      "calendar_title": "Kalendarz",
       "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
       "report": {
          "success_message": "Zgłoszenie zostało wysłane pomyślnie",
          "review_title": "Zgłaszanie recenzji",
          "photographer_title": "Zgłaszanie fotografa"
+      },
+      "calendar": {
+         "past_date": "Wybrano datę z przeszłości",
+         "no_avalibility": "Brak dostępności fotografa",
+         "conflict_reservation_time": "Konflikt z inną rezerwacją",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
+      },
+      "modal": {
+         "create_reservation": "Utwórz rezerwację",
+         "user": "Osoba rezerwująca",
+         "photographer": "Rezerwowany fotograf",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
       }
    },
    "photographer_specialization": {

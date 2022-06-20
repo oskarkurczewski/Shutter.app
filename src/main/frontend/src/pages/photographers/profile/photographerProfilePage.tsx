@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./PhotographerProfilePage.module.scss";
 import {
    PhotographerDescription,
@@ -10,19 +10,27 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card } from "components/shared";
 import { PhotoMasonry } from "components/photos";
+import { PhotographerCalendar } from "components/photographer-profile/photographer-calendar";
 
 export const PhotographerProfilePage = () => {
    const { t } = useTranslation();
    const { login } = useParams();
    const { data, isError } = useGetPhotographerDetailedInfoQuery(login);
 
+   const photographer = {
+      login: data?.login,
+      name: data?.name,
+      surname: data?.surname,
+      email: data?.email,
+   };
+
    return (
       <section className={styles.photographer_info_page_wrapper}>
          <p className="category-title">{t("photographer_page.title")}</p>
          {isError && <p>EXCEPTION</p>}
          {data && (
-            <div className={styles.photographer_info_container}>
-               <div className={styles.content}>
+            <section>
+               <div className={styles.row}>
                   <PhotographerInfo
                      name={data?.name}
                      surname={data?.surname}
@@ -43,7 +51,12 @@ export const PhotographerProfilePage = () => {
                         reviewCount={data.reviewCount}
                         photographerLogin={login}
                      />
+
                   </div>
+
+               </div>
+               <div className={styles.photographer_callendar_container}>
+                  <PhotographerCalendar photographer={photographer} />
                </div>
                <div className={styles.photographer_gallery_container}>
                   <Card className={styles.photographer_gallery_card}>
@@ -53,7 +66,7 @@ export const PhotographerProfilePage = () => {
                      <PhotoMasonry login={login} />
                   </Card>
                </div>
-            </div>
+            </section>
          )}
       </section>
    );

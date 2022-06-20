@@ -6,15 +6,19 @@
    flex-direction: column;
    gap: 40px;
 
-   .content {
+   .row {
       display: flex;
       gap: 20px;
+      .column {
+         display: flex;
+         flex-direction: column;
+         gap: 20px;
+      }
    }
 
-   .column {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+   .calendar_wrapper {
+      height: 100%;
+      flex-grow: 1;
    }
 
    .photographer_gallery_container {
@@ -30,4 +34,9 @@
          }
       }
    }
+
+   .photographer_callendar_container {
+      margin-top: 4rem;
+   }
+
 }
