@@ -1,4 +1,4 @@
-import { IconText, Modal, Notification, TimeInput } from "components/shared";
+import { Avatar, IconText, Modal, Notification, TimeInput } from "components/shared";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
@@ -93,12 +93,7 @@ export const PhotographerAddReservationModal: React.FC<Props> = ({
                <div className={styles.row}>
                   <p className="label">{t("photographer_page.modal.user")}</p>
                   <div className={styles.box}>
-                     <div className={styles.avatar_wrapper}>
-                        <img
-                           src="https://atlas.it.p.lodz.pl/bitbucket/users/229874/avatar.png?s=64&v=1655392225748"
-                           alt="avatar"
-                        />
-                     </div>
+                     <Avatar className={styles.avatar} email={email} />
                      <p className="label-bold">{`${name} ${surname}`}</p>
                   </div>
                </div>
@@ -106,12 +101,7 @@ export const PhotographerAddReservationModal: React.FC<Props> = ({
                <div className={styles.row}>
                   <p className="label">{t("photographer_page.modal.photographer")}</p>
                   <div className={styles.box}>
-                     <div className={styles.avatar_wrapper}>
-                        <img
-                           src="https://atlas.it.p.lodz.pl/bitbucket/users/229874/avatar.png?s=64&v=1655392225748"
-                           alt="avatar"
-                        />
-                     </div>
+                     <Avatar className={styles.avatar} email={photographer.email} />
                      <p className="label-bold">{`${photographer.name} ${photographer.surname}`}</p>
                   </div>
                </div>
