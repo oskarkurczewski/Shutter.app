@@ -13,7 +13,7 @@ export const Avatar: React.FC<Props> = ({ email = "", className = "", size = 128
          className={className}
          email={email}
          size={size}
-         default="http://ssbd02.s3.eu-central-1.amazonaws.com/majster2/2fe137fc5d924f57b5a261b9fa0710cd.png"
+         default="https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/2fe137fc5d924f57b5a261b9fa0710cd.png"
       />
    );
 };

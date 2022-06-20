@@ -474,7 +474,14 @@
    },
    "user_reservations_page": {
       "search_client": "Wyszukaj klienta",
-      "no_reservations": "Brak rezerwacji na ten tydzień"
+      "no_reservations": "Brak rezerwacji na ten tydzień",
+      "cancel_modal": {
+         "title": "Odwołaj rezerwację",
+         "description": "Czy na pewno chcesz odwołać tę rezerwację? Po zatwierdzeniu nie będzie możliwe cofnięcie tej operacji.",
+         "submit": "Odwołaj",
+         "success": "Rezerwacja została odwołana pomyślnie",
+         "error": "Odwoływanie rezerwacji nie powiodło się"
+      }
    },
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",

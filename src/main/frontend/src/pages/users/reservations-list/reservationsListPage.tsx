@@ -10,10 +10,15 @@ import { ErrorResponse, Reservation, Toast } from "types";
 import { parseError } from "util/errorUtil";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useGetReservationsListMutation } from "redux/service/usersManagementService";
+import { ReservationCancelModal } from "components/reservations/reservation-cancel-modal";
 
 export const ReservationsListPage = () => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
+
+   const [cancelReservationModalIsOpen, setCancelReservationModalIsOpen] =
+      useState<boolean>(false);
+   const [modalId, setModalId] = useState<number>(undefined);
 
    const [filter, setFilter] = useState("");
    const [dateFrom, setDateFrom] = useState(DateTime.local().startOf("week"));
@@ -21,7 +26,7 @@ export const ReservationsListPage = () => {
    const [getReservationsMutation, getReservationsMutationState] =
       useGetReservationsListMutation();
 
-   const sendRequest = () => {
+   const getData = () => {
       getReservationsMutation({
          date: dateFrom.toFormat("yyyy-LL-dd"),
          name: filter ? filter : undefined,
@@ -29,7 +34,8 @@ export const ReservationsListPage = () => {
    };
 
    const cancelReservation = (id: number) => {
-      console.log("reservation to remove", id);
+      setModalId(id);
+      setCancelReservationModalIsOpen(true);
    };
 
    const reportReservation = (id: number) => {
@@ -51,7 +57,7 @@ export const ReservationsListPage = () => {
 
    // Send request on date change
    useEffect(() => {
-      sendRequest();
+      getData();
    }, [dateFrom]);
 
    // Handle errors
@@ -92,7 +98,7 @@ export const ReservationsListPage = () => {
                   <form
                      onSubmit={(e) => {
                         e.preventDefault();
-                        sendRequest();
+                        getData();
                      }}
                   >
                      <TextInput
@@ -101,7 +107,7 @@ export const ReservationsListPage = () => {
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
                      />
-                     <Button onClick={() => sendRequest()}>Szukaj</Button>
+                     <Button onClick={() => getData()}>Szukaj</Button>
                   </form>
                </Card>
             </div>
@@ -130,6 +136,15 @@ export const ReservationsListPage = () => {
                   })()}
                </div>
             </Card>
+            <ReservationCancelModal
+               reservationId={modalId}
+               onSubmit={() => {
+                  setCancelReservationModalIsOpen(false);
+                  getData();
+               }}
+               isOpen={cancelReservationModalIsOpen}
+               setIsOpen={setCancelReservationModalIsOpen}
+            />
          </div>
       </section>
    );
