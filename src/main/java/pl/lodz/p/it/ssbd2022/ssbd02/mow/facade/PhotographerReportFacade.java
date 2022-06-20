@@ -85,6 +85,7 @@ public class PhotographerReportFacade extends FacadeTemplate<PhotographerReport>
      *
      * @return lista zgłoszeń fotografów
      */
+    @PermitAll
     public List<String> getAllPhotographerReportCauses() {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
