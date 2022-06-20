@@ -30,7 +30,8 @@
          "filters": "Filtry",
          "calendar": "Kalendarz",
          "choose_file": "Wybierz Plik",
-         "submit_operation": "Potwierdź wykonanie operacji"
+         "submit_operation": "Potwierdź wykonanie operacji",
+         "confirm": "Potwierdź"
       },
       "roles": {
          "administrator": "Administrator",
@@ -138,6 +139,8 @@
       "success_register_message": "Pomyślnie zarejestrowano. Potwierdź rejestrację za pomocą linku wysłanego na twój adres email",
       "success_send_reset_password_link_message": "Pomyślnie wysłano wiadomość",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+      "success_become_photographer_message": "Pomyślnie zostano fotografem",
+      "success_stop_being_photographer_message": "Pomyślnie przestano być fotografem",
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
@@ -277,8 +280,10 @@
          "details_message": "W każdej chwili możesz edytować widoczność swojego profilu fotografa.",
          "warning_message": "Uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu fotografa.",
          "become_message": "W każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania rezerwacjami.",
-         "resign_confirm": "Przestań być fotografem",
-         "become_confirm": "Zostań fotografem"
+         "resign_label": "Przestań być fotografem",
+         "resign_confirm": "Czy na pewno chcesz przestać być fotografem?",
+         "become_label": "Zostań fotografem",
+         "become_confirm": "Czy na pewno chcesz zostać fotografem?"
       },
       "change_description": {
          "title": "Zmiana opisu",

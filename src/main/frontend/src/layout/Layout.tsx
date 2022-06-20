@@ -10,7 +10,7 @@ import { login, logout } from "redux/slices/authSlice";
 import { ToastTypes, push } from "redux/slices/toastSlice";
 import { Toast } from "types";
 import { getLoginPayload, getTokenExp } from "util/loginUtil";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const variants = {
    hidden: { opacity: 0, x: -200, y: 0 },
