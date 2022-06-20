@@ -25,6 +25,10 @@ export const PhotographerProfilePage = () => {
 
    const { data, isError, error } = useGetPhotographerDetailedInfoQuery(login);
 
+   if (login === undefined) {
+      navigate(username);
+   }
+
    if (isError) {
       const err = parseError(error as ErrorResponse);
 
@@ -50,10 +54,10 @@ export const PhotographerProfilePage = () => {
                      <Button onClick={() => navigate("/settings")}>
                         {t("photographer_page.button.settings")}
                      </Button>
-                     <Button onClick={() => navigate("/change-availability")}>
+                     <Button onClick={() => navigate("/profile/change-availability")}>
                         {t("photographer_page.button.availability")}
                      </Button>
-                     <Button onClick={() => navigate("/gallery")}>
+                     <Button onClick={() => navigate("/profile/gallery")}>
                         {t("photographer_page.button.gallery")}
                      </Button>
                   </>
@@ -100,7 +104,7 @@ export const PhotographerProfilePage = () => {
                         </p>
                         <PhotoMasonry login={login} />
                      </Card>
-                  </div>{" "}
+                  </div>
                </div>
             )}
          </div>

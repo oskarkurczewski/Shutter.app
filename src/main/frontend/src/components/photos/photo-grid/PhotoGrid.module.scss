@@ -1,5 +1,11 @@
 @use "variables.scss" as variables;
 
+.no_photos {
+   display: flex;
+   justify-content: center;
+   padding: 3rem 1rem;
+}
+
 .photo_grid {
    display: grid;
    grid-template-columns: repeat(3, 1fr);
@@ -16,12 +22,5 @@
          object-fit: cover;
          height: 270px;
       }
-   }
-
-   .no_photos {
-      display: flex;
-      grid-column: 2;
-      align-items: center;
-      text-align: center;
    }
 }

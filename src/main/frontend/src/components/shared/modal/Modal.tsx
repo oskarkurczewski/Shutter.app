@@ -22,6 +22,7 @@ type Props =
         notification?: Notification;
         cancelText?: string;
         submitText?: string;
+        loading?: boolean;
         onCancel: () => void;
         onSubmit: () => void;
      }
@@ -34,6 +35,7 @@ type Props =
         notification?: Notification;
         cancelText?: never;
         submitText?: string;
+        loading?: never;
         onCancel?: never;
         onSubmit: () => void;
      };
@@ -47,6 +49,7 @@ export const Modal: React.FC<Props> = ({
    notification,
    submitText,
    cancelText,
+   loading,
    onCancel,
    onSubmit,
 }) => {
@@ -89,7 +92,7 @@ export const Modal: React.FC<Props> = ({
                               {cancelText ? cancelText : t("global.label.cancel")}
                            </Button>
                         )}
-                        <Button onClick={() => onSubmit()}>
+                        <Button loading={loading} onClick={() => onSubmit()}>
                            {submitText ? submitText : t("global.label.submit")}
                         </Button>
                      </div>

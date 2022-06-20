@@ -106,6 +106,7 @@ export const AppRoutes = () => {
 
             {/* Photographer routes */}
             <Route path="profile">
+               <Route path="" element={<PhotographerPages.PhotographerProfilePage />} />
                <Route
                   path=":login"
                   element={<PhotographerPages.PhotographerProfilePage />}

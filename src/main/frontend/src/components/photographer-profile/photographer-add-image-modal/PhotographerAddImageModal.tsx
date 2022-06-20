@@ -3,8 +3,10 @@ import { FileInput } from "components/shared/file-input";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaFileImage } from "react-icons/fa";
+import { useAppDispatch } from "redux/hooks";
 import { usePostPhotoRequestMutation } from "redux/service/photoService";
-import { ErrorResponse } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ErrorResponse, Toast } from "types";
 import { parseError } from "util/errorUtil";
 import styles from "./PhotographerAddImageModal.module.scss";
 
@@ -22,6 +24,7 @@ export const PhotographerAddImageModal: React.FC<Props> = ({
    onCancel,
 }) => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
    const [postPhotoMutation, postPhotoMutationState] = usePostPhotoRequestMutation();
 
    const [notification, setNotification] = useState<Notification>(null);
@@ -61,7 +64,6 @@ export const PhotographerAddImageModal: React.FC<Props> = ({
             type: "error",
             content: t(`photographer_gallery_page.error.file_required`),
          });
-
          return;
       }
 
@@ -70,6 +72,11 @@ export const PhotographerAddImageModal: React.FC<Props> = ({
 
    useEffect(() => {
       if (postPhotoMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_add_photo"),
+         };
+         dispatch(push(successToast));
          onSubmit();
       }
       if (postPhotoMutationState.isError) {
@@ -91,6 +98,7 @@ export const PhotographerAddImageModal: React.FC<Props> = ({
          isOpen={isOpen}
          onSubmit={uploadFile}
          onCancel={onCancel}
+         loading={postPhotoMutationState.isLoading}
          title={t("photographer_gallery_page.add_photo")}
          notification={notification}
       >

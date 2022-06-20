@@ -167,6 +167,7 @@
    "toast": {
       "renew": "Przedłuż",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+
       "success_update": "Pomyślnie zmodyfikowano",
       "success_login_message": "Pomyślnie zalogowano.",
       "success_register_message": "Pomyślnie zarejestrowano. Potwierdź rejestrację za pomocą linku wysłanego na twój adres email",
@@ -177,16 +178,18 @@
       "success_change_own_email_message": "Pomyślnie zmieniono adres email",
       "success_edit_account_info": "Pomyślnie zaktualizowano dane",
       "success_change_description_message": "Pomyślnie zmieniono opis",
+      "success_add_photo": "Pomyślnie dodano zdjęcie",
+      "success_remove_photo": "Pomyślnie usunięto zdjęcie",
       "success_like": "Pomyślnie polubiono",
-      "error_like": "Polubienie nie powiodło się",
       "success_unlike": "Pomyślnie cofnięto polubienie",
-      "error_unlike": "Cofnięcie polubienia nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
       "success_remove_review": "Pomyślnie usunięto recenzję",
       "success_reservation_create": "Pomyślnie utworzono rezerwację",
       "success_report": "Zgłoszenie zostało wysłane",
+
       "error_update": "Modyfikacja nie powiodła się",
       "error_like": "Polubienie nie powiodło się",
+      "error_unlike": "Cofnięcie polubienia nie powiodło się",
       "error_remove_review": "Usunięcie recenzji nie powiodło się",
       "error_review": "Dodanie recenzji nie powiodło się"
    },
