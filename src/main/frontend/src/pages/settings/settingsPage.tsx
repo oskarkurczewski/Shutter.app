@@ -12,6 +12,7 @@ import {
    ChangePasswordSettings,
    ChangeDescriptionSettings,
    ChangeSpecializationsSettings,
+   LoginInfoSettings,
 } from "components/settings";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
@@ -108,6 +109,7 @@ export const SettingsPage: React.FC = () => {
             ) : (
                <BecomePhotographerSettings />
             )}
+            <LoginInfoSettings />
          </div>
       </section>
    );

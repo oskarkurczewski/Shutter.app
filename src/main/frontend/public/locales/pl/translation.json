@@ -294,6 +294,10 @@
          "description": "Specjalizacje reprezentują kategorie, w których specjalizujesz się jako fotograf. Wybranie ich pomoże przy wyszukiwaniu twojego profilu. Możesz mieć jednocześnie wybranych wiele specjalizacji.",
          "select": "Wybierz specjalizacje",
          "confirm": "Zatwierdź"
+      },
+      "login_info": {
+         "last_successful_login": "Ostatnie udane logowanie",
+         "last_unsuccessful_login": "Ostatnie nieudane logowanie"
       }
    },
    "edit_account_page": {
