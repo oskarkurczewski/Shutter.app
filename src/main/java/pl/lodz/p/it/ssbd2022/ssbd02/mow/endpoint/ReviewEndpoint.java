@@ -21,6 +21,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.AccessLocalException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -151,11 +152,17 @@ public class ReviewEndpoint extends AbstractEndpoint {
         List<Review> reviews = reviewService.listReviewsByPhotographerId(pageNo, recordsPerPage, photographerId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
 
-        String login = authCtx.getCurrentUsersLogin();
+        try {
+            String login = authCtx.getCurrentUsersLogin();
 
-        for (Review review: reviews) {
-            boolean liked = review.getLikedList().stream().anyMatch(r -> r.getLogin().equals(login));
-            reviewDtoList.add(new ReviewDto(review, liked));
+            for (Review review : reviews) {
+                boolean liked = review.getLikedList().stream().anyMatch(r -> r.getLogin().equals(login));
+                reviewDtoList.add(new ReviewDto(review, liked));
+            }
+        } catch(NoAuthenticatedAccountFound e) {
+            for (Review review : reviews) {
+                reviewDtoList.add(new ReviewDto(review, false));
+            }
         }
 
         return reviewDtoList;

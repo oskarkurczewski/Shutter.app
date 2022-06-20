@@ -600,6 +600,7 @@ public class AccountService {
     @PermitAll
     public void registerSuccessfulLogInAttempt(Account account) {
         if (!account.getActive() || !account.getRegistered()) return;
+        account.setLastLogIn(LocalDateTime.now());
         account.setFailedLogInAttempts(0);
     }
 

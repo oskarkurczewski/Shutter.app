@@ -1,6 +1,11 @@
 import { DateTime } from "luxon";
-import { AvailabilityHour } from "types/CalendarTypes";
-import { AvailabilityRequest, AvailabilityResponse } from "./types/api";
+import { AvailabilityHour, Reservation } from "types/CalendarTypes";
+import {
+   AddReservationRequest,
+   AvailabilityRequest,
+   AvailabilityResponse,
+   SimpleReservation,
+} from "./types/api";
 import { Weekday } from "./types/api/dataTypes";
 
 export const parseToAvailabilityHour = (data: AvailabilityResponse[]) => {
@@ -13,6 +18,16 @@ export const parseToAvailabilityHour = (data: AvailabilityResponse[]) => {
       to: DateTime.fromFormat(availability.to, "HH:mm:ss").set({
          weekday: availability.day + 1,
       }),
+   }));
+};
+
+export const praseToCalendarReservation = (data: SimpleReservation[]): Reservation[] => {
+   return data.map((reservation) => ({
+      id: reservation.id,
+      client: "",
+      photographer: "",
+      from: DateTime.fromISO(reservation.from),
+      to: DateTime.fromISO(reservation.to),
    }));
 };
 

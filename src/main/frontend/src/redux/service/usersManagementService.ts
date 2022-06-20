@@ -79,6 +79,13 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
+      cancelReservation: builder.mutation<void, number>({
+         query: (id) => ({
+            url: `/reservation/${id}/cancel`,
+            method: "DELETE",
+         }),
+      }),
+
       changeAccessLevel: builder.mutation<void, changeAccessLevelRequest>({
          query: ({ params, body }) => ({
             url: `account/${params.login}/accessLevel`,
@@ -147,4 +154,5 @@ export const {
    useChangeSomeonesPasswordMutation,
    useGetReservationsListMutation,
    useResolveAccountReportMutation,
+   useCancelReservationMutation,
 } = UsersManagementService;

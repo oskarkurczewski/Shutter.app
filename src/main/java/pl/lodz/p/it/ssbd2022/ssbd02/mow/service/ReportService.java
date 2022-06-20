@@ -211,7 +211,7 @@ public class ReportService {
      *
      * @return lista zgłoszeń fotografów
      */
-    @RolesAllowed(reportPhotographer)
+    @PermitAll
     public List<String> getAllPhotographerReportCauses() {
         return photographerReportFacade.getAllPhotographerReportCauses();
     }

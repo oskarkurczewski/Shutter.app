@@ -137,6 +137,28 @@ public class ReservationEndpoint extends AbstractEndpoint {
     }
 
     /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
+     *
+     * @param login     login fotografa
+     * @param localDate poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public List<ReservationCalendarEntryDto> listPhotographerJobs(String login, LocalDate localDate) throws BaseApplicationException {
+        PhotographerInfo photographerInfo = photographerService.getPhotographer(login);
+
+        List<Reservation> reservations = reservationService.listPhotographerJobs(photographerInfo, localDate);
+        List<ReservationCalendarEntryDto> reservationDtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            reservationDtoList.add(new ReservationCalendarEntryDto(reservation));
+        }
+
+        return reservationDtoList;
+    }
+
+    /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
      * @param page           strona listy, którą należy pozyskać

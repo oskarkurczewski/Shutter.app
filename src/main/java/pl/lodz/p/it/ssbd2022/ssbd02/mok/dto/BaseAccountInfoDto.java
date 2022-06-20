@@ -5,7 +5,10 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignableEntity;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 /**
  * Klasa DTO wykorzystywana przy zwracaniu informacji o użytkowniku w punkcie końcowym typu GET
@@ -33,6 +36,12 @@ public class BaseAccountInfoDto implements SignableEntity {
     @NotNull
     private Boolean twoFAEnabled;
 
+    private LocalDateTime lastLogIn;
+
+    private LocalDateTime lastFailedLogInAttempt;
+
+    private String lastFailedLoginIp;
+
     /**
      * Konstruktor obiektu DTO użytkownika
      *
@@ -45,6 +54,9 @@ public class BaseAccountInfoDto implements SignableEntity {
         name = account.getName();
         surname = account.getSurname();
         twoFAEnabled = account.getTwoFAEnabled();
+        lastLogIn = account.getLastLogIn();
+        lastFailedLogInAttempt = account.getLastFailedLogInAttempt();
+        lastFailedLoginIp = account.getLastFailedLoginIp();
     }
 
     @Override

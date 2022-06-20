@@ -1,5 +1,6 @@
 import { basicUserInfoResponse } from "./accountTypes";
 import { ReviewReportCause } from "types/ReviewReportCause";
+import { DateTime } from "luxon";
 
 export interface photographerTableEntry {
    login: string;
@@ -48,12 +49,14 @@ export interface reviewReport {
    cause: string;
    reviewed: boolean;
    createdAt: Date;
+   liked: boolean;
 }
 
 export interface getPhotographerReviewsResponse {
    pageNo: number;
    recordsPerPage: number;
    list: {
+      authorLogin: string;
       id: number;
       name: string;
       surname: string;
@@ -99,6 +102,12 @@ export interface ReviewInfo {
    createdAt: Date;
 }
 
+export interface AddReservationRequest {
+   photographerLogin: string;
+   from: DateTime;
+   to: DateTime;
+}
+
 export interface ReservationRequest {
    name?: string;
    order?: "asc" | "desc";
@@ -124,4 +133,10 @@ export interface ReservationResponse {
 export interface ReportPhotographerRequest {
    photographerLogin: string;
    cause: string;
+}
+
+export interface SimpleReservation {
+   id: number;
+   from: string;
+   to: string;
 }

@@ -16,6 +16,9 @@ const PhotoService = api.injectEndpoints({
       likePhotoRequest: builder.mutation<void, number>({
          query: (id) => ({ url: `profile/photo/${id}/like`, method: "POST" }),
       }),
+      deletePhotoRequest: builder.mutation<void, number>({
+         query: (id) => ({url: `profile/photo/${id}`, method: "DELETE"})
+      })
    }),
 });
 
@@ -23,4 +26,5 @@ export const {
    usePostPhotoRequestMutation,
    useGetPhotosRequestQuery,
    useLikePhotoRequestMutation,
+   useDeletePhotoRequestMutation,
 } = PhotoService;

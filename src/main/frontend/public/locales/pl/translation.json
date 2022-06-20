@@ -79,7 +79,8 @@
       "availability_not_found": "TODO",
       "availability_overlap": "TODO",
       "photo_upload_error": "Nie udało się dodać zdjęcia",
-      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony"
+      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony",
+      "reservation_already_exists": "Rezerwacje już istnieje"
    },
    "validator": {
       "incorrect": {
@@ -136,7 +137,10 @@
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
+      "success_remove_review": "Pomyślnie usunięto recenzję",
+      "error_remove_review": "Usunięcie recenzji nie powiodło się",
       "error_review": "Dodanie recenzji nie powiodło się",
+      "success_reservation_create": "Pomyślnie utworzono rezerwację",
       "success_report": "Zgłoszenie zostało wysłane"
    },
    "navbar": {
@@ -157,6 +161,22 @@
       "calendar": "Kalendarz",
       "availability": "Godziny Dostępności",
       "reservation": "Rezerwacja"
+   },
+   "main_page": {
+      "welcome": "Miło Cię widzieć",
+      "description": "Witaj w aplikacji Shutter.app. Zaloguj się, lub jeśli nie posiadasz u nas konta, zarejestruj:",
+      "quick_access": "Szybki dostęp:",
+      "sign_up": "Zarejestruj się",
+      "sign_in": "Zaloguj się",
+      "photographers": "Fotografowie",
+      "settings": "Ustawienia",
+      "gallery": "Galeria",
+      "photographer_profile": "Profil fotografa",
+      "users": "Użytkownicy"
+   },
+   "not_found": {
+      "not_found_message": "Nie znaleziono",
+      "go_back_message": "Wróć do strony głównej"
    },
    "login_page": {
       "form_title": "Logowanie",
@@ -412,11 +432,24 @@
       "report_review_modal_title": "Zgłaszanie recenzji",
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
+      "calendar_title": "Kalendarz",
       "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
       "report": {
          "success_message": "Zgłoszenie zostało wysłane pomyślnie",
          "review_title": "Zgłaszanie recenzji",
          "photographer_title": "Zgłaszanie fotografa"
+      },
+      "calendar": {
+         "past_date": "Wybrano datę z przeszłości",
+         "no_avalibility": "Brak dostępności fotografa",
+         "conflict_reservation_time": "Konflikt z inną rezerwacją",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
+      },
+      "modal": {
+         "create_reservation": "Utwórz rezerwację",
+         "user": "Osoba rezerwująca",
+         "photographer": "Rezerwowany fotograf",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
       }
    },
    "photographer_specialization": {
@@ -452,11 +485,27 @@
    },
    "photographer_jobs_page": {
       "search_client": "Wyszukaj klienta",
-      "no_reservations": "Brak rezerwacji na ten tydzień"
+      "no_reservations": "Brak rezerwacji na ten tydzień",
+
+      "discard_reservation": {
+         "success": "Pomyślnie odrzucono rezerwację",
+
+         "modal": {
+            "title": "Odrzucenie rezerwacji",
+            "description": "Czy na pewno chcesz odrzucić rezerwację?"
+         }
+      }
    },
    "user_reservations_page": {
       "search_client": "Wyszukaj klienta",
-      "no_reservations": "Brak rezerwacji na ten tydzień"
+      "no_reservations": "Brak rezerwacji na ten tydzień",
+      "cancel_modal": {
+         "title": "Odwołaj rezerwację",
+         "description": "Czy na pewno chcesz odwołać tę rezerwację? Po zatwierdzeniu nie będzie możliwe cofnięcie tej operacji.",
+         "submit": "Odwołaj",
+         "success": "Rezerwacja została odwołana pomyślnie",
+         "error": "Odwoływanie rezerwacji nie powiodło się"
+      }
    },
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",
