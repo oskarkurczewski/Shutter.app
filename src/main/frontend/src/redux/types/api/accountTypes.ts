@@ -1,14 +1,14 @@
 import { Language } from "types/Language";
 import { etag } from "./dataTypes";
 
-interface traceable {
+interface Traceable {
    modifiedAt: Date;
    modifiedBy: string;
    createdAt: Date;
    createdBy: string;
 }
 
-export interface basicUserInfoResponse {
+export interface BasicUserInfoResponse {
    login?: string;
    version: number;
    email: string;
@@ -19,19 +19,19 @@ export interface basicUserInfoResponse {
    lastFailedLoginIp: string;
 }
 
-export interface advancedUserInfoResponse extends basicUserInfoResponse, traceable {
+export interface AdvancedUserInfoResponse extends BasicUserInfoResponse, Traceable {
    version: number;
    login: string;
    active: boolean;
    registered: boolean;
-   accessLevelList: accessLevel[];
+   accessLevelList: AccessLevel[];
 }
 
-interface accessLevel extends traceable {
+interface AccessLevel extends Traceable {
    name: string;
 }
 
-export interface tableAccountData {
+export interface TableAccountData {
    accessLevels: string[];
    email: string;
    id: number;
@@ -42,7 +42,7 @@ export interface tableAccountData {
    surname: string;
 }
 
-export interface getBasicUserListRequest {
+export interface GetAdvancedUserListRequest {
    pageNo: number;
    recordsPerPage: number;
    columnName: string;
@@ -50,7 +50,7 @@ export interface getBasicUserListRequest {
    q?: string;
 }
 
-export interface getAdvancedUserListRequest {
+export interface GetBasicUserListRequest {
    pageNo: number;
    recordsPerPage: number;
    columnName: string;
@@ -63,52 +63,52 @@ export interface getAdvancedUserListRequest {
    active?: boolean;
 }
 
-export interface resetPasswordRequest {
+export interface ResetPasswordRequest {
    token: string;
    newPassword: string;
 }
 
-export interface requestResetPasswordRequest {
+export interface RequestResetPasswordRequest {
    login: string;
    captcha: string;
 }
 
-export interface changeOwnUserDataRequest {
+export interface ChangeOwnUserDataRequest {
    login: string;
    name: string;
    surname: string;
 }
 
-export interface changePasswordRequest {
+export interface ChangePasswordRequest {
    password: string;
    oldPassword?: string;
 }
 
-export interface changeSomeonesPasswordRequest {
+export interface ChangeSomeonesPasswordRequest {
    login: string;
-   data: changePasswordRequest;
+   data: ChangePasswordRequest;
 }
 
-export interface changeOwnEmailRequest {
+export interface ChangeOwnEmailRequest {
    newEmail: string;
    token: string;
 }
 
-export interface changeAccessLevelRequestParams {
+export interface ChangeAccessLevelRequestParams {
    login: string;
 }
 
-export interface changeAccessLevelRequestBody {
+export interface ChangeAccessLevelRequestBody {
    accessLevel: string;
    active: boolean;
 }
 
-export interface changeAccessLevelRequest {
-   params: changeAccessLevelRequestParams;
-   body: changeAccessLevelRequestBody;
+export interface ChangeAccessLevelRequest {
+   params: ChangeAccessLevelRequestParams;
+   body: ChangeAccessLevelRequestBody;
 }
 
-export interface changeAccountInfoAsAdminRequest {
+export interface ChangeAccountInfoAsAdminRequest {
    body: {
       email: string;
       name: string;
@@ -132,7 +132,7 @@ export enum ChangeType {
    DELETED = "DELETED",
 }
 
-export interface tableAccountChangeLogInfo {
+export interface TableAccountChangeLogInfo {
    id: number;
    registered: boolean;
    active: boolean;
@@ -146,19 +146,19 @@ export interface tableAccountChangeLogInfo {
    changedBy: string;
 }
 
-export interface getOwnAccountChangeLogRequest {
+export interface GetOwnAccountChangeLogRequest {
    pageNo: number;
    recordsPerPage: number;
    order: string;
    columnName: string;
 }
 
-export interface getAccountChangeLogRequest {
-   params: getOwnAccountChangeLogRequest;
+export interface GetAccountChangeLogRequest {
+   params: GetOwnAccountChangeLogRequest;
    pathParam: string;
 }
 
-export interface changeDescriptionRequest {
+export interface ChangeDescriptionRequest {
    content: string;
 }
 

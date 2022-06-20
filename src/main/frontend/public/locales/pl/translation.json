@@ -1,5 +1,15 @@
 {
    "global": {
+      "query": {
+         "results_zero": "Brak wyników",
+         "results_one": "{{count}} wynik",
+         "results_few": "{{count}} wyniki",
+         "results_many": "{{count}} wyników",
+         "reviews_zero": "Brak opinii",
+         "reviews_one": "{{count}} opinia",
+         "reviews_few": "{{count}} opinie",
+         "reviews_many": "{{count}} opinii"
+      },
       "label": {
          "id": "Id",
          "login": "Login",
@@ -39,9 +49,16 @@
          "client": "Klient",
          "photographer": "Fotograf",
          "guest": "Niezalogowany"
+      },
+      "specialization": {
+         "specialization_studio": "Fotografia studyjna",
+         "specialization_photoreport": "Fotoreportaż",
+         "specialization_product": "Fotografia produktowa",
+         "specialization_landscape": "Fotografia krajobrazowa"
       }
    },
    "exception": {
+      "couldnt_fetch_data": "Nie udało się pobrać danych",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
       "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
@@ -161,6 +178,9 @@
       "success_edit_account_info": "Pomyślnie zaktualizowano dane",
       "success_change_description_message": "Pomyślnie zmieniono opis",
       "success_like": "Pomyślnie polubiono",
+      "error_like": "Polubienie nie powiodło się",
+      "success_unlike": "Pomyślnie cofnięto polubienie",
+      "error_unlike": "Cofnięcie polubienia nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
       "success_remove_review": "Pomyślnie usunięto recenzję",
       "success_reservation_create": "Pomyślnie utworzono rezerwację",
@@ -265,6 +285,15 @@
       }
    },
    "photographer_list_page": {
+      "search_photographer": "Wyszukaj fotografa",
+      "photographers": "Fotografowie",
+      "photographer": "Fotograf",
+      "profile": "Profil",
+      "hire": "Wynajmij",
+      "list": "Lista",
+      "az": "A-Z"
+   },
+   "photographer_list_admin_page": {
       "login": "Login",
       "email": "Email",
       "name": "Imię",
@@ -455,6 +484,7 @@
       }
    },
    "photographer_page": {
+      "not_found": "Nie znaleziono takiego fotografa",
       "title": "Profil Fotografa",
       "photographer_session_count": "Liczba skończonych rezerwacji",
       "photographer_photos_count": "Liczba zdjęć fotografa",

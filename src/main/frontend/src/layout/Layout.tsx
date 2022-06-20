@@ -25,6 +25,12 @@ export const PageLayout: React.FC = () => {
 
    const location = useLocation();
 
+   const logoutToast: Toast = {
+      type: ToastTypes.SUCCESS,
+      name: "logout-success",
+      text: t("logout_modal.successfully_logged_out"),
+   };
+
    const sessionToast: Toast = useMemo(
       () => ({
          type: ToastTypes.WARNING,
@@ -58,6 +64,7 @@ export const PageLayout: React.FC = () => {
          // logout automatically
          if (exp < Date.now()) {
             return dispatch(logout());
+            dispatch(push(logoutToast));
          }
 
          // push notification for session renewal

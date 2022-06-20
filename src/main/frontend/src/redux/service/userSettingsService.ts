@@ -1,11 +1,11 @@
 import { api } from "./api";
 import {
-   changePasswordRequest as changePasswordRequest,
-   changeOwnUserDataRequest,
-   requestResetPasswordRequest,
-   tableAccountChangeLogInfo,
-   getOwnAccountChangeLogRequest,
-   changeDescriptionRequest,
+   ChangePasswordRequest as ChangePasswordRequest,
+   ChangeOwnUserDataRequest,
+   RequestResetPasswordRequest,
+   TableAccountChangeLogInfo,
+   GetOwnAccountChangeLogRequest,
+   ChangeDescriptionRequest,
    GetAccountLocaleResponse,
 } from "redux/types/api/accountTypes";
 import { EtagData, getListResponse } from "redux/types/api/dataTypes";
@@ -13,7 +13,7 @@ import { Language } from "types/Language";
 
 const UserSettingsService = api.injectEndpoints({
    endpoints: (builder) => ({
-      changeUserData: builder.mutation<void, EtagData<changeOwnUserDataRequest>>({
+      changeUserData: builder.mutation<void, EtagData<ChangeOwnUserDataRequest>>({
          query: ({ data, etag }) => ({
             url: "account/editOwnAccountInfo",
             method: "PUT",
@@ -29,7 +29,7 @@ const UserSettingsService = api.injectEndpoints({
          }),
       }),
 
-      changePassword: builder.mutation<void, changePasswordRequest>({
+      changePassword: builder.mutation<void, ChangePasswordRequest>({
          query: (data) => ({
             url: "account/change-password",
             method: "PUT",
@@ -51,7 +51,7 @@ const UserSettingsService = api.injectEndpoints({
          }),
       }),
 
-      sendResetPasswordLink: builder.mutation<void, requestResetPasswordRequest>({
+      sendResetPasswordLink: builder.mutation<void, RequestResetPasswordRequest>({
          query: (data) => ({
             url: `/account/${data.login}/request-reset`,
             method: "POST",
@@ -60,8 +60,8 @@ const UserSettingsService = api.injectEndpoints({
       }),
 
       getOwnAccountChangeLog: builder.mutation<
-         getListResponse<tableAccountChangeLogInfo>,
-         getOwnAccountChangeLogRequest
+         getListResponse<TableAccountChangeLogInfo>,
+         GetOwnAccountChangeLogRequest
       >({
          query: (data) => ({
             url: `account/get-account-change-log`,
@@ -82,7 +82,7 @@ const UserSettingsService = api.injectEndpoints({
          }),
       }),
 
-      sendChangeDescriptionLink: builder.mutation<void, changeDescriptionRequest>({
+      sendChangeDescriptionLink: builder.mutation<void, ChangeDescriptionRequest>({
          query: (data) => ({
             url: `photographer/change-description`,
             method: "PUT",

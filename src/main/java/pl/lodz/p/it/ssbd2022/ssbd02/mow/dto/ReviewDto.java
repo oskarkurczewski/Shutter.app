@@ -12,6 +12,7 @@ public class ReviewDto {
     private String authorLogin;
     private String name;
     private String surname;
+    private String email;
     private Long score;
     private String content;
     private Long likeCount;
@@ -22,6 +23,7 @@ public class ReviewDto {
         this.authorLogin = review.getAccount().getLogin();
         this.name = review.getAccount().getName();
         this.surname = review.getAccount().getSurname();;
+        this.email = review.getAccount().getEmail();
         this.score = review.getScore();
         this.content = review.getContent();
         this.likeCount = review.getLikeCount();

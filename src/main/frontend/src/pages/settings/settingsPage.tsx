@@ -32,7 +32,7 @@ export const SettingsPage: React.FC = () => {
    const { t } = useTranslation();
    const location = useLocation();
 
-   const roles = useAppSelector((state) => state.auth.roles);
+   const { roles, accessLevel } = useAppSelector((state) => state.auth);
 
    const sections: Section[] = [
       {
@@ -77,7 +77,7 @@ export const SettingsPage: React.FC = () => {
                {sections.map((section, index) => {
                   if (
                      section.roles &&
-                     section.roles.some((role) => roles.indexOf(role))
+                     !section.roles.find((role) => role == accessLevel)
                   ) {
                      return;
                   }

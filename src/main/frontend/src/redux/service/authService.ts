@@ -3,7 +3,7 @@ import {
    registerRequest,
    LoginRequest,
    TokenResponse,
-   basicUserInfoResponse,
+   BasicUserInfoResponse,
 } from "redux/types/api";
 import { AccessLevel } from "types/AccessLevel";
 import { EtagData } from "redux/types/api/dataTypes";
@@ -47,9 +47,9 @@ const AuthService = api.injectEndpoints({
          }),
       }),
 
-      getOwnUserInfo: builder.query<EtagData<basicUserInfoResponse>, void>({
+      getUserInfo: builder.query<EtagData<BasicUserInfoResponse>, void>({
          query: () => ({ url: `account/info` }),
-         transformResponse(data: basicUserInfoResponse, meta) {
+         transformResponse(data: BasicUserInfoResponse, meta) {
             return {
                data,
                etag: {

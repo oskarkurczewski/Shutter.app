@@ -1,7 +1,9 @@
 import { api } from "./api";
 import {
-   basicPhotographerInfo,
+   BasicPhotographerInfo,
    AvailabilityResponse,
+   PhotographerListRequest,
+   PhotographerListResponse,
    ReservationResponse,
    ReservationRequest,
    AddReservationRequest,
@@ -11,7 +13,7 @@ import { parseToAvailabilityRequest } from "redux/converters";
 
 const PhotographerService = api.injectEndpoints({
    endpoints: (builder) => ({
-      getPhotographerDetailedInfo: builder.query<basicPhotographerInfo, string>({
+      getPhotographerDetailedInfo: builder.query<BasicPhotographerInfo, string>({
          query: (login) => ({ url: `/photographer/${login}/info` }),
       }),
 
@@ -56,6 +58,17 @@ const PhotographerService = api.injectEndpoints({
             },
          }),
       }),
+
+      getPhotographerList: builder.mutation<
+         PhotographerListResponse,
+         PhotographerListRequest
+      >({
+         query: (filter) => ({
+            url: "/photographer/by-name-surname",
+            method: "GET",
+            params: filter,
+         }),
+      }),
    }),
 });
 
@@ -66,5 +79,6 @@ export const {
    useGetReservationsForUserQuery,
    useGetAvailabityHoursQuery,
    useUpdateAvailabilityHoursMutation,
+   useGetPhotographerListMutation,
    useGetJobListMutation,
 } = PhotographerService;

@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "redux/hooks";
 import { useChangeAccountInfoMutation } from "redux/service/usersManagementService";
+import { AdvancedUserInfoResponse } from "redux/types/api";
 import { push, ToastTypes } from "redux/slices/toastSlice";
-import { advancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
 import { ErrorResponse, Toast } from "types";
 import { parseError } from "util/errorUtil";
@@ -18,7 +18,7 @@ import { emailRules, nameRules, surnameRules } from "util/validationRules";
 import styles from "./ChangeBaseInfo.module.scss";
 
 interface Props {
-   userInfoData: EtagData<advancedUserInfoResponse>;
+   userInfoData: EtagData<AdvancedUserInfoResponse>;
    refetch: () => void;
 }
 

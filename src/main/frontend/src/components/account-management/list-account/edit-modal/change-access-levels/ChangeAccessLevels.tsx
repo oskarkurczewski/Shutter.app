@@ -3,15 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "redux/hooks";
 import { useChangeAccessLevelMutation } from "redux/service/usersManagementService";
+import { AdvancedUserInfoResponse } from "redux/types/api";
 import { push, ToastTypes } from "redux/slices/toastSlice";
-import { advancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
 import { AccessLevel, ErrorResponse, Toast } from "types";
 import { parseError } from "util/errorUtil";
 import styles from "./ChangeAccessLevels.module.scss";
 
 interface Props {
-   userInfoData: EtagData<advancedUserInfoResponse>;
+   userInfoData: EtagData<AdvancedUserInfoResponse>;
    refetch: () => void;
 }
 

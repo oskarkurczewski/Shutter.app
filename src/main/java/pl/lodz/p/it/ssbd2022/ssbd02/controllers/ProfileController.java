@@ -149,7 +149,7 @@ public class ProfileController extends AbstractController {
     @Path("review/list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReviewDto> getReviewList(
+    public ListResponseDto<ReviewDto> getReviewList(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @DefaultValue("1") int recordsPerPage,
             @QueryParam("photographerLogin") @NotNull String photographerLogin

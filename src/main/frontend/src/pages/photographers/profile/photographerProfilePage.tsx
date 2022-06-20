@@ -10,12 +10,33 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card } from "components/shared";
 import { PhotoMasonry } from "components/photos";
+import { ErrorResponse, Toast } from "types";
+import { parseError } from "util/errorUtil";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { useAppDispatch } from "redux/hooks";
 import { PhotographerCalendar } from "components/photographer-profile/photographer-calendar";
 
 export const PhotographerProfilePage = () => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
    const { login } = useParams();
-   const { data, isError } = useGetPhotographerDetailedInfoQuery(login);
+   const { data, isError, error } = useGetPhotographerDetailedInfoQuery(login);
+
+   if (isError) {
+      const err = parseError(error as ErrorResponse);
+
+      if (err == "exception.photographer_not_found") {
+         return <h3>{t("photographer_page.not_found")}</h3>;
+      } else {
+         const successToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(err),
+         };
+         dispatch(push(successToast));
+      }
+
+      return;
+   }
 
    const photographer = {
       login: data?.login,
@@ -27,17 +48,14 @@ export const PhotographerProfilePage = () => {
    return (
       <section className={styles.photographer_info_page_wrapper}>
          <p className="category-title">{t("photographer_page.title")}</p>
-         {isError && <p>EXCEPTION</p>}
          {data && (
             <section>
                <div className={styles.row}>
                   <PhotographerInfo
                      name={data?.name}
                      surname={data?.surname}
-                     location="Lodz"
+                     email={data?.email}
                      stars={data?.score}
-                     sessionCount={30}
-                     photosCount={546}
                      reviewCount={data?.reviewCount}
                   />
 

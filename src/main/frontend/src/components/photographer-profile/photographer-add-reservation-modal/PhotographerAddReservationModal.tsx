@@ -122,7 +122,7 @@ export const PhotographerAddReservationModal: React.FC<Props> = ({
                      text={reservation.from
                         .setLocale(i18n.language)
                         .toFormat("ccc dd-LL-yyyy")}
-                     Icon={RiCalendarEventFill}
+                     icon={RiCalendarEventFill}
                   />
                   <TimeInput
                      value={reservation.from.toFormat("HH:mm")}
@@ -138,7 +138,7 @@ export const PhotographerAddReservationModal: React.FC<Props> = ({
                      text={reservation.to
                         .setLocale(i18n.language)
                         .toFormat("ccc dd-LL-yyyy")}
-                     Icon={RiCalendarEventFill}
+                     icon={RiCalendarEventFill}
                   />
                   <TimeInput
                      value={reservation.to.toFormat("HH:mm")}

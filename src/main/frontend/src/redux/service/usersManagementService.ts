@@ -1,20 +1,20 @@
 import { api } from "./api";
 import {
-   advancedUserInfoResponse,
-   basicUserInfoResponse,
-   changeAccessLevelRequest,
-   getAdvancedUserListRequest,
-   changeAccountInfoAsAdminRequest,
+   AdvancedUserInfoResponse,
+   BasicUserInfoResponse,
+   ChangeAccessLevelRequest,
+   GetAdvancedUserListRequest,
+   ChangeAccountInfoAsAdminRequest,
    createAccountRequest,
    AccountListPreferencesResponse,
-   tableAccountData,
-   tableAccountChangeLogInfo,
-   getAccountChangeLogRequest,
-   getBasicUserListRequest,
-   accountReport,
-   changeSomeonesPasswordRequest,
+   TableAccountData,
+   TableAccountChangeLogInfo,
+   GetAccountChangeLogRequest,
+   GetBasicUserListRequest,
+   ChangeSomeonesPasswordRequest,
    ReservationResponse,
    ReservationRequest,
+   accountReport,
 } from "redux/types/api";
 import {
    EtagData,
@@ -24,13 +24,13 @@ import {
 
 const UsersManagementService = api.injectEndpoints({
    endpoints: (builder) => ({
-      getUserInfo: builder.query<basicUserInfoResponse, string>({
+      getUserInfo: builder.query<BasicUserInfoResponse, string>({
          query: (login) => ({ url: `account/${login}/info` }),
       }),
 
-      getAdvancedUserInfo: builder.query<EtagData<advancedUserInfoResponse>, string>({
+      getAdvancedUserInfo: builder.query<EtagData<AdvancedUserInfoResponse>, string>({
          query: (login) => ({ url: `account/${login}/detailed-info` }),
-         transformResponse(data: advancedUserInfoResponse, meta) {
+         transformResponse(data: AdvancedUserInfoResponse, meta) {
             return {
                data,
                etag: {
@@ -49,7 +49,7 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
-      changeAccountInfo: builder.mutation<void, changeAccountInfoAsAdminRequest>({
+      changeAccountInfo: builder.mutation<void, ChangeAccountInfoAsAdminRequest>({
          query: ({ body, etag }) => ({
             url: `account/${body.login}/editAccountInfo`,
             method: "PUT",
@@ -60,8 +60,8 @@ const UsersManagementService = api.injectEndpoints({
       }),
 
       getBasicUserList: builder.mutation<
-         getListResponse<tableAccountData>,
-         getBasicUserListRequest
+         getListResponse<TableAccountData>,
+         GetBasicUserListRequest
       >({
          query: (data) => ({
             url: "account/list-name",
@@ -70,8 +70,8 @@ const UsersManagementService = api.injectEndpoints({
       }),
 
       getAdvancedUserList: builder.mutation<
-         getListResponse<tableAccountData>,
-         getAdvancedUserListRequest
+         getListResponse<TableAccountData>,
+         GetAdvancedUserListRequest
       >({
          query: (data) => ({
             url: "account/list",
@@ -86,7 +86,7 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
-      changeAccessLevel: builder.mutation<void, changeAccessLevelRequest>({
+      changeAccessLevel: builder.mutation<void, ChangeAccessLevelRequest>({
          query: ({ params, body }) => ({
             url: `account/${params.login}/accessLevel`,
             method: "POST",
@@ -103,8 +103,8 @@ const UsersManagementService = api.injectEndpoints({
       }),
 
       getAccountChangeLog: builder.mutation<
-         getListResponse<tableAccountChangeLogInfo>,
-         getAccountChangeLogRequest
+         getListResponse<TableAccountChangeLogInfo>,
+         GetAccountChangeLogRequest
       >({
          query: (data) => ({
             url: `account/${data.pathParam}/get-account-change-log`,
@@ -112,20 +112,14 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
-      getAccountReportList: builder.query<
-         getListResponse<accountReport>,
-         getReportListRequest
-      >({
-         query: (params) => ({ url: `/report/list/account`, params }),
-      }),
-
-      changeSomeonesPassword: builder.mutation<void, changeSomeonesPasswordRequest>({
+      changeSomeonesPassword: builder.mutation<void, ChangeSomeonesPasswordRequest>({
          query: (data) => ({
             url: `account/${data.login}/change-password`,
             method: "PUT",
             body: data.data,
          }),
       }),
+
 
       resolveAccountReport: builder.mutation<void, number>({
          query: (id) => ({ url: `/report/account/${id}/resolve`, method: "POST" }),
@@ -136,6 +130,13 @@ const UsersManagementService = api.injectEndpoints({
             url: "/reservation/my-reservations",
             params: data,
          }),
+      }),
+
+      getAccountReportList: builder.query<
+          getListResponse<accountReport>,
+          getReportListRequest
+          >({
+         query: (params) => ({ url: `/report/list/account`, params }),
       }),
    }),
 });

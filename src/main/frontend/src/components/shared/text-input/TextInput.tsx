@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styles from "./TextInput.module.scss";
 
 interface TextInputProps {
-   icon?: string;
+   icon?: JSX.Element;
    type?: React.HTMLInputTypeAttribute;
    label?: string;
    className?: string;
@@ -34,7 +34,6 @@ export const TextInput = ({
       <div className={`${styles.text_input_wrapper} ${className ? className : ""}`}>
          {label && <p className={`label ${required ? styles.required : ""}`}>{label}</p>}
          <div className={`${styles.field} ${validation !== "" ? styles.invalid : ""}`}>
-            {icon && <span className="material-icons">{icon}</span>}
             <input
                type={type ? type : "text"}
                value={value}
@@ -44,6 +43,7 @@ export const TextInput = ({
                disabled={disabled}
                ref={input}
             />
+            {icon}
          </div>
          <div className={styles.messages} title={validation}>
             <p style={{ width: `${input?.current?.getBoundingClientRect().width}px` }}>
