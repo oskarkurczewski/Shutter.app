@@ -1,4 +1,9 @@
-import { ReviewInfo, addReviewRequest } from "redux/types/api";
+import {
+   ReviewInfo,
+   addReviewRequest,
+   GetPhotographerReviewsRequest,
+   GetPhotographerReviewsResponse,
+} from "redux/types/api";
 import { api } from "./api";
 
 const ReviewService = api.injectEndpoints({
@@ -6,6 +11,13 @@ const ReviewService = api.injectEndpoints({
       likeReview: builder.mutation<void, number>({
          query: (reviewId) => ({
             url: `/profile/review/${reviewId}/like`,
+            method: "POST",
+         }),
+      }),
+
+      unlikeReview: builder.mutation<void, number>({
+         query: (reviewId) => ({
+            url: `/profile/review/${reviewId}/unlike`,
             method: "POST",
          }),
       }),
@@ -38,13 +50,25 @@ const ReviewService = api.injectEndpoints({
             body: data,
          }),
       }),
+
+      getPhotographerReviews: builder.query<
+         GetPhotographerReviewsResponse,
+         GetPhotographerReviewsRequest
+      >({
+         query: (data) => ({
+            url: "profile/review/list",
+            params: data,
+         }),
+      }),
    }),
 });
 
 export const {
    useLikeReviewMutation,
+   useUnlikeReviewMutation,
    useGetReviewByIdQuery,
    useRemoveOwnPhotographerReviewMutation,
    useRemoveSomeonesPhotographerReviewMutation,
    useAddReviewMutation,
+   useGetPhotographerReviewsQuery,
 } = ReviewService;

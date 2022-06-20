@@ -35,20 +35,6 @@ export interface ReportPhotographerReviewRequest {
    cause: string;
 }
 
-export interface GetPhotographerReviewsResponse {
-   pageNo: number;
-   recordsPerPage: number;
-   list: {
-      authorLogin: string;
-      id: number;
-      name: string;
-      surname: string;
-      score: number;
-      content: string;
-      likeCount: string;
-   }[];
-}
-
 export interface photographerReport {
    id: number;
    accountLogin: string;
@@ -66,6 +52,24 @@ export interface reviewReport {
    reviewed: boolean;
    createdAt: Date;
    liked: boolean;
+}
+
+export interface GetPhotographerReviewsResponse {
+   pageNo: number;
+   recordsPerPage: number;
+   allPages: number;
+   allRecords: number;
+   list: {
+      authorLogin: string;
+      id: number;
+      name: string;
+      surname: string;
+      email: string;
+      score: number;
+      content: string;
+      likeCount: number;
+      liked: boolean;
+   }[];
 }
 
 export interface GetPhotographerReviewsRequest {
@@ -99,6 +103,7 @@ export interface ReviewInfo {
    reviewerLogin: string;
    score: number;
    likeCount: number;
+   liked: boolean;
    content: string;
    active: boolean;
    createdAt: Date;

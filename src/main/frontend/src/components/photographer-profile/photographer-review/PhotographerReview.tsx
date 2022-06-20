@@ -8,12 +8,15 @@ import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-
 import { useTranslation } from "react-i18next";
 import {
    useLikeReviewMutation,
+   useUnlikeReviewMutation,
    useRemoveOwnPhotographerReviewMutation,
    useRemoveSomeonesPhotographerReviewMutation,
 } from "redux/service/reviewService";
 import { Toast } from "types";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ReviewLikeButton } from "./review-like-button";
+import { Avatar } from "components/shared";
 import { AccessLevel } from "types";
 
 interface Props {
@@ -21,6 +24,7 @@ interface Props {
    authorLogin: string;
    name: string;
    surname: string;
+   email: string;
    stars: number;
    description: string;
    likeCount: number;
@@ -32,6 +36,7 @@ export const PhotographerReview: React.FC<Props> = ({
    authorLogin,
    name,
    surname,
+   email,
    stars,
    description,
    likeCount,
@@ -39,8 +44,8 @@ export const PhotographerReview: React.FC<Props> = ({
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
+
    const { username, accessLevel } = useAppSelector((state) => state.auth);
-   const [likeReviewMutation, likeReviewMutationState] = useLikeReviewMutation();
    const [removeOwnReviewMutation, removeOwnReviewMutationState] =
       useRemoveOwnPhotographerReviewMutation();
    const [removeSomeonesReviewMutation, removeSomeonesReviewMutationState] =
@@ -50,24 +55,6 @@ export const PhotographerReview: React.FC<Props> = ({
    const reportReview = () => {
       setEditReportModalIsOpen(true);
    };
-
-   // polubienie recenzji
-
-   const likeReview = () => {
-      return likeReviewMutation(id);
-   };
-
-   useEffect(() => {
-      if (likeReviewMutationState.isSuccess) {
-         dispatch(push(likeSuccessToast));
-      }
-   }, [likeReviewMutationState.isSuccess]);
-
-   useEffect(() => {
-      if (likeReviewMutationState.isError) {
-         dispatch(push(likeErrorToast));
-      }
-   }, [likeReviewMutationState.isError]);
 
    const likeSuccessToast: Toast = {
       type: ToastTypes.SUCCESS,
@@ -119,15 +106,9 @@ export const PhotographerReview: React.FC<Props> = ({
 
    return (
       <div className={styles.review_wrapper}>
-         <img
-            src="/images/avatar.png"
-            alt="reviewer_photo"
-            className={styles.review_photo}
-         />
+         <Avatar className={styles.review_photo} email={email} />
          <div className={styles.review_info}>
-            <p>
-               {name} {surname}
-            </p>
+            <p className="section-title">{`${name} ${surname}`}</p>
             <Stars
                className={styles.review_info_stars}
                stars={stars}
@@ -136,7 +117,7 @@ export const PhotographerReview: React.FC<Props> = ({
          </div>
          <p className={styles.review_description}>{description}</p>
          <div className={styles.review_buttons}>
-            <MenuDropdown className={styles.review_more_button}>
+            <MenuDropdown>
                <MenuDropdownItem
                   value={t("photographer_page.report_button")}
                   onClick={reportReview}
@@ -149,15 +130,7 @@ export const PhotographerReview: React.FC<Props> = ({
                   />
                )}
             </MenuDropdown>
-            <Button
-               className={`${styles.review_like_button} ${
-                  liked ? styles.review_like_button_liked : ""
-               }`}
-               onClick={likeReview}
-               icon="favorite"
-            >
-               {likeCount?.toString()}
-            </Button>
+            <ReviewLikeButton id={id} likeCount={likeCount} liked={liked} />
          </div>
          <PhotographerReviewReportModal
             reviewId={id}

@@ -105,4 +105,24 @@ public class ReviewFacade extends FacadeTemplate<Review> {
                 .setMaxResults(recordsPerPage)
                 .getResultList();
     }
+
+    @PermitAll
+    public Long getReviewListSize(Long photographerId) throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Review> table = query.from(Review.class);
+        query.select(criteriaBuilder.count(table));
+        query.where(criteriaBuilder.equal(table.get("photographer").get("id"), photographerId));
+        try {
+            return em.createQuery(query).getSingleResult();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noAccountFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
 }

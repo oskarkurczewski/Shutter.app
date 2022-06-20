@@ -8,16 +8,23 @@
    align-items: flex-end;
 
    button {
-      color: variables.$gray-300;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 5px;
-      column-gap: 5px;
       border: none;
-      padding: 0.3rem;
+      padding: 0.5rem;
+
+      background-color: transparent;
+      color: variables.$gray-200;
+
+      svg {
+         font-size: 1.1rem;
+      }
 
       &:hover {
+         background-color: variables.$blue-gray-100;
+         color: variables.$gray-300;
          cursor: pointer;
       }
 
@@ -26,18 +33,6 @@
          overflow: hidden;
          text-overflow: ellipsis;
          user-select: none;
-      }
-   }
-
-   .option_wrapper {
-      background-color: variables.$blue-gray-100;
-
-      svg {
-         font-size: 1.5rem;
-      }
-
-      &:hover {
-         background-color: variables.$blue-gray-200;
       }
    }
 
