@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
@@ -73,7 +75,7 @@ public class ReportController extends AbstractController {
         repeat(() -> reportEndpoint.reportReview(createReviewReportDto), reportEndpoint);
         return Response.status(Response.Status.CREATED).build();
     }
-    
+
     @GET
     @Path("/review/report-causes")
     @Produces(MediaType.APPLICATION_JSON)
@@ -149,21 +151,21 @@ public class ReportController extends AbstractController {
 
     @POST
     @Path("/account/{id}/resolve")
-    public Response resolveAccountReport(@PathParam("id") Long reportId) throws BaseApplicationException {
+    public Response resolveAccountReport(@NotNull @PathParam("id") Long reportId) throws BaseApplicationException {
         reportEndpoint.resolveAccountReport(reportId);
         return Response.status(Response.Status.OK).build();
     }
 
     @POST
     @Path("/photographer/{id}/resolve")
-    public Response resolvePhotographerReport(@PathParam("id") Long photographerId) throws BaseApplicationException {
+    public Response resolvePhotographerReport(@NotNull @PathParam("id") Long photographerId) throws BaseApplicationException {
         reportEndpoint.resolvePhotographerReport(photographerId);
         return Response.status(Response.Status.OK).build();
     }
 
     @POST
     @Path("/review/{id}/resolve")
-    public Response resolveReviewReport(@PathParam("id") Long reviewId) throws BaseApplicationException {
+    public Response resolveReviewReport(@NotNull @PathParam("id") Long reviewId) throws BaseApplicationException {
         reportEndpoint.resolveReviewReport(reviewId);
         return Response.status(Response.Status.OK).build();
     }

@@ -119,6 +119,12 @@
             "password": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
             "login": "Login może zawierać tylko znaki alfanumeryczne oraz <>{}-_=*",
             "login_first_last": "Login musi zaczynać i kończyć sie się literą lub cyfrą"
+         },
+         "search": {
+            "regexp": "Niepoprawne parametry wyszukiwania"
+         },
+         "token": {
+            "regexp": "Podano niepoprawny żeton"
          }
       },
       "not_same": "Pola muszą być takie same."
@@ -516,10 +522,8 @@
    "photographer_jobs_page": {
       "search_client": "Wyszukaj klienta",
       "no_reservations": "Brak rezerwacji na ten tydzień",
-
       "discard_reservation": {
          "success": "Pomyślnie odrzucono rezerwację",
-
          "modal": {
             "title": "Odrzucenie rezerwacji",
             "description": "Czy na pewno chcesz odrzucić rezerwację?"
