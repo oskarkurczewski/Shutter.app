@@ -7,4 +7,9 @@ export type tableHeader = {
    sortable: boolean;
 };
 
+export interface Condition<T> {
+   function: (a: T) => boolean;
+   message: string;
+}
+
 export type Toast = Omit<ToastRenderType, "id">;

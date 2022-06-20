@@ -1,36 +1,47 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { Condition } from "types";
 
 export const useStateWithValidation = <T,>(
-   conditions: ((a: T, b?: T) => boolean)[],
+   conditions: Condition<T>[],
    initialValue: T
 ) => {
-   const checkValue = useCallback(
-      (value: T, conditions: ((a: T) => boolean)[]): number => {
-         let check = null;
-         conditions.forEach((condition, index) => {
-            if (check === null && !condition(value)) {
-               check = index;
-            }
-         });
-         return check;
-      },
-      []
-   );
+   const [show, setShow] = useState<boolean>(false);
+
+   const checkValue = useCallback((value: T, conditions: Condition<T>[]): string => {
+      let check = "";
+      // if (show || !show) {
+      conditions.forEach((condition, index) => {
+         if (check === "" && !condition.function(value)) {
+            check = condition.message;
+         }
+      });
+      // }
+      return check;
+   }, []);
    const [state, setState] = useState<T>(initialValue);
-   const [isValid, setIsValid] = useState<number>(() => checkValue(state, conditions));
+   const [validationMessage, setValidationMessage] = useState<string>(() =>
+      checkValue(state, conditions)
+   );
+
+   useEffect(() => {
+      console.log(1, show);
+      if (!show) {
+         setShow(true);
+      }
+   }, [state]);
 
    const onChange = useCallback<(value: T) => void>(
       (nextState: T) => {
          const value = typeof nextState === "function" ? nextState(state) : nextState;
          setState(value);
-         setIsValid(checkValue(value, conditions));
+         setValidationMessage(checkValue(value, conditions));
       },
       [conditions]
    );
-   const result: [state: T, setState: (newState: T) => void, validation: number] = [
+   const result: [state: T, setState: (newState: T) => void, validation: string] = [
       state,
       onChange,
-      isValid,
+      validationMessage,
    ];
    return result;
 };

@@ -19,18 +19,32 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
    const [password, setPassword, passwordValidation] =
       useStateWithValidationAndComparison<string>(
          [
-            (password) => password.length >= 8,
-            (password) => password.length <= 64,
-            (password) => passwordPattern.test(password),
+            {
+               function: (password) => password.length >= 8,
+               message: t("validator.incorrect.length.min", {
+                  field: t("edit_account_page.password.title"),
+                  min: 8,
+               }),
+            },
+            {
+               function: (password) => password.length <= 64,
+               message: t("validator.incorrect.length.max", {
+                  field: t("edit_account_page.password.title"),
+                  max: 8,
+               }),
+            },
+            {
+               function: (password) => passwordPattern.test(password),
+               message: t("validator.incorrect.regx.password"),
+            },
          ],
-         "",
-         ""
+         ["", ""]
       );
 
    const save = () => {
-      passwordValidation.valueA === null &&
-         passwordValidation.valueB &&
-         passwordMutation({ login: login, data: { password: password.valueA } });
+      passwordValidation[0] === "" &&
+         passwordValidation[1] === "" &&
+         passwordMutation({ login: login, data: { password: password[0] } });
    };
 
    return (
@@ -46,11 +60,6 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
                type="password"
                required
                validation={passwordValidation.valueA}
-               validationMessages={[
-                  t("edit_account_page.password.password_validation.min"),
-                  t("edit_account_page.password.password_validation.max"),
-                  t("edit_account_page.password.password_validation.regex"),
-               ]}
                disabled={!isRegistered}
             />
             <TextInput
@@ -62,9 +71,6 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
                type="password"
                required
                validation={passwordValidation.valueB}
-               validationMessages={[
-                  t("edit_account_page.password.password_validation.repeat"),
-               ]}
                disabled={!isRegistered}
             />
          </div>
@@ -73,10 +79,10 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
             className={styles.save}
             disabled={
                !isRegistered ||
-               passwordValidation.valueA !== null ||
-               !passwordValidation.valueB
+               passwordValidation[0] !== "" ||
+               passwordValidation[1] !== ""
             }
-            title={!isRegistered && t("edit_account_page.confirm.cant_change")}
+            title={!isRegistered && t("edit_account_page.password.cant_change")}
          >
             {t("edit_account_page.confirm")}
          </Button>

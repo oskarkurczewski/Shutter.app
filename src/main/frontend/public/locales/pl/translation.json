@@ -85,15 +85,24 @@
       "incorrect": {
          "cause": {
             "null": "Nie podano przyczyny zgłoszenia"
-         }
-      }
-   },
-   "validator": {
-      "incorrect": {
+         },
          "name_surname_query": {
             "regexp": "Podano niepoprawną wartość"
+         },
+         "length": {
+            "min": "{{field}} musi mieć co najmniej {{min}} znaków.",
+            "max": "{{field}} może mieć co najwyżej {{max}} znaków."
+         },
+         "regx": {
+            "email": "Email musi być w formacie example@domain.com.",
+            "upper_lower_only": "{{field}} może zawierać tylko wielkie i małe litery.",
+            "first_uppercase": "{{field}} musi zaczynać się od wielkiej litery.",
+            "password": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
+            "login": "Login może zawierać tylko znaki alfanumeryczne oraz <>{}-_=*",
+            "login_first_last": "Login musi zaczynać i kończyć sie się literą lub cyfrą"
          }
-      }
+      },
+      "not_same": "Pola muszą być takie same."
    },
    "navigation": {
       "home": "Strona główna",
@@ -116,7 +125,6 @@
       "change_availability": "Zmiana godzin dostępności",
       "jobs": "Rezerwacje",
       "reservations": "Rezerwacje",
-      "change_availability": "Zmiana godzin dostępności",
       "reports": "Zgłoszenia"
    },
    "toast": {
