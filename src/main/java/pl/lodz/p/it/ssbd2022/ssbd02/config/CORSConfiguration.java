@@ -9,7 +9,7 @@ import javax.ws.rs.ext.Provider;
 public class CORSConfiguration implements ContainerResponseFilter {
     @Override
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) {
-        containerResponseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
+        containerResponseContext.getHeaders().add("Access-Control-Allow-Origin", "https://studapp.it.p.lodz.pl:8002");
         containerResponseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
         containerResponseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
         containerResponseContext.getHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization, if-match");
