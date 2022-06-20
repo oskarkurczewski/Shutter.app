@@ -12,8 +12,6 @@ interface Props {
 }
 
 const PhotoModal: React.FC<Props> = ({ isOpen, onSubmit, photo }) => {
-   console.log(photo);
-
    const [isLiked, setIsLiked] = useState<boolean>(photo.liked);
    const [likes, setLikes] = useState<number>(photo.likeCount);
    const [likePhotoMutation, { isLoading, isError, isSuccess, error }] =

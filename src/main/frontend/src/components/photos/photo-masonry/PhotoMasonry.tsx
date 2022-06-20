@@ -4,6 +4,7 @@ import { useGetPhotosRequestQuery } from "redux/service/photoService";
 import { Photo } from "../photo/Photo";
 import styles from "./PhotoMasonry.module.scss";
 import PhotoModal from "components/photos/photo-modal/PhotoModal";
+
 interface Props {
    login: string;
 }

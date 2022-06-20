@@ -7,7 +7,7 @@ div.modal_wrapper {
    width: 100%;
    height: 100%;
    display: flex;
-   padding-top: 2rem;
+   padding: 2rem;
    justify-content: center;
    z-index: 500;
 
@@ -25,6 +25,7 @@ div.modal_wrapper {
       display: flex;
       position: absolute;
       flex-direction: column;
+      margin: 0 6rem;
       gap: 0.5rem;
       align-self: flex-start;
 

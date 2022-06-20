@@ -556,6 +556,9 @@
          "incorrect": {
             "title": {
                "regexp": "Tytuł powinien mieć od 1 do 64 znaków"
+            },
+            "photo_description": {
+               "regexp": "Opis zdjęcia powinien mieć maksymalnie 1024 znaki"
             }
          }
       }

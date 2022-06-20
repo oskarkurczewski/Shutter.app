@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Pattern(regexp = REGEXP.PHOTO_DESCRIPTION_PATTERN)
 @Size(max = 1024)
 public @interface PhotoDescription {
-    String message() default "validator.incorrect.photo.description.regexp";
+    String message() default "validator.incorrect.photo_description.regexp";
 
     Class<?>[] groups() default {};
 
