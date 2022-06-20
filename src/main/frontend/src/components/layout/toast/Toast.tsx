@@ -14,14 +14,7 @@ export interface ToastType {
    id: number;
 }
 
-export const Toast: React.FC<ToastType> = ({
-   icon,
-   name,
-   text,
-   buttons,
-   className,
-   id,
-}) => {
+export const Toast: React.FC<ToastType> = ({ icon, text, buttons, className, id }) => {
    const dispatch = useAppDispatch();
 
    const timeout = useRef(null);

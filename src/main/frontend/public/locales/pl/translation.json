@@ -41,6 +41,7 @@
       }
    },
    "exception": {
+      "unexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
       "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
@@ -86,11 +87,7 @@
       "incorrect": {
          "cause": {
             "null": "Nie podano przyczyny zgłoszenia"
-         }
-      }
-   },
-   "validator": {
-      "incorrect": {
+         },
          "name_surname_query": {
             "regexp": "Podano niepoprawną wartość"
          }
@@ -485,6 +482,14 @@
             "title": "Odrzucenie rezerwacji",
             "description": "Czy na pewno chcesz odrzucić rezerwację?"
          }
+      },
+      "report_modal": {
+         "title": "Zgłoś klienta",
+         "report": "Zgłoś",
+         "pay_on_time": "Nie zapłacił na czas",
+         "show_up": "Nie pojawił się",
+         "success_toast": "Pomyślnie zgłoszono klienta",
+         "report_message": "Wybierz powód zgłoszenia klienta"
       }
    },
    "user_reservations_page": {
