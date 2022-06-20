@@ -57,10 +57,6 @@ export const PhotographerAddReservationModal: React.FC<Props> = ({
             text: t(parseError(createReservationMutationState.error as ErrorResponse)),
          };
          dispatch(push(errorToast));
-         setNotification({
-            type: "error",
-            content: t(parseError(createReservationMutationState.error as ErrorResponse)),
-         });
 
          setReservation({
             ...reservation,
