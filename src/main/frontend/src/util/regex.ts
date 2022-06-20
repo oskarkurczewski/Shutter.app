@@ -8,3 +8,7 @@ export const emailPattern = new RegExp(
 export const passwordPattern = new RegExp(
    "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()\\-{}:;',?/*~$^+=<>-]).{8,64}$"
 );
+export const loginPattern = new RegExp("^[\\-_=a-zA-Z0-9]$");
+export const loginFirstLastPattern = new RegExp(
+   "^[a-zA-Z0-9][\\-_=a-zA-Z0-9][a-zA-Z0-9]$"
+);

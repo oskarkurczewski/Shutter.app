@@ -37,35 +37,39 @@ div.text_input_wrapper {
          color: variables.$blue-gray-300;
       }
 
-      span,
-      input {
-         padding: 0.5rem;
-         font-size: variables.$scale-1;
-      }
+      &.invalid {
+         box-shadow: variables.$shadow-elevated-red;
 
-      span {
-         background-color: variables.$blue-gray-200;
-      }
-      input {
-         height: 100%;
-         background-color: variables.$blue-gray-100;
-         font-weight: 500;
-         border-radius: 10px;
-         border: none;
-         padding-left: 1rem;
-         color: variables.$gray-300;
-         flex-grow: 1;
-         outline-color: variables.$blue-gray-300;
-
-         &:disabled {
-            background-color: variables.$gray-50;
-         }
-         &.invalid {
+         input {
             color: variables.$red-300;
          }
       }
    }
 
+   span,
+   input {
+      padding: 0.5rem;
+      font-size: variables.$scale-1;
+   }
+
+   span {
+      background-color: variables.$blue-gray-200;
+   }
+   input {
+      height: 100%;
+      background-color: variables.$blue-gray-100;
+      font-weight: 500;
+      border-radius: 10px;
+      border: none;
+      padding-left: 1rem;
+      color: variables.$gray-300;
+      flex-grow: 1;
+      outline-color: variables.$blue-gray-300;
+
+      &:disabled {
+         background-color: variables.$gray-50;
+      }
+   }
    .messages {
       top: 100%;
       position: absolute;

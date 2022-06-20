@@ -10,7 +10,7 @@ public final class REGEXP {
             = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[{}]:;',?/*~$^+=<>-]).{8,64}$";
 
     public static final String LOGIN_PATTERN
-            = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){1,13}[a-zA-Z0-9]$";
+            = "^[a-zA-Z0-9][\\-_=a-zA-Z0-9]{3,13}[a-zA-Z0-9]$";
 
     public static final String ACCESS_LEVEL_PATTERN
             = "^(?!ADMINISTRATOR).*$";

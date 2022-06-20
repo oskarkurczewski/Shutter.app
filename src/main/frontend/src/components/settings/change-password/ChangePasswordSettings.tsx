@@ -1,31 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ChangePasswordSettings.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { useChangePasswordMutation } from "redux/service/userSettingsService";
+import { useStateWithValidationAndComparison } from "hooks";
+import { passwordPattern } from "util/regex";
+import { Toast } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { useAppDispatch } from "redux/hooks";
+import { passwordRules } from "util/validationRules";
 
 export const ChangePasswordSettings = () => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
 
    const [oldPassword, setOldPassword] = useState("");
-   const [password, setPassword] = useState("");
-   const [confirmPassword, setConfirmPassword] = useState("");
+   const [newPassword, setNewPassword, newPasswordValidation] =
+      useStateWithValidationAndComparison<string>(passwordRules(t), ["", ""]);
 
-   const [equalityError, setEqualityError] = useState(false);
-
-   const [mutation, { isLoading, isError, isSuccess, error }] =
-      useChangePasswordMutation();
+   const [mutation, mutationState] = useChangePasswordMutation();
 
    const onSubmit = () => {
-      setEqualityError(false);
-      if (password == confirmPassword) {
-         return mutation({
-            oldPassword,
-            password,
+      if (newPasswordValidation.valueA === "" && newPasswordValidation.valueB === "") {
+         mutation({
+            oldPassword: oldPassword,
+            password: newPassword.valueA,
          });
       }
-      setEqualityError(true);
    };
+
+   useEffect(() => {
+      if (mutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_update"),
+         };
+         dispatch(push(successToast));
+      }
+      if (mutationState.isError) {
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t("toast.error_update"),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [mutationState]);
 
    return (
       <Card id="change-password" className={styles.card_wrapper}>
@@ -49,43 +68,21 @@ export const ChangePasswordSettings = () => {
                placeholder={t("global.label.password")}
                type="password"
                required
-               value={password}
-               onChange={(e) => setPassword(e.target.value)}
+               value={newPassword.valueA}
+               onChange={(e) => setNewPassword({ valueA: e.target.value })}
+               validation={newPasswordValidation.valueA}
             />
             <TextInput
                label={t("global.label.repeat_password")}
                placeholder={t("global.label.repeat_password")}
                type="password"
                required
-               value={confirmPassword}
-               onChange={(e) => setConfirmPassword(e.target.value)}
+               value={newPassword.valueB}
+               onChange={(e) => setNewPassword({ valueB: e.target.value })}
+               validation={newPasswordValidation.valueB}
             />
          </div>
-
-         {(() => {
-            if (equalityError) {
-               return (
-                  <p className="error">{t("message.error.equality-error-password")}</p>
-               );
-            }
-            if (isError) {
-               const err = error as any;
-               if (
-                  err.status === 400 &&
-                  err.data.message === "exception.password.not_unique"
-               ) {
-                  return (
-                     <p className="error">{t("message.error.password-not-unique")}</p>
-                  );
-               }
-               return <p className="error">{t("message.error.change-password")}</p>;
-            }
-            if (isSuccess) {
-               return <p>{t("message.success.change-password")}</p>;
-            }
-         })()}
-
-         <Button loading={isLoading} onClick={onSubmit}>
+         <Button loading={mutationState.isLoading} onClick={onSubmit}>
             {t("settings_page.password_settings.confirm")}
          </Button>
       </Card>

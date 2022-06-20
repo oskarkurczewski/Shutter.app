@@ -1,60 +1,92 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./registerPage.module.scss";
-import { Button, Card, Checkbox, TextInput, ValidationBox } from "components/shared";
+import { Button, Card, Checkbox, TextInput } from "components/shared";
 import { Link } from "react-router-dom";
-import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Language } from "types/Language";
+import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
+import { Toast } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { useAppDispatch } from "redux/hooks";
+import {
+   emailRules,
+   loginRules,
+   nameRules,
+   passwordRules,
+   surnameRules,
+} from "util/validationRules";
 
 export const RegisterPage = () => {
    const { t, i18n } = useTranslation();
+   const dispatch = useAppDispatch();
+
+   const [login, setLogin, loginValidationMessage] = useStateWithValidation<string>(
+      loginRules(t),
+      ""
+   );
+
+   const [name, setName, nameValidationMessage] = useStateWithValidation<string>(
+      nameRules(t),
+      ""
+   );
+
+   const [surname, setSurname, surnameValidationMessage] = useStateWithValidation<string>(
+      surnameRules(t),
+      ""
+   );
+
+   const [email, setEmail, emailValidationMessage] = useStateWithValidation<string>(
+      emailRules(t),
+      ""
+   );
+
+   const [password, setPassword, passwordValidation] =
+      useStateWithValidationAndComparison<string>(passwordRules(t), ["", ""]);
 
    const recaptchaRef = useRef(null);
-   const [formState, setFormState] = useState({
-      login: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      name: "",
-      surname: "",
-   });
    const [checkboxState, setCheckboxState] = useState({
       userDataChecked: false,
       termsOfUseChecked: false,
    });
 
-   const [validation, setValidation] = useState(
-      validateFields({ ...formState, ...checkboxState }, t)
-   );
-
-   const [registerMutation, { isLoading, isSuccess, isError }] = useRegisterMutation();
-
-   useEffect(() => {
-      setValidation(validateFields({ ...formState, ...checkboxState }, t));
-   }, [formState, checkboxState]);
-
-   const handleChange = ({
-      target: { name, value },
-   }: React.ChangeEvent<HTMLInputElement>) =>
-      setFormState((prev) => ({ ...prev, [name]: value }));
+   const [registerMutation, registerMutationState] = useRegisterMutation();
 
    const onSubmit = async (e) => {
       e.preventDefault();
       const captchaToken = await recaptchaRef.current.getValue();
       registerMutation({
-         ...formState,
+         login: login,
+         email: email,
+         password: password.valueA,
+         name: name,
+         surname: surname,
          reCaptchaToken: captchaToken,
          locale: i18n.language as Language,
       });
    };
 
+   useEffect(() => {
+      if (registerMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_update"),
+         };
+         dispatch(push(successToast));
+      }
+      if (registerMutationState.isError) {
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t("toast.error_update"),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [registerMutationState]);
+
    return (
       <section className={styles.register_page_wrapper}>
          <div className={styles.form_wrapper}>
-            <ValidationBox data={validation} className={styles.validation_card} />
-
             <Card className={styles.register_card}>
                <form onSubmit={onSubmit}>
                   <p className="section-title">{t("register_page.form_title")}</p>
@@ -66,8 +98,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.login")}
                            required
                            name="login"
-                           value={formState.login}
-                           onChange={handleChange}
+                           value={login}
+                           onChange={(e) => {
+                              setLogin(e.target.value);
+                           }}
+                           validation={loginValidationMessage}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -75,8 +110,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.email_short")}
                            required
                            name="email"
-                           value={formState.email}
-                           onChange={handleChange}
+                           value={email}
+                           onChange={(e) => {
+                              setEmail(e.target.value);
+                           }}
+                           validation={emailValidationMessage}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -85,8 +123,11 @@ export const RegisterPage = () => {
                            required
                            name="password"
                            type="password"
-                           value={formState.password}
-                           onChange={handleChange}
+                           value={password.valueA}
+                           onChange={(e) => {
+                              setPassword({ valueA: e.target.value });
+                           }}
+                           validation={passwordValidation.valueA}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -95,8 +136,11 @@ export const RegisterPage = () => {
                            required
                            name="confirmPassword"
                            type="password"
-                           value={formState.confirmPassword}
-                           onChange={handleChange}
+                           value={password.valueB}
+                           onChange={(e) => {
+                              setPassword({ valueB: e.target.value });
+                           }}
+                           validation={passwordValidation.valueB}
                         />
                      </div>
                      <div className={styles.column}>
@@ -106,8 +150,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.first_name")}
                            required
                            name="name"
-                           value={formState.name}
-                           onChange={handleChange}
+                           value={name}
+                           onChange={(e) => {
+                              setName(e.target.value);
+                           }}
+                           validation={nameValidationMessage}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -115,8 +162,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.second_name")}
                            required
                            name="surname"
-                           value={formState.surname}
-                           onChange={handleChange}
+                           value={surname}
+                           onChange={(e) => {
+                              setSurname(e.target.value);
+                           }}
+                           validation={surnameValidationMessage}
                         />
                      </div>
                   </div>
@@ -154,13 +204,9 @@ export const RegisterPage = () => {
                         {t("register_page.tos_message")}
                      </Checkbox>
                   </div>
-
-                  {isSuccess && <p>{t("message.success.register")}</p>}
-                  {isError && <p>{t("message.error.register")}</p>}
-
                   <div className={styles.footer}>
                      <Link to="/login">{t("register_page.sign_in")}</Link>
-                     <Button loading={isLoading} onClick={onSubmit}>
+                     <Button loading={registerMutationState.isLoading} onClick={onSubmit}>
                         {t("register_page.sign_up")}
                      </Button>
                   </div>
