@@ -61,6 +61,7 @@ public class MowAccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> 
      * w przypadku nieznalezienia pasującego wyniku otrzymujemy wyjątek
      *
      * @param accessLevel łańcuch znaków zawierający nazwę poziomu dostępu
+     * @return poziom dostępu
      * @throws DataNotFoundException W przypadku, gdy funkcja nie znajdzie rekordu
      *                               ze wskazaną nazwą
      */

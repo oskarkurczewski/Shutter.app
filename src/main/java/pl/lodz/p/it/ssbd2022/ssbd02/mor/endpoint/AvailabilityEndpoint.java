@@ -37,8 +37,9 @@ public class AvailabilityEndpoint extends AbstractEndpoint {
 
     /**
      * Metoda nadpisująca przedziały dostępności fotografa. Poprzednie zakresy zastępowane są tymi, podanymi przez parametr
+     *
      * @param availabilitiesDto lista nowych przedziałów dostępności
-     * @throws NoAuthenticatedAccountFound akcja wykonywana przez niezalogowanego użytkownika
+     * @throws NoAuthenticatedAccountFound  akcja wykonywana przez niezalogowanego użytkownika
      * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
      */
     @RolesAllowed(changeAvailabilityHours)
@@ -53,7 +54,7 @@ public class AvailabilityEndpoint extends AbstractEndpoint {
             availability.setFrom(availabilityDto.getFrom());
 
             LocalTime toFixed = availabilityDto.getTo();
-            if(toFixed.equals(LocalTime.MIDNIGHT)) {
+            if (toFixed.equals(LocalTime.MIDNIGHT)) {
                 toFixed = LocalTime.of(23, 59, 59);
             }
             availability.setTo(toFixed);

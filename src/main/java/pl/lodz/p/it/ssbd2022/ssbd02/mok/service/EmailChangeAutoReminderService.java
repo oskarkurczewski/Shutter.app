@@ -18,6 +18,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Serwis automatycznie wysyłający powiadomienie przypominające o możliwości zmiany adresu email w połowie
+ * okresu na tę zmianę pozwalającego
+ */
 @Startup
 @Singleton
 public class EmailChangeAutoReminderService {
@@ -36,7 +40,7 @@ public class EmailChangeAutoReminderService {
 
     @PostConstruct
     public void init() {
-        long interval = (long) configLoader.getRegistrationConfirmationTokenLifetime() * 60 * 60 * 1000;
+        long interval = (long) configLoader.getEmailResetTokenLifetime() * 60 * 60 * 1000;
         timerService.createTimer(
                 0,
                 interval,

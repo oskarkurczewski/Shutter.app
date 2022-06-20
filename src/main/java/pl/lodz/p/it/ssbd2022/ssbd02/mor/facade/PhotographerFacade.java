@@ -37,8 +37,8 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
      * Metoda zwracająca encję zawierającą informacje o fotografie
      *
      * @param login login fotografa
-     * @return PhotographerInfo
-     * @throws BaseApplicationException
+     * @return informacje o fotografie
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public PhotographerInfo getPhotographerByLogin(String login) throws BaseApplicationException {
@@ -48,16 +48,12 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            System.out.println("not found");
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
-            System.out.println("opt lock");
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
-            System.out.println("persistence");
             throw ExceptionFactory.databaseException();
         } catch (Exception ex) {
-            System.out.println("exception");
             throw ExceptionFactory.unexpectedFailException();
         }
     }
@@ -139,6 +135,7 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
      * Szuka profilu fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return informacje o fotografie
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @see PhotographerInfo
      */

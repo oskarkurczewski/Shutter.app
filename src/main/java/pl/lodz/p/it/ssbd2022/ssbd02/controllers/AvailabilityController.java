@@ -21,7 +21,7 @@ public class AvailabilityController extends AbstractController {
     private AvailabilityEndpoint availabilityEndpoint;
 
     /**
-     * Nadpisuje listę godzin dostępności fotografa
+     * Punkt końcowy nadpisujący listę godzin dostępności fotografa
      *
      * @param availabilities nowa lista dostępności fotografa
      * @return Response
@@ -30,14 +30,14 @@ public class AvailabilityController extends AbstractController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response editAvailability(
-             @NotNull @Valid List<EditAvailabilityDto> availabilities
+            @NotNull @Valid List<EditAvailabilityDto> availabilities
     ) throws BaseApplicationException {
         repeat(() -> availabilityEndpoint.editAvailability(availabilities), availabilityEndpoint);
         return Response.ok().build();
     }
 
     /**
-     * Zwraca listę godzin dostępności dla podanego fotografa
+     * Punkt końcowy zwracający listę godzin dostępności dla podanego fotografa
      *
      * @param login login fotografa
      * @return AvailabilityDto lista godzin dostępności

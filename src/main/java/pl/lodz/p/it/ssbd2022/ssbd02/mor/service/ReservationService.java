@@ -135,10 +135,10 @@ public class ReservationService {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param account        konto użytkownika, dla którego pobierane są rezerwacje
-     * @param order          kolejność sortowania względem kolumny time_from
-     * @param getAll         flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
-     * @return Reservation      lista rezerwacji
+     * @param account konto użytkownika, dla którego pobierane są rezerwacje
+     * @param order   kolejność sortowania względem kolumny time_from
+     * @param getAll  flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)

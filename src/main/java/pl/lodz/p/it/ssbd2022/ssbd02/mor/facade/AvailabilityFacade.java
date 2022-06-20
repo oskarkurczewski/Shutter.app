@@ -18,6 +18,7 @@ import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.entity.WeekDay.getWeekDay;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
+
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;

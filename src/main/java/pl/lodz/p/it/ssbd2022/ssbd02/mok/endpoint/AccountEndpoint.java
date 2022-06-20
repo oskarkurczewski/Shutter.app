@@ -262,7 +262,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Zwraca wartość secret użytkownika o danym loginie
      *
      * @param login Login użytkownika
-     * @return secret
+     * @return sekret
      */
     @PermitAll
     public String getSecret(String login) throws BaseApplicationException {
@@ -283,6 +283,12 @@ public class AccountEndpoint extends AbstractEndpoint {
         return new DetailedAccountInfoDto(account);
     }
 
+    /**
+     * Aktualizuje hasło obecnie uwierzytelnionego użytkownika
+     *
+     * @param data dane wymagane do zaktualizowania hasła
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed({changeOwnPassword})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
@@ -339,6 +345,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
      *
+     * @return obiekt dto preferencji sortowania oraz stronicowania listy użytkowników
      * @throws BaseApplicationException kiedy preferencje dla danego użytkownika nie zostaną odnalezione
      */
     @RolesAllowed(listAllAccounts)
@@ -437,6 +444,17 @@ public class AccountEndpoint extends AbstractEndpoint {
         accountService.updateEmail(emailUpdateDto);
     }
 
+    /**
+     * Wyszukuje użytkownika na podstawie frazy zawartej w jego imieniu lub nazwisku
+     *
+     * @param name           fraza zawarta w imieniu lub nazwisku
+     * @param page           number strony
+     * @param recordsPerPage liczba krotek na stronę
+     * @param orderBy        parametr, po którym ma się dokonywać sortowanie
+     * @param order          kolejność sortowania
+     * @return lista DTO krotek użytkowników spełniająca określone kryteria
+     * @throws BaseApplicationException
+     */
     @RolesAllowed(getAccountInfo)
     public ListResponseDto<TableAccountDto> findByNameSurname(
             String name,
@@ -491,8 +509,8 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
      *
      * @param login użytkownik
-     * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
-     * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
+     * @return true, jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
+     * @return false, jeżeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
      */
     @PermitAll
     public Boolean is2FAEnabledForUser(String login) throws BaseApplicationException {
@@ -524,7 +542,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @param orderBy        kolumna po której następuje sortowanie
      * @param order          kolejność sortowania
      * @return Historia zmian konta
-     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
+     * @throws BaseApplicationException użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getOwnAccountInfo})
     public ListResponseDto<AccountChangeLogDto> getOwnAccountChangeLog(
@@ -553,7 +571,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param login Login użytkownika, którego historia zmian konta ma być wyszukana
      * @return Historia zmian konta
-     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
+     * @throws BaseApplicationException użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getEnhancedAccountInfo})
     public ListResponseDto<AccountChangeLogDto> getAccountChangeLog(
@@ -581,6 +599,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Zwraca preferowany przez użytkownika język
      *
      * @return Preferowany język
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public LocaleDto getAccountLocale() throws BaseApplicationException {
@@ -594,6 +613,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Ustawia preferowany język przez użytkownika
      *
      * @param languageTag Preferowany język
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public void changeAccountLocale(String languageTag) throws BaseApplicationException {

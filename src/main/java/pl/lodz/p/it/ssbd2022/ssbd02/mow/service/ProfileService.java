@@ -33,9 +33,10 @@ public class ProfileService {
 
     /**
      * Metoda aktualizująca wynik i ilość recenzji u fotografa
+     *
      * @param photographer fotograf, którego wynik i ilość recenzji zmieniamy
-     * @param score wynik fotografa
-     * @param reviewCount o ile zmieniona ma byc ilosc recenzji (-1, +1)
+     * @param score        wynik fotografa
+     * @param reviewCount  o ile zmieniona ma byc ilosc recenzji (-1, +1)
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed({reviewPhotographer, deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
@@ -69,7 +70,7 @@ public class ProfileService {
         photographer.setSpecializationList(newSpecializations);
         facade.update(photographer);
     }
-    
+
     /**
      * Pobiera listę wszystkich dostępnych specjalizacji
      *
@@ -79,7 +80,6 @@ public class ProfileService {
     public List<Specialization> getSpecializationList() throws BaseApplicationException {
         return facade.getSpecializationList();
     }
-    
-   
-    
+
+
 }

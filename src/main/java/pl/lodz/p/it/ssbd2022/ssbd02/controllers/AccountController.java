@@ -28,7 +28,7 @@ public class AccountController extends AbstractController {
     SignatureVerifier signatureVerifier;
 
     /**
-     * Zmienia status użytkownika o danym loginie na zablokowany
+     * Punkt końcowy zmieniający status użytkownika o danym loginie na zablokowany
      *
      * @param login Login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
@@ -42,7 +42,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Zmienia status użytkownika o danym loginie na odblokowany
+     * Punkt końcowy zmieniający status użytkownika o danym loginie na odblokowany
      *
      * @param login Login użytkownika, dla którego ma zostać dokonana zmiana statusu
      */
@@ -56,7 +56,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Potwierdza aktywację własnego konta po długim czasie nieaktywności
+     * Punkt końcowy potwierdzający aktywację własnego konta po długim czasie nieaktywności
      *
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do aktywacji konta
      * @throws BaseApplicationException Występuje w przypadku gdy aktywacja konta się nie powiedzie
@@ -69,6 +69,13 @@ public class AccountController extends AbstractController {
     }
 
 
+    /**
+     * Punkt końcowy pozwalający na zmianę hasła użytkownika z poziomu administratora
+     *
+     * @param login    login użytkownika
+     * @param password nowe hasło użytkownika
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PUT
     @Path("/{login}/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -78,6 +85,12 @@ public class AccountController extends AbstractController {
         repeat(() -> accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
     }
 
+    /**
+     * Punkt końcowy pozwalający na zmianę hasła własnego konta
+     *
+     * @param data dane potrzebne do zmiany hasła
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PUT
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -86,7 +99,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
+     * Punkt końcowy wysyłający link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
      *
      * @param login Login użytkownika, na którego email ma zostać wysłany link
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje lub jest niepotwierdzone/zablokowane
@@ -100,7 +113,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Resetuje hasło dla użytkownika
+     * Punkt końcowy resetujący hasło dla użytkownika
      *
      * @param resetPasswordDto Informacje wymagane do resetu hasła (żeton oraz nowe hasło)
      * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
@@ -117,8 +130,9 @@ public class AccountController extends AbstractController {
 
 
     /**
-     * Wysyła link zawierający żeton zmiany adresu email
+     * Punkt końcowy wysyłający link zawierający żeton zmiany adresu email
      *
+     * @return odpowiedź HTTP
      * @throws NoAccountFound              Konto nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      */
@@ -131,9 +145,10 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Aktualizuje email użytkownika
+     * Punkt końcowy aktualizujący email użytkownika
      *
-     * @param emailUpdateDto Informacje do zmiany emaila użytkownika
+     * @param emailUpdateDto Informacje do zmiany maila użytkownika
+     * @return odpowiedź HTTP
      * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
@@ -197,7 +212,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Punkt końcowy szukający użytkownika
+     * Punkt końcowy uzyskujący podstawowe informacje o koncie użytkownika
      *
      * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
@@ -215,7 +230,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Punkt końcowy szukający użytkownika
+     * Punkt końcowy uzyskujący rozszerzone informacje o koncie użytkownika
      *
      * @param login Login użytkownika
      * @return obiekt DTO informacji o użytkowniku
@@ -263,6 +278,7 @@ public class AccountController extends AbstractController {
      * Punkt końcowy pozwalający na zmianę preferowanego języka przez użytkownika
      *
      * @param languageTag Preferowany przez użytkownika język, np. 'pl'
+     * @return Odpowiedź HTTP
      */
     @POST
     @Path("/locale/{languageTag}")
@@ -272,10 +288,12 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Pozwala zmienić informację aktualnie zalogowanego użytkownika na podstawie aktualnie zalogowanego użytkownika.
+     * Punkt końcowy pozwalający zmienić informację aktualnie zalogowanego użytkownika
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
-     * @param tagValue           Etag służący do sprawdzenia wiarygodność przysłanych danych. Wykorzystywany w SignatureValidator
+     * @param tagValue           Etag służący do sprawdzenia wiarygodność przysłanych danych.
+     *                           Wykorzystywany w SignatureValidator
+     * @return Odpowiedź HTTP
      * @see SignatureValidatorFilter
      */
     @PUT
@@ -289,16 +307,16 @@ public class AccountController extends AbstractController {
         if (!signatureVerifier.verifyEntityIntegrity(tagValue, editAccountInfoDto)) {
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
         }
-        // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         repeat(() -> accountEndpoint.editAccountInfo(editAccountInfoDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
     /**
-     * Pozwala zmienić informację użytkownika przez administratora przez podany login
+     * Punkt końcowy pozwalający zmienić informację użytkownika o podanym loginie przez administratora
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      * @param tagValue                  Etag służący do sprawdzenia wiarygodność przysłanych danych. Wykorzystywany w SignatureValidator
+     * @return Odpowiedź HTTP
      * @see SignatureValidatorFilter
      */
     @PUT
@@ -320,8 +338,10 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
+     * Punkt końcowy zwracający ostatnio ustawione dla danego użytkownika preferencje sortowania oraz
+     * stronicowania listy kont
      *
+     * @return preferencje sortowania i stronicowania listy użytkowników
      * @throws BaseApplicationException kiedy preferencje dla danego użytkownika nie zostaną odnalezione
      */
     @GET
@@ -389,6 +409,17 @@ public class AccountController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Punkt końcowy pozwalający na wyszukanie użytkownika po frazie znajdującej się w jego mieniu lub nazwisku
+     *
+     * @param pageNo         number strony
+     * @param recordsPerPage ilości krotek na stronę
+     * @param columnName     nazwa kolumny, po której należy sortować
+     * @param order          kolejności sortowania
+     * @param query          kwerenda
+     * @return lista użytkowników, których imie lub nazwisko zawiera podaną fraze
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @GET
     @Path("/list-name")
     @Produces(MediaType.APPLICATION_JSON)
@@ -403,7 +434,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Wysyła wymagany do zalogowania kod 2fa
+     * Punkt końcowy wysyłający potrzebny do zalogowania kod 2fa
      *
      * @param login login użytkownika, dla którego ma zostać utworzony kod 2fa
      * @return Odpowiedź HTTP
@@ -472,7 +503,7 @@ public class AccountController extends AbstractController {
 
 
     /**
-     * Zwraca historię zmian dla aktualnego użytkownika
+     * Punkt końcowy zwracający historię zmian dla aktualnego użytkownika
      *
      * @return Historia zmian konta
      * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
@@ -493,7 +524,7 @@ public class AccountController extends AbstractController {
     }
 
     /**
-     * Zwraca historię zmian dla użytkownika o podanym loginie
+     * Punkt końcowy zwracający historię zmian dla użytkownika o podanym loginie
      *
      * @param login login użytkownika, dla którego zwracana jest historia zmian
      * @return Historia zmian konta

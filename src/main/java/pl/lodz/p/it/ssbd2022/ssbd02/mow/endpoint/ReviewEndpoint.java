@@ -50,6 +50,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
 
     /**
      * Dodaje recenzje przez zalogowanego użytkownika
+     *
      * @param review obiekt DTO zawierający login fotografa, ocenę w skali od 1 do 10 i słowną opinię
      * @throws BaseApplicationException w przypadku niepowodzenia operacji
      */
@@ -74,9 +75,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
      * Usuwa recenzje dodana przez zalogowanego użytkownika
      *
      * @param reviewId id recenzji fotografa
-     *
      * @throws BaseApplicationException w przypadku niepowodzenia operacji
-     *
      */
     @RolesAllowed(deleteOwnPhotographerReview)
     public void deleteOwnPhotographerReview(Long reviewId)
@@ -96,9 +95,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
      * Usuwa recenzje dodana przez dowolnego użytkownika
      *
      * @param reviewId id recenzji fotografa
-     *
      * @throws BaseApplicationException w przypadku niepowodzenia operacji
-     *
      */
     @RolesAllowed(deleteSomeonesPhotographerReview)
     public void deleteSomeonesPhotographerReview(Long reviewId)
@@ -136,14 +133,29 @@ public class ReviewEndpoint extends AbstractEndpoint {
         Account account = accountService.findByLogin(user);
         reviewService.unlikeReview(account, review);
     }
-    
-    
+
+    /**
+     * Pobiera daną recenzję po jej identyfikatorze
+     *
+     * @param reviewId identyfikator recenzji
+     * @return recenzja o danym identyfikatorze
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(listAllReports)
     public GetReviewDto getReviewById(Long reviewId) throws BaseApplicationException {
         Review review = reviewService.findById(reviewId);
         return new GetReviewDto(review);
     }
 
+    /**
+     * Pobiera listę recenzji na podstawie loginu fotografa
+     *
+     * @param pageNo            numer story
+     * @param recordsPerPage    ilość krotek na stronę
+     * @param photographerLogin login fotografa
+     * @return lista recenzji fotografa o danym loginie
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public List<ReviewDto> getReviewsByPhotographerLogin(int pageNo, int recordsPerPage, String photographerLogin)
             throws BaseApplicationException {
@@ -153,7 +165,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
 
         String login = authCtx.getCurrentUsersLogin();
 
-        for (Review review: reviews) {
+        for (Review review : reviews) {
             boolean liked = review.getLikedList().stream().anyMatch(r -> r.getLogin().equals(login));
             reviewDtoList.add(new ReviewDto(review, liked));
         }

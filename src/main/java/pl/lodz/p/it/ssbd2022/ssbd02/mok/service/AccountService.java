@@ -66,6 +66,7 @@ public class AccountService {
      * Odnajduje konto użytkownika o podanym loginie
      *
      * @param login Login użytkownika, którego konta ma być wyszukane
+     * @return wyszukane konto użytkownika
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
@@ -77,6 +78,7 @@ public class AccountService {
      * Odnajduje wybraną wartość poziomu dostępu na bazie jej nazwy
      *
      * @param name Nazwa poziomu dostępu
+     * @return poziom dostępu
      * @throws DataNotFoundException W momencie, gdy dany poziom dostępu nie zostanie odnaleziony
      */
     @PermitAll
@@ -317,7 +319,6 @@ public class AccountService {
      * @throws CannotChangeException W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
      *                               tę rolę nieaktywną bądź wcale jej niemającego
      */
-
     @RolesAllowed(stopBeingPhotographer)
     public void stopBeingPhotographer(Account account) throws BaseApplicationException {
         AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
@@ -722,7 +723,7 @@ public class AccountService {
      * Ustawia preferowany język przez użytkownika
      *
      * @param account Konto użytkownika
-     * @param locale Język
+     * @param locale  Język
      */
     @PermitAll
     public void changeAccountLocale(Account account, Locale locale) throws BaseApplicationException {

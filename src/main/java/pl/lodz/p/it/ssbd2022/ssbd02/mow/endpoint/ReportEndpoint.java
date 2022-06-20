@@ -105,11 +105,23 @@ public class ReportEndpoint extends AbstractEndpoint {
         reportService.addPhotographerReport(report);
     }
 
+    /**
+     * Zwraca wszystkie powody zgłoszeń fotografów
+     *
+     * @return powody zgłoszeń fotografów
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(reportPhotographer)
     public List<String> getAllReviewReportCauses() throws BaseApplicationException {
         return reportService.getReviewReportCauses().stream().map(ReviewReportCause::getCause).collect(Collectors.toList());
     }
 
+    /**
+     * Zgłasza recenzję fotografa używając podanych informacji
+     *
+     * @param createReviewReportDto informację potrzebne do dokonania zgłoszenia
+     * @throws BaseApplicationException
+     */
     @RolesAllowed(reportReview)
     public void reportReview(CreateReviewReportDto createReviewReportDto)
             throws BaseApplicationException {
@@ -171,16 +183,34 @@ public class ReportEndpoint extends AbstractEndpoint {
     }
 
 
+    /**
+     * Rozpatruje zgłoszenie użytkownika
+     *
+     * @param reportId identyfikator zgłoszenia
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(resolveReport)
     public void resolveAccountReport(Long reportId) throws BaseApplicationException {
         reportService.resolveAccountReport(reportService.findAccountReportById(reportId));
     }
 
+    /**
+     * Rozpatruje zgłoszenie fotografa
+     *
+     * @param photographerId identyfikator zgłoszenia
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(resolveReport)
     public void resolvePhotographerReport(Long photographerId) throws BaseApplicationException {
         reportService.resolvePhotographerReport(reportService.findPhotographerReportById(photographerId));
     }
 
+    /**
+     * Rozpatruje zgłoszenie recenzji
+     *
+     * @param reviewId identyfikator recenzji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(resolveReport)
     public void resolveReviewReport(Long reviewId) throws BaseApplicationException {
         reportService.resolveReviewReport(reportService.findReviewReportById(reviewId));

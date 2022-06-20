@@ -93,7 +93,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * @param name   imię lub nazwisko do wyszukania
      * @param order  kolejność sortowania względem kolumny time_from
      * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
-     * @return ReservationListEntryDto      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)
@@ -118,7 +118,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * @param name   imię lub nazwisko do wyszukania
      * @param order  kolejność sortowania względem kolumny time_from
      * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
-     * @return ReservationListEntryDto      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showJobs)
@@ -158,6 +158,12 @@ public class ReservationEndpoint extends AbstractEndpoint {
         );
     }
 
+    /**
+     * Wyszukuje wszystkich fotografów dostępnych w podanych godzinach
+     *
+     * @param timePeriod
+     * @return lista fotografów dostępnych w podanych godzinach
+     */
     @PermitAll
     public List<PhotographerListEntryDto> findPhotographerByAvailability(TimePeriodDto timePeriod) {
         throw new UnsupportedOperationException();
@@ -178,7 +184,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
     public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurnameSpecialization(String name, int page, int recordsPerPage, String spec) throws BaseApplicationException {
         Specialization specialization;
 
-        if (spec != null ) {
+        if (spec != null) {
             specialization = reservationService.getSpecialization(spec);
         } else {
             specialization = null;
@@ -198,6 +204,12 @@ public class ReservationEndpoint extends AbstractEndpoint {
         );
     }
 
+    /**
+     * Wyszukuje wszystkich fotografów zajmujących się podaną specjalnością
+     *
+     * @param specialization specjalność, po której ma odbywać się wyszukiwanie
+     * @return lista fotografów zajmujących się określoną specjalnością
+     */
     @PermitAll
     public List<PhotographerListEntryDto> findPhotographerBySpeciality(String specialization) {
         throw new UnsupportedOperationException();

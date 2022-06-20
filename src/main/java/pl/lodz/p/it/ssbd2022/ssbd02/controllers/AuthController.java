@@ -59,7 +59,7 @@ public class AuthController {
     private AccountEndpoint accountEndpoint;
 
     /**
-     * Pozwala na uwierzytelnienie użytkownika weryfikując podane przez niego poświadczenia.
+     * Punkt końcowy pozwalający na uwierzytelnienie użytkownika weryfikując podane przez niego poświadczenia.
      * W przypadku powodzenia zwracany jest żeton JWT, w przeciwnym wypadku zwracany jest stosowny komunikat
      * oraz rejestrowana jest nieudana próba logowania dla danego użytkownika.
      * Ścieżka zasobu to /api/auth/login.
@@ -83,7 +83,7 @@ public class AuthController {
         }
 
         if (accountEndpoint.is2FAEnabledForUser(data.getLogin())) {
-            if (data.getTwoFACode() == null)  {
+            if (data.getTwoFACode() == null) {
                 accountEndpoint.reguest2faCode(data.getLogin());
                 throw ExceptionFactory.twoFARequiredException();
             } else if (!oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
@@ -112,9 +112,11 @@ public class AuthController {
     }
 
     /**
-     * Rejestruje w dzienniku zdarzeń próbę zmiany grupy, do której przynależy użytkownik w widoku aplikacji
+     * Punkt końcowy rejestrujący w dzienniku zdarzeń próbę zmiany grupy,
+     * do której przynależy użytkownik w widoku aplikacji
      *
      * @param group nazwa grupy, na którą użytkownik dokonać chciał zmiany
+     * @return odpowiedź HTTP
      * @throws UserNotInGroupException użytkownik nie należy do podanej grupy
      */
     @POST
@@ -139,7 +141,7 @@ public class AuthController {
     }
 
     /**
-     * Odświeża żeton JWT
+     * Punkt końcowy odświeżający żeton JWT
      *
      * @param context Kontekst aplikacji
      * @return odświeżony żeton JWT

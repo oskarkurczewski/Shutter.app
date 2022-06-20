@@ -52,6 +52,7 @@ public class PhotographerController extends AbstractController {
      * Punkt końcowy szukający fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return podstawowe informacje o fotografie
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
@@ -71,6 +72,7 @@ public class PhotographerController extends AbstractController {
      * Punkt końcowy szukający fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return odpowiedź HTTP
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil
      *                                     nieaktywny i informacje próbuje uzyskać użytkownik
@@ -95,6 +97,7 @@ public class PhotographerController extends AbstractController {
     /**
      * Punkt końcowy zwracający informacje o zalogowanym fotografie
      *
+     * @return odpowiedź HTTP
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see DetailedPhotographerInfoDto
@@ -115,6 +118,7 @@ public class PhotographerController extends AbstractController {
      * Punkt końcowy pozwalający uwierzytelnionemu fotografowi zmienić opis na swoim profilu
      *
      * @param changeDescriptionDto obiekt DTO zawierający nowy opis
+     * @return odpowiedź HTTP
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound Gdy użytkownik nie jest uwierzytelniony
      * @throws BaseApplicationException    gdy aktualizacja opisu się nie powiedzie

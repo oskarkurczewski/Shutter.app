@@ -50,7 +50,7 @@ public class AuthenticationFacade extends FacadeTemplate<Account> {
      * dodaje znak '%' na początku i na końcu struny
      *
      * @param s struna
-     * @return struna wynikowa
+     * @return wynikowy ciąg znaków
      */
     private String addPercent(String s) {
         return "%" + s + "%";

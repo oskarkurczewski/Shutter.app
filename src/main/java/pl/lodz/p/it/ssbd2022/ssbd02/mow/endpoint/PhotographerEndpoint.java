@@ -43,18 +43,18 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      * Szuka fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return podstawowy zbiór informacji o fotografie
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                                     niebędący ani administratorem, ani moderatorem
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
-     * @PermitAll ponieważ każdy może wyświetlić informacje o fotografie
      * @see BasePhotographerInfoDto
      */
     @PermitAll
     public BasePhotographerInfoDto getPhotographerInfo(String login) throws BaseApplicationException {
         PhotographerInfo photographerInfo = photographerService.findByLogin(login);
-        if(photographerInfo.getVisible()) {
+        if (photographerInfo.getVisible()) {
             return new BasePhotographerInfoDto(photographerInfo);
         }
         throw ExceptionFactory.noPhotographerFound();
@@ -64,6 +64,7 @@ public class PhotographerEndpoint extends AbstractEndpoint {
      * Szuka fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return rozszerzony zbiór informacji o fotografie
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
@@ -80,6 +81,7 @@ public class PhotographerEndpoint extends AbstractEndpoint {
     /**
      * Zwraca informacje o zalogowanym fotografie
      *
+     * @return rozszerzony zbiór informacji o danym fotografie
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see BasePhotographerInfoDto

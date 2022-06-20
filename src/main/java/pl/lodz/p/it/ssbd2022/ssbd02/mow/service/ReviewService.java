@@ -28,11 +28,27 @@ public class ReviewService {
     @Inject
     private ReviewFacade reviewFacade;
 
+    /**
+     * Pozyskuje recenzję na podstawie jej identyfikatora
+     *
+     * @param id identyfikator recenzji
+     * @return recenzja o danym identyfikatorze
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public Review findById(Long id) throws BaseApplicationException {
         return Optional.ofNullable(reviewFacade.find(id)).orElseThrow(ExceptionFactory::noReviewFoundException);
     }
 
+    /**
+     * Pozyskuje listę recenzji fotografa o danym identyfikatorze
+     *
+     * @param pageNo         numer strony
+     * @param recordsPerPage liczba krotek na stronę
+     * @param id             identyfikator fotografa
+     * @return lista recenzji danego fotografa
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public List<Review> listReviewsByPhotographerId(int pageNo, int recordsPerPage, Long id) throws BaseApplicationException {
         return reviewFacade.getReviewListByPhotographer(pageNo, recordsPerPage, id);
@@ -42,7 +58,6 @@ public class ReviewService {
      * Wykonuje operację usuniecia recenzji fotografa
      *
      * @param review recenzja, która ma być usunieta
-     *
      * @throws BaseApplicationException Gdy operacja się nie powiedzie
      */
     @RolesAllowed({deleteOwnPhotographerReview, deleteSomeonesPhotographerReview})
@@ -82,6 +97,13 @@ public class ReviewService {
         reviewFacade.update(review);
     }
 
+    /**
+     * Anuluje polubienie recenzji danego fotografa
+     *
+     * @param account konto, które dokonuje anulowania polubienia
+     * @param review  recenzja, dla którego polubienie jest anulowane
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(unlikeReview)
     public void unlikeReview(Account account, Review review) throws BaseApplicationException {
         if (review.getLikedList().stream().noneMatch(u -> u.getLogin().equals(account.getLogin()))) {

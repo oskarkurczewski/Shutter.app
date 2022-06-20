@@ -26,7 +26,7 @@ public class AvailabilityService {
      * Metoda nadpisująca przedziały dostępności fotografa. Poprzednie zakresy zastępowane są tymi, podanymi przez parametr
      *
      * @param availabilities lista nowych przedziałów dostępności
-     * @throws NoAuthenticatedAccountFound akcja wykonywana przez niezalogowanego użytkownika
+     * @throws NoAuthenticatedAccountFound  akcja wykonywana przez niezalogowanego użytkownika
      * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
      */
     @RolesAllowed(changeAvailabilityHours)
