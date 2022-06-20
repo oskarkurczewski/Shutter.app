@@ -26,6 +26,8 @@ public final class REGEXP {
 
     public static final String NAME_SURNAME_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹ][a-ząćęńśłóżź]{0,63}";
 
+    public static final String SEARCH_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź]{0,64}";
+
     public static final String DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{1,4096}";
 
     public static final String PHOTO_DESCRIPTION_PATTERN = "[A-ZĄĆĘŃŚŁÓŻŹa-ząćęńśłóżź.,@%-*:\"'\\()!?/0-9 ]{0,1024}";
@@ -39,4 +41,6 @@ public final class REGEXP {
     public static final String NAME_SURNAME_QUERY_PATTERN = "[a-ząćęńśłóżźA-ZĄĆĘŃŚŁÓŻŹ]{1,63}";
 
     public static final String SPECIALIZATION = "[A-Za-z .:_]{0,64}";
+    public static final String UUID = "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$";
+    public static final String RECAPTCHA = "/[0-9a-zA-Z_-]{40}/";
 }

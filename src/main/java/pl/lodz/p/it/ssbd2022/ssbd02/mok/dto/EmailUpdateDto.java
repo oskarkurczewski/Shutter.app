@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Data;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Email;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Token;
 
 import javax.validation.constraints.NotNull;
 
@@ -14,5 +15,6 @@ public class EmailUpdateDto {
     @Email
     String newEmail;
     @NotNull
+    @Token
     private String token;
 }

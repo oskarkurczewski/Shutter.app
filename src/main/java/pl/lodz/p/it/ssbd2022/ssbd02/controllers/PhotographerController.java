@@ -3,21 +3,17 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.MorListResponseDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.PhotographerListEntryDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NameSurnameQuery;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NumberQuery;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Specialization;
@@ -62,7 +58,7 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public BasePhotographerInfoDto getPhotographerInfo(@NotNull @PathParam("login") String login)
+    public BasePhotographerInfoDto getPhotographerInfo(@NotNull @Login @PathParam("login") String login)
             throws BaseApplicationException {
         return repeat(() -> photographerEndpoint.getPhotographerInfo(login), photographerEndpoint);
     }
@@ -81,7 +77,7 @@ public class PhotographerController extends AbstractController {
     @GET
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEnhancedPhotographerInfo(@NotNull @PathParam("login") String login)
+    public Response getEnhancedPhotographerInfo(@NotNull @Login @PathParam("login") String login)
             throws BaseApplicationException {
         DetailedPhotographerInfoDto DetailedPhotographerInfoDto = repeat(
                 () -> photographerEndpoint.getEnhancedPhotographerInfo(login),

@@ -5,9 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureValidatorFilter;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Locale;
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -36,7 +34,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/block")
     @Consumes(MediaType.APPLICATION_JSON)
     public void blockAccount(
-            @NotNull @PathParam("login") String login
+            @NotNull @Login @PathParam("login") String login
     ) throws BaseApplicationException {
         repeat(() -> accountEndpoint.blockAccount(login), accountEndpoint);
     }
@@ -50,7 +48,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/unblock")
     @Consumes(MediaType.APPLICATION_JSON)
     public void unblockAccount(
-            @NotNull @PathParam("login") String login
+            @NotNull @Login @PathParam("login") String login
     ) throws BaseApplicationException {
         repeat(() -> accountEndpoint.unblockAccount(login), accountEndpoint);
     }
@@ -63,7 +61,7 @@ public class AccountController extends AbstractController {
      */
     @PUT
     @Path("/unblock-own-account/{token}")
-    public void confirmUnblockOwnAccount(@NotNull @PathParam("token") String token)
+    public void confirmUnblockOwnAccount(@NotNull @Token @PathParam("token") String token)
             throws BaseApplicationException {
         repeat(() -> accountEndpoint.confirmUnblockOwnAccount(token), accountEndpoint);
     }
@@ -73,7 +71,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
     public void changeAccountPasswordAsAdmin(
-            @NotNull @PathParam("login") String login,
+            @NotNull @Login @PathParam("login") String login,
             @NotNull @Valid AccountUpdatePasswordDto password) throws BaseApplicationException {
         repeat(() -> accountEndpoint.updatePasswordAsAdmin(login, password), accountEndpoint);
     }
@@ -94,8 +92,8 @@ public class AccountController extends AbstractController {
     @POST
     @Path("{login}/request-reset")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void requestPasswordReset(@PathParam("login") String login,
-                                     @NotNull RecaptchaTokenDto captcha) throws BaseApplicationException {
+    public void requestPasswordReset(@NotNull @Login @PathParam("login") String login,
+                                     @NotNull @Valid RecaptchaTokenDto captcha) throws BaseApplicationException {
         repeat(() -> accountEndpoint.requestPasswordReset(login, captcha), accountEndpoint);
     }
 
@@ -207,7 +205,7 @@ public class AccountController extends AbstractController {
     @GET
     @Path("/{login}/detailed-info")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEnhancedAccountInfo(@NotNull @PathParam("login") String login)
+    public Response getEnhancedAccountInfo(@NotNull @Login @PathParam("login") String login)
             throws BaseApplicationException {
         DetailedAccountInfoDto detailedAccountInfoDto = repeat(() -> accountEndpoint.getEnhancedAccountInfo(login), accountEndpoint);
         EntityTag tag = new EntityTag(signatureVerifier.calculateEntitySignature(detailedAccountInfoDto));
@@ -225,7 +223,7 @@ public class AccountController extends AbstractController {
     @GET
     @Path("/{login}/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public BaseAccountInfoDto getAccountInfo(@NotNull @PathParam("login") String login)
+    public BaseAccountInfoDto getAccountInfo(@NotNull @Login @PathParam("login") String login)
             throws BaseApplicationException {
         return repeat(() -> accountEndpoint.getAccountInfo(login), accountEndpoint);
     }
@@ -314,7 +312,6 @@ public class AccountController extends AbstractController {
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
         }
 
-        // Może zostać zwrócony obiekt użytkownika w przyszłości po edycji z userEndpoint
         repeat(() -> accountEndpoint.editAccountInfoAsAdmin(login, editAccountInfoAsAdminDto), accountEndpoint);
         return Response.status(Response.Status.OK).build();
     }
@@ -357,10 +354,10 @@ public class AccountController extends AbstractController {
             @QueryParam("recordsPerPage") @NotNull Integer recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
-            @QueryParam("login") String login,
-            @QueryParam("email") String email,
-            @QueryParam("name") String name,
-            @QueryParam("surname") String surname,
+            @QueryParam("login") @SearchPattern String login,
+            @QueryParam("email") @SearchPattern String email,
+            @QueryParam("name") @SearchPattern String name,
+            @QueryParam("surname") @SearchPattern String surname,
             @QueryParam("registered") Boolean registered,
             @QueryParam("active") Boolean active
     ) throws BaseApplicationException {
@@ -382,7 +379,7 @@ public class AccountController extends AbstractController {
     @Path("/{login}/accessLevel")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response assignAccountAccessLevel(
-            @NotNull @PathParam("login") String login,
+            @NotNull @Login @PathParam("login") String login,
             @NotNull @Valid AccountAccessLevelChangeDto data
     ) throws BaseApplicationException {
         repeat(() -> accountEndpoint.changeAccountAccessLevel(login, data), accountEndpoint);
@@ -397,7 +394,7 @@ public class AccountController extends AbstractController {
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
-            @QueryParam("q") @NotNull String query
+            @QueryParam("q") @SearchPattern @NotNull String query
     ) throws BaseApplicationException {
         return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
     }

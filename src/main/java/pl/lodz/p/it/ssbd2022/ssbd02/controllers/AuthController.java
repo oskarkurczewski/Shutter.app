@@ -2,10 +2,8 @@ package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
 
 import io.fusionauth.jwt.domain.JWT;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.AuthTokenDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.BaseAccountInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.endpoint.AccountEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.LoginData;
@@ -83,7 +81,7 @@ public class AuthController {
         }
 
         if (accountEndpoint.is2FAEnabledForUser(data.getLogin())) {
-            if (data.getTwoFACode() == null)  {
+            if (data.getTwoFACode() == null) {
                 accountEndpoint.reguest2faCode(data.getLogin());
                 throw ExceptionFactory.twoFARequiredException();
             } else if (!oneTimeCodeUtils.verifyCode(secret, data.getTwoFACode())) {
@@ -120,7 +118,7 @@ public class AuthController {
     @POST
     @Path("change-group/{group}")
     @RolesAllowed(changeGroup)
-    public Response changeGroup(@PathParam("group") String group) throws UserNotInGroupException {
+    public Response changeGroup(@PathParam("group") @NotNull String group) throws UserNotInGroupException {
         if (securityContext.isUserInRole(group)) {
             LOGGER.log(Level.INFO,
                     "Successful group change to {0} for user {1} from IP {2}",
