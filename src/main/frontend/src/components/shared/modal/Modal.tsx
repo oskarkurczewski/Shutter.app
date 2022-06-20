@@ -63,8 +63,8 @@ export const Modal: React.FC<Props> = ({
                className={styles.backdrop}
                role="button"
                tabIndex={-1}
-               onKeyDown={() => onCancel()}
-               onClick={() => onCancel()}
+               onKeyDown={() => (type == "confirm" ? onCancel() : onSubmit())}
+               onClick={() => (type == "confirm" ? onCancel() : onSubmit())}
             />
             <AnimatePresence>
                <motion.div

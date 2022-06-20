@@ -141,6 +141,8 @@
       "success_send_reset_email_link_message": "Pomyślnie wysłano wiadomość z linkiem zmiany adresu email",
       "success_become_photographer_message": "Pomyślnie zostano fotografem",
       "success_stop_being_photographer_message": "Pomyślnie przestano być fotografem",
+      "success_change_own_email_message": "Pomyślnie zmieniono adres email",
+      "success_edit_account_info": "Pomyślnie zaktualizowano dane",
       "success_like": "Pomyślnie polubiono",
       "success_review": "Pomyślnie dodano recenzję",
       "success_remove_review": "Pomyślnie usunięto recenzję",

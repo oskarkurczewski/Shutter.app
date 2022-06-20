@@ -41,11 +41,15 @@ const EditAccountModal: React.FC<Props> = ({ login, isOpen, onSubmit }) => {
             {accessLevel === AccessLevel.ADMINISTRATOR && (
                <>
                   <div className={`${styles.border} ${styles.border_a}`} />
-                  <ChangeAccessLevels userInfoData={userInfoData.data} />
+                  <ChangeAccessLevels
+                     userInfoData={userInfoData.data}
+                     refetch={userInfoData.refetch}
+                  />
                   <div className={`${styles.border} ${styles.border_b}`} />
                   <ChangePassword
                      login={login}
                      isRegistered={userInfoData?.data?.data.registered}
+                     refetch={userInfoData.refetch}
                   />
                </>
             )}

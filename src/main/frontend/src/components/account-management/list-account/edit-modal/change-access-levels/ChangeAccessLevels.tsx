@@ -1,18 +1,23 @@
-import { Card, Checkbox } from "components/shared";
+import { Checkbox } from "components/shared";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAppDispatch } from "redux/hooks";
 import { useChangeAccessLevelMutation } from "redux/service/usersManagementService";
+import { push, ToastTypes } from "redux/slices/toastSlice";
 import { advancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
-import { AccessLevel } from "types";
+import { AccessLevel, ErrorResponse, Toast } from "types";
+import { parseError } from "util/errorUtil";
 import styles from "./ChangeAccessLevels.module.scss";
 
 interface Props {
    userInfoData: EtagData<advancedUserInfoResponse>;
+   refetch: () => void;
 }
 
-export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
+export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData, refetch }) => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
 
    const [allRoles, setAllRoles] = useState({
       ADMINISTRATOR: false,
@@ -42,8 +47,24 @@ export const ChangeAccessLevels: React.FC<Props> = ({ userInfoData }) => {
    };
 
    useEffect(() => {
-      // TODO: add toast
-   }, [accessLevelMutationState.isSuccess]);
+      if (accessLevelMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_edit_account_info"),
+         };
+         dispatch(push(successToast));
+         refetch();
+      }
+
+      if (accessLevelMutationState.isError) {
+         const err = accessLevelMutationState.error as ErrorResponse;
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(parseError(err)),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [accessLevelMutationState]);
 
    return (
       <div className={styles.access_levels}>

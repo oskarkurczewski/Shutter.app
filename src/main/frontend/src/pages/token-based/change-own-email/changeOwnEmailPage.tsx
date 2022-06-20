@@ -36,7 +36,7 @@ export const ChangeOwnEmailPage = () => {
       if (changeEmailMutationState.isSuccess) {
          const successToast: Toast = {
             type: ToastTypes.SUCCESS,
-            text: t("toast.success_send_reset_password_link_message"),
+            text: t("toast.success_change_own_email_message"),
          };
          dispatch(push(successToast));
       }
