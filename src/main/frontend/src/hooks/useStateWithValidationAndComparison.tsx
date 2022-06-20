@@ -1,39 +1,39 @@
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { Condition } from "types";
 
 export const useStateWithValidationAndComparison = <T,>(
-   conditions: ((a: T, b?: T) => boolean)[],
-   initialValue1: T,
-   initialValue2: T
+   conditions: Condition<T>[],
+   initialValues: [T, T]
 ) => {
+   const { t } = useTranslation();
+
    type stateType = {
       valueA: T;
       valueB: T;
    };
    type validType = {
-      valueA: number;
-      valueB: boolean;
+      valueA: string;
+      valueB: string;
    };
 
-   const checkValue = useCallback(
-      (value: T, conditions: ((a: T) => boolean)[]): number => {
-         let check = null;
-         conditions.forEach((condition, index) => {
-            if (check === null && !condition(value)) {
-               check = index;
-            }
-         });
-         return check;
-      },
-      []
-   );
+   const checkValue = useCallback((value: T, conditions: Condition<T>[]): string => {
+      let check = "";
+      conditions.forEach((condition, index) => {
+         if (check === "" && !condition.function(value)) {
+            check = condition.message;
+         }
+      });
+      return check;
+   }, []);
 
    const [state, setState] = useState<stateType>({
-      valueA: initialValue1,
-      valueB: initialValue2,
+      valueA: initialValues[0],
+      valueB: initialValues[1],
    });
    const [isValid, setIsValid] = useState<validType>({
-      valueA: checkValue(state.valueA, conditions),
-      valueB: state.valueA === state.valueB,
+      valueA: "",
+      valueB: "",
    });
 
    const onChange = useCallback<(value: stateType) => void>(
@@ -43,7 +43,7 @@ export const useStateWithValidationAndComparison = <T,>(
          setState({ ...state, ...value });
          setIsValid({
             valueA: checkValue(value.valueA, conditions),
-            valueB: value.valueA === value.valueB,
+            valueB: value.valueA === value.valueB ? "" : t("validator.not_same"),
          });
       },
       [conditions]
@@ -56,8 +56,8 @@ export const useStateWithValidationAndComparison = <T,>(
       },
       setState: (newState: { valueA?: T; valueB?: T }) => void,
       validation: {
-         valueA: number;
-         valueB: boolean;
+         valueA: string;
+         valueB: string;
       }
    ] = [state, onChange, isValid];
 

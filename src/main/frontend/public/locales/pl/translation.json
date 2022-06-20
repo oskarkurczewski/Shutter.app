@@ -103,10 +103,26 @@
          "cause": {
             "null": "Nie podano przyczyny zgłoszenia"
          },
+         "description": {
+            "regexp": "Podano niepoprawny opis"
+         },
          "name_surname_query": {
             "regexp": "Podano niepoprawną wartość"
+         },
+         "length": {
+            "min": "{{field}} musi mieć co najmniej {{min}} znaków.",
+            "max": "{{field}} może mieć co najwyżej {{max}} znaków."
+         },
+         "regx": {
+            "email": "Email musi być w formacie example@domain.com.",
+            "upper_lower_only": "{{field}} może zawierać tylko wielkie i małe litery.",
+            "first_uppercase": "{{field}} musi zaczynać się od wielkiej litery.",
+            "password": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
+            "login": "Login może zawierać tylko znaki alfanumeryczne",
+            "login_first_last": "Login musi zaczynać i kończyć sie się literą lub cyfrą"
          }
-      }
+      },
+      "not_same": "Pola muszą być takie same."
    },
    "navigation": {
       "home": "Strona główna",
@@ -143,6 +159,7 @@
       "success_stop_being_photographer_message": "Pomyślnie przestano być fotografem",
       "success_change_own_email_message": "Pomyślnie zmieniono adres email",
       "success_edit_account_info": "Pomyślnie zaktualizowano dane",
+      "success_change_description_message": "Pomyślnie zmieniono opis",
       "success_like": "Pomyślnie polubiono",
       "success_review": "Pomyślnie dodano recenzję",
       "success_remove_review": "Pomyślnie usunięto recenzję",

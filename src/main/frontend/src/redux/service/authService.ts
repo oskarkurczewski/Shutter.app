@@ -47,7 +47,7 @@ const AuthService = api.injectEndpoints({
          }),
       }),
 
-      getUserInfo: builder.query<EtagData<basicUserInfoResponse>, void>({
+      getOwnUserInfo: builder.query<EtagData<basicUserInfoResponse>, void>({
          query: () => ({ url: `account/info` }),
          transformResponse(data: basicUserInfoResponse, meta) {
             return {
@@ -68,5 +68,5 @@ export const {
    useRefreshTokenMutation,
    useSendTwoFACodeMutation,
    useSwitchCurrentAccessLevelMutation,
-   useGetUserInfoQuery,
+   useGetOwnUserInfoQuery,
 } = AuthService;

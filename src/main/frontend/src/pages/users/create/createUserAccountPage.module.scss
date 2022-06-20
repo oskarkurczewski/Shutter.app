@@ -9,7 +9,15 @@
    .card_wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      row-gap: 1.7rem;
+      column-gap: 1rem;
+
+      .checkboxes {
+         display: flex;
+         flex-direction: column;
+         gap: 0.5rem;
+         justify-content: center;
+      }
 
       .error_message {
          font-size: 0.7em;

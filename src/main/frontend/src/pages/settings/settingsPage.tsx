@@ -56,15 +56,15 @@ export const SettingsPage: React.FC = () => {
          label: t("settings_page.photographer_settings.title"),
       },
       {
-         icon: <BsChatSquareTextFill />,
-         id: "change-description",
-         label: t("settings_page.change_description.title"),
-         roles: [AccessLevel.PHOTOGRAPHER],
-      },
-      {
          icon: <FaStar />,
          id: "change-specializations",
          label: t("settings_page.change_specializations.title"),
+         roles: [AccessLevel.PHOTOGRAPHER],
+      },
+      {
+         icon: <BsChatSquareTextFill />,
+         id: "change-description",
+         label: t("settings_page.change_description.title"),
          roles: [AccessLevel.PHOTOGRAPHER],
       },
    ];

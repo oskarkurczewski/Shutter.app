@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./registerPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,34 +10,56 @@ import { ErrorResponse, Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useAppDispatch } from "redux/hooks";
 import { parseError } from "util/errorUtil";
+import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
+import {
+   emailRules,
+   loginRules,
+   nameRules,
+   passwordRules,
+   surnameRules,
+} from "util/validationRules";
 
 export const RegisterPage = () => {
    const { t, i18n } = useTranslation();
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
 
+   const [login, setLogin, loginValidationMessage] = useStateWithValidation<string>(
+      loginRules(t),
+      ""
+   );
+
+   const [name, setName, nameValidationMessage] = useStateWithValidation<string>(
+      nameRules(t),
+      ""
+   );
+
+   const [surname, setSurname, surnameValidationMessage] = useStateWithValidation<string>(
+      surnameRules(t),
+      ""
+   );
+
+   const [email, setEmail, emailValidationMessage] = useStateWithValidation<string>(
+      emailRules(t),
+      ""
+   );
+
+   const [password, setPassword, passwordValidation] =
+      useStateWithValidationAndComparison<string>(passwordRules(t), ["", ""]);
+
    const recaptchaRef = useRef(null);
-   const [formState, setFormState] = useState({
-      login: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      name: "",
-      surname: "",
-   });
 
    const [registerMutation, registerMutationState] = useRegisterMutation();
-
-   const handleChange = ({
-      target: { name, value },
-   }: React.ChangeEvent<HTMLInputElement>) =>
-      setFormState((prev) => ({ ...prev, [name]: value }));
 
    const onSubmit = async (e) => {
       e.preventDefault();
       const captchaToken = await recaptchaRef.current.getValue();
       registerMutation({
-         ...formState,
+         login: login,
+         email: email,
+         password: password.valueA,
+         name: name,
+         surname: surname,
          reCaptchaToken: captchaToken,
          locale: i18n.language as Language,
       });
@@ -101,8 +123,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.login")}
                            required
                            name="login"
-                           value={formState.login}
-                           onChange={handleChange}
+                           value={login}
+                           onChange={(e) => {
+                              setLogin(e.target.value);
+                           }}
+                           validation={loginValidationMessage}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -110,8 +135,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.email_short")}
                            required
                            name="email"
-                           value={formState.email}
-                           onChange={handleChange}
+                           value={email}
+                           onChange={(e) => {
+                              setEmail(e.target.value);
+                           }}
+                           validation={emailValidationMessage}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -120,8 +148,11 @@ export const RegisterPage = () => {
                            required
                            name="password"
                            type="password"
-                           value={formState.password}
-                           onChange={handleChange}
+                           value={password.valueA}
+                           onChange={(e) => {
+                              setPassword({ valueA: e.target.value });
+                           }}
+                           validation={passwordValidation.valueA}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -130,8 +161,11 @@ export const RegisterPage = () => {
                            required
                            name="confirmPassword"
                            type="password"
-                           value={formState.confirmPassword}
-                           onChange={handleChange}
+                           value={password.valueB}
+                           onChange={(e) => {
+                              setPassword({ valueB: e.target.value });
+                           }}
+                           validation={passwordValidation.valueB}
                         />
                      </div>
                      <div className={styles.column}>
@@ -141,8 +175,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.first_name")}
                            required
                            name="name"
-                           value={formState.name}
-                           onChange={handleChange}
+                           value={name}
+                           onChange={(e) => {
+                              setName(e.target.value);
+                           }}
+                           validation={nameValidationMessage}
                         />
                         <TextInput
                            className={styles.text_input_wrapper}
@@ -150,8 +187,11 @@ export const RegisterPage = () => {
                            placeholder={t("global.label.second_name")}
                            required
                            name="surname"
-                           value={formState.surname}
-                           onChange={handleChange}
+                           value={surname}
+                           onChange={(e) => {
+                              setSurname(e.target.value);
+                           }}
+                           validation={surnameValidationMessage}
                         />
                      </div>
                   </div>
