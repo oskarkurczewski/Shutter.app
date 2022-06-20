@@ -47,7 +47,7 @@ export const RegisterPage = () => {
       if (registerMutationState.isSuccess) {
          const successToast: Toast = {
             type: ToastTypes.SUCCESS,
-            text: t("toast.success_login_message"),
+            text: t("toast.success_register_message"),
          };
          dispatch(push(successToast));
       }

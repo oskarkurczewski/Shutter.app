@@ -60,7 +60,7 @@
       "2_fa_code_required": "Do zalogowania wymagany jest kod uwierzytelniający.",
       "account_already_confirmed": "Twoje jest już potwierdzone.",
       "token_not_found": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
-      "token_expired": "Twoja sesja wygasła. Zaloguj się ponownie.",
+      "token_expired": "Twój link wygasł. Wygeneruj go ponownie.",
       "token_invalid": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "optlock": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "search_wrong_parameter": "Podano błędne parametry wyszukania.",
@@ -127,7 +127,6 @@
       "change_availability": "Zmiana godzin dostępności",
       "jobs": "Rezerwacje",
       "reservations": "Rezerwacje",
-      "change_availability": "Zmiana godzin dostępności",
       "reports": "Zgłoszenia"
    },
    "toast": {
@@ -135,6 +134,8 @@
       "success_update": "Pomyślnie zmodyfikowano",
       "error_update": "Modyfikacja nie powiodła się",
       "success_login_message": "Pomyślnie zalogowano.",
+      "success_register_message": "Pomyślnie zarejestrowano. Potwierdź rejestrację za pomocą linku wysłanego na twój adres email",
+      "success_send_reset_password_link_message": "Pomyślnie wysłano wiadomość",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
@@ -348,7 +349,7 @@
    },
    "request_reset_password_page": {
       "title": "Nie pamiętasz hasła?",
-      "details_message": "Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.",
+      "details_message": "W celu zresetowania swojego hasła podaj login konta. Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.",
       "confirm": "Przypomnij hasło"
    },
    "reset_password_page": {

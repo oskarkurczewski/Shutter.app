@@ -1,6 +1,5 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-
+import { Routes, Route } from "react-router-dom";
 import { PageLayout } from "layout";
 import { AccessLevel } from "types/AccessLevel";
 
@@ -9,29 +8,18 @@ import { HomePage } from "pages/home";
 import { NotFoundPage } from "pages/not-found";
 import { RegisterPage, LoginPage } from "pages/auth";
 import { SettingsPage } from "pages/settings";
-import { ResetPasswordPage } from "pages/token-based/reset-password";
-import { RequestResetPasswordPage } from "pages/request-reset-password";
 import * as UserPages from "pages/users";
 import * as TokenBased from "pages/token-based";
 import { PhotographerGalleryPage } from "pages/photographers/gallery";
-import {
-   PhotographersListPage,
-   PhotographerProfilePage,
-   ChangeAvailabilityPage,
-   JobsListPage,
-} from "pages/photographers";
+import * as PhotographerPages from "pages/photographers";
 import { ReservationsListPage } from "pages/users";
 import { ProtectedRoute } from "components/routes";
-import { AnimatePresence } from "framer-motion";
 
 export const AppRoutes = () => {
-   // const location = useLocation();
-
    return (
       <Routes>
-         <Route path="*" element={<NotFoundPage />} />
-
          <Route element={<PageLayout />}>
+            <Route path="*" element={<NotFoundPage />} />
             <Route path="" element={<HomePage />} />
             <Route path="dashboard" element={<DashboardPage />} />
 
@@ -54,15 +42,6 @@ export const AppRoutes = () => {
             />
 
             <Route
-               path="request-reset-password"
-               element={
-                  <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                     <RequestResetPasswordPage />
-                  </ProtectedRoute>
-               }
-            />
-
-            <Route
                path="settings"
                element={
                   <ProtectedRoute
@@ -78,7 +57,10 @@ export const AppRoutes = () => {
                }
             ></Route>
 
-            <Route path="photographers" element={<PhotographersListPage />} />
+            <Route
+               path="photographers"
+               element={<PhotographerPages.PhotographersListPage />}
+            />
 
             <Route
                path="reservations"
@@ -124,12 +106,15 @@ export const AppRoutes = () => {
 
             {/* Photographer routes */}
             <Route path="profile">
-               <Route path=":login" element={<PhotographerProfilePage />} />
+               <Route
+                  path=":login"
+                  element={<PhotographerPages.PhotographerProfilePage />}
+               />
                <Route
                   path="change-availability"
                   element={
                      <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
-                        <ChangeAvailabilityPage />
+                        <PhotographerPages.ChangeAvailabilityPage />
                      </ProtectedRoute>
                   }
                />
@@ -147,13 +132,16 @@ export const AppRoutes = () => {
                   path="jobs"
                   element={
                      <ProtectedRoute roles={[AccessLevel.PHOTOGRAPHER]}>
-                        <JobsListPage />
+                        <PhotographerPages.JobsListPage />
                      </ProtectedRoute>
                   }
                />
             </Route>
 
-            <Route path="photographers" element={<PhotographersListPage />} />
+            <Route
+               path="photographers"
+               element={<PhotographerPages.PhotographersListPage />}
+            />
 
             {/* Token-based routes */}
             <Route
@@ -180,10 +168,19 @@ export const AppRoutes = () => {
             />
 
             <Route
+               path="request-reset-password"
+               element={
+                  <ProtectedRoute roles={[AccessLevel.GUEST]}>
+                     <TokenBased.RequestResetPasswordPage />
+                  </ProtectedRoute>
+               }
+            />
+
+            <Route
                path="password-reset/:token"
                element={
                   <ProtectedRoute roles={[AccessLevel.GUEST]}>
-                     <ResetPasswordPage />
+                     <TokenBased.ResetPasswordPage />
                   </ProtectedRoute>
                }
             />
