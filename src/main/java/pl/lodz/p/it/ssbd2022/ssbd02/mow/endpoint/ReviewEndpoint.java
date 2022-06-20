@@ -5,8 +5,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
@@ -19,15 +17,11 @@ import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.AccessLocalException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
 
@@ -58,6 +52,9 @@ public class ReviewEndpoint extends AbstractEndpoint {
         Review newReview = new Review();
         PhotographerInfo photographer = profileService.findPhotographerInfo(review.getPhotographerLogin());
         String user = authCtx.getCurrentUsersLogin();
+        if (user.equals(review.getPhotographerLogin())) {
+            throw ExceptionFactory.cannotPerformOnSelfException();
+        }
         Account account = accountService.findByLogin(user);
         newReview.setPhotographer(photographer);
         newReview.setAccount(account);

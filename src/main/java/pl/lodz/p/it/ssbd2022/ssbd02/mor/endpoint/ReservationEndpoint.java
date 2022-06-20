@@ -56,7 +56,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
         Reservation reservation = new Reservation();
         String login = authenticationContext.getCurrentUsersLogin();
         if (login.equals(createReservationDto.getPhotographerLogin())) {
-            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_for_self");
+            throw ExceptionFactory.cannotPerformOnSelfException();
         }
         reservation.setPhotographer(photographerService.getPhotographer(createReservationDto.getPhotographerLogin()));
         reservation.setAccount(accountService.findByLogin(login));

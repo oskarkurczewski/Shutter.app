@@ -97,7 +97,8 @@
       "availability_overlap": "TODO",
       "photo_upload_error": "Nie udało się dodać zdjęcia",
       "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony",
-      "reservation_already_exists": "Rezerwacje już istnieje"
+      "reservation_already_exists": "Rezerwacje już istnieje",
+      "cannot_perform_on_self": "Nie można dokonać operacji na samym sobie"
    },
    "validator": {
       "incorrect": {
