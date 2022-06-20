@@ -394,7 +394,7 @@ public class AccountController extends AbstractController {
             @QueryParam("recordsPerPage") @NotNull int recordsPerPage,
             @QueryParam("columnName") @NotNull String columnName,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
-            @QueryParam("q") @SearchPattern @NotNull String query
+            @QueryParam("q") @SearchPattern String query
     ) throws BaseApplicationException {
         return repeat(() -> accountEndpoint.findByNameSurname(query, pageNo, recordsPerPage, columnName, order), accountEndpoint);
     }
