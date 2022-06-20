@@ -1,21 +1,21 @@
 import { api } from "./api";
 import {
-   getPhotographerReviewsRequest,
-   getPhotographerReviewsResponse,
-   getPhotographersListRequest,
-   photographerTableEntry,
-   reportPhotographerReviewRequest,
    photographerReport,
    reviewReport,
    ReportPhotographerRequest,
+   GetPhotographerReviewsRequest,
+   GetPhotographerReviewsResponse,
+   GetPhotographersListRequest,
+   PhotographerTableEntry,
+   ReportPhotographerReviewRequest,
 } from "redux/types/api/photographerTypes";
 import { getListResponse, getReportListRequest } from "redux/types/api/dataTypes";
 
 const PhotographerManagementService = api.injectEndpoints({
    endpoints: (builder) => ({
-      getActivePhotographers: builder.query<
-         getListResponse<photographerTableEntry>,
-         getPhotographersListRequest
+      getActivePhotographers: builder.mutation<
+         getListResponse<PhotographerTableEntry>,
+         GetPhotographersListRequest
       >({
          query: (data) => ({ url: "reservation/photographers", params: data }),
       }),
@@ -34,15 +34,15 @@ const PhotographerManagementService = api.injectEndpoints({
          query: (params) => ({ url: `/report/list/review`, params }),
       }),
       getPhotographerReviews: builder.query<
-         getPhotographerReviewsResponse,
-         getPhotographerReviewsRequest
+         GetPhotographerReviewsResponse,
+         GetPhotographerReviewsRequest
       >({
          query: (data) => ({
             url: "profile/review/list",
             params: data,
          }),
       }),
-      reportPhotographerReview: builder.mutation<void, reportPhotographerReviewRequest>({
+      reportPhotographerReview: builder.mutation<void, ReportPhotographerReviewRequest>({
          query: (data) => ({ url: `report/review`, method: "POST", body: data }),
       }),
 
@@ -82,7 +82,7 @@ const PhotographerManagementService = api.injectEndpoints({
 });
 
 export const {
-   useGetActivePhotographersQuery,
+   useGetActivePhotographersMutation,
    useGetPhotographerReportListQuery,
    useGetReviewReportListQuery,
    useReportPhotographerReviewMutation,

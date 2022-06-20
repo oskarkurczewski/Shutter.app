@@ -160,6 +160,39 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
     }
 
     /**
+     * Metoda pozwalająca na uzyskanie liczby wszystkich aktywnych w systemie fotografów, których imię
+     * lub nazwisko zawiera szukaną frazę
+     *
+     * @param name szukana fraza
+     * @return liczba fotografów spełniających wymagania
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public Long countAllVisiblePhotographersByNameSurname(String name) throws BaseApplicationException {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+        Root<PhotographerInfo> from = criteriaQuery.from(PhotographerInfo.class);
+        criteriaQuery.select(criteriaBuilder.count(from));
+        this.limitToVisibleAndContainingName(criteriaQuery, criteriaBuilder, from);
+
+        TypedQuery<Long> typedQuery = em.createQuery(criteriaQuery);
+        typedQuery.setParameter("name", "%" + name.toLowerCase() + "%");
+        try {
+            return typedQuery.getSingleResult();
+        } catch (NoResultException e) {
+            throw ExceptionFactory.noPhotographerFound();
+        } catch (OptimisticLockException ex) {
+            throw ExceptionFactory.OptLockException();
+        } catch (PersistenceException ex) {
+            throw ExceptionFactory.databaseException();
+        } catch (Exception ex) {
+            throw ExceptionFactory.unexpectedFailException();
+        }
+    }
+
+
+    /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów, których imię
      * lub nazwisko zawiera szukaną frazę oraz jeśli wskazano specjalizację, jest ona w liście danego fotografa
      *
@@ -227,6 +260,26 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
         } catch (Exception ex) {
             throw ExceptionFactory.unexpectedFailException();
         }
+    }
+
+    /**
+     * Funkcja pomocnicza ograniczająca wyszukanie do aktywnych fotografów, których imię lub nazwisko zawiera
+     * szukaną frazę
+     */
+    private void limitToVisibleAndContainingName(CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder, Root<PhotographerInfo> from) {
+        criteriaQuery.where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(from.get("visible"), true),
+                        criteriaBuilder.or(
+                                criteriaBuilder.like(
+                                        criteriaBuilder.lower(from.get("account").get("name")), criteriaBuilder.parameter(String.class, "name")
+                                ),
+                                criteriaBuilder.like(
+                                        criteriaBuilder.lower(from.get("account").get("surname")), criteriaBuilder.parameter(String.class, "name")
+                                )
+                        ))
+
+        );
     }
 
     @PermitAll

@@ -40,7 +40,7 @@ export const PhotographerInfo: React.FC<Props> = ({
 
             <div className={styles.label_wrapper}>
                <p className="section-title">{`${name} ${surname}`}</p>
-               <IconText text={location} Icon={IoLocationSharp} className="label-bold" />
+               <IconText text={location} icon={IoLocationSharp} className="label-bold" />
                <Stars
                   stars={Math.round((stars / reviewCount) * 10) / 10}
                   className="label-bold"
@@ -50,21 +50,21 @@ export const PhotographerInfo: React.FC<Props> = ({
                   text={`${sessionCount} ${t(
                      "photographer_page.photographer_session_count"
                   )}`}
-                  Icon={MdFactCheck}
+                  icon={MdFactCheck}
                   className="label-bold"
                />
                <IconText
                   text={`${photosCount} ${t(
                      "photographer_page.photographer_photos_count"
                   )}`}
-                  Icon={IoMdImage}
+                  icon={IoMdImage}
                   className="label-bold"
                />
                <IconText
                   text={`${reviewCount} ${t(
                      "photographer_page.photographer_review_count"
                   )}`}
-                  Icon={RiFileList2Fill}
+                  icon={RiFileList2Fill}
                   className="label-bold"
                />
             </div>

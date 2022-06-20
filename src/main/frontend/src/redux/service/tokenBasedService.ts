@@ -1,7 +1,7 @@
 import { api } from "./api";
 import {
-   resetPasswordRequest,
-   changeOwnEmailRequest,
+   ResetPasswordRequest,
+   ChangeOwnEmailRequest,
 } from "redux/types/api/accountTypes";
 
 const TokenBasedService = api.injectEndpoints({
@@ -19,7 +19,7 @@ const TokenBasedService = api.injectEndpoints({
          }),
       }),
 
-      changeEmail: builder.mutation<void, changeOwnEmailRequest>({
+      changeEmail: builder.mutation<void, ChangeOwnEmailRequest>({
          query: (data) => ({
             url: "account/verify-email-update",
             method: "POST",
@@ -27,7 +27,7 @@ const TokenBasedService = api.injectEndpoints({
          }),
       }),
 
-      resetPassword: builder.mutation<void, resetPasswordRequest>({
+      resetPassword: builder.mutation<void, ResetPasswordRequest>({
          query: (data) => ({
             url: "account/password-reset",
             method: "POST",

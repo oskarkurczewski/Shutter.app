@@ -1,123 +1,226 @@
 import React, { useEffect, useState } from "react";
 import styles from "./photographersListPage.module.scss";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useGetActivePhotographersQuery } from "redux/service/photographerManagementService";
-import { tableHeader } from "types/ComponentTypes";
-import { Card, Table } from "components/shared";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { Card, Dropdown, TextInput } from "components/shared";
+import { FaSearch } from "react-icons/fa";
+import { PhotographerListRequest } from "redux/types/api";
+import { useGetPhotographerListMutation } from "redux/service/photographerService";
+import useDebounce from "hooks/useDebounce";
+import { DisabledDropdown, ListElement } from "components/photographers-list";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const PhotographersListPage = () => {
    const { t } = useTranslation();
-   const location = useLocation();
-   const navigate = useNavigate();
-   const queryParams = new URLSearchParams(location.search);
 
-   const [tableData, setTableData] = useState([]);
-   const [headers, setHeaders] = useState<tableHeader[]>([
-      {
-         id: "login",
-         label: t("photographer_list_page.login"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "name",
-         label: t("photographer_list_page.name"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "surname",
-         label: t("photographer_list_page.surname"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "score",
-         label: t("photographer_list_page.score"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "reviewCount",
-         label: t("photographer_list_page.review-count"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "specializations",
-         label: t("photographer_list_page.specializations"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "longitude",
-         label: t("photographer_list_page.longitude"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "latitutde",
-         label: t("photographer_list_page.latitude"),
-         sortable: false,
-         sort: "asc",
-      },
-   ]);
+   const [photographerSearchFilters, setPhotographerSearchFilters] =
+      useState<PhotographerListRequest>({
+         query: "",
+         pageNo: 1,
+         recordsPerPage: 10,
+      });
+   const [expandFilters, setExpandFilters] = useState(true);
 
-   const pageNo = parseInt(queryParams.get("pageNo")) || 1;
-   const recordsPerPage = parseInt(queryParams.get("records")) || 25;
+   const debouncedFilters = useDebounce<PhotographerListRequest>(
+      photographerSearchFilters,
+      200
+   );
 
-   const { data } = useGetActivePhotographersQuery({ pageNo, recordsPerPage });
+   const [
+      getPhotographers,
+      {
+         data: photographersListResponse = {
+            allPages: 0,
+            allRecords: 0,
+            pageNo: 1,
+            recordsPerPage: 10,
+            list: [],
+         },
+         isSuccess: getPhotographersSuccess,
+      },
+   ] = useGetPhotographerListMutation();
 
-   const setQueryParam = (key: string, value: string) => {
-      queryParams.set(key, value);
-      navigate({
-         pathname: location.pathname,
-         search: queryParams.toString(),
+   useEffect(() => {
+      getPhotographers(debouncedFilters);
+   }, [debouncedFilters]);
+
+   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+      const name = e.target.name;
+      setPhotographerSearchFilters({
+         ...photographerSearchFilters,
+         [name]: e.target.value,
       });
    };
 
-   useEffect(() => {
-      setQueryParam("pageNo", "1");
-   }, [headers]);
+   const handleDropdownChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+      const name = e.target.name;
+      setPhotographerSearchFilters({
+         ...photographerSearchFilters,
+         [name]: Number(e.target.value),
+      });
+   };
 
-   useEffect(() => {
-      const list = data?.list?.map((item) => [
-         item.login,
-         item.name,
-         item.surname,
-         item.score,
-         item.reviewCount,
-         <>
-            {item.specializations?.map((speciatlization) => (
-               <p key={`${item.login}-${speciatlization}`}>{speciatlization}</p>
-            ))}
-         </>,
-         item.longitude,
-         item.latitude,
-      ]);
+   const filterCardContainerVariants = {
+      animate: {
+         height: expandFilters ? "auto" : 0,
+         transition: {
+            duration: 0.3,
+            type: "tween",
+            ease: "easeInOut",
+         },
+      },
+   };
 
-      list && setTableData(list);
-   }, [data]);
+   const filterCardVariants = {
+      initial: {
+         opacity: 0,
+      },
+      animate: {
+         opacity: 1,
+         height: "auto",
+         transition: {
+            delay: 0.45,
+            duration: 0.4,
+            ease: "easeOut",
+         },
+      },
+      exit: {
+         opacity: 0,
+         transition: {
+            duration: 0.2,
+         },
+      },
+   };
 
    return (
-      <div className={styles.account_list_page_wrapper}>
-         <Card className={styles.table_card}>
-            <Table
-               data={tableData}
-               headers={headers}
-               setHeaders={setHeaders}
-               allRecords={data?.allRecords || 0}
-               allPages={data?.allPages || 0}
-               pageNo={pageNo}
-               setPageNo={(num) => setQueryParam("pageNo", num.toString())}
-               recordsPerPage={recordsPerPage}
-               setRecordsPerPage={(num) => {
-                  setQueryParam("records", num.toString());
-                  setQueryParam("pageNo", "1");
-               }}
-            />
-         </Card>
-      </div>
+      <>
+         <div className={`${styles.container}`}>
+            <div className={styles.header}>
+               <span className="category-title">{t("global.label.filters")}</span>
+               <div className={styles.delimiter} />
+               <motion.div
+                  animate={{
+                     rotate: expandFilters ? 90 : 0,
+                  }}
+               >
+                  <button onClick={() => setExpandFilters(!expandFilters)}>
+                     <MdKeyboardArrowRight
+                        className={expandFilters ? "" : styles.expanded}
+                     />
+                  </button>
+               </motion.div>
+            </div>
+            <motion.div
+               className={`${styles.content}`}
+               animate="animate"
+               variants={filterCardContainerVariants}
+            >
+               <AnimatePresence>
+                  {expandFilters && (
+                     <>
+                        <motion.div
+                           key="search-filter"
+                           variants={filterCardVariants}
+                           initial="initial"
+                           animate="animate"
+                           exit="exit"
+                        >
+                           <Card className={styles.card}>
+                              <p className="section-title">
+                                 {t("photographer_list_page.search_photographer")}
+                              </p>
+                              <TextInput
+                                 name="query"
+                                 className={styles.input}
+                                 icon={<FaSearch />}
+                                 value={photographerSearchFilters.query}
+                                 onChange={handleChange}
+                              />
+                           </Card>
+                        </motion.div>
+                     </>
+                  )}
+               </AnimatePresence>
+            </motion.div>
+         </div>
+
+         <div className={styles.container}>
+            <div className={styles.header}>
+               <span className="category-title">
+                  {t("photographer_list_page.photographers")}
+               </span>
+               <div className={styles.delimiter} />
+               <div className={styles.functional}>
+                  <p>
+                     {getPhotographersSuccess &&
+                        t("global.query.results", {
+                           count: photographersListResponse.allRecords,
+                        })}
+                  </p>
+                  <DisabledDropdown
+                     label={t("photographer_list_page.list")}
+                     className={styles.disabled_dropdown}
+                  />
+                  <DisabledDropdown
+                     label={t("photographer_list_page.az")}
+                     className={styles.disabled_dropdown}
+                  />
+                  <Dropdown
+                     values={["10", "25", "50", "100"]}
+                     selectedValue={photographerSearchFilters.recordsPerPage}
+                     name="recordsPerPage"
+                     onChange={handleDropdownChange}
+                     id="recordsPerPage"
+                     className={styles.dropdown}
+                  />
+                  <div className={styles.pagination_controls}>
+                     <button
+                        disabled={photographerSearchFilters.pageNo === 1}
+                        onClick={() => {
+                           setPhotographerSearchFilters({
+                              ...photographerSearchFilters,
+                              pageNo: photographerSearchFilters.pageNo - 1,
+                           });
+                        }}
+                     >
+                        <MdKeyboardArrowLeft />
+                        <span className="label">poprz.</span>
+                     </button>
+                     <span className="label-bold">
+                        {photographerSearchFilters.pageNo}
+                     </span>
+                     <button
+                        disabled={
+                           photographerSearchFilters.pageNo ===
+                           photographersListResponse.allPages
+                        }
+                        onClick={() => {
+                           setPhotographerSearchFilters({
+                              ...photographerSearchFilters,
+                              pageNo: photographerSearchFilters.pageNo + 1,
+                           });
+                        }}
+                     >
+                        <span className="label">nast.</span>
+                        <MdKeyboardArrowRight />
+                     </button>
+                  </div>
+               </div>
+            </div>
+            <div className={`${styles.content} ${styles.list}`}>
+               <AnimatePresence exitBeforeEnter>
+                  {getPhotographersSuccess &&
+                     photographersListResponse.list?.map((obj, i) => (
+                        <ListElement
+                           custom={i}
+                           data={obj}
+                           key={obj.login}
+                           styles={styles}
+                        />
+                     ))}
+               </AnimatePresence>
+            </div>
+         </div>
+      </>
    );
 };

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaCheck } from "react-icons/fa";
 import { useChangeAccountInfoMutation } from "redux/service/usersManagementService";
-import { advancedUserInfoResponse } from "redux/types/api";
+import { AdvancedUserInfoResponse } from "redux/types/api";
 import { EtagData } from "redux/types/api/dataTypes";
 import {
    emailPattern,
@@ -14,7 +14,7 @@ import {
 import styles from "./ChangeBaseInfo.module.scss";
 
 interface Props {
-   userInfoData: EtagData<advancedUserInfoResponse>;
+   userInfoData: EtagData<AdvancedUserInfoResponse>;
    refetch: () => void;
 }
 

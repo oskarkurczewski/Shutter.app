@@ -4,7 +4,7 @@ import { Button, Card, SquareButton } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { PhotographerReview } from "../photographer-review";
-import { getPhotographerReviewsRequest } from "redux/types/api";
+import { GetPhotographerReviewsRequest } from "redux/types/api";
 import { useGetPhotographerReviewsQuery } from "redux/service/photographerManagementService";
 import AddReviewModal from "../add-review-modal/AddReviewModal";
 interface Props {

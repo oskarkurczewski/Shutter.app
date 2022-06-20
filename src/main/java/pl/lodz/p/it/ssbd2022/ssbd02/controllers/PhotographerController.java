@@ -12,11 +12,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ChangeDescriptionDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotographerEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignatureVerifier;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NameSurnameQuery;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NumberQuery;
@@ -41,9 +36,6 @@ public class PhotographerController extends AbstractController {
 
     @Inject
     private SignatureVerifier signatureVerifier;
-
-    @Inject
-    private ReportEndpoint reportEndpoint;
 
     @Inject
     private ProfileEndpoint profileEndpoint;
