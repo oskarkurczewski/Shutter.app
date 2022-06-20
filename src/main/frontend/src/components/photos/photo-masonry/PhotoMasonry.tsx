@@ -45,7 +45,7 @@ export const PhotoMasonry: React.FC<Props> = ({ login }) => {
                         likeCount={photo.likeCount}
                         liked={photo.liked}
                         showDeleteButton={false}
-                     ></Photo>
+                     />
                   </div>
                );
             })
