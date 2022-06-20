@@ -55,7 +55,6 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
     public List<Reservation> findInPeriod(Reservation reservation) throws BaseApplicationException {
         TypedQuery<Reservation> query = getEm().createNamedQuery("reservation.findInPeriod", Reservation.class);
         query.setParameter("photographer", reservation.getPhotographer());
-        query.setParameter("account", reservation.getAccount());
         query.setParameter("time_from", reservation.getTimeFrom());
         query.setParameter("time_to", reservation.getTimeTo());
         try {
