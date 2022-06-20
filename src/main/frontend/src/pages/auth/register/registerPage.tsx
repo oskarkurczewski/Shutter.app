@@ -1,15 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./registerPage.module.scss";
-import { Button, Card, Checkbox, TextInput, ValidationBox } from "components/shared";
-import { Link } from "react-router-dom";
-import { validateFields } from "./validation";
+import { Button, Card, TextInput } from "components/shared";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Language } from "types/Language";
+import { ErrorResponse, Toast } from "types";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { useAppDispatch } from "redux/hooks";
+import { parseError } from "util/errorUtil";
 
 export const RegisterPage = () => {
    const { t, i18n } = useTranslation();
+   const dispatch = useAppDispatch();
+   const navigate = useNavigate();
 
    const recaptchaRef = useRef(null);
    const [formState, setFormState] = useState({
@@ -20,20 +25,8 @@ export const RegisterPage = () => {
       name: "",
       surname: "",
    });
-   const [checkboxState, setCheckboxState] = useState({
-      userDataChecked: false,
-      termsOfUseChecked: false,
-   });
 
-   const [validation, setValidation] = useState(
-      validateFields({ ...formState, ...checkboxState }, t)
-   );
-
-   const [registerMutation, { isLoading, isSuccess, isError }] = useRegisterMutation();
-
-   useEffect(() => {
-      setValidation(validateFields({ ...formState, ...checkboxState }, t));
-   }, [formState, checkboxState]);
+   const [registerMutation, registerMutationState] = useRegisterMutation();
 
    const handleChange = ({
       target: { name, value },
@@ -50,12 +43,54 @@ export const RegisterPage = () => {
       });
    };
 
+   useEffect(() => {
+      if (registerMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_login_message"),
+         };
+         dispatch(push(successToast));
+      }
+      if (registerMutationState.isError) {
+         const err = registerMutationState.error as ErrorResponse;
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(parseError(err)),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [registerMutationState]);
+
    return (
       <section className={styles.register_page_wrapper}>
          <div className={styles.form_wrapper}>
-            <ValidationBox data={validation} className={styles.validation_card} />
-
             <Card className={styles.register_card}>
+               <div className={styles.aside}>
+                  <img src="images/logo_new_black.svg" alt="logo" />
+                  <div>
+                     <div>
+                        <p className="section-title">
+                           {t("register_page.not_user_message_up")}
+                        </p>
+                        <p className="section-title">
+                           {t("register_page.not_user_message_down")}
+                        </p>
+                     </div>
+                     <div>
+                        <p>{t("register_page.inviting_message_up")}</p>
+                        <p>{t("register_page.inviting_message_down")}</p>
+                     </div>
+                  </div>
+                  <Button
+                     className={styles.button_wrapper}
+                     onClick={() => {
+                        navigate("/login");
+                     }}
+                  >
+                     {t("register_page.sign_in")}
+                  </Button>
+               </div>
+
                <form onSubmit={onSubmit}>
                   <p className="section-title">{t("register_page.form_title")}</p>
                   <div className={styles.inputs_wrapper}>
@@ -120,47 +155,13 @@ export const RegisterPage = () => {
                         />
                      </div>
                   </div>
-
                   <ReCAPTCHA
                      ref={recaptchaRef}
                      sitekey="6LcOjh4gAAAAAJRdv-oKWqqj8565Bz6Y3QlmJv5L"
                   />
-
-                  <div className={styles.checkboxes_wrapper}>
-                     <Checkbox
-                        id="processing-data"
-                        required
-                        value={checkboxState.userDataChecked}
-                        onChange={(e) => {
-                           setCheckboxState({
-                              ...checkboxState,
-                              userDataChecked: e.target.checked,
-                           });
-                        }}
-                     >
-                        {t("register_page.processing_message")}
-                     </Checkbox>
-                     <Checkbox
-                        id="terms-of-use"
-                        required
-                        value={checkboxState.termsOfUseChecked}
-                        onChange={(e) => {
-                           setCheckboxState({
-                              ...checkboxState,
-                              termsOfUseChecked: e.target.checked,
-                           });
-                        }}
-                     >
-                        {t("register_page.tos_message")}
-                     </Checkbox>
-                  </div>
-
-                  {isSuccess && <p>{t("message.success.register")}</p>}
-                  {isError && <p>{t("message.error.register")}</p>}
-
                   <div className={styles.footer}>
                      <Link to="/login">{t("register_page.sign_in")}</Link>
-                     <Button loading={isLoading} onClick={onSubmit}>
+                     <Button loading={registerMutationState.isLoading} onClick={onSubmit}>
                         {t("register_page.sign_up")}
                      </Button>
                   </div>

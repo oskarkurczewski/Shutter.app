@@ -83,13 +83,24 @@
    },
    "validator": {
       "incorrect": {
+         "name": {
+            "regexp": "Podano niepoprawne imię"
+         },
+         "surname": {
+            "regexp": "Podano niepoprawne nazwisko"
+         },
+         "login": {
+            "regexp": "Podano niepoprawny login"
+         },
+         "email": {
+            "regexp": "Podano niepoprawny adres email"
+         },
+         "password": {
+            "regexp": "Podane hasło nie spełnia wymagań"
+         },
          "cause": {
             "null": "Nie podano przyczyny zgłoszenia"
-         }
-      }
-   },
-   "validator": {
-      "incorrect": {
+         },
          "name_surname_query": {
             "regexp": "Podano niepoprawną wartość"
          }
@@ -182,6 +193,10 @@
       "twoFA_desc": "Podaj kod dwustopniowego logowania wysłany na Twój adres email w celu potwierdzenia swojej tożsamości."
    },
    "register_page": {
+      "not_user_message_up": "Masz już",
+      "not_user_message_down": "założone konto?",
+      "inviting_message_up": "Przejdź do",
+      "inviting_message_down": "formularza logowania!",
       "form_title": "Rejestracja",
       "processing_message": "Wyrażam zgodę na przetwarzanie moich danych osobowych.",
       "tos_message": "Potwierdzam, że zapoznałem się z regulaminem.",

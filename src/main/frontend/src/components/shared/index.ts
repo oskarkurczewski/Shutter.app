@@ -8,7 +8,6 @@ export * from "./modal";
 export * from "./square-button";
 export * from "./table";
 export * from "./text-input";
-export * from "./validation-box";
 export * from "./icon-text";
 export * from "./text-area";
 export * from "./loader";

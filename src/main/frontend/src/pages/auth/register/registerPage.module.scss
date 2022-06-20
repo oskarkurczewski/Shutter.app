@@ -4,7 +4,7 @@
    display: flex;
    flex-grow: 1;
    align-items: center;
-   justify-content: flex-end;
+   justify-content: center;
 
    div.form_wrapper {
       display: flex;
@@ -17,13 +17,52 @@
 
       div.register_card {
          display: flex;
-         flex-direction: column;
          flex-grow: 1;
+         padding: 0;
          gap: 1.5rem;
          overflow: hidden;
 
+         .aside {
+            background-color: variables.$purple-100;
+            min-width: 18rem;
+            padding: 3rem 2rem;
+            // padding-top: 14rem;
+            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            // justify-content: flex-end;
+            text-align: center;
+            align-items: center;
+
+            img {
+               fill: variables.$white;
+               filter: invert(1);
+               width: 100px;
+            }
+
+            & > div {
+               display: flex;
+               flex-direction: column;
+               gap: 10px;
+
+               * {
+                  color: variables.$white;
+               }
+            }
+
+            .button_wrapper {
+               background-color: variables.$white;
+
+               p {
+                  color: variables.$purple-100;
+               }
+            }
+         }
+
          form {
-            padding-top: 25px;
+            padding: 20px;
+            padding-top: 45px;
             padding-bottom: 25px;
             display: flex;
             flex-direction: column;
