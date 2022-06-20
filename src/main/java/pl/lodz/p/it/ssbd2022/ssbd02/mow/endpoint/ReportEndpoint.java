@@ -84,6 +84,11 @@ public class ReportEndpoint extends AbstractEndpoint {
     @RolesAllowed(reportPhotographer)
     public void reportPhotographer(CreatePhotographerReportDto createPhotographerReportDto)
             throws BaseApplicationException {
+        String currentUserLogin = authenticationContext.getCurrentUsersLogin();
+        if (createPhotographerReportDto.getPhotographerLogin().equals(currentUserLogin)) {
+            throw ExceptionFactory.cannotPerformOnSelfException();
+        }
+
         String cause = createPhotographerReportDto.getCause();
         if (!reportService.getAllPhotographerReportCauses().contains(cause)) {
             throw ExceptionFactory.wrongCauseNameException();
@@ -91,7 +96,7 @@ public class ReportEndpoint extends AbstractEndpoint {
 
         List<PhotographerReport> reportOld = reportService.getPhotographerReportByPhotographerLoginAndReporterLogin(
                 createPhotographerReportDto.getPhotographerLogin(),
-                authenticationContext.getCurrentUsersLogin()
+                currentUserLogin
         );
 
         if (!reportOld.isEmpty()) {
