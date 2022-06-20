@@ -32,6 +32,13 @@ export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
    const { t } = useTranslation();
    const { login } = useParams();
    const { username } = useAppSelector((state) => state.auth);
+   const initialReservationState: Reservation = {
+      id: null,
+      client: username,
+      photographer: login,
+      from: DateTime.now(),
+      to: DateTime.now(),
+   };
 
    const dispatch = useAppDispatch();
 
@@ -46,13 +53,7 @@ export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
    const [modalOpen, setModalOpen] = useState<boolean>(false);
    const [availability, setAvailability] = useState<AvailabilityHour[]>();
    const [calendarOpen, setCalendarOpen] = useState(false);
-   const [reservation, setReservation] = useState<Reservation>({
-      id: null,
-      client: username,
-      photographer: login,
-      from: DateTime.now(),
-      to: DateTime.now(),
-   });
+   const [reservation, setReservation] = useState<Reservation>(initialReservationState);
 
    // parse reservations
    const reservations: Reservation[] = useMemo(
@@ -169,7 +170,10 @@ export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
                   setReservation={setReservation}
                   photographer={photographer}
                   isOpen={modalOpen}
-                  onCancel={() => setModalOpen(false)}
+                  onCancel={() => {
+                     setReservation(initialReservationState);
+                     setModalOpen(false);
+                  }}
                   onSubmit={() => setModalOpen(false)}
                />
             </>
