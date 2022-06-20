@@ -11,6 +11,7 @@ import {
    nameSurnameFirstLetterPattern,
    nameSurnamePattern,
 } from "util/regex";
+import { emailRules, nameRules, surnameRules } from "util/validationRules";
 import styles from "./ChangeBaseInfo.module.scss";
 
 interface Props {
@@ -26,78 +27,16 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
    const [registered, setRegistered] = useState<boolean>(false);
 
    const [name, setName, nameValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (name) => name.length <= 63,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.name"),
-               max: 63,
-            }),
-         },
-         {
-            function: (name) => nameSurnamePattern.test(name),
-            message: t("validator.incorrect.regx.upper_lower_only", {
-               field: t("edit_account_page.basic_info.name"),
-            }),
-         },
-         {
-            function: (name) => nameSurnameFirstLetterPattern.test(name),
-            message: t("validator.incorrect.regx.first_uppercase", {
-               field: t("edit_account_page.basic_info.name"),
-            }),
-         },
-      ],
+      nameRules(t),
       ""
    );
    const [surname, setSurname, surnameValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (surname) => surname.length <= 63,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.surname"),
-               max: 63,
-            }),
-         },
-         {
-            function: (surname) => nameSurnamePattern.test(surname),
-            message: t("validator.incorrect.regx.upper_lower_only", {
-               field: t("edit_account_page.basic_info.surname"),
-            }),
-         },
-         {
-            function: (surname) => nameSurnameFirstLetterPattern.test(surname),
-            message: t("validator.incorrect.regx.first_uppercase", {
-               field: t("edit_account_page.basic_info.surname"),
-            }),
-         },
-      ],
+      surnameRules(t),
       ""
    );
 
    const [emails, setEmail, emailValidationMessages] =
-      useStateWithValidationAndComparison<string>(
-         [
-            {
-               function: (email) => email.length >= 1,
-               message: t("validator.incorrect.length.min", {
-                  field: t("edit_account_page.basic_info.email"),
-                  min: 1,
-               }),
-            },
-            {
-               function: (email) => email.length <= 64,
-               message: t("validator.incorrect.length.max", {
-                  field: t("edit_account_page.basic_info.email"),
-                  max: 1,
-               }),
-            },
-            {
-               function: (email) => emailPattern.test(email),
-               message: t("validator.incorrect.regx.email"),
-            },
-         ],
-         ["", ""]
-      );
+      useStateWithValidationAndComparison<string>(emailRules(t), ["", ""]);
 
    const [canSubmit, setCanSubmit] = useState(
       nameValidationMessage &&

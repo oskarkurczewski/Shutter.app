@@ -9,58 +9,19 @@ import { nameSurnameFirstLetterPattern, nameSurnamePattern } from "util/regex";
 import { useStateWithValidation } from "hooks";
 import { Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { nameRules, passwordRules } from "util/validationRules";
 
 export const MainSettings = () => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
 
    const [name, setName, nameValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (name) => name.length <= 63,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.name"),
-               max: 63,
-            }),
-         },
-         {
-            function: (name) => nameSurnamePattern.test(name),
-            message: t("validator.incorrect.regx.upper_lower_only", {
-               field: t("edit_account_page.basic_info.name"),
-            }),
-         },
-         {
-            function: (name) => nameSurnameFirstLetterPattern.test(name),
-            message: t("validator.incorrect.regx.first_uppercase", {
-               field: t("edit_account_page.basic_info.name"),
-            }),
-         },
-      ],
+      nameRules(t),
       ""
    );
 
    const [surname, setSurname, surnameValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (surname) => surname.length <= 63,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.surname"),
-               max: 63,
-            }),
-         },
-         {
-            function: (surname) => nameSurnamePattern.test(surname),
-            message: t("validator.incorrect.regx.upper_lower_only", {
-               field: t("edit_account_page.basic_info.surname"),
-            }),
-         },
-         {
-            function: (surname) => nameSurnameFirstLetterPattern.test(surname),
-            message: t("validator.incorrect.regx.first_uppercase", {
-               field: t("edit_account_page.basic_info.surname"),
-            }),
-         },
-      ],
+      passwordRules(t),
       ""
    );
 

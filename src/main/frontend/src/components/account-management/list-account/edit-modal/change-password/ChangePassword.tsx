@@ -1,9 +1,9 @@
-import { Button, Card, SquareButton, TextInput } from "components/shared";
+import { Button, TextInput } from "components/shared";
 import { useStateWithValidationAndComparison } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useChangeSomeonesPasswordMutation } from "redux/service/usersManagementService";
-import { passwordPattern } from "util/regex";
+import { passwordRules } from "util/validationRules";
 import styles from "./ChangePassword.module.scss";
 
 interface Props {
@@ -17,29 +17,7 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
    const [passwordMutation, passwordMutationState] = useChangeSomeonesPasswordMutation();
 
    const [password, setPassword, passwordValidation] =
-      useStateWithValidationAndComparison<string>(
-         [
-            {
-               function: (password) => password.length >= 8,
-               message: t("validator.incorrect.length.min", {
-                  field: t("edit_account_page.password.title"),
-                  min: 8,
-               }),
-            },
-            {
-               function: (password) => password.length <= 64,
-               message: t("validator.incorrect.length.max", {
-                  field: t("edit_account_page.password.title"),
-                  max: 8,
-               }),
-            },
-            {
-               function: (password) => passwordPattern.test(password),
-               message: t("validator.incorrect.regx.password"),
-            },
-         ],
-         ["", ""]
-      );
+      useStateWithValidationAndComparison<string>(passwordRules(t), ["", ""]);
 
    const save = () => {
       passwordValidation[0] === "" &&

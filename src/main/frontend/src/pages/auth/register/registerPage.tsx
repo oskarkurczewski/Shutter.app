@@ -1,153 +1,49 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./registerPage.module.scss";
-import { Button, Card, Checkbox, TextInput, ValidationBox } from "components/shared";
+import { Button, Card, Checkbox, TextInput } from "components/shared";
 import { Link } from "react-router-dom";
-import { validateFields } from "./validation";
 import { useRegisterMutation } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Language } from "types/Language";
-import {
-   emailPattern,
-   nameSurnameFirstLetterPattern,
-   nameSurnamePattern,
-   passwordPattern,
-} from "util/regex";
 import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
 import { Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useAppDispatch } from "redux/hooks";
+import {
+   emailRules,
+   loginRules,
+   nameRules,
+   passwordRules,
+   surnameRules,
+} from "util/validationRules";
 
 export const RegisterPage = () => {
    const { t, i18n } = useTranslation();
    const dispatch = useAppDispatch();
 
    const [login, setLogin, loginValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (name) => name.length >= 5,
-            message: t("validator.incorrect.length.min", {
-               field: t("edit_account_page.basic_info.login"),
-               min: 5,
-            }),
-         },
-         {
-            function: (name) => name.length <= 15,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.login"),
-               max: 15,
-            }),
-         },
-         {
-            function: (name) => nameSurnamePattern.test(name),
-            message: t("validator.incorrect.regx.login"),
-         },
-         {
-            function: (name) => nameSurnameFirstLetterPattern.test(name),
-            message: t("validator.incorrect.regx.login_first_last"),
-         },
-      ],
+      loginRules(t),
       ""
    );
 
    const [name, setName, nameValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (name) => name.length <= 63,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.name"),
-               max: 63,
-            }),
-         },
-         {
-            function: (name) => nameSurnamePattern.test(name),
-            message: t("validator.incorrect.regx.upper_lower_only", {
-               field: t("edit_account_page.basic_info.name"),
-            }),
-         },
-         {
-            function: (name) => nameSurnameFirstLetterPattern.test(name),
-            message: t("validator.incorrect.regx.first_uppercase", {
-               field: t("edit_account_page.basic_info.name"),
-            }),
-         },
-      ],
+      nameRules(t),
       ""
    );
 
    const [surname, setSurname, surnameValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (surname) => surname.length <= 63,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.surname"),
-               max: 63,
-            }),
-         },
-         {
-            function: (surname) => nameSurnamePattern.test(surname),
-            message: t("validator.incorrect.regx.upper_lower_only", {
-               field: t("edit_account_page.basic_info.surname"),
-            }),
-         },
-         {
-            function: (surname) => nameSurnameFirstLetterPattern.test(surname),
-            message: t("validator.incorrect.regx.first_uppercase", {
-               field: t("edit_account_page.basic_info.surname"),
-            }),
-         },
-      ],
+      surnameRules(t),
       ""
    );
 
    const [email, setEmail, emailValidationMessage] = useStateWithValidation<string>(
-      [
-         {
-            function: (email) => email.length >= 1,
-            message: t("validator.incorrect.length.min", {
-               field: t("edit_account_page.basic_info.email"),
-               min: 1,
-            }),
-         },
-         {
-            function: (email) => email.length <= 64,
-            message: t("validator.incorrect.length.max", {
-               field: t("edit_account_page.basic_info.email"),
-               max: 1,
-            }),
-         },
-         {
-            function: (email) => emailPattern.test(email),
-            message: t("validator.incorrect.regx.email"),
-         },
-      ],
+      emailRules(t),
       ""
    );
 
    const [password, setPassword, passwordValidation] =
-      useStateWithValidationAndComparison<string>(
-         [
-            {
-               function: (password) => password.length >= 8,
-               message: t("validator.incorrect.length.min", {
-                  field: t("edit_account_page.password.title"),
-                  min: 8,
-               }),
-            },
-            {
-               function: (password) => password.length <= 64,
-               message: t("validator.incorrect.length.max", {
-                  field: t("edit_account_page.password.title"),
-                  max: 8,
-               }),
-            },
-            {
-               function: (password) => passwordPattern.test(password),
-               message: t("validator.incorrect.regx.password"),
-            },
-         ],
-         ["", ""]
-      );
+      useStateWithValidationAndComparison<string>(passwordRules(t), ["", ""]);
 
    const recaptchaRef = useRef(null);
    const [checkboxState, setCheckboxState] = useState({

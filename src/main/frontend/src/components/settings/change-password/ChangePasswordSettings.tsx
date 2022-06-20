@@ -8,6 +8,7 @@ import { passwordPattern } from "util/regex";
 import { Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useAppDispatch } from "redux/hooks";
+import { passwordRules } from "util/validationRules";
 
 export const ChangePasswordSettings = () => {
    const { t } = useTranslation();
@@ -15,29 +16,7 @@ export const ChangePasswordSettings = () => {
 
    const [oldPassword, setOldPassword] = useState("");
    const [newPassword, setNewPassword, newPasswordValidation] =
-      useStateWithValidationAndComparison<string>(
-         [
-            {
-               function: (password) => password.length >= 8,
-               message: t("validator.incorrect.length.min", {
-                  field: t("edit_account_page.password.title"),
-                  min: 8,
-               }),
-            },
-            {
-               function: (password) => password.length <= 64,
-               message: t("validator.incorrect.length.max", {
-                  field: t("edit_account_page.password.title"),
-                  max: 8,
-               }),
-            },
-            {
-               function: (password) => passwordPattern.test(password),
-               message: t("validator.incorrect.regx.password"),
-            },
-         ],
-         ["", ""]
-      );
+      useStateWithValidationAndComparison<string>(passwordRules(t), ["", ""]);
 
    const [mutation, mutationState] = useChangePasswordMutation();
 

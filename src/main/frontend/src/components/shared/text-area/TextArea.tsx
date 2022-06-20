@@ -11,6 +11,7 @@ interface TextAreaProps {
    name?: string;
    disabled?: boolean;
    rows?: number;
+   maxLength?: number;
 }
 
 export const TextArea = ({
@@ -22,7 +23,8 @@ export const TextArea = ({
    onChange,
    name,
    disabled,
-   rows
+   rows,
+   maxLength,
 }: TextAreaProps) => {
    return (
       <div className={`${styles.text_area_wrapper} ${className ? className : ""}`}>
@@ -35,6 +37,7 @@ export const TextArea = ({
                name={name}
                disabled={disabled}
                rows={rows}
+               maxLength={maxLength}
             />
          </div>
       </div>
