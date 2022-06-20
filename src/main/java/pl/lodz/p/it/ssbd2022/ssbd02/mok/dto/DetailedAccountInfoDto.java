@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignableEntity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,12 @@ public class DetailedAccountInfoDto extends TracableDto implements SignableEntit
 
     private List<AccessLevelDto> accessLevelList = new ArrayList();
 
+    private LocalDateTime lastLogIn;
+
+    private LocalDateTime lastFailedLogInAttempt;
+
+    private String lastFailedLoginIp;
+
     /**
      * Konstruktor obiektu DTO użytkownika
      *
@@ -65,7 +72,9 @@ public class DetailedAccountInfoDto extends TracableDto implements SignableEntit
         twoFAEnabled = account.getTwoFAEnabled();
         active = account.getActive();
         registered = account.getRegistered();
-
+        lastLogIn = account.getLastLogIn();
+        lastFailedLogInAttempt = account.getLastFailedLogInAttempt();
+        lastFailedLoginIp = account.getLastFailedLoginIp();
     }
 
     @Override
