@@ -1,4 +1,4 @@
-import { Button, Card } from "components/shared";
+import { Avatar, Button, Card } from "components/shared";
 import { motion } from "framer-motion";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
    const { t } = useTranslation();
    const navigate = useNavigate();
 
-   const { name, surname, specializations, score, reviewCount, login } = data;
+   const { name, surname, specializations, score, reviewCount, login, email = "" } = data;
 
    const variants = {
       initial: {
@@ -60,10 +60,7 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
          <Card className={`${styles.card} ${styles["list_element"]}`}>
             <div className={styles["avatar_wrapper"]}>
                <div className={styles.avatar}>
-                  <img
-                     src="https://cdn.galleries.smcloud.net/t/galleries/gf-hTB5-Uktt-KEJc_norbert-dis-gierczak-664x442.jpg"
-                     alt="fotograf"
-                  />
+                  <Avatar email={email} />
                </div>
                <div>
                   <p className="section-title">
@@ -97,7 +94,7 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
                >
                   {t("photographer_list_page.profile")}
                </Button>
-               <Button onClick={() => navigate(`/profile/${login}/#callendar`)}>
+               <Button onClick={() => navigate(`/profile/${login}/#calendar`)}>
                   {t("photographer_list_page.hire")}
                </Button>
             </div>

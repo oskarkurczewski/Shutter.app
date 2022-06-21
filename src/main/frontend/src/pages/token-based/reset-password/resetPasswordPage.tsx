@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./resetPasswordPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { useResetPasswordMutation } from "redux/service/tokenBasedService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "redux/hooks";
 import { ErrorResponse, Toast } from "types";
@@ -12,6 +12,7 @@ import { push, ToastTypes } from "redux/slices/toastSlice";
 export const ResetPasswordPage = () => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
+   const navigate = useNavigate();
 
    const { token } = useParams();
    const [password, setPassword] = useState<string>("");
@@ -29,6 +30,7 @@ export const ResetPasswordPage = () => {
             text: t("toast.success_send_reset_password_link_message"),
          };
          dispatch(push(successToast));
+         navigate("/login", { replace: true });
       }
 
       if (mutationState.isError) {

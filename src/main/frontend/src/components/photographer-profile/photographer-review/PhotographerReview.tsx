@@ -18,6 +18,7 @@ import { push, ToastTypes } from "redux/slices/toastSlice";
 import { ReviewLikeButton } from "./review-like-button";
 import { Avatar } from "components/shared";
 import { AccessLevel } from "types";
+import { GetPhotographerReviewsResponse } from "redux/types/api";
 
 interface Props {
    id?: number;
@@ -29,6 +30,8 @@ interface Props {
    description: string;
    likeCount: number;
    liked: boolean;
+   changeState: (x: GetPhotographerReviewsResponse) => void;
+   state: GetPhotographerReviewsResponse;
 }
 
 export const PhotographerReview: React.FC<Props> = ({
@@ -39,8 +42,8 @@ export const PhotographerReview: React.FC<Props> = ({
    email,
    stars,
    description,
-   likeCount,
-   liked,
+   state,
+   changeState,
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
@@ -130,7 +133,7 @@ export const PhotographerReview: React.FC<Props> = ({
                   />
                )}
             </MenuDropdown>
-            <ReviewLikeButton id={id} likeCount={likeCount} liked={liked} />
+            <ReviewLikeButton id={id} changeState={changeState} state={state} />
          </div>
          <PhotographerReviewReportModal
             reviewId={id}

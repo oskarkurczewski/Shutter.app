@@ -44,7 +44,7 @@ public final class REGEXP {
 
     public static final String UUID = "^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$";
 
-    public static final String RECAPTCHA = "/[0-9a-zA-Z_-]{40}/";
+    public static final String RECAPTCHA = "[0-9a-zA-Z_-]{0,500}";
 
     public static final String UNIX_TIMESTAMP_PATTERN = "^[0-9]{10}$";
 

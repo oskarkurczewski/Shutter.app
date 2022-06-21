@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./PhotographerProfilePage.module.scss";
 import {
    PhotographerDescription,
@@ -6,7 +6,7 @@ import {
    PhotographerReviewsCardWrapper,
 } from "components/photographer-profile";
 import { useGetPhotographerDetailedInfoQuery } from "redux/service/photographerService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button, Card } from "components/shared";
 import { PhotoMasonry } from "components/photos";
@@ -18,6 +18,7 @@ import { PhotographerCalendar } from "components/photographer-profile/photograph
 
 export const PhotographerProfilePage = () => {
    const { t } = useTranslation();
+   const { hash } = useLocation();
    const dispatch = useAppDispatch();
    const { username } = useAppSelector((state) => state.auth);
    const navigate = useNavigate();
@@ -44,6 +45,18 @@ export const PhotographerProfilePage = () => {
 
       return;
    }
+
+   useEffect(() => {
+      if (hash) {
+         const element = document.getElementById(hash.replace("#", ""));
+
+         element &&
+            setTimeout(() => {
+               element.scrollIntoView();
+            }, 600);
+      }
+   }, [hash]);
+
    return (
       <section className={styles.photographer_info_page_wrapper}>
          <div className={styles.header}>
@@ -85,7 +98,10 @@ export const PhotographerProfilePage = () => {
                            reviewCount={data.reviewCount}
                            photographerLogin={login}
                         />
-                        <div className={styles.photographer_callendar_container}>
+                        <div
+                           className={styles.photographer_callendar_container}
+                           id="calendar"
+                        >
                            <PhotographerCalendar
                               photographer={{
                                  login: data?.login,
