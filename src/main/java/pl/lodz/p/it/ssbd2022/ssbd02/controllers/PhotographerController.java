@@ -152,26 +152,18 @@ public class PhotographerController extends AbstractController {
             @Time @QueryParam("from") String from,
             @Time @QueryParam("to") String to
     ) throws BaseApplicationException {
-        WeekDay weekDayParsed = null;
-        if (weekDay != null) {
-            try {
-                weekDayParsed = WeekDay.valueOf(weekDay);
-
-            } catch (IllegalArgumentException e) {
-                throw ExceptionFactory.wrongDayNameException();
-            }
-        }
         LocalTime fromTime = from == null ? null : LocalTime.of(Integer.parseInt(from.split(":")[0]), Integer.parseInt(from.split(":")[1]));
         LocalTime toTime = to == null ? null : LocalTime.of(Integer.parseInt(to.split(":")[0]), Integer.parseInt(to.split(":")[1]));
-        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
+        MorListResponseDto<PhotographerListEntryDto> responseDto = repeat(
+            () -> reservationEndpoint.findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
                 name,
                 page,
                 recordsPerPage,
                 spec,
-                weekDayParsed,
+                weekDay,
                 fromTime,
                 toTime
-        );
+        ), reservationEndpoint);
         return Response.status(Response.Status.OK).entity(responseDto).build();
     }
 }

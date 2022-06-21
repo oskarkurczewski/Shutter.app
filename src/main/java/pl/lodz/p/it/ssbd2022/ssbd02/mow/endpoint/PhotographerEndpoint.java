@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.service.AccountService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.BasePhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.DetailedPhotographerInfoDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotographerService;

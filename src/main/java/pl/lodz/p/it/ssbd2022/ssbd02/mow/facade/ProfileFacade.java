@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 

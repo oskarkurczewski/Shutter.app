@@ -158,30 +158,6 @@ public class ReservationController extends AbstractController {
             @QueryParam("pageNo") @DefaultValue("1") Integer page,
             @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage
     ) throws BaseApplicationException {
-        return reservationEndpoint.listPhotographers(page, recordsPerPage);
-    }
-
-    @GET
-    @Path("/photographers/find/byAvailability")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PhotographerListEntryDto> findPhotographerByAvailability(@NotNull @Valid TimePeriodDto timePeriod) {
-        throw new UnsupportedOperationException();
-    }
-
-    @GET
-    @Path("/photographers/find/byName")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PhotographerListEntryDto> findPhotographerByName(@NotNull @Valid String name) {
-        throw new UnsupportedOperationException();
-    }
-
-    @GET
-    @Path("/photographers/find/bySpecialization")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PhotographerListEntryDto> findPhotographerBySpeciality(@NotNull @Valid String specialization) {
-        throw new UnsupportedOperationException();
+        return repeat(() -> reservationEndpoint.listPhotographers(page, recordsPerPage), reservationEndpoint);
     }
 }

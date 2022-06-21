@@ -32,7 +32,7 @@ public class ReportController extends AbstractController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reportClientAccount(@NotNull @Valid CreateAccountReportDto createAccountReportDto)
             throws BaseApplicationException {
-        reportEndpoint.reportClientAccount(createAccountReportDto);
+        repeat(() -> reportEndpoint.reportClientAccount(createAccountReportDto), reportEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -152,21 +152,21 @@ public class ReportController extends AbstractController {
     @POST
     @Path("/account/{id}/resolve")
     public Response resolveAccountReport(@NotNull @PathParam("id") Long reportId) throws BaseApplicationException {
-        reportEndpoint.resolveAccountReport(reportId);
+        repeat(() -> reportEndpoint.resolveAccountReport(reportId), reportEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
     @POST
     @Path("/photographer/{id}/resolve")
     public Response resolvePhotographerReport(@NotNull @PathParam("id") Long photographerId) throws BaseApplicationException {
-        reportEndpoint.resolvePhotographerReport(photographerId);
+        repeat(() -> reportEndpoint.resolvePhotographerReport(photographerId), reportEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 
     @POST
     @Path("/review/{id}/resolve")
     public Response resolveReviewReport(@NotNull @PathParam("id") Long reviewId) throws BaseApplicationException {
-        reportEndpoint.resolveReviewReport(reviewId);
+        repeat(() -> reportEndpoint.resolveReviewReport(reviewId), reportEndpoint);
         return Response.status(Response.Status.OK).build();
     }
 }

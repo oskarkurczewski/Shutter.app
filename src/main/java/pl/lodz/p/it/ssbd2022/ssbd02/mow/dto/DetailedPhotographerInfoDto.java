@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedAccountInfoDto;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
