@@ -3,35 +3,89 @@ import { Button, Modal } from "components/shared";
 import styles from "./PhotoModal.module.scss";
 import { t } from "i18next";
 import { DateTime } from "luxon";
-import { useLikePhotoRequestMutation } from "redux/service/photoService";
+import {
+   useLikePhotoRequestMutation,
+   useUnlikePhotoMutation,
+} from "redux/service/photoService";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { useAppDispatch } from "redux/hooks";
 
 interface Props {
    isOpen: boolean;
-   onSubmit: () => void;
+   onSubmit: (likes, isLiked) => void;
    photo;
 }
 
 const PhotoModal: React.FC<Props> = ({ isOpen, onSubmit, photo }) => {
-   console.log(photo);
+   const dispatch = useAppDispatch();
 
    const [isLiked, setIsLiked] = useState<boolean>(photo.liked);
    const [likes, setLikes] = useState<number>(photo.likeCount);
-   const [likePhotoMutation, { isLoading, isError, isSuccess, error }] =
-      useLikePhotoRequestMutation();
-
-   const likePhoto = () => {
-      likePhotoMutation(photo.id);
-   };
+   const [likePhotoMutation] = useLikePhotoRequestMutation();
+   const [unlikePhoto] = useUnlikePhotoMutation();
 
    useEffect(() => {
-      isSuccess && setLikes(likes + 1);
-   }, [isSuccess]);
+      setIsLiked(photo.liked);
+      setLikes(photo.likeCount);
+   }, [photo]);
+
+   const likePhoto = () => {
+      if (isLiked) {
+         unlikePhoto(photo.id)
+            .unwrap()
+            .then(
+               () => {
+                  setIsLiked(false);
+                  setLikes(likes - 1);
+                  dispatch(
+                     push({
+                        text: t("global.component.photo.unlike_successful_message"),
+                        type: ToastTypes.SUCCESS,
+                     })
+                  );
+               },
+               (err) => {
+                  dispatch(
+                     push({
+                        text: t([err.data?.message || ".", "exception.unexpected"]),
+                        type: ToastTypes.ERROR,
+                     })
+                  );
+               }
+            );
+      } else {
+         likePhotoMutation(photo.id)
+            .unwrap()
+            .then(
+               () => {
+                  setIsLiked(true);
+                  setLikes(likes + 1);
+                  dispatch(
+                     push({
+                        text: t("global.component.photo.like_successful_message"),
+                        type: ToastTypes.SUCCESS,
+                     })
+                  );
+               },
+               (err) => {
+                  dispatch(
+                     push({
+                        text: t([err.data?.message || ".", "exception.unexpected"]),
+                        type: ToastTypes.ERROR,
+                     })
+                  );
+               }
+            );
+      }
+   };
 
    return (
       <Modal
          type="info"
          isOpen={isOpen}
-         onSubmit={onSubmit}
+         onSubmit={() => {
+            onSubmit(likes, isLiked);
+         }}
          title={t("photographer_gallery_page.photo")}
          submitText={t("photographer_gallery_page.close")}
       >
@@ -44,7 +98,7 @@ const PhotoModal: React.FC<Props> = ({ isOpen, onSubmit, photo }) => {
                      <Button
                         className={styles.photo_label_likes_button}
                         onClick={likePhoto}
-                        icon="favorite"
+                        icon={isLiked ? "favorite" : "favorite_outline"}
                      >
                         {`${likes}`}
                      </Button>
