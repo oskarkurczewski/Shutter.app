@@ -477,8 +477,8 @@
       },
       "calendar": {
          "past_date": "Wybrano datę z przeszłości",
-         "no_avalibility": "Brak dostępności fotografa",
-         "conflict_reservation_time": "Konflikt z inną rezerwacją",
+         "no_avalibility": "W danym terminie fotograf nie jest dostępny",
+         "conflict_reservation_time": "W danym terminie istnieje już inna rezerwacja. Wybierz inny termin.",
          "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
       },
       "modal": {
