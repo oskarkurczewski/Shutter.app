@@ -75,7 +75,7 @@ public class ProfileService {
      *
      * @return lista specjalizacji
      */
-    @RolesAllowed(changeSpecializations)
+    @PermitAll
     public List<Specialization> getSpecializationList() throws BaseApplicationException {
         return facade.getSpecializationList();
     }

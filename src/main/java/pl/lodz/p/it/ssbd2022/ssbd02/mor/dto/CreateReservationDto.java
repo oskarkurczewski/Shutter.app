@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Reservation;
 
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Reservation
 public class CreateReservationDto {
     @NotNull(message = "validator.incorrect.photographer_login.null")
+    @Login
     private String photographerLogin;
     @NotNull(message = "validator.incorrect.time_from.null")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

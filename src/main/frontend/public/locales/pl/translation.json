@@ -58,6 +58,7 @@
    },
    "exception": {
       "couldnt_fetch_data": "Nie udało się pobrać danych",
+      "unexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
       "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
@@ -119,6 +120,12 @@
             "password": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
             "login": "Login może zawierać tylko znaki alfanumeryczne oraz <>{}-_=*",
             "login_first_last": "Login musi zaczynać i kończyć sie się literą lub cyfrą"
+         },
+         "search": {
+            "regexp": "Niepoprawne parametry wyszukiwania"
+         },
+         "token": {
+            "regexp": "Podano niepoprawny żeton"
          }
       },
       "not_same": "Pola muszą być takie same."
@@ -260,7 +267,8 @@
       "profile": "Profil",
       "hire": "Wynajmij",
       "list": "Lista",
-      "az": "A-Z"
+      "az": "A-Z",
+      "specialization": "Specjalizacja"
    },
    "photographer_list_admin_page": {
       "login": "Login",
@@ -471,8 +479,8 @@
       },
       "calendar": {
          "past_date": "Wybrano datę z przeszłości",
-         "no_avalibility": "Brak dostępności fotografa",
-         "conflict_reservation_time": "Konflikt z inną rezerwacją",
+         "no_avalibility": "W danym terminie fotograf nie jest dostępny",
+         "conflict_reservation_time": "W danym terminie istnieje już inna rezerwacja. Wybierz inny termin.",
          "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
       },
       "modal": {
@@ -516,14 +524,20 @@
    "photographer_jobs_page": {
       "search_client": "Wyszukaj klienta",
       "no_reservations": "Brak rezerwacji na ten tydzień",
-
       "discard_reservation": {
          "success": "Pomyślnie odrzucono rezerwację",
-
          "modal": {
             "title": "Odrzucenie rezerwacji",
             "description": "Czy na pewno chcesz odrzucić rezerwację?"
          }
+      },
+      "report_modal": {
+         "title": "Zgłoś klienta",
+         "report": "Zgłoś",
+         "pay_on_time": "Nie zapłacił na czas",
+         "show_up": "Nie pojawił się",
+         "success_toast": "Pomyślnie zgłoszono klienta",
+         "report_message": "Wybierz powód zgłoszenia klienta"
       }
    },
    "user_reservations_page": {

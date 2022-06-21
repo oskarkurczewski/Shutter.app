@@ -78,6 +78,11 @@ export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
       getReservationsQuery.refetch();
    }, [dateFrom]);
 
+   const modalOnSubmit = () => {
+      setModalOpen(false);
+      getReservationsQuery.refetch();
+   };
+
    // add reservations function
    const addReservation = (selection: HourBox[]) => {
       if (username === "") {
@@ -174,7 +179,7 @@ export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
                      setReservation(initialReservationState);
                      setModalOpen(false);
                   }}
-                  onSubmit={() => setModalOpen(false)}
+                  onSubmit={() => modalOnSubmit()}
                />
             </>
          )}

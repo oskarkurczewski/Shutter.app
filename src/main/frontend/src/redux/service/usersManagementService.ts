@@ -21,6 +21,7 @@ import {
    getListResponse,
    getReportListRequest,
 } from "redux/types/api/dataTypes";
+import { UserReportRequest } from "redux/types/api/reportTypes";
 
 const UsersManagementService = api.injectEndpoints({
    endpoints: (builder) => ({
@@ -138,6 +139,14 @@ const UsersManagementService = api.injectEndpoints({
           >({
          query: (params) => ({ url: `/report/list/account`, params }),
       }),
+
+      reportUser: builder.mutation<void, UserReportRequest>({
+         query: (data) => ({
+            url: "/report/account",
+            method: "POST",
+            body: data,
+         }),
+      }),
    }),
 });
 
@@ -156,4 +165,5 @@ export const {
    useGetReservationsListMutation,
    useResolveAccountReportMutation,
    useCancelReservationMutation,
+   useReportUserMutation,
 } = UsersManagementService;

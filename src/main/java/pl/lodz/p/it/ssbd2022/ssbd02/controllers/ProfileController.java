@@ -1,14 +1,14 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.AddPhotoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.GetReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.PhotoEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ProfileEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReviewEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Description;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -35,7 +35,7 @@ public class ProfileController extends AbstractController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/description")
-    public Response changeDescription(@NotNull @Valid String newDescription) throws NoAuthenticatedAccountFound {
+    public Response changeDescription(@NotNull @Description String newDescription) throws NoAuthenticatedAccountFound {
         throw new UnsupportedOperationException();
     }
 
@@ -60,13 +60,13 @@ public class ProfileController extends AbstractController {
      */
     @DELETE
     @Path("/photo/{id}")
-    public void deletePhotoFromGallery(@PathParam("id") Long photoId) throws BaseApplicationException {
+    public void deletePhotoFromGallery(@NotNull @PathParam("id") Long photoId) throws BaseApplicationException {
         repeat(() -> photoEndpoint.deletePhotoFromGallery(photoId), photoEndpoint);
     }
 
     @POST
     @Path("/photo/{id}/like")
-    public Response likePhoto(@PathParam("id") Long photoId) throws BaseApplicationException {
+    public Response likePhoto(@NotNull @PathParam("id") Long photoId) throws BaseApplicationException {
         repeat(() -> photoEndpoint.likePhoto(photoId), photoEndpoint);
         return Response.status(Response.Status.OK).build();
     }
@@ -79,7 +79,7 @@ public class ProfileController extends AbstractController {
      */
     @POST
     @Path("/photo/{id}/unlike")
-    public Response unlikePhoto(@PathParam("id") Long photoId) throws BaseApplicationException {
+    public Response unlikePhoto(@NotNull @PathParam("id") Long photoId) throws BaseApplicationException {
         repeat(() -> photoEndpoint.unlikePhoto(photoId), photoEndpoint);
         return Response.status(Response.Status.OK).build();
     }
@@ -101,7 +101,7 @@ public class ProfileController extends AbstractController {
 
     @DELETE
     @Path("/review/{id}")
-    public Response deleteOwnPhotographerReview(@PathParam("id") Long reviewId)
+    public Response deleteOwnPhotographerReview(@NotNull @PathParam("id") Long reviewId)
             throws BaseApplicationException {
         repeat(() -> reviewEndpoint.deleteOwnPhotographerReview(reviewId), reviewEndpoint);
         return Response.status(Response.Status.OK).build();
@@ -109,14 +109,14 @@ public class ProfileController extends AbstractController {
 
     @GET
     @Path("/review/{id}")
-    public GetReviewDto getReviewById(@PathParam("id") Long reviewId)
+    public GetReviewDto getReviewById(@NotNull @PathParam("id") Long reviewId)
             throws BaseApplicationException {
         return repeat(() -> reviewEndpoint.getReviewById(reviewId), reviewEndpoint);
     }
 
     @DELETE
     @Path("/review/{id}/admin")
-    public Response deleteSomeonesPhotographerReview(@PathParam("id") Long reviewId)
+    public Response deleteSomeonesPhotographerReview(@NotNull @PathParam("id") Long reviewId)
             throws BaseApplicationException {
         repeat(() -> reviewEndpoint.deleteSomeonesPhotographerReview(reviewId), reviewEndpoint);
         return Response.status(Response.Status.OK).build();
@@ -124,14 +124,14 @@ public class ProfileController extends AbstractController {
 
     @POST
     @Path("/review/{id}/like")
-    public Response likeReview(@PathParam("id") Long reviewId) throws BaseApplicationException {
+    public Response likeReview(@NotNull @PathParam("id") Long reviewId) throws BaseApplicationException {
         repeat(() -> reviewEndpoint.likeReview(reviewId), reviewEndpoint);
         return Response.accepted().build();
     }
 
     @POST
     @Path("/review/{id}/unlike")
-    public Response unlikeReview(@PathParam("id") Long reviewId) throws BaseApplicationException {
+    public Response unlikeReview(@NotNull @PathParam("id") Long reviewId) throws BaseApplicationException {
         repeat(() -> reviewEndpoint.unlikeReview(reviewId), reviewEndpoint);
         return Response.accepted().build();
     }
@@ -152,7 +152,7 @@ public class ProfileController extends AbstractController {
     public ListResponseDto<ReviewDto> getReviewList(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @DefaultValue("1") int recordsPerPage,
-            @QueryParam("photographerLogin") @NotNull String photographerLogin
+            @QueryParam("photographerLogin") @Login @NotNull String photographerLogin
     ) throws BaseApplicationException {
         return repeat(() -> reviewEndpoint.getReviewsByPhotographerLogin(pageNo, recordsPerPage, photographerLogin), reviewEndpoint);
     }
@@ -173,7 +173,7 @@ public class ProfileController extends AbstractController {
     public ListResponseDto<PhotoDto> getPhotoList(
             @QueryParam("pageNo") @DefaultValue("1") int pageNo,
             @QueryParam("recordsPerPage") @DefaultValue("10") int recordsPerPage,
-            @QueryParam("photographerLogin") @NotNull String photographerLogin
+            @QueryParam("photographerLogin") @Login @NotNull String photographerLogin
     ) throws BaseApplicationException {
         return repeat(() -> photoEndpoint.getPhotoList(photographerLogin, pageNo, recordsPerPage), reviewEndpoint);
     }
