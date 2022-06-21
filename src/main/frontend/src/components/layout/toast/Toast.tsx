@@ -12,25 +12,27 @@ export interface ToastType {
    buttons?: JSX.Element;
    className?: string;
    id: number;
+   permanent?: boolean;
 }
 
 export const Toast: React.FC<ToastType> = ({
    icon,
-   name,
    text,
    buttons,
    className,
    id,
+   permanent,
 }) => {
    const dispatch = useAppDispatch();
 
    const timeout = useRef(null);
 
    useEffect(() => {
-      timeout.current = setTimeout(() => {
-         dispatch(remove(id));
-      }, 10 * 1000);
-
+      if (!permanent) {
+         timeout.current = setTimeout(() => {
+            dispatch(remove(id));
+         }, 10 * 1000);
+      }
       return () => clearTimeout(timeout.current);
    }, []);
 
@@ -86,9 +88,11 @@ export const Toast: React.FC<ToastType> = ({
             clearTimeout(timeout.current);
          }}
          onMouseLeave={() => {
-            timeout.current = setTimeout(() => {
-               dispatch(remove(id));
-            }, 10 * 1000);
+            if (!permanent) {
+               timeout.current = setTimeout(() => {
+                  dispatch(remove(id));
+               }, 10 * 1000);
+            }
          }}
       >
          <div className={styles.bar} />
@@ -105,7 +109,10 @@ export const Toast: React.FC<ToastType> = ({
                {<ImCross />}
             </button>
          </div>
-         <motion.div className={styles.progress_bar} variants={progressBar} />
+         <motion.div
+            className={styles.progress_bar}
+            variants={!permanent ? progressBar : {}}
+         />
       </motion.div>
    );
 };
