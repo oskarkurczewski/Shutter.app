@@ -150,13 +150,25 @@
       .card_wrapper {
          width: 100%;
       }
+      .search_filters {
+         display: flex;
+         flex-direction: column;
+         gap: 1.5rem;
 
+         .search_filters_top_row {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            gap: 1.5rem;
+         }
+      }
       .card {
          display: flex;
          flex-direction: column;
          row-gap: 20px;
          padding-right: 2.5rem;
          padding-bottom: 2rem;
+         width: 100%;
 
          &.list_element {
             width: 100%;

@@ -9,13 +9,16 @@ import { useGetPhotographerListMutation } from "redux/service/photographerServic
 import useDebounce from "hooks/useDebounce";
 import { DisabledDropdown, ListElement } from "components/photographers-list";
 import { AnimatePresence, motion } from "framer-motion";
+import { SpecializationFilter } from "components/photographers-list/specialization-filter";
 
 export const PhotographersListPage = () => {
    const { t } = useTranslation();
 
+   const [selectedSpecialization, setSelectedSpecialization] = useState<string>();
    const [photographerSearchFilters, setPhotographerSearchFilters] =
       useState<PhotographerListRequest>({
-         query: "",
+         name: undefined,
+         specialization: undefined,
          pageNo: 1,
          recordsPerPage: 10,
       });
@@ -43,6 +46,14 @@ export const PhotographersListPage = () => {
    useEffect(() => {
       getPhotographers(debouncedFilters);
    }, [debouncedFilters]);
+
+   useEffect(() => {
+      setPhotographerSearchFilters({
+         ...photographerSearchFilters,
+         specialization: selectedSpecialization,
+      });
+      getPhotographers(debouncedFilters);
+   }, [selectedSpecialization]);
 
    const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
       const name = e.target.name;
@@ -119,12 +130,22 @@ export const PhotographersListPage = () => {
                   {expandFilters && (
                      <>
                         <motion.div
+                           className={styles.search_filters}
                            key="search-filter"
                            variants={filterCardVariants}
                            initial="initial"
                            animate="animate"
                            exit="exit"
                         >
+                           <div className={styles.search_filters_top_row}>
+                              <SpecializationFilter
+                                 className={styles.card}
+                                 selectedSpecialization={selectedSpecialization}
+                                 setSelectedSpecialization={setSelectedSpecialization}
+                              />
+                              {/* availibility filters */}
+                           </div>
+
                            <Card className={styles.card}>
                               <p className="section-title">
                                  {t("photographer_list_page.search_photographer")}
@@ -133,7 +154,7 @@ export const PhotographersListPage = () => {
                                  name="query"
                                  className={styles.input}
                                  icon={<FaSearch />}
-                                 value={photographerSearchFilters.query}
+                                 value={photographerSearchFilters.name}
                                  onChange={handleChange}
                               />
                            </Card>

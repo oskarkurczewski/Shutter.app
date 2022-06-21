@@ -167,7 +167,8 @@ export interface PhotographerListResponse {
 }
 
 export interface PhotographerListRequest {
-   query: string;
+   name: string;
+   specialization: string;
    pageNo: number;
    recordsPerPage: number;
 }
