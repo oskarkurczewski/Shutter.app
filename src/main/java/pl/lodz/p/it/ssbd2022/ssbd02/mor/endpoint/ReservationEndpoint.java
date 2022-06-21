@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
@@ -22,6 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -197,16 +195,24 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
-    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurnameSpecialization(String name, int page, int recordsPerPage, String spec) throws BaseApplicationException {
+    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
+            String name,
+            int page,
+            int recordsPerPage,
+            String spec,
+            WeekDay weekDay,
+            LocalTime fromTime,
+            LocalTime toTime
+    ) throws BaseApplicationException {
         Specialization specialization;
 
-        if (spec != null ) {
+        if (spec != null) {
             specialization = reservationService.getSpecialization(spec);
         } else {
             specialization = null;
         }
 
-        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurnameSpecialization(name, page, recordsPerPage, specialization);
+        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurnameSpecialization(name, page, recordsPerPage, specialization, weekDay, fromTime, toTime);
         Long photographerCount = (long) list.size();
 
         return new MorListResponseDto(
