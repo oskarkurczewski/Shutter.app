@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.MokFacadeAccessInterceptor;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -21,7 +20,7 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.becomePhotographer;
 
 
 @Stateless
-@Interceptors({LoggingInterceptor.class, MokFacadeAccessInterceptor.class})
+@Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
     @PersistenceContext(unitName = "ssbd02mowPU")
