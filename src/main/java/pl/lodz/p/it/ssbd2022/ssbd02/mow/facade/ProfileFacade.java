@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
@@ -18,7 +17,6 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
@@ -38,7 +36,6 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
      * Rejestruje zmianę encji JPA danych fotografa i autora tych zmian
      *
      * @param entity konto, którego dane zostały zmienione
-     *
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @Override
@@ -119,5 +116,5 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
             throw ExceptionFactory.unexpectedFailException();
         }
     }
-    
+
 }

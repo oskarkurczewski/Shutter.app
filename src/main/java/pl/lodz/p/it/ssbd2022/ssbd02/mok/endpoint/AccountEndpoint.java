@@ -176,7 +176,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAuthenticatedAccountFound W przypadku nieznalezienia konta użytkownika w bazie danych
      *                                     na podstawie żetonu JWT
      * @throws DataNotFoundException       W przypadku nieznalezienia na koncie użytkownika roli fotografa
-     * @throws CannotChangeException       W przypadku próby odebrania roli fotografa przez uzytkownika nie będącego
+     * @throws CannotChangeException       W przypadku próby odebrania roli fotografa przez użytkownika niebędącego
      *                                     fotografem
      * @see AccountAccessLevelChangeDto
      */
@@ -491,8 +491,8 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
      *
      * @param login użytkownik
-     * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
-     * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
+     * @return true, jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
+     * @return false jeżeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
      */
     @PermitAll
     public Boolean is2FAEnabledForUser(String login) throws BaseApplicationException {
@@ -501,10 +501,10 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     /**
-     * Pobiera wszystkie grupy w których znajduje się użytkownik o danym loginie
+     * Pobiera wszystkie grupy, w których znajduje się użytkownik o danym loginie
      *
      * @param login login użytkownika, dla którego mają zostać pobrane grupy
-     * @return lista grup w których znajduje się użytkownik o podanym loginie
+     * @return lista grup, w których znajduje się użytkownik o podanym loginie
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
     @PermitAll
@@ -521,7 +521,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param pageNo         numer strony
      * @param recordsPerPage liczba rekordów na stronę
-     * @param orderBy        kolumna po której następuje sortowanie
+     * @param orderBy        kolumna, po której następuje sortowanie
      * @param order          kolejność sortowania
      * @return Historia zmian konta
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje

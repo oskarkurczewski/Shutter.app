@@ -5,9 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.etag.SignableEntity;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**

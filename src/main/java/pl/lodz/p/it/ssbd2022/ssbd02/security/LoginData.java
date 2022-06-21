@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
 import lombok.Data;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
-import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Password;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.TwoFACode;
 
 import javax.security.enterprise.credential.Credential;

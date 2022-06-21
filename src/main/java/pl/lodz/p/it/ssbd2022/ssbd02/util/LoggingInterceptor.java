@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
 
 import javax.ejb.EJBAccessException;
 import javax.inject.Inject;
@@ -17,7 +16,7 @@ import java.util.logging.Logger;
  * Klasa interceptora służąca do logowania wywołań metod w komponentach aplikacji
  */
 public class LoggingInterceptor {
-   private static final Logger LOGGER = Logger.getLogger(LoggingInterceptor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LoggingInterceptor.class.getName());
     @Inject
     private SecurityContext securityContext;
 
@@ -38,7 +37,7 @@ public class LoggingInterceptor {
             return returned;
         } catch (Exception ex) {
             result = "An exception occured: " + ex.getClass().toGenericString() + ", caused by: " + ex.getCause();
-            if(ex instanceof EJBAccessException) {
+            if (ex instanceof EJBAccessException) {
                 throw ExceptionFactory.noAuthenticatedAccountFound();
             }
             throw ex;

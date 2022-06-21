@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-
 import javax.security.enterprise.identitystore.PasswordHash;
-import java.nio.charset.StandardCharsets;
 
 public class PasswordHashImpl implements PasswordHash {
     @Override

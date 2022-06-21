@@ -18,7 +18,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeSomeonesPassword;
 

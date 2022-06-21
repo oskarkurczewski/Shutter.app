@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

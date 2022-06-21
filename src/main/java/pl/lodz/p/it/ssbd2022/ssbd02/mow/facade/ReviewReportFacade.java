@@ -1,8 +1,8 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReportCause;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.FacadeTemplate;
@@ -18,12 +18,10 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import java.util.List;
 
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reportReview;
-
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.listAllReports;
+import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reportReview;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})

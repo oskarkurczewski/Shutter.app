@@ -35,7 +35,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
         super(AccessLevelAssignment.class);
     }
 
-    // PermitAll jest niezbędne aby umożliwić rejestrację użytkowników
+    // PermitAll jest niezbędne, aby umożliwić rejestrację użytkowników
     @Override
     @PermitAll
     public AccessLevelAssignment persist(AccessLevelAssignment entity) throws BaseApplicationException {
@@ -50,7 +50,7 @@ public class AccessLevelFacade extends FacadeTemplate<AccessLevelAssignment> {
         }
     }
 
-    // DenyAll ponieważ metoda ta obecnie nie jest nigdzie stosowana
+    // DenyAll, ponieważ metoda ta obecnie nie jest nigdzie stosowana
     @Override
     @DenyAll
     public void remove(AccessLevelAssignment entity) throws BaseApplicationException {

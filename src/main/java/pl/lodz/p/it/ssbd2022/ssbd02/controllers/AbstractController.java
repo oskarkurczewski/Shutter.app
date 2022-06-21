@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import static pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory.unexpectedFailException;
 
 public abstract class AbstractController {
-    private static final String CONFIG_FILE_NAME = "config.transaction.properties";
     private int transactionRepetitionLimit;
 
     @Inject

@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
@@ -22,7 +21,7 @@ public class ReviewDto {
         this.id = review.getId();
         this.authorLogin = review.getAccount().getLogin();
         this.name = review.getAccount().getName();
-        this.surname = review.getAccount().getSurname();;
+        this.surname = review.getAccount().getSurname();
         this.email = review.getAccount().getEmail();
         this.score = review.getScore();
         this.content = review.getContent();
