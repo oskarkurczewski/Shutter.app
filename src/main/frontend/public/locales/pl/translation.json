@@ -267,7 +267,8 @@
       "profile": "Profil",
       "hire": "Wynajmij",
       "list": "Lista",
-      "az": "A-Z"
+      "az": "A-Z",
+      "specialization": "Specjalizacja"
    },
    "photographer_list_admin_page": {
       "login": "Login",

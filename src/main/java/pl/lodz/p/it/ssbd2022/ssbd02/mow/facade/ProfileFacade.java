@@ -100,7 +100,7 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
      *
      * @return lista specjalizacji
      */
-    @RolesAllowed(changeSpecializations)
+    @PermitAll
     public List<Specialization> getSpecializationList() throws BaseApplicationException {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Specialization> query = criteriaBuilder.createQuery(Specialization.class);

@@ -95,29 +95,29 @@ VALUES (0, 3, 4, 1, false, 5, current_timestamp);
 
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df31007ef0e611eca21264bc582d3ac5.png',
-        'sfa', 'Nocne niebo', 'Tak zwane startrailsy widoczne ze Skrzypek - wakacje 2021', default, 3,
+        'df31007ef0e611eca21264bc582d3ac5', 'Nocne niebo', 'Tak zwane startrailsy widoczne ze Skrzypek - wakacje 2021', default, 3,
         current_timestamp);
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df35e4fef0e611ecb51064bc582d3ac5.png',
-        'sfa', 'Pogoria', 'Morze widoczne z Pogorii podczas zachodu Slonca', default, 3, current_timestamp);
+        'df35e4fef0e611ecb51064bc582d3ac5', 'Pogoria', 'Morze widoczne z Pogorii podczas zachodu Slonca', default, 3, current_timestamp);
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df3b2766f0e611ecb43f64bc582d3ac5.png',
-        'sfa', 'Wyspa przed burza', 'Chmury nadchodzace nad wyspe tworzac ciekawy dwupodzial zdjecia', default, 3,
+        'df3b2766f0e611ecb43f64bc582d3ac5', 'Wyspa przed burza', 'Chmury nadchodzace nad wyspe tworzac ciekawy dwupodzial zdjecia', default, 3,
         current_timestamp);
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df405420f0e611ec9ebd64bc582d3ac5.png',
-        'sfa', 'Pasikonik', 'Zblizenie na tego cudownego zielonego owada', default, 3, current_timestamp);
+        'df405420f0e611ec9ebd64bc582d3ac5', 'Pasikonik', 'Zblizenie na tego cudownego zielonego owada', default, 3, current_timestamp);
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df45d878f0e611ecb81564bc582d3ac5.png',
-        'sfa', 'Grecki klimat', 'Rzezba na skalach na greckiej wyspie Rodos w 2018 roku', default, 3,
+        'df45d878f0e611ecb81564bc582d3ac5', 'Grecki klimat', 'Rzezba na skalach na greckiej wyspie Rodos w 2018 roku', default, 3,
         current_timestamp);
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df4b972cf0e611ecb23f64bc582d3ac5.png',
-        'sfa', 'Mia', '<3 <3 <3 <3 <3', default, 3, current_timestamp);
+        'df4b972cf0e611ecb23f64bc582d3ac5', 'Mia', '<3 <3 <3 <3 <3', default, 3, current_timestamp);
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df50c27ef0e611ec998364bc582d3ac5.png',
-        'sfa', 'Deltonsz', 'Ten chlopak co zrobil kalendarz w tej aplikacji', default, 3, current_timestamp);
+        'df50c27ef0e611ec998364bc582d3ac5', 'Deltonsz', 'Ten chlopak co zrobil kalendarz w tej aplikacji', default, 3, current_timestamp);
 INSERT INTO public.photo
 values (0, 3, default, 'https://ssbd02.s3.eu-central-1.amazonaws.com/majster2/df568fc4f0e611ecb87764bc582d3ac5.png',
-        'sfa', 'Kuba Karas', 'Koncert zespolu Karasa/Rogucki w grudniu 2021', default, 3, current_timestamp);
+        'df568fc4f0e611ecb87764bc582d3ac5', 'Kuba Karas', 'Koncert zespolu Karasa/Rogucki w grudniu 2021', default, 3, current_timestamp);
 
