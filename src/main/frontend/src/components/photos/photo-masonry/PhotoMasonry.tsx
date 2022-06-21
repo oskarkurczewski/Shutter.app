@@ -13,6 +13,7 @@ export const PhotoMasonry: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
    const { data } = useGetPhotosRequestQuery({
       photographerLogin: login,
+      recordsPerPage: 100,
    });
    const [photoModalIsOpen, setPhotoModalIsOpen] = useState<boolean>(false);
    const [photoData, setPhotoData] = useState(null);

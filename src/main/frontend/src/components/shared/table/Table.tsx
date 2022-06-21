@@ -49,7 +49,7 @@ export const Table: React.FC<Props> = ({
    return (
       <div className={styles.table_wrapper}>
          <table>
-            <tbody>
+            <thead>
                <tr className={styles.table_header}>
                   {headers.map((header, index) => (
                      <th key={header.id}>
@@ -96,6 +96,8 @@ export const Table: React.FC<Props> = ({
                      </th>
                   ))}
                </tr>
+            </thead>
+            <tbody>
                {data.map((row, rowIndex) => (
                   <tr key={rowIndex} className={styles.table_row}>
                      {row.map((item, columnIndex) => (

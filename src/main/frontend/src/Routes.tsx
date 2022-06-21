@@ -14,6 +14,7 @@ import { PhotographerGalleryPage } from "pages/photographers/gallery";
 import * as PhotographerPages from "pages/photographers";
 import { ReservationsListPage } from "pages/users";
 import { ProtectedRoute } from "components/routes";
+import { ReportsPage } from "pages/reports";
 
 export const AppRoutes = () => {
    return (
@@ -55,7 +56,9 @@ export const AppRoutes = () => {
                      <SettingsPage />
                   </ProtectedRoute>
                }
-            ></Route>
+            />
+
+            <Route path="reports" element={<ReportsPage />} />
 
             <Route
                path="photographers"
@@ -138,11 +141,6 @@ export const AppRoutes = () => {
                   }
                />
             </Route>
-
-            <Route
-               path="photographers"
-               element={<PhotographerPages.PhotographersListPage />}
-            />
 
             {/* Token-based routes */}
             <Route

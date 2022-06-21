@@ -17,29 +17,28 @@
    }
 
    .photo_label {
-      display: none;
-   }
-}
-
-.photo_wrapper:hover {
-   .photo_label {
+      display: flex;
       position: absolute;
       width: 100%;
       bottom: 3px;
       left: 0;
+      opacity: 0;
       background-color: variables.$gray-300-transparent;
-      display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
       border-radius: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
       animation-name: fadein;
       animation-duration: 0.3s;
+      transition: opacity 200ms ease-in-out;
 
       p {
          user-select: none;
          color: variables.$white;
       }
+
       .photo_label_content {
          display: flex;
          flex-direction: column;
@@ -65,6 +64,7 @@
             }
          }
       }
+
       .photo_label_delete {
          .photo_label_delete_button {
             background-color: transparent;
@@ -78,19 +78,25 @@
       }
    }
 
-   img:hover {
-      cursor: pointer;
-      -webkit-filter: brightness(90%);
-      transition: all 0.3s ease;
+   &:hover {
+      .photo_label {
+         opacity: 1;
+      }
+
+      img {
+         cursor: pointer;
+         filter: brightness(90%);
+         transition: all 0.3s ease;
+      }
    }
 }
 
 @keyframes fadein {
    from {
-      -webkit-filter: brightness(80%);
+      filter: brightness(80%);
    }
 
    to {
-      -webkit-filter: brightness(100%);
+      filter: brightness(100%);
    }
 }
