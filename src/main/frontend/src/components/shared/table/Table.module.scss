@@ -110,10 +110,13 @@
             background-color: variables.$blue-gray-100;
          }
       }
+   }
 
-      tbody {
-         min-height: 400px;
-      }
+   .no_records {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
    }
 
    .pages {

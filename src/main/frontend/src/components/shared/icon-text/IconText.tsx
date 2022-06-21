@@ -6,7 +6,7 @@ interface Props {
    color?: "purple" | "red" | "blue" | "green";
    className?: string;
    text?: string;
-   icon?: IconType;
+   icon?: IconType | JSX.Element;
    onClick?: () => void;
 }
 

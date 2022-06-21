@@ -58,7 +58,21 @@ export const AppRoutes = () => {
                }
             />
 
-            <Route path="reports" element={<ReportsPage />} />
+            <Route
+               path="reports"
+               element={
+                  <ProtectedRoute
+                     roles={[
+                        AccessLevel.ADMINISTRATOR,
+                        AccessLevel.MODERATOR,
+                        AccessLevel.PHOTOGRAPHER,
+                        AccessLevel.CLIENT,
+                     ]}
+                  >
+                     <ReportsPage />
+                  </ProtectedRoute>
+               }
+            />
 
             <Route
                path="photographers"
