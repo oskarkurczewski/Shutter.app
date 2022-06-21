@@ -100,7 +100,7 @@ export const SettingsPage: React.FC = () => {
             <MainSettings />
             <ChangeEmailSettings />
             <ChangePasswordSettings />
-            {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
+            {accessLevel == AccessLevel.PHOTOGRAPHER ? (
                <>
                   <StopBeingPhotographerSettings />
                   <ChangeSpecializationsSettings />
