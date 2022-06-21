@@ -93,6 +93,7 @@ public class JWTHandler {
      * Odświeża podany żeton JWT
      *
      * @param oldToken Żeton, który ma zostać odświeżony
+     * @param newGroups nowe grupy przypisane użytkownikowi od ostatniego uzyskania żetonu
      * @return Odświeżony żeton JWT
      */
     public static String refresh(JWT oldToken, List<String> newGroups) {

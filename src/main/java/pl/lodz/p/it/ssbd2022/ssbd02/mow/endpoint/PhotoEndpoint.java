@@ -97,7 +97,7 @@ public class PhotoEndpoint extends AbstractEndpoint {
      * @param login          login fotografa, dla którego pobierane są zdjęcia
      * @param pageNo         numer strony do pobrania
      * @param recordsPerPage liczba rekordów na stronie
-     * @return List<Photo>      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll

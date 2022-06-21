@@ -30,7 +30,7 @@ public class AccountService {
      * Odnajduje konto użytkownika o podanym loginie
      *
      * @param login login użytkownika do wyszukania
-     * @return  Konto użytkownika o podanym loginie
+     * @return Konto użytkownika o podanym loginie
      * @throws BaseApplicationException gdy wystąpi problem z bazą danych
      */
     @PermitAll
@@ -42,6 +42,7 @@ public class AccountService {
      * Odnajduje wybraną wartość poziomu dostępu na bazie jej nazwy
      *
      * @param name Nazwa poziomu dostępu
+     * @return poziom dostępu o danej nazwie
      * @throws DataNotFoundException W momencie, gdy dany poziom dostępu nie zostanie odnaleziony
      */
     @PermitAll

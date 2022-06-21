@@ -132,13 +132,28 @@ public class ReviewEndpoint extends AbstractEndpoint {
         reviewService.unlikeReview(account, review);
     }
 
-
+    /**
+     * Pobiera daną recenzję po jej identyfikatorze
+     *
+     * @param reviewId identyfikator recenzji
+     * @return recenzja o danym identyfikatorze
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(listAllReports)
     public GetReviewDto getReviewById(Long reviewId) throws BaseApplicationException {
         Review review = reviewService.findById(reviewId);
         return new GetReviewDto(review);
     }
 
+    /**
+     * Pobiera listę recenzji na podstawie loginu fotografa
+     *
+     * @param pageNo            numer story
+     * @param recordsPerPage    ilość krotek na stronę
+     * @param photographerLogin login fotografa
+     * @return lista recenzji fotografa o danym loginie
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public ListResponseDto<ReviewDto> getReviewsByPhotographerLogin(int pageNo, int recordsPerPage, String photographerLogin)
             throws BaseApplicationException {

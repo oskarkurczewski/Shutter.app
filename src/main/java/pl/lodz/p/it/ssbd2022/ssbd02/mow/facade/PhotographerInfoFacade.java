@@ -70,8 +70,8 @@ public class PhotographerInfoFacade extends FacadeTemplate<PhotographerInfo> {
      * Szuka profilu fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return informacje o fotografie
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
-     * @PermitAll ponieważ każdy może wyświetlić informacje o fotografie
      * @see PhotographerInfo
      */
     @PermitAll

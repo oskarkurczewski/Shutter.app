@@ -65,6 +65,7 @@ public class AccountService {
      * Odnajduje konto użytkownika o podanym loginie
      *
      * @param login Login użytkownika, którego konta ma być wyszukane
+     * @return wyszukane konto użytkownika
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
@@ -76,6 +77,7 @@ public class AccountService {
      * Odnajduje wybraną wartość poziomu dostępu na bazie jej nazwy
      *
      * @param name Nazwa poziomu dostępu
+     * @return poziom dostępu
      * @throws DataNotFoundException W momencie, gdy dany poziom dostępu nie zostanie odnaleziony
      */
     @PermitAll
@@ -88,6 +90,7 @@ public class AccountService {
      *
      * @param account użytkownika, dla którego ma zostać dokonana zmiana statusu
      * @param active  status, który ma zostać ustawiony
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed({blockAccount, unblockAccount})
     public void changeAccountStatus(Account account, Boolean active) throws BaseApplicationException {
@@ -137,6 +140,7 @@ public class AccountService {
      *
      * @param account  Użytkownik, którego hasło administrator chce zmienić
      * @param password Nowe hasło dla wskazanego użytkownika
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(changeSomeonesPassword)
     public void changeAccountPasswordAsAdmin(Account account, String password) throws BaseApplicationException {
@@ -148,6 +152,7 @@ public class AccountService {
      * Metoda pozwalająca zmienić własne hasło
      *
      * @param data obiekt zawierający stare hasło (w celu weryfikacji) oraz nowe mające być ustawione dla użytkownika
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(changeOwnPassword)
     public void updateOwnPassword(Account account, AccountUpdatePasswordDto data) throws BaseApplicationException {
@@ -316,7 +321,6 @@ public class AccountService {
      * @throws CannotChangeException W przypadku próby zaprzestania bycia fotografem przez uzytkownika mającego
      *                               tę rolę nieaktywną bądź wcale jej niemającego
      */
-
     @RolesAllowed(stopBeingPhotographer)
     public void stopBeingPhotographer(Account account) throws BaseApplicationException {
         AccessLevelAssignment accessLevelFound = accessLevelFacade.getAccessLevelAssignmentForAccount(
@@ -449,6 +453,7 @@ public class AccountService {
      * Funkcja do edycji danych użytkownika. Zmienia tylko proste informacje, a nie role dostępu itp
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(editOwnAccountData)
     public void editAccountInfo(Account account, EditAccountInfoDto editAccountInfoDto) throws BaseApplicationException {
@@ -462,6 +467,7 @@ public class AccountService {
      * imię oraz nazwisko
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed({editSomeonesAccountData})
     public void editAccountInfoAsAdmin(Account account, EditAccountInfoAsAdminDto editAccountInfoAsAdminDto) throws BaseApplicationException {
@@ -476,6 +482,7 @@ public class AccountService {
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
      * @param requestDto obiekt DTO zawierający informacje o sortowaniu i filtrowaniu
+     * @param requester  osoba chcąca pozyskać listę użytkowników
      * @return lista użytkowników
      */
     @RolesAllowed(listAllAccounts)
@@ -514,6 +521,11 @@ public class AccountService {
      * Zapisuje preferencje wyświetlania listy kont użytkownika
      *
      * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
+     * @param orderAsc kierunek sortowania
+     * @param orderBy parametr sortowania
+     * @param page numer strony
+     * @param recordsPerPage ilość krotek na stronie
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(listAllAccounts)
     public void saveAccountListPreferences(
@@ -573,6 +585,7 @@ public class AccountService {
      * automatycznie zablokowane, a użytkownik zostaje powiadomiony o tym drogą mailową.
      *
      * @param account Konto, dla którego należy zarejestrować nieudaną operację logowania
+     * @param ipAddress Adres IP, z którego doszło do logowania
      */
     @PermitAll
     public void registerFailedLogInAttempt(Account account, String ipAddress) {
@@ -644,7 +657,7 @@ public class AccountService {
      *
      * @param account użytkownik
      * @return true, jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
-     * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
+     *         false jezeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
      */
     @PermitAll
     public Boolean is2FAEnabledForUser(Account account) {
@@ -687,7 +700,6 @@ public class AccountService {
      * @param orderBy        kolumna, po której następuje sortowanie
      * @param orderAsc       kolejność sortowania
      * @return Historia zmian konta
-     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getOwnAccountInfo, getEnhancedAccountInfo})
     public List<AccountChangeLog> getAccountChangeLog(
@@ -711,6 +723,7 @@ public class AccountService {
      * Wyłącza lub włącza dwustopniowe uwierzytelnianie dla użytkownika
      *
      * @param account Konto użytkownika
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public void toggle2fa(Account account) throws BaseApplicationException {
@@ -723,6 +736,7 @@ public class AccountService {
      *
      * @param account Konto użytkownika
      * @param locale  Język
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public void changeAccountLocale(Account account, Locale locale) throws BaseApplicationException {

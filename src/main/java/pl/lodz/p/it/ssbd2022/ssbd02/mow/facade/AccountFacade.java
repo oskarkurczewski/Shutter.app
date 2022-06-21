@@ -82,17 +82,17 @@ public class AccountFacade extends FacadeTemplate<Account> {
         Root<AccountReport> table = query.from(AccountReport.class);
         query.select(table);
 
-            switch (order) {
-                case "asc": {
-                    query.orderBy(criteriaBuilder.asc(table.get("createdAt")));
-                    break;
+        switch (order) {
+            case "asc": {
+                query.orderBy(criteriaBuilder.asc(table.get("createdAt")));
+                break;
 
-                }
-                case "desc": {
-                    query.orderBy(criteriaBuilder.desc(table.get("createdAt")));
-                    break;
-                }
             }
+            case "desc": {
+                query.orderBy(criteriaBuilder.desc(table.get("createdAt")));
+                break;
+            }
+        }
 
         if (reviewed != null) query.where(criteriaBuilder.equal(table.get("reviewed"), reviewed));
 

@@ -96,6 +96,7 @@ public class ProfileFacade extends FacadeTemplate<PhotographerInfo> {
      * Pobiera listę wszystkich dostępnych specjalizacji
      *
      * @return lista specjalizacji
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public List<Specialization> getSpecializationList() throws BaseApplicationException {

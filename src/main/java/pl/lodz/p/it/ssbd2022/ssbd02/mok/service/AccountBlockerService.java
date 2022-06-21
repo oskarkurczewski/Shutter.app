@@ -51,6 +51,8 @@ public class AccountBlockerService {
      * blokująca konta nieaktywne przez określony również w pliku czas
      * lub w przypadku braku możliwości odczytania wartości z pliku,
      * przez domyślną wartość 30dni
+     *
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @Timeout
     public void blockUnusedAccounts() throws BaseApplicationException {

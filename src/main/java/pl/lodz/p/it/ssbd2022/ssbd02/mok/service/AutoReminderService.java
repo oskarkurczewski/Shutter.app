@@ -17,6 +17,10 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Serwis wysyłający powiadomienia o konieczności potwierdzenia rejestracji w połowie okresu pozwalającego na
+ * dokonanie tejże operacji
+ */
 @Startup
 @Singleton
 public class AutoReminderService {

@@ -55,6 +55,7 @@ public abstract class AbstractController {
      * @param executor         wyrażenie lambda wykonywanej metody
      * @param transactionClass klasa rozpoczynająca transakcję aplikacyjną
      * @param <T>              typ obiektu zwracanego przez klasę transactionClass
+     * @return wartość zwróconą z powtarzanej metody
      * @throws BaseApplicationException Bazowy wyjątek aplikacyjny
      */
     protected <T> T repeat(ReturnExecutor<T> executor, TransactionClass transactionClass) throws BaseApplicationException {
@@ -80,8 +81,6 @@ public abstract class AbstractController {
 
     /**
      * Interfejs funkcyjny metod typu void
-     *
-     * @throws BaseApplicationException     Bazowy wyjątek aplikacyjny
      */
     @FunctionalInterface
     public interface VoidExecutor {
@@ -90,8 +89,6 @@ public abstract class AbstractController {
 
     /**
      * Interfejs funkcyjny metod określonego typu.
-     *
-     * @throws BaseApplicationException     Bazowy wyjątek aplikacyjny
      */
     @FunctionalInterface
     public interface ReturnExecutor<T> {

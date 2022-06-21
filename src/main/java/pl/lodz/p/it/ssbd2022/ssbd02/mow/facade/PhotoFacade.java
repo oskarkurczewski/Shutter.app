@@ -106,7 +106,7 @@ public class PhotoFacade extends FacadeTemplate<Photo> {
      * @param photographerId konto fotografa, dla którego pobierane są zdjęcia
      * @param page           numer strony
      * @param recordsPerPage liczba recenzji na stronę
-     * @return List<Photo>      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
@@ -135,7 +135,7 @@ public class PhotoFacade extends FacadeTemplate<Photo> {
      * Metoda pozwalająca na pobieranie zdjęć fotografa
      *
      * @param photographerId konto fotografa, dla którego pobierane są zdjęcia
-     * @return List<Photo>      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll

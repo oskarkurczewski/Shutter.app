@@ -26,9 +26,9 @@ public class PhotographerService {
     /**
      * Odnajduje informacje o fotografie na podstawie jego loginu
      *
-     * @param login Login fotografa, dla którego chcemy pozyskać informacje
+     * @param login Login fotografa, dla którego chemy pozyskać informacje
+     * @return informacje o fotografie o podanym loginie
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
-     * @PermitAll ponieważ każdy może wyświetlić informacje o fotografie
      */
     @PermitAll
     public PhotographerInfo findByLogin(String login) throws BaseApplicationException {
@@ -39,6 +39,7 @@ public class PhotographerService {
      * Szuka fotografa
      *
      * @param photographerInfo Informacje o fotografie, które próbuje pozyskać użytkownik
+     * @return informacje o podanym fotografie
      * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                             gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                             profil nieaktywny i informacje próbuje uzyskać użytkownik

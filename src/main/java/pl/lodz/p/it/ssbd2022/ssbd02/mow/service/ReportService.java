@@ -50,21 +50,48 @@ public class ReportService {
     @Inject
     private AccountFacade accountFacade;
 
+    /**
+     * Pozyskuje zgłoszenie konta o podanym identyfikatorze
+     *
+     * @param id identyfikator zgłoszenia
+     * @return zgłoszenie konta o podanym identyfikatorze
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public AccountReport findAccountReportById(Long id) throws BaseApplicationException {
         return accountReportFacade.find(id);
     }
 
+    /**
+     * Pozyskuje zgłoszenie fotografa po podanym identyfikatorze
+     *
+     * @param id identyfikator zgłoszenia
+     * @return zgłoszenie fotografa o podanym identyfikatorze
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public PhotographerReport findPhotographerReportById(Long id) throws BaseApplicationException {
         return photographerReportFacade.find(id);
     }
 
+    /**
+     * Pozyskuje zgłoszenie recenzji po podanym identyfikatorze
+     *
+     * @param id identyfikator zgłoszenia
+     * @return zgłoszenie recenzji o podanym identyfikatorze
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public ReviewReport findReviewReportById(Long id) throws BaseApplicationException {
         return reviewReportFacade.find(id);
     }
 
+    /**
+     * Pozyskuje list powodów zgłoszeń recenzji
+     *
+     * @return lista powodów zgłoszeń recenzji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public List<ReviewReportCause> getReviewReportCauses() throws BaseApplicationException {
         return reviewReportFacade.getReportCauses();
@@ -167,18 +194,36 @@ public class ReportService {
     }
 
 
+    /**
+     * Rozpatruje zgłoszenie recenzji
+     *
+     * @param report zgłoszenie, które ma zostać rozpatrzona
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(resolveReport)
     public void resolveReviewReport(ReviewReport report) throws BaseApplicationException {
         report.setReviewed(true);
         reviewReportFacade.update(report);
     }
 
+    /**
+     * Rozpatruje zgłoszenie fotografa
+     *
+     * @param report zgłoszenie, które ma zostać rozpatrzona
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(resolveReport)
     public void resolvePhotographerReport(PhotographerReport report) throws BaseApplicationException {
         report.setReviewed(true);
         photographerReportFacade.update(report);
     }
 
+    /**
+     * Rozpatruje zgłoszenie użytkownika
+     *
+     * @param report zgłoszenie, które ma zostać rozpatrzona
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed(resolveReport)
     public void resolveAccountReport(AccountReport report) throws BaseApplicationException {
         report.setReviewed(true);
@@ -224,6 +269,13 @@ public class ReportService {
         );
     }
 
+    /**
+     * Pobiera przyczynę zgłoszenia użytkownika na podstawie jej nazwy
+     *
+     * @param cause nazwa przyczyny zgłoszenia
+     * @return przyczyna zgłoszenia
+     * @throws DataNotFoundException niepowodzenie operacji
+     */
     @PermitAll
     public AccountReportCause getAccountReportCause(String cause) throws DataNotFoundException {
         return accountReportCauseFacade.getAccountReportCause(cause);

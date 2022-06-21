@@ -171,3 +171,5 @@ ssbd02.iml
 
 webapp/
 !webapp/WEB-INF
+/final-archive/
+/javadoc/

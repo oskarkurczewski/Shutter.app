@@ -46,7 +46,6 @@ public class AccountChangeLogFacade extends FacadeTemplate<AccountChangeLog> {
      * @param orderBy        kolumna, po której następuje sortowanie
      * @param orderAsc       kolejność sortowania
      * @return Historia zmian konta
-     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
     @PermitAll
     public List<AccountChangeLog> findByLogin(

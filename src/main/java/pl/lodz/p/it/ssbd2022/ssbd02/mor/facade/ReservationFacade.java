@@ -157,9 +157,11 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param account konto użytkownika, dla którego pobierane są rezerwacje
-     * @param order   kolejność sortowania względem kolumny time_from
-     * @param getAll  flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param account   konto użytkownika, dla którego pobierane są rezerwacje
+     * @param order     kolejność sortowania względem kolumny time_from
+     * @param getAll    flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param localDate data użyta przy wyszukiwaniu
+     * @param name      nazwa użytkownika
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -200,6 +202,7 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
      * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
      *
      * @param photographerInfo konto fotografa, dla którego pobierane są rezerwacje
+     * @param localDate         data użyta przy wyszukiwaniu
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -235,6 +238,8 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
      * @param photographerInfo konto fotografa, dla którego pobierane są rezerwacje
      * @param order            kolejność sortowania względem kolumny time_from
      * @param getAll           flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param localDate        data użyta do wyszukiwania
+     * @param name             fraza użyta do wyszukiwania
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
