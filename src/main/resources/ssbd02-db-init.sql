@@ -202,8 +202,6 @@ CREATE TABLE public.photographer_info
     score        bigint  DEFAULT 0 NOT NULL,
     review_count bigint  DEFAULT 0 NOT NULL,
     description  character varying(4096),
-    lat          real,
-    long         real,
     visible      boolean DEFAULT TRUE,
     created_by   bigint,
     created_at   timestamp,

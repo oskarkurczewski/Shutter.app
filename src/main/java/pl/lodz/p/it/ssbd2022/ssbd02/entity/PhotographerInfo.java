@@ -76,12 +76,6 @@ public class PhotographerInfo extends ManagedEntity {
     @Column(name = "description", length = 4096)
     private String description;
 
-    @Column(name = "lat")
-    private Double latitude;
-
-    @Column(name = "long")
-    private Double longitude;
-
     @Column(name = "visible")
     private Boolean visible;
 
