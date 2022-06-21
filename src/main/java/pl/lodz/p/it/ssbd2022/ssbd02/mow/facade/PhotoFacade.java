@@ -114,6 +114,7 @@ public class PhotoFacade extends FacadeTemplate<Photo> {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Photo> query = criteriaBuilder.createQuery(Photo.class);
         Root<Photo> table = query.from(Photo.class);
+        query.orderBy(criteriaBuilder.desc(table.get("id")));
         query.where(criteriaBuilder.equal(table.get("photographer").get("id"), photographerId));
         try {
             return em.createQuery(query)

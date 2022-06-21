@@ -96,6 +96,7 @@ public class ReviewFacade extends FacadeTemplate<Review> {
         CriteriaQuery<Review> query = criteriaBuilder.createQuery(Review.class);
         Root<Review> table = query.from(Review.class);
         query.select(table);
+        query.orderBy(criteriaBuilder.desc(table.get("id")));
         query.where(
                 criteriaBuilder.and(
                         criteriaBuilder.equal(table.get("photographer").get("id"), photographerId),

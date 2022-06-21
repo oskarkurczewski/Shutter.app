@@ -3,12 +3,9 @@ import styles from "./PhotographerReview.module.scss";
 import { Stars } from "../../shared/stars";
 import { PhotographerReviewReportModal } from "../photographer-review-report-modal";
 import { MenuDropdown } from "components/shared/dropdown/menu-dropdown";
-import { Button } from "components/shared/button";
 import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
 import { useTranslation } from "react-i18next";
 import {
-   useLikeReviewMutation,
-   useUnlikeReviewMutation,
    useRemoveOwnPhotographerReviewMutation,
    useRemoveSomeonesPhotographerReviewMutation,
 } from "redux/service/reviewService";
@@ -18,7 +15,6 @@ import { push, ToastTypes } from "redux/slices/toastSlice";
 import { ReviewLikeButton } from "./review-like-button";
 import { Avatar } from "components/shared";
 import { AccessLevel } from "types";
-import { GetPhotographerReviewsResponse } from "redux/types/api";
 
 interface Props {
    id?: number;
@@ -30,8 +26,6 @@ interface Props {
    description: string;
    likeCount: number;
    liked: boolean;
-   changeState: (x: GetPhotographerReviewsResponse) => void;
-   state: GetPhotographerReviewsResponse;
 }
 
 export const PhotographerReview: React.FC<Props> = ({
@@ -42,8 +36,8 @@ export const PhotographerReview: React.FC<Props> = ({
    email,
    stars,
    description,
-   state,
-   changeState,
+   likeCount,
+   liked,
 }) => {
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
@@ -59,16 +53,6 @@ export const PhotographerReview: React.FC<Props> = ({
       setEditReportModalIsOpen(true);
    };
 
-   const likeSuccessToast: Toast = {
-      type: ToastTypes.SUCCESS,
-      text: t("toast.success_like"),
-   };
-
-   const likeErrorToast: Toast = {
-      type: ToastTypes.ERROR,
-      text: t("toast.error_like"),
-   };
-
    // usuwanie recenzji
    const deleteReview = () => {
       if (username === authorLogin) {
@@ -77,6 +61,16 @@ export const PhotographerReview: React.FC<Props> = ({
       if (accessLevel === AccessLevel.ADMINISTRATOR) {
          removeSomeonesReviewMutation(id);
       }
+   };
+
+   const removeReviewSuccessToast: Toast = {
+      type: ToastTypes.SUCCESS,
+      text: t("toast.success_remove_review"),
+   };
+
+   const removeReviewErrorToast: Toast = {
+      type: ToastTypes.ERROR,
+      text: t("toast.error_remove_review"),
    };
 
    useEffect(() => {
@@ -96,16 +90,6 @@ export const PhotographerReview: React.FC<Props> = ({
          dispatch(push(removeReviewErrorToast));
       }
    }, [removeOwnReviewMutationState.isError]);
-
-   const removeReviewSuccessToast: Toast = {
-      type: ToastTypes.SUCCESS,
-      text: t("toast.success_remove_review"),
-   };
-
-   const removeReviewErrorToast: Toast = {
-      type: ToastTypes.ERROR,
-      text: t("toast.error_remove_review"),
-   };
 
    return (
       <div className={styles.review_wrapper}>
@@ -133,7 +117,7 @@ export const PhotographerReview: React.FC<Props> = ({
                   />
                )}
             </MenuDropdown>
-            <ReviewLikeButton id={id} changeState={changeState} state={state} />
+            <ReviewLikeButton id={id} likeCount={likeCount} liked={liked} />
          </div>
          <PhotographerReviewReportModal
             reviewId={id}
