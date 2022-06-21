@@ -7,9 +7,13 @@ import { FaSearch } from "react-icons/fa";
 import { PhotographerListRequest } from "redux/types/api";
 import { useGetPhotographerListMutation } from "redux/service/photographerService";
 import useDebounce from "hooks/useDebounce";
-import { DisabledDropdown, ListElement } from "components/photographers-list";
+import {
+   DisabledDropdown,
+   ListElement,
+   AvailabilityFilter,
+   SpecializationFilter,
+} from "components/photographers-list";
 import { AnimatePresence, motion } from "framer-motion";
-import { SpecializationFilter } from "components/photographers-list/specialization-filter";
 
 export const PhotographersListPage = () => {
    const { t } = useTranslation();
@@ -21,6 +25,9 @@ export const PhotographersListPage = () => {
          specialization: undefined,
          pageNo: 1,
          recordsPerPage: 10,
+         weekDay: undefined,
+         from: undefined,
+         to: undefined,
       });
    const [expandFilters, setExpandFilters] = useState(true);
 
@@ -56,18 +63,16 @@ export const PhotographersListPage = () => {
    }, [selectedSpecialization]);
 
    const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-      const name = e.target.name;
       setPhotographerSearchFilters({
          ...photographerSearchFilters,
-         [name]: e.target.value,
+         name: e.target.value,
       });
    };
 
    const handleDropdownChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-      const name = e.target.name;
       setPhotographerSearchFilters({
          ...photographerSearchFilters,
-         [name]: Number(e.target.value),
+         recordsPerPage: Number(e.target.value),
       });
    };
 
@@ -143,9 +148,11 @@ export const PhotographersListPage = () => {
                                  selectedSpecialization={selectedSpecialization}
                                  setSelectedSpecialization={setSelectedSpecialization}
                               />
-                              {/* availibility filters */}
+                              <AvailabilityFilter
+                                 onChange={setPhotographerSearchFilters}
+                                 state={photographerSearchFilters}
+                              />
                            </div>
-
                            <Card className={styles.card}>
                               <p className="section-title">
                                  {t("photographer_list_page.search_photographer")}

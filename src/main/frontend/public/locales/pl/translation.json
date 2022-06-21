@@ -268,7 +268,10 @@
       "hire": "Wynajmij",
       "list": "Lista",
       "az": "A-Z",
-      "specialization": "Specjalizacja"
+      "specialization": "Specjalizacja",
+      "availability": "Dostępność",
+      "from": "Od",
+      "to": "Do"
    },
    "photographer_list_admin_page": {
       "login": "Login",
