@@ -1,12 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styles from "./PhotographerCalendar.module.scss";
 import {
-   PhotographerDescription,
-   PhotographerInfo,
-   PhotographerReviewsCardWrapper,
-} from "components/photographer-profile";
-import {
-   useCreateReservationMutation,
    useGetAvailabityHoursQuery,
    useGetReservationsForUserQuery,
 } from "redux/service/photographerService";
@@ -14,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Calendar } from "components/shared/calendar";
 import { AvailabilityHour, HourBox, Reservation } from "types/CalendarTypes";
-import { DateTime, Info } from "luxon";
+import { DateTime } from "luxon";
 import { ErrorResponse, Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
@@ -49,7 +42,7 @@ export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
       date: dateFrom.toFormat("yyyy-LL-dd"),
       name: login,
    });
-   // const [createReservation, createReservationState] = useCreateReservationMutation();
+
    const [modalOpen, setModalOpen] = useState<boolean>(false);
    const [availability, setAvailability] = useState<AvailabilityHour[]>();
    const [calendarOpen, setCalendarOpen] = useState(false);
@@ -143,7 +136,7 @@ export const PhotographerCalendar: React.FC<Props> = ({ photographer }) => {
 
    // Handle errors
    useEffect(() => {
-      let err: string;
+      let err: string[];
 
       availabilityQuery.isError &&
          (err = parseError(availabilityQuery.error as ErrorResponse));

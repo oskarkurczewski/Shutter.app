@@ -62,7 +62,7 @@ export const ReservationsListPage = () => {
 
    // Handle errors
    useEffect(() => {
-      let err: string;
+      let err: string[];
       getReservationsMutationState.isError &&
          (err = parseError(getReservationsMutationState.error as ErrorResponse));
 

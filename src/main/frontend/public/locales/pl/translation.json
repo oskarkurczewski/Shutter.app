@@ -64,6 +64,7 @@
       }
    },
    "exception": {
+      "default": "Wystąpił nieoczekiwany błąd",
       "couldnt_fetch_data": "Nie udało się pobrać danych",
       "unexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",

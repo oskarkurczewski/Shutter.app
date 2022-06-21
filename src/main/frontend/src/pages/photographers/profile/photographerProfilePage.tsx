@@ -33,7 +33,7 @@ export const PhotographerProfilePage = () => {
    if (isError) {
       const err = parseError(error as ErrorResponse);
 
-      if (err == "exception.photographer_not_found") {
+      if (err.includes("exception.photographer_not_found")) {
          return <h3>{t("photographer_page.not_found")}</h3>;
       } else {
          const successToast: Toast = {

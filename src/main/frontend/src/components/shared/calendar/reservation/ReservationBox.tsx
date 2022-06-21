@@ -52,7 +52,9 @@ export const ReservationBox: React.FC<Props> = ({ reservation, fullWidth }) => {
                }}
                role="button"
                tabIndex={-1}
-               onClick={() => setInfoBoxOpen(true)}
+               onClick={() => {
+                  setInfoBoxOpen(true);
+               }}
                onKeyDown={() => setInfoBoxOpen(true)}
             />
             {infoBoxOpen && (
