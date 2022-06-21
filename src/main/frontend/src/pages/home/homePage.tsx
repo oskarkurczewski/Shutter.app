@@ -2,13 +2,13 @@ import React from "react";
 import styles from "./homePage.module.scss";
 import { Button } from "components/shared";
 import { useAppSelector } from "redux/hooks";
-import { logout } from "redux/slices/authSlice";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { AccessLevel } from "types";
+import { Player } from "@lottiefiles/react-lottie-player";
+import Animation from "assets/animations/particles.json";
 
 export const HomePage = () => {
-   const { token } = useAppSelector((state) => state.auth);
    const { t } = useTranslation();
    const { accessLevel, username } = useAppSelector((state) => state.auth);
    const buttons = {
@@ -51,6 +51,13 @@ export const HomePage = () => {
 
    return (
       <div className={styles.home_page}>
+         <Player
+            src={Animation}
+            background="transparent"
+            className={styles.particles}
+            autoplay
+            loop
+         />
          <img src="/icons/logo.svg" alt="shutter logo" className={styles.app_logo} />
          <h1 className={styles.home_page_title}>SHUTTER.APP</h1>
          {accessLevel === AccessLevel.GUEST && (

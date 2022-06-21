@@ -2,13 +2,23 @@
 
 .home_page {
    flex: 1;
+   position: relative;
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: center;
    background-size: cover;
-   gap: 2rem;
+   gap: 1rem;
    margin-bottom: 5rem;
+
+   .particles {
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+      opacity: 0.1;
+   }
 
    p {
       max-width: 700px;

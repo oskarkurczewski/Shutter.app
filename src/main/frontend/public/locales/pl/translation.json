@@ -159,6 +159,7 @@
       "error_update": "Modyfikacja nie powiodła się",
       "success_login_message": "Pomyślnie zalogowano.",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+      "success_create_account": "Pomyślnie utworzono konto",
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
       "success_unlike": "Pomyślnie cofnięto polubienie",
@@ -281,6 +282,7 @@
       "latitude": "Szer"
    },
    "create_user_account_page": {
+      "title": "Tworzenie konta użytkownika",
       "create_account": "Utwórz konto"
    },
    "settings_page": {
