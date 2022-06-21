@@ -42,7 +42,9 @@ export const HomePage = () => {
          <>
             {buttons[accessLevel].map((button, index) => (
                <Link key={index} to={button.url}>
-                  <Button onClick={null}>{t(button.label)}</Button>
+                  <Button className={styles.button} onClick={null}>
+                     {t(button.label)}
+                  </Button>
                </Link>
             ))}
          </>
