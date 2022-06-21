@@ -55,6 +55,12 @@
          "specialization_photoreport": "Fotoreportaż",
          "specialization_product": "Fotografia produktowa",
          "specialization_landscape": "Fotografia krajobrazowa"
+      },
+      "component": {
+         "photo": {
+            "like_successful_message": "Polubienie powiodło się!",
+            "unlike_successful_message": "Anulowanie polubienia powiodło się!"
+         }
       }
    },
    "exception": {
