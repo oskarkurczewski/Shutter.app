@@ -1,61 +1,161 @@
 {
    "global": {
+      "query": {
+         "results_zero": "No results",
+         "results_one": "{{count}} result",
+         "results_few": "{{count}} results",
+         "results_many": "{{count}} results",
+         "reviews_zero": "No reviews",
+         "reviews_one": "{{count}} review",
+         "reviews_few": "{{count}} reviews",
+         "reviews_many": "{{count}} reviews"
+      },
       "label": {
          "id": "Id",
          "login": "Login",
-         "password": "Hasło",
-         "repeat_password": "Powtórz hasło",
-         "current_password": "Bieżące hasło",
-         "2fa_code": "Kod uwierzytelniania",
-         "first_name": "Imię",
-         "second_name": "Nazwisko",
-         "email": "Adres email",
+         "password": "Passowrd",
+         "repeat_password": "Confirm password",
+         "current_password": "Current password",
+         "2fa_code": "Authentication code",
+         "first_name": "Name",
+         "second_name": "Surname",
+         "email": "Email address",
          "email_short": "Email",
-         "repeat_email": "Powtórz adres email",
-         "active": "Aktywny",
-         "registered": "Zarejestrowany"
+         "repeat_email": "Confirm email",
+         "active": "Active",
+         "registered": "Registered",
+         "specializations": "Specializations",
+         "score": "Score",
+         "review-count": "Review count",
+         "longitude": "Longitude",
+         "latitude": "Latitude",
+         "loading": "Loading",
+         "submit": "Submit",
+         "cancel": "Cancel",
+         "reject": "Reject",
+         "report": "Report",
+         "show": "Show",
+         "search": "Search",
+         "filters": "Filters",
+         "calendar": "Callendar",
+         "choose_file": "Select File",
+         "submit_operation": "Confirm action"
       },
       "roles": {
-         "admin": "ADMINISTRATOR",
-         "moderator": "MODERATOR",
-         "client": "CLIENT",
-         "photographer": "PHOTOGRAPHER"
+         "administrator": "Administrator",
+         "moderator": "Moderator",
+         "client": "Client",
+         "photographer": "Photographer",
+         "guest": "Not logged in"
       }
    },
    "exception": {
-      "bad_auth_token": "Wystąpił nieoczekiwany błąd. Proszę zalogować się ponownie.",
-      "database": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
-      "cannot_change": "Wybrany zasób jest już w tym stanie.",
-      "mail_provider_error": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
-      "identical_login": "Konto o podanym loginie już istnieje.",
-      "identical_email": "Konto o podanym adresie email już istnieje.",
-      "account_not_found": "Nie znaleziono szukanego konta.",
-      "account_unauthenticated": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
-      "photographer_not_found": "Nie znaleziono szukanego fotografa.",
-      "password_mismatch": "Wprowadzone hasło nie pokrywa się ze starym hasłem.",
-      "old_password_not_exists": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
-      "exexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
-      "2_fa_code_required": "Do zalogowania wymagany jest kod uwierzytelniający.",
-      "account_already_confirmed": "Twoje jest już potwierdzone.",
-      "token_not_found": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
-      "token_expired": "Twoja sesja wygasła. Zaloguj się ponownie.",
-      "token_invalid": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
-      "optlock": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
-      "search_wrong_parameter": "Podano błędne parametry wyszukania.",
-      "user_not_in_group": "Nie posiadasz podanego poziomu dostępu.",
-      "password_not_unique": "Z podanego hasła korzystałeś/aś już niedawno.",
-      "captcha_invalid": "Wprowadzona ReCaptcha jest niepoprawna.",
-      "etag": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
-      "account_list_preferences_not_found": "Nie znaleziono zapisanych preferencji wyszukiwania.",
-      "review_report_not_found": "TODO",
-      "photographer_report_not_found": "TODO",
-      "account_report_not_found": "TODO",
-      "photo_not_found": "TODO",
-      "review_not_found": "TODO",
-      "reservation_not_found": "TODO",
-      "reservation_invalid_time": "TODO",
-      "availability_not_found": "TODO",
-      "availability_overlap": "TODO"
+      "bad_auth_token": "Unexpected error occured. Please log-in again.",
+      "database": "Unexpected error occured. Try again later.",
+      "cannot_change": "Unexpected error occured. Selected resource is already in this state.",
+      "mail_provider_error": "Unexpected error occured. Try again later.",
+      "identical_login": "Account with given login already exists.",
+      "identical_email": "Account with given email already exists.",
+      "account_not_found": "Account clouldn't be found",
+      "account_unauthenticated": "Unexpected error occured. Contact our administrators.",
+      "photographer_not_found": "Photographer clouldn't be found.",
+      "password_mismatch": "Given password doesn't match the old password.",
+      "old_password_not_exists": "Unexpected error occured. Contact our administrators.",
+      "exexpected": "Unexpected error occured. Try again later.",
+      "2_fa_code_required": "Authentication code required.",
+      "account_already_confirmed": "Your account is already confirmed.",
+      "token_not_found": "Unexpected error occured. Contact our administrators.",
+      "token_expired": "Your session has expired. Log-in again.",
+      "token_invalid": "Unexpected error occured. Try again later.",
+      "optlock": "Unexpected error occured. Try again later.",
+      "search_wrong_parameter": "Incorrect search parameters.",
+      "user_not_in_group": "You don't have the requested access-level",
+      "password_not_unique": "You've already used this password in the past.",
+      "captcha_invalid": "Submitted ReCaptcha is incorrect.",
+      "etag": "Unexpected error occured. Contact our administrators.",
+      "account_list_preferences_not_found": "Couldn't find or load account list display preferences.",
+      "review_report_not_found": "Couldn't find requested review report",
+      "photographer_report_not_found": "Couldn't find requested photographer report",
+      "account_report_not_found": "Couldn't find requested user report",
+      "photo_not_found": "Couldn't find requested photo",
+      "review_not_found": "Couldn't find requested review",
+      "reservation_not_found": "Couldn't find requested reservation",
+      "reservation_invalid_time": "You cannot make a reservation at this time",
+      "availability_not_found": "Couldn't find requested availability",
+      "availability_overlap": "Your availabilities cannot overlap!",
+      "photo_upload_error": "Couldn't upload file",
+      "photographer_already_reported": "This photographer has already been reported by you",
+      "reservation_already_exists": "Reservation already exists",
+      "cannot_perform_on_self": "You cannot perform this operation on yourself"
+   },
+   "validator": {
+      "incorrect": {
+         "cause": {
+            "null": "Report cause was not provided"
+         },
+         "name_surname_query": {
+            "regexp": "Incorrect value was provided"
+         },
+         "length": {
+            "min": "{{field}} has to be at least {{min}} characters long.",
+            "max": "{{field}} cannot be longer than {{max}} characters."
+         },
+         "regx": {
+            "email": "Email address has to follow the format: example@domain.com.",
+            "upper_lower_only": "{{field}} can only contain uppercase and lowercase letters.",
+            "first_uppercase": "{{field}} has to start with an uppercase letter.",
+            "password": "Password has to contain at least one uppercase and lowecase letter, digit and special character",
+            "login": "Login has to contain only alphanumeric characters or <>{}-_=*",
+            "login_first_last": "Login has to start and end with a letter"
+         },
+         "search": {
+            "regexp": "Incorrect search parameters"
+         },
+         "token": {
+            "regexp": "Incorrect token was provided"
+         }
+      },
+      "not_same": "Fields must be the same."
+   },
+   "navigation": {
+      "home": "Main page",
+      "login": "Log-in",
+      "register": "Sign-up",
+      "request_reset_password": "Reset password",
+      "profile": "Profile",
+      "settings": "Settings",
+      "users": "Users",
+      "create": "Create",
+      "edit": "Edit",
+      "info": "Information",
+      "dashboard": "Dashboard",
+      "change_own_email": "Change email address",
+      "unblock_account": "Unblock account",
+      "confirm_registration": "Confirm registration",
+      "password_reset": "Reset password",
+      "photographers": "Photographers",
+      "gallery": "Gallery",
+      "change_availability": "Change availability hours",
+      "jobs": "Jobs",
+      "reservations": "Reservations",
+      "reports": "Reports"
+   },
+   "toast": {
+      "renew": "Extend",
+      "success_update": "Modified successfully",
+      "error_update": "Couldn't modifiy",
+      "success_login_message": "Successfully logged-in.",
+      "renew_session_message": "Your session is about to expire, click the button below to extend it.",
+      "success_like": "Successfully liked",
+      "error_like": "Couldn't like",
+      "success_unlike": "Successfully unliked",
+      "error_unlike": "Cofnięcie polubienia nie powiodło się",
+      "success_review": "Successfully added review",
+      "success_remove_review": "Successfully removed review",
+      "error_remove_review": "Couldn't remove review",
+      "error_review": "Couldn't add review",
+      "success_reservation_create": "Successfully created reservation",
+      "success_report": "Successfully created report"
    },
    "navbar": {
       "title": "shutter.app",
@@ -71,54 +171,144 @@
          "logout": "Sign out"
       }
    },
+   "calendar": {
+      "calendar": "Callendar",
+      "availability": "Availability hours",
+      "reservation": "Reservation"
+   },
+   "main_page": {
+      "welcome": "Hi, nice to see you",
+      "description": "Welcome to Shutter.app, log-in or sign-up if you don't have an account!",
+      "quick_access": "Quick access:",
+      "sign_up": "Sign-up",
+      "sign_in": "Log-in",
+      "photographers": "Photographers",
+      "settings": "Settings",
+      "gallery": "Gallery",
+      "photographer_profile": "Profile",
+      "users": "Users"
+   },
+   "not_found": {
+      "not_found_message": "404 Not found",
+      "go_back_message": "Go back to home page"
+   },
    "login_page": {
-      "send_2fa_code": "Wyślij kod",
-      "2fa_code": "6-cyfrowy kod",
-      "form_title": "Logowanie",
-      "recover_password": "Przypomnij hasło",
-      "sign_in": "Zaloguj się",
-      "sign_up": "Zarejestruj się",
-      "inviting_message": "Załóż je teraz, to zupełnie darmowe!",
-      "not_user_message": "Nie masz jeszcze konta?"
+      "send_2fa_code": "Send code",
+      "2fa_code": "6-digit code",
+      "form_title": "Log-in",
+      "recover_password": "Reset password",
+      "sign_in": "Log-in",
+      "sign_up": "Sing-up",
+      "not_user_message_up": "Don't have",
+      "not_user_message_down": "an account?",
+      "inviting_message_up": "Sing-up now,",
+      "inviting_message_down": "It's completely free!",
+      "login_code": "Your authentication code has been sent.",
+      "loading": "Attempting to log-in...",
+      "twoFA_desc": "Enter the two factor authentication code sent to your email inbox in order to confirm your identity."
    },
    "register_page": {
-      "form_title": "Rejestracja",
-      "processing_message": "Wyrażam zgodę na przetwarzanie moich danych osobowych.",
-      "tos_message": "Potwierdzam, że zapoznałem się z regulaminem.",
-      "sign_in": "Zaloguj się",
-      "sign_up": "Zarejestruj się",
+      "form_title": "Sign-up",
+      "processing_message": "I agree to share my personal information with Shutter.app inc.",
+      "tos_message": "I agree to the terms of service.",
+      "sign_in": "Log-in",
+      "sign_up": "Sign-up",
       "validation": {
-         "login_min": "Login musi mieć przynajmniej 3 znaki",
-         "login_max": "Login nie może mieć więcej niż 15 znaków",
-         "email_format": "Adres email musi mieć poprawny format",
-         "password_min": "Hasło musi mieć przynajmniej 8 znaków",
-         "password_max": "Hasło nie może mieć więcej niż 64 znaki",
-         "password_match": "Hasła muszą być ze sobą zgodne",
-         "first_name_empty": "Pole imię nie może być puste",
-         "second_name_empty": "Pole nazwisko nie może być puste",
-         "processing_unchecked": "Należy zaakceptować zgodę na przetwarzanie danych osobowych",
-         "tos_unchecked": "Należy zaakceptować regulamin"
+         "login_min": "Login has to be at least 3 characters long",
+         "login_max": "Login cannot be longer than 15 characters",
+         "email_format": "Email address has to follow the email format",
+         "password_min": "Password has to be at least 8 characters long",
+         "password_max": "Passowrd cannot be longer than 64 characters",
+         "password_match": "Both passowrds have to match",
+         "first_name_empty": "Field \"name\" cannot be empty",
+         "second_name_empty": "Field \"surname\" cannot be empty",
+         "processing_unchecked": "You have to agree to sharing you data",
+         "tos_unchecked": "You have to confirm the terms of service"
       }
    },
    "user_account_list_page": {
       "id": "Id",
       "login": "Login",
       "email": "Email",
-      "first_name": "Imię",
-      "second_name": "Nazwisko",
-      "access_level": "Poziom dostępu",
-      "registered": "Zarejestrowany",
-      "active": "Aktywny",
-      "actions": "Akcje",
+      "first_name": "Name",
+      "second_name": "Surname",
+      "access_level": "Access level",
+      "registered": "Registered",
+      "active": "Active",
+      "actions": "Actions",
       "filter": {
-         "active": "Aktywny",
-         "not_active": "Nieaktywny",
-         "registered": "Zarejestrowany",
-         "not_registered": "Niezarejestrowany",
-         "search": "Szukaj",
-         "placeholder": "Imię i nazwisko",
-         "basic_search": "Podstawowe wyszukiwanie",
-         "advanced_search": "Rozszerzone wyszukiwanie"
+         "active": "Active",
+         "not_active": "Inactive",
+         "registered": "Registered",
+         "not_registered": "Unregistered",
+         "search": "Search",
+         "placeholder": "Name and surname",
+         "basic_search": "Basic search",
+         "advanced_search": "Advanced search"
+      }
+   },
+   "photographer_list_page": {
+      "search_photographer": "Search for photographer",
+      "photographers": "Photographers",
+      "photographer": "Photographer",
+      "profile": "Profile",
+      "hire": "Hire",
+      "list": "List",
+      "az": "A-Z"
+   },
+   "photographer_list_admin_page": {
+      "login": "Login",
+      "email": "Email",
+      "name": "Name",
+      "surname": "Surname",
+      "specializations": "Specialization",
+      "score": "Score",
+      "review-count": "Review count",
+      "longitude": "Longitude",
+      "latitude": "Latitude"
+   },
+   "create_user_account_page": {
+      "create_account": "Create account"
+   },
+   "settings_page": {
+      "title": "Settings",
+      "main_settings": {
+         "title": "Main settings",
+         "confirm": "Confirm",
+         "details_message": "The following changes will be visible after they have been confirmed."
+      },
+      "email_settings": {
+         "title": "Change email address",
+         "details_message": "A confirmation email will be send to your current email inbox.",
+         "send_link": "Send link"
+      },
+      "password_settings": {
+         "title": "Change password",
+         "details_message": "Enter current and new password.",
+         "confirm": "Confirm"
+      },
+      "photographer_settings": {
+         "title": "Photographer settings",
+         "details_message": "You can eddit your profile visibility at any time.",
+         "warning_message": "Warning! All of your reservations will be canceled and your clients will be notified about the visibility change.",
+         "become_message": "You can become a photographer at any point! You'll be able to create your photographer profile, upload pictures to your gallery and manage reservations.",
+         "resign_confirm": "Stop being photographer",
+         "become_confirm": "Become photographer"
+      },
+      "change_description": {
+         "title": "Change description",
+         "details_message": "Enter your new description",
+         "label_message": "New escription",
+         "placeholder_message": "Enter descritpion...",
+         "confirm": "Confirm",
+         "success_message": "Successfully changed description",
+         "error_message": "Something went wrong"
+      },
+      "change_specializations": {
+         "title": "Change specializations",
+         "description": "Specializations represent the categories in which you specialize as a photographer. They help users find you more easily. You can have many specializations at once.",
+         "select": "Select specializations",
+         "confirm": "Confirm"
       }
    },
    "edit_account_page": {
@@ -155,78 +345,209 @@
          "title": "Password",
          "password": "Password",
          "repeat_password": "Repeat password",
-         "cant_change": "When account i unregistered password cannot be changed",
+         "cant_change": "Cannot change password for unregistered account",
          "password_validation": {
             "min": "Password cannot be shorter than 6 characters",
             "max": "Password cannot be longer than 64 characters",
             "regex": "Password must contain at least one capital and lowercase letter, number and special character",
-            "repeat": "Password and repeat password must be the same"
+            "repeat": "Both passwords must be the same"
          }
       },
       "roles": {
          "title": "Roles"
       }
    },
-   "settings_page": {
-      "title": "Ustawienia",
-      "main_settings": {
-         "title": "Ustawienia główne",
-         "confirm": "Zatwierdź",
-         "details_message": "Poniższe zmiany będą widoczne dla fotografa po dokonaniu u niego rezerwacji."
-      },
-      "email_settings": {
-         "title": "Zmień adres email",
-         "details_message": "W przypadku chęci zmiany adresu email zostanie wysłany odpowiedni link na twój aktualny adres email.",
-         "send_link": "Wyślij link"
-      },
-      "password_settings": {
-         "title": "Zmień hasło",
-         "details_message": "W celu zmiany hasła podaj hasło bieżące oraz nowe.",
-         "confirm": "Zatwierdź"
-      },
-      "photographer_settings": {
-         "title": "Ustawienia fotografa",
-         "details_message": "W każdej chwili możesz edytować widoczność swojego profilu fotografa.",
-         "warning_message": "Uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu fotografa.",
-         "become_message": "W każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania rezerwacjami.",
-         "resign_confirm": "Przestań być fotografem",
-         "become_confirm": "Zostań fotografem"
-      }
-   },
    "edit_user_account_page": {
-      "confirm": "Zatwierdź",
-      "access_level": "Poziom dostępu"
+      "confirm": "Confirm",
+      "access_level": "Access level"
    },
    "confirm_register_page": {
-      "title": "Rejestracja konta",
-      "success_message": "Pomyślnie zarejestrowano konto"
+      "title": "Account registration",
+      "success_message": "Successfully registered account"
    },
    "change_own_email_page": {
-      "title": "Zmiana adresu email",
-      "email_new": "Nowy adres email",
-      "confirm": "Zatwierdź"
+      "title": "Change email address",
+      "email_new": "New email address",
+      "confirm": "Confirm"
    },
    "request_reset_password_page": {
-      "title": "Nie pamiętasz hasła?",
-      "details_message": "Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.",
-      "confirm": "Przypomnij hasło"
+      "title": "Forgot your password?",
+      "details_message": "We'll email you instructions on how to reset you password.",
+      "confirm": "Request reset"
    },
    "reset_password_page": {
-      "title": "Zresetuj hasło",
-      "details_message": "Aby dokończyć procedurę resetowania hasła wpisz nowe hasło dla twojego konta.",
-      "password-new": "Nowe hasło",
-      "confirm": "Zmień hasło"
+      "title": "Reset password",
+      "details_message": "To confirm password reset enter new password for your account",
+      "password-new": "New password",
+      "confirm": "Change password"
    },
    "unblock_account_page": {
-      "title": "Odblokowywanie konta"
+      "title": "Unlock account"
    },
    "user_account_info_page": {
-      "created_at": "Utworzone o",
-      "created_by": "Utworzone przez",
-      "modified_at": "Zmodyfikowane o",
-      "last-modified-by": "Zmodyfikowane przez",
-      "modification_date": "Data modyfikacji",
-      "modification_author": "Autor modyfikacji",
-      "modification_type": "Typ modyfikacji"
+      "created_at": "Created at",
+      "created_by": "Created by",
+      "modified_at": "Modified at",
+      "last-modified-by": "Modified by",
+      "modification_date": "Modification date",
+      "modification_author": "Modification author",
+      "modification_type": "Modification by"
+   },
+   "reports_page": {
+      "title": "Reports",
+      "filter": {
+         "all": "All",
+         "reviewed": "Read",
+         "unreviewed": "Unread"
+      },
+      "columns": {
+         "id": "ID",
+         "photographer": "Photographer",
+         "review_id": "Report ID",
+         "reported": "Reported",
+         "reportee": "Reportee",
+         "cause": "Cause",
+         "reviewed": "Reviewed",
+         "report_time": "Report time"
+      },
+      "user": {
+         "title": "User reports",
+         "causes": {
+            "USER_REPORT_DIDNT_PAY_ON_TIME": "Didn't pay on time",
+            "USER_REPORT_DIDNT_SHOW_UP": "Didn't show up"
+         }
+      },
+      "photographer": {
+         "title": "Photographer reports",
+         "causes": {
+            "PHOTOGRAPHER_REPORT_DIDNT_SHOW_UP": "Didn't show up",
+            "PHOTOGRAPHER_REPORT_FALSE_DESCRIPTION": "False description",
+            "PHOTOGRAPHER_REPORT_PRIVACY_VIOLATION": "Privacy violation"
+         }
+      },
+      "review": {
+         "title": "Review reports",
+         "causes": {
+            "REVIEW_REPORT_OBSCENE_CONTENT": "Obscene content",
+            "REVIEW_REPORT_SPAM": "Spam",
+            "REVIEW_REPORT_FAKE_REVIEW": "False review"
+         },
+         "modal": {
+            "title": "Review",
+            "visible": "Visible",
+            "invisible": "Invisible",
+            "submit": "Close",
+            "cancel": "Delete",
+            "success_message": "Review has been successfully removed",
+            "error_message": "Couldn't delete review"
+         }
+      }
+   },
+   "photographer_page": {
+      "not_found": "Photographer could not be found",
+      "title": "Photographer profile",
+      "photographer_session_count": "Finished reservations",
+      "photographer_photos_count": "Photo count",
+      "photographer_review_count": "Review count",
+      "specializations": "Specializations",
+      "description": "Description",
+      "reviews": "Reviews",
+      "add_review": "Add review",
+      "your_opinion": "Your opinion",
+      "opinion_content": "Opinion content",
+      "report_button": "Report",
+      "delete_button": "Delete",
+      "report_review_modal_title": "Review report",
+      "report_review_dropdown": "Report cause:",
+      "gallery_title": "Photo gallery",
+      "calendar_title": "Callendar",
+      "gallery_no_photos": "This photographer doesn't have any photos yet.",
+      "report": {
+         "success_message": "Successfully reported",
+         "review_title": "Review report",
+         "photographer_title": "Photographer report"
+      },
+      "calendar": {
+         "past_date": "A date from the past was chosen",
+         "no_avalibility": "Photographer not available",
+         "conflict_reservation_time": "Reservation conflict",
+         "user_not_logged_in": "Log-in to hire a photographer"
+      },
+      "modal": {
+         "create_reservation": "Create reservation",
+         "user": "Client",
+         "photographer": "Contractor",
+         "user_not_logged_in": "Log-in, to register photographer"
+      }
+   },
+   "photographer_specialization": {
+      "specialization_studio": "Studio photography",
+      "specialization_photoreport": "Photoreport",
+      "specialization_product": "Product photography",
+      "specialization_landscape": "Landscape photography"
+   },
+   "photographer_gallery_page": {
+      "photo": "Photo",
+      "photo_file": "File",
+      "photo_title": "Title",
+      "photo_description": "Description",
+      "add_photo": "Add photo",
+      "close": "Close",
+      "choose_file": "Select file",
+      "photo_title_empty": "Photo title cannot be empty",
+      "photo_data_empty": "Choose a PNG image to upload to your gallery",
+      "uploading_photo": "Uploading file...",
+      "success_message": "Successfully added photo",
+      "no_photos": "You don't have any photos yet. Use the field above to add some!",
+      "error": {
+         "format": "The file must be a PNG image",
+         "file_required": "Please select a file"
+      },
+      "validator": {
+         "incorrect": {
+            "title": {
+               "regexp": "The title should have between 1 and 64 characters"
+            }
+         }
+      }
+   },
+   "photographer_jobs_page": {
+      "search_client": "Find client",
+      "no_reservations": "No reservations for this week",
+      "discard_reservation": {
+         "success": "Successfully discarded reservation",
+         "modal": {
+            "title": "Discard reservation",
+            "description": "Do you really want to discard this reservation?"
+         }
+      }
+   },
+   "user_reservations_page": {
+      "search_client": "Find client",
+      "no_reservations": "No reservations for this week",
+      "cancel_modal": {
+         "title": "Cancel reservation",
+         "description": "Do you really want to cancel this reservation?",
+         "submit": "Cancel",
+         "success": "Reservation successfully cancelled",
+         "error": "Couldn't cancel reservation"
+      }
+   },
+   "change_availability_page": {
+      "availability_hours": "Availability hours",
+      "no_availability": "No availability",
+      "validator": {
+         "incorrect": {
+            "availability_time": "Incorrect range was given"
+         }
+      }
+   },
+   "sidebar": {
+      "changed_role_message": "Successfully changed role to {{role}}"
+   },
+   "logout_modal": {
+      "title": "Log-out",
+      "description": "Are you sure you want to log-out?",
+      "successfully_logged_out": "Successfully logged-outk"
    }
 }
