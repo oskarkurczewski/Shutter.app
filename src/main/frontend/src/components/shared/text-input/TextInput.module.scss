@@ -24,35 +24,52 @@ div.text_input_wrapper {
       overflow: hidden;
       box-shadow: variables.$shadow-elevated;
       height: 43px;
+      background-color: variables.$blue-gray-200;
+      align-items: center;
 
-      span,
-      input {
-         padding: 0.5rem;
-         font-size: variables.$scale-1;
+      .with_icon {
+         border-radius: 0;
       }
 
-      span {
-         background-color: variables.$blue-gray-200;
+      svg {
+         margin: 0 0.7rem;
+         font-size: 1.2rem;
+         color: variables.$blue-gray-300;
       }
-      input {
-         background-color: variables.$blue-gray-100;
-         font-weight: 500;
-         border-radius: 10px;
-         border: none;
-         padding-left: 1rem;
-         color: variables.$gray-300;
-         flex-grow: 1;
-         outline-color: variables.$blue-gray-300;
 
-         &:disabled {
-            background-color: variables.$gray-50;
-         }
-         &.invalid {
+      &.invalid {
+         box-shadow: variables.$shadow-elevated-red;
+
+         input {
             color: variables.$red-300;
          }
       }
    }
 
+   span,
+   input {
+      padding: 0.5rem;
+      font-size: variables.$scale-1;
+   }
+
+   span {
+      background-color: variables.$blue-gray-200;
+   }
+   input {
+      height: 100%;
+      background-color: variables.$blue-gray-100;
+      font-weight: 500;
+      border-radius: 10px;
+      border: none;
+      padding-left: 1rem;
+      color: variables.$gray-300;
+      flex-grow: 1;
+      outline-color: variables.$blue-gray-300;
+
+      &:disabled {
+         background-color: variables.$gray-50;
+      }
+   }
    .messages {
       top: 100%;
       position: absolute;

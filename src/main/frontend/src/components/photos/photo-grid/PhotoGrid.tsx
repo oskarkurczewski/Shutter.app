@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "redux/hooks";
-import { useDeletePhotoRequestMutation, useGetPhotosRequestQuery } from "redux/service/photoService";
+import {
+   useDeletePhotoRequestMutation,
+   useGetPhotosRequestQuery,
+} from "redux/service/photoService";
 import { Photo } from "../photo/Photo";
 import styles from "./PhotoGrid.module.scss";
 
@@ -19,15 +22,14 @@ export const PhotoGrid = () => {
 
    const deletePhoto = (photo_id) => {
       deletePhotoMutation(photo_id);
-   }
+   };
 
    useEffect(() => {
-      getPhotosRequest.refetch()
-   }, [deletePhotoMutationState.isSuccess])
+      getPhotosRequest.refetch();
+   }, [deletePhotoMutationState.isSuccess]);
 
    return (
       <div className={styles.photo_grid}>
-
          {data !== undefined && data.list.length > 0 ? (
             data.list.map((photo, i) => {
                return (
@@ -42,12 +44,13 @@ export const PhotoGrid = () => {
                         liked={photo.liked}
                         showDeleteButton={true}
                         onDelete={deletePhoto}
+                        photo={photo}
                      ></Photo>
                   </div>
                );
             })
          ) : (
-            <br/>
+            <br />
          )}
       </div>
    );

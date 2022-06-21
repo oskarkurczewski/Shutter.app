@@ -6,15 +6,25 @@ import { MenuDropdown } from "components/shared/dropdown/menu-dropdown";
 import { Button } from "components/shared/button";
 import { MenuDropdownItem } from "components/shared/dropdown/menu-dropdown/menu-dropdown-item";
 import { useTranslation } from "react-i18next";
-import { useLikeReviewMutation } from "redux/service/reviewService";
+import {
+   useLikeReviewMutation,
+   useUnlikeReviewMutation,
+   useRemoveOwnPhotographerReviewMutation,
+   useRemoveSomeonesPhotographerReviewMutation,
+} from "redux/service/reviewService";
 import { Toast } from "types";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ReviewLikeButton } from "./review-like-button";
+import { Avatar } from "components/shared";
+import { AccessLevel } from "types";
 
 interface Props {
    id?: number;
+   authorLogin: string;
    name: string;
    surname: string;
+   email: string;
    stars: number;
    description: string;
    likeCount: number;
@@ -23,8 +33,10 @@ interface Props {
 
 export const PhotographerReview: React.FC<Props> = ({
    id,
+   authorLogin,
    name,
    surname,
+   email,
    stars,
    description,
    likeCount,
@@ -33,55 +45,70 @@ export const PhotographerReview: React.FC<Props> = ({
    const [editReportModalIsOpen, setEditReportModalIsOpen] = useState<boolean>(false);
    const { t } = useTranslation();
 
-   const [mutation, { isLoading, isError, isSuccess, error }] = useLikeReviewMutation();
-
-   const likeReview = () => {
-      return mutation(id);
-   };
-
+   const { username, accessLevel } = useAppSelector((state) => state.auth);
+   const [removeOwnReviewMutation, removeOwnReviewMutationState] =
+      useRemoveOwnPhotographerReviewMutation();
+   const [removeSomeonesReviewMutation, removeSomeonesReviewMutationState] =
+      useRemoveSomeonesPhotographerReviewMutation();
    const dispatch = useAppDispatch();
-
-   useEffect(() => {
-      if (isSuccess) {
-         dispatch(push(successToast));
-      }
-   }, [isSuccess]);
-
-   useEffect(() => {
-      if (isError) {
-         dispatch(push(errorToast));
-      }
-   }, [isError]);
 
    const reportReview = () => {
       setEditReportModalIsOpen(true);
    };
 
-   const deleteReview = () => {
-      //TODO: delete review
-   };
-
-   const successToast: Toast = {
+   const likeSuccessToast: Toast = {
       type: ToastTypes.SUCCESS,
       text: t("toast.success_like"),
    };
 
-   const errorToast: Toast = {
+   const likeErrorToast: Toast = {
       type: ToastTypes.ERROR,
       text: t("toast.error_like"),
    };
 
+   // usuwanie recenzji
+   const deleteReview = () => {
+      if (username === authorLogin) {
+         removeOwnReviewMutation(id);
+      }
+      if (accessLevel === AccessLevel.ADMINISTRATOR) {
+         removeSomeonesReviewMutation(id);
+      }
+   };
+
+   useEffect(() => {
+      if (
+         removeOwnReviewMutationState.isSuccess ||
+         removeSomeonesReviewMutationState.isSuccess
+      ) {
+         dispatch(push(removeReviewSuccessToast));
+      }
+   }, [removeOwnReviewMutationState.isSuccess]);
+
+   useEffect(() => {
+      if (
+         removeOwnReviewMutationState.isError ||
+         removeSomeonesReviewMutationState.isError
+      ) {
+         dispatch(push(removeReviewErrorToast));
+      }
+   }, [removeOwnReviewMutationState.isError]);
+
+   const removeReviewSuccessToast: Toast = {
+      type: ToastTypes.SUCCESS,
+      text: t("toast.success_remove_review"),
+   };
+
+   const removeReviewErrorToast: Toast = {
+      type: ToastTypes.ERROR,
+      text: t("toast.error_remove_review"),
+   };
+
    return (
       <div className={styles.review_wrapper}>
-         <img
-            src="/images/avatar.png"
-            alt="reviewer_photo"
-            className={styles.review_photo}
-         />
+         <Avatar className={styles.review_photo} email={email} />
          <div className={styles.review_info}>
-            <p>
-               {name} {surname}
-            </p>
+            <p className="section-title">{`${name} ${surname}`}</p>
             <Stars
                className={styles.review_info_stars}
                stars={stars}
@@ -90,25 +117,20 @@ export const PhotographerReview: React.FC<Props> = ({
          </div>
          <p className={styles.review_description}>{description}</p>
          <div className={styles.review_buttons}>
-            <MenuDropdown className={styles.review_more_button}>
+            <MenuDropdown>
                <MenuDropdownItem
                   value={t("photographer_page.report_button")}
                   onClick={reportReview}
                />
-               <MenuDropdownItem
-                  value={t("photographer_page.delete_button")}
-                  onClick={deleteReview}
-               />
+               {((username === authorLogin && accessLevel === AccessLevel.CLIENT) ||
+                  accessLevel === AccessLevel.ADMINISTRATOR) && (
+                  <MenuDropdownItem
+                     value={t("photographer_page.delete_button")}
+                     onClick={deleteReview}
+                  />
+               )}
             </MenuDropdown>
-            <Button
-               className={`${styles.review_like_button} ${
-                  liked ? styles.review_like_button_liked : ""
-               }`}
-               onClick={likeReview}
-               icon="favorite"
-            >
-               {likeCount?.toString()}
-            </Button>
+            <ReviewLikeButton id={id} likeCount={likeCount} liked={liked} />
          </div>
          <PhotographerReviewReportModal
             reviewId={id}

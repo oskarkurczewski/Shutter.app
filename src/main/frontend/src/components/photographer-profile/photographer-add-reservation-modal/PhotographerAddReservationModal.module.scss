@@ -1,0 +1,49 @@
+@use "variables.scss" as variables;
+
+.modal {
+   padding: 10px;
+   border-radius: 10px;
+   display: flex;
+   flex-direction: column;
+
+   .content {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-radius: 10px;
+
+      .second_row {
+         display: flex;
+         flex-direction: row;
+         gap: 5px;
+      }
+
+      .row {
+         display: flex;
+         justify-content: flex-start;
+         flex-direction: column;
+
+         p {
+            padding-bottom: 5px;
+            padding-left: 5px;
+         }
+
+         .box {
+            display: flex;
+            flex-direction: row;
+            background-color: variables.$blue-gray-100;
+            box-shadow: variables.$shadow-elevated;
+            border-radius: 4px;
+            padding: 10px;
+            align-items: center;
+
+            .avatar {
+               height: 50px;
+               width: 50px;
+               border-radius: 50%;
+               align-self: center;
+            }
+         }
+      }
+   }
+}

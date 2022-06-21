@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint.ReservationEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Login;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.NameSurnameQuery;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
 
@@ -68,7 +69,7 @@ public class ReservationController extends AbstractController {
             @NameSurnameQuery @QueryParam("name") String name,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
             @QueryParam("all") @DefaultValue("false") Boolean getAll,
-            @QueryParam("date") String date
+            @NotNull @QueryParam("date") String date
     ) throws BaseApplicationException {
         LocalDate localDate = null;
         try {
@@ -100,7 +101,7 @@ public class ReservationController extends AbstractController {
             @NameSurnameQuery @QueryParam("name") String name,
             @QueryParam("order") @Order @DefaultValue("asc") String order,
             @QueryParam("all") @DefaultValue("false") Boolean getAll,
-            @QueryParam("date") String date
+            @NotNull @QueryParam("date") String date
     ) throws BaseApplicationException {
         LocalDate localDate = null;
         try {
@@ -113,6 +114,33 @@ public class ReservationController extends AbstractController {
             throw ExceptionFactory.wrongDateException();
         }
         return reservationEndpoint.listJobs(name, order, getAll, localDate);
+    }
+
+    /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
+     *
+     * @param date poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @GET
+    @Path("/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ReservationCalendarEntryDto> listPhotographerJobs(
+            @NotNull @Login @PathParam("login") String photographerLogin,
+            @NotNull @QueryParam("date") String date
+    ) throws BaseApplicationException {
+        LocalDate localDate = null;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            localDate = LocalDate.parse(date, formatter);
+            if (!localDate.getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+                throw ExceptionFactory.wrongDateException();
+            }
+        } catch (Exception e) {
+            throw ExceptionFactory.wrongDateException();
+        }
+        return reservationEndpoint.listPhotographerJobs(photographerLogin, localDate);
     }
 
     /**

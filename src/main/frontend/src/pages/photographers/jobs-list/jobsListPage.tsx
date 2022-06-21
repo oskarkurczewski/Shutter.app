@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./jobsListPage.module.scss";
 import { Calendar } from "components/shared/calendar";
-import { Button, Card, TextInput } from "components/shared";
+import { Button, Card, Modal, TextInput } from "components/shared";
 import {
+   useDiscardJobMutation,
    useGetAvailabityHoursQuery,
    useGetJobListMutation,
 } from "redux/service/photographerService";
@@ -14,6 +15,7 @@ import { AvailabilityHour, ErrorResponse, Reservation, Toast } from "types";
 import { parseToAvailabilityHour } from "redux/converters";
 import { parseError } from "util/errorUtil";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ReportModal } from "components/job-list-page/report-modal";
 
 export const JobsListPage = () => {
    const { t } = useTranslation();
@@ -26,6 +28,11 @@ export const JobsListPage = () => {
 
    const availabilityQuery = useGetAvailabityHoursQuery(username);
    const [getJobsMutation, getJobsMutationState] = useGetJobListMutation();
+   const [discardJobMutation, discardJobMutationState] = useDiscardJobMutation();
+   const [modalOpen, setModalOpen] = useState<boolean>(false);
+   const [reservationId, setReservationId] = useState(null);
+   const [reportModalOpen, setReportModalOpen] = useState(false);
+   const clinetLogin = useRef("");
 
    const sendRequest = () => {
       getJobsMutation({
@@ -35,11 +42,13 @@ export const JobsListPage = () => {
    };
 
    const cancelReservation = (id: number) => {
-      console.log("reservation to remove", id);
+      setReservationId(id);
+      setModalOpen(true);
    };
 
-   const reportReservation = (id: number) => {
-      console.log("reservation to remove", id);
+   const reportReservation = (login: string) => {
+      clinetLogin.current = login;
+      setReportModalOpen(true);
    };
 
    // Parse availability
@@ -61,10 +70,28 @@ export const JobsListPage = () => {
       [getJobsMutationState.data]
    );
 
+   // discard job function
+   const discardJob = () => {
+      discardJobMutation(reservationId);
+      setModalOpen(false);
+   };
+
    // Send request on date change
    useEffect(() => {
       sendRequest();
    }, [dateFrom]);
+
+   // Handle success
+   useEffect(() => {
+      if (discardJobMutationState.isSuccess) {
+         sendRequest();
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("photographer_jobs_page.discard_reservation.success"),
+         };
+         dispatch(push(successToast));
+      }
+   }, [discardJobMutationState.isSuccess]);
 
    // Handle errors
    useEffect(() => {
@@ -74,16 +101,38 @@ export const JobsListPage = () => {
          (err = parseError(availabilityQuery.error as ErrorResponse));
       getJobsMutationState.isError &&
          (err = parseError(getJobsMutationState.error as ErrorResponse));
+      discardJobMutationState.isError &&
+         (err = parseError(getJobsMutationState.error as ErrorResponse));
 
       const errorToast: Toast = {
          type: ToastTypes.ERROR,
          text: t(err),
       };
       err && dispatch(push(errorToast));
-   }, [availabilityQuery.isError, getJobsMutationState.isError]);
+   }, [
+      availabilityQuery.isError,
+      getJobsMutationState.isError,
+      discardJobMutationState.isError,
+   ]);
 
    return (
       <section className={styles.jobs_list_page_wrapper}>
+         <Modal
+            title={t("photographer_jobs_page.discard_reservation.modal.title")}
+            type="confirm"
+            isOpen={modalOpen}
+            onCancel={() => setModalOpen(false)}
+            onSubmit={() => discardJob()}
+            submitText={t("photographer_jobs_page.discard_reservation.modal.title")}
+         >
+            <p>{t("photographer_jobs_page.discard_reservation.modal.description")}</p>
+         </Modal>
+         <ReportModal
+            isOpen={reportModalOpen}
+            onCancel={() => setReportModalOpen(false)}
+            onSubmit={() => setReportModalOpen(false)}
+            login={clinetLogin.current}
+         />
          <Card className={styles.calendar_wrapper}>
             <Calendar
                title={t("global.label.calendar")}
@@ -95,7 +144,6 @@ export const JobsListPage = () => {
                onReservationRemove={(reservation) => cancelReservation(reservation.id)}
             />
          </Card>
-
          <div className={styles.list_wrapper}>
             <div className={styles.filters}>
                <div>
@@ -138,7 +186,7 @@ export const JobsListPage = () => {
                            reservation={reservation}
                            reservationFor="photogapher"
                            onCancel={() => cancelReservation(reservation.id)}
-                           onReport={() => reportReservation(reservation.id)}
+                           onReport={() => reportReservation(reservation.client.login)}
                         />
                      ));
                   })()}

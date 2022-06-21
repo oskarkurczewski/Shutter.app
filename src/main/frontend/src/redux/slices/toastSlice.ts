@@ -5,6 +5,7 @@ import { Toast } from "types";
 
 export interface ToastRenderType extends ToastType {
    type: ToastTypes;
+   name?: string;
    confirm?: ButtonObject;
    cancel?: ButtonObject;
 }

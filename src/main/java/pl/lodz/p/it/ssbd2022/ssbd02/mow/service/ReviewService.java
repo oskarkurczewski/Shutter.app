@@ -4,7 +4,11 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ListResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotographerInfoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ReviewFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
@@ -15,6 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,14 +33,39 @@ public class ReviewService {
     @Inject
     private ReviewFacade reviewFacade;
 
+    @Inject
+    private PhotographerInfoFacade photographerInfoFacade;
+
+    @Inject
+    private AuthenticationContext authenticationContext;
+
     @PermitAll
     public Review findById(Long id) throws BaseApplicationException {
         return Optional.ofNullable(reviewFacade.find(id)).orElseThrow(ExceptionFactory::noReviewFoundException);
     }
 
     @PermitAll
-    public List<Review> listReviewsByPhotographerId(int pageNo, int recordsPerPage, Long id) throws BaseApplicationException {
-        return reviewFacade.getReviewListByPhotographer(pageNo, recordsPerPage, id);
+    public ListResponseDto<ReviewDto> listReviewsByPhotographerLogin(int pageNo, int recordsPerPage, String login) throws BaseApplicationException {
+        Long photographerId = photographerInfoFacade.findPhotographerByLogin(login).getId();
+        Long allRecords = reviewFacade.getReviewListSize(photographerId);
+        List<Review> list = reviewFacade.getReviewListByPhotographer(pageNo, recordsPerPage, photographerId);
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        String currentUserlogin = authenticationContext.getCurrentUsersLogin();
+
+        for (Review review : list) {
+            boolean liked = review.getLikedList().stream().anyMatch(p -> p.getLogin().equals(currentUserlogin));
+            reviewDtoList.add(new ReviewDto(review, liked));
+        }
+
+        ListResponseDto<ReviewDto> listResponseDto = new ListResponseDto<>(
+                pageNo,
+                (int) Math.ceil(allRecords.doubleValue() / recordsPerPage),
+                recordsPerPage,
+                allRecords,
+                reviewDtoList
+        );
+
+        return listResponseDto;
     }
 
     /**

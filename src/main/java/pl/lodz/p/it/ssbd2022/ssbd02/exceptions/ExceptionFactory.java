@@ -188,4 +188,11 @@ public class ExceptionFactory {
     public static WrongParameterException specializationNotFoundException() {
         return new WrongParameterException("exception.specialization_not_found");
     }
+    public static CannotPerformOnSelfException cannotPerformOnSelfException() {
+        return new CannotPerformOnSelfException("exception.cannot_perform_on_self");
+    }
+    
+    public static WrongParameterException wrongDayNameException() {
+        return new WrongParameterException("exception.wrong_day_name");
+    }
 }

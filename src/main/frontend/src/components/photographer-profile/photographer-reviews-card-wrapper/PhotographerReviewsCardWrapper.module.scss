@@ -1,60 +1,70 @@
 @use "variables.scss" as variables;
 
-.photographer_reviews_card_wrapper {
+.reviews_wrapper {
+   padding: 20px;
    display: flex;
    flex-direction: column;
+   width: 100%;
    align-items: flex-start;
    gap: 15px;
 
-   .data_wrapper {
+   .header {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
       width: 100%;
-      padding: 20px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
 
-      .reviews_wrapper {
-         padding-bottom: 20px;
+      p,
+      svg,
+      span {
+         color: variables.$gray-300;
+      }
+
+      p {
+         font-weight: bold;
+      }
+
+      svg {
+         font-size: 1.5rem;
+      }
+
+      .top_buttons_wrapper {
          display: flex;
-         flex-direction: column;
-         width: 100%;
-         align-items: flex-start;
-         column-gap: 50px;
+         flex-direction: row;
+         gap: 10px;
 
-         .top_wrapper {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
+         button {
+            background-color: variables.$blue-gray-100;
+         }
 
-            .top_buttons_wrapper {
+         .add_review_button {
+            background: none;
+
+            button {
+               padding: 6px 8px;
+               height: 100%;
+               border-radius: 7px;
                display: flex;
                flex-direction: row;
-               gap: 10px;
+               justify-content: center;
+               align-items: center;
+               text-transform: capitalize;
+            }
+         }
 
-               button {
-                  p,
-                  span {
-                     color: variables.$gray-200;
-                  }
-                  background-color: variables.$blue-gray-100;
-               }
+         .disabled {
+            button {
+               background-color: variables.$blue-gray-100;
 
-               .add_review_button {
-                  background: none;
-                  button {
-                     padding: 19px;
-                     border-radius: 7px;
-                     display: flex;
-                     flex-direction: row;
-                     height: 2.3rem;
-                     justify-content: center;
-                     align-items: center;
-                  }
+               svg {
+                  color: variables.$gray-100;
                }
             }
+         }
+
+         .navigation {
+            height: 100%;
          }
       }
    }

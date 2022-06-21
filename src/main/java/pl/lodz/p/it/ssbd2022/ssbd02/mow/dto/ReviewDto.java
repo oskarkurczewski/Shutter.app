@@ -9,8 +9,10 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 @NoArgsConstructor
 public class ReviewDto {
     private Long id;
+    private String authorLogin;
     private String name;
     private String surname;
+    private String email;
     private Long score;
     private String content;
     private Long likeCount;
@@ -18,8 +20,10 @@ public class ReviewDto {
 
     public ReviewDto(Review review, boolean isLiked) {
         this.id = review.getId();
-        this.name = review.getPhotographer().getAccount().getName();
-        this.surname = review.getPhotographer().getAccount().getSurname();;
+        this.authorLogin = review.getAccount().getLogin();
+        this.name = review.getAccount().getName();
+        this.surname = review.getAccount().getSurname();;
+        this.email = review.getAccount().getEmail();
         this.score = review.getScore();
         this.content = review.getContent();
         this.likeCount = review.getLikeCount();

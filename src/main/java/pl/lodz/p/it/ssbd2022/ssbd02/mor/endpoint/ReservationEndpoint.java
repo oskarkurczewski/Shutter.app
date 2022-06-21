@@ -1,9 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Reservation;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Specialization;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.*;
@@ -22,6 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,7 +54,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
         Reservation reservation = new Reservation();
         String login = authenticationContext.getCurrentUsersLogin();
         if (login.equals(createReservationDto.getPhotographerLogin())) {
-            throw ExceptionFactory.invalidReservationTimeException("exception.reservation_for_self");
+            throw ExceptionFactory.cannotPerformOnSelfException();
         }
         reservation.setPhotographer(photographerService.getPhotographer(createReservationDto.getPhotographerLogin()));
         reservation.setAccount(accountService.findByLogin(login));
@@ -137,6 +135,28 @@ public class ReservationEndpoint extends AbstractEndpoint {
     }
 
     /**
+     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
+     *
+     * @param login     login fotografa
+     * @param localDate poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
+     * @return ReservationListEntryDto      lista rezerwacji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
+    @PermitAll
+    public List<ReservationCalendarEntryDto> listPhotographerJobs(String login, LocalDate localDate) throws BaseApplicationException {
+        PhotographerInfo photographerInfo = photographerService.getPhotographer(login);
+
+        List<Reservation> reservations = reservationService.listPhotographerJobs(photographerInfo, localDate);
+        List<ReservationCalendarEntryDto> reservationDtoList = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            reservationDtoList.add(new ReservationCalendarEntryDto(reservation));
+        }
+
+        return reservationDtoList;
+    }
+
+    /**
      * Metoda pozwalająca na uzyskanie stronicowanej listy wszystkich aktywnych w systemie fotografów
      *
      * @param page           strona listy, którą należy pozyskać
@@ -175,16 +195,24 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
-    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurnameSpecialization(String name, int page, int recordsPerPage, String spec) throws BaseApplicationException {
+    public MorListResponseDto<PhotographerListEntryDto> findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
+            String name,
+            int page,
+            int recordsPerPage,
+            String spec,
+            WeekDay weekDay,
+            LocalTime fromTime,
+            LocalTime toTime
+    ) throws BaseApplicationException {
         Specialization specialization;
 
-        if (spec != null ) {
+        if (spec != null) {
             specialization = reservationService.getSpecialization(spec);
         } else {
             specialization = null;
         }
 
-        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurnameSpecialization(name, page, recordsPerPage, specialization);
+        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurnameSpecialization(name, page, recordsPerPage, specialization, weekDay, fromTime, toTime);
         Long photographerCount = (long) list.size();
 
         return new MorListResponseDto(

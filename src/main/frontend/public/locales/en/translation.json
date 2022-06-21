@@ -20,6 +20,12 @@
          "moderator": "MODERATOR",
          "client": "CLIENT",
          "photographer": "PHOTOGRAPHER"
+      },
+      "component": {
+         "photo": {
+            "unlike_successful_message": "Pomyślnie usunięto polubienie zdjęcia.",
+            "like_successful_message": "Pomyślnie polubiono zdjęcie."
+         }
       }
    },
    "exception": {
@@ -55,7 +61,9 @@
       "reservation_not_found": "TODO",
       "reservation_invalid_time": "TODO",
       "availability_not_found": "TODO",
-      "availability_overlap": "TODO"
+      "availability_overlap": "TODO",
+      "photo_already_unliked": "Nie masz polubienia na tym zdjęciu.",
+      "photo_already_liked": "To zdjęcie jest już polubione."
    },
    "navbar": {
       "title": "shutter.app",

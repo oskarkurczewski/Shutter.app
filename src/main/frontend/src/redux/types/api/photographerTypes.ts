@@ -1,7 +1,19 @@
-import { basicUserInfoResponse } from "./accountTypes";
 import { ReviewReportCause } from "types/ReviewReportCause";
+import { DateTime } from "luxon";
+import { BasicUserInfoResponse } from "./accountTypes";
+import { Specialization } from "types/Specializations";
 
-export interface photographerTableEntry {
+export interface BasicPhotographerInfo extends BasicUserInfoResponse {
+   login: string;
+   score: number;
+   reviewCount: number;
+   description: string;
+   latitude: number;
+   longitude: number;
+   specializationList: Specialization[];
+}
+
+export interface PhotographerTableEntry {
    login: string;
    email: string;
    name: string;
@@ -13,23 +25,14 @@ export interface photographerTableEntry {
    latitude: number;
 }
 
-export interface getPhotographersListRequest {
+export interface GetPhotographersListRequest {
    pageNo: number;
    recordsPerPage: number;
 }
 
-export interface reportPhotographerReviewRequest {
+export interface ReportPhotographerReviewRequest {
    reviewId: number;
    cause: string;
-}
-
-export interface basicPhotographerInfo extends basicUserInfoResponse {
-   score: number;
-   reviewCount: number;
-   description: string;
-   latitude: number;
-   longitude: number;
-   specializationList: string[];
 }
 
 export interface photographerReport {
@@ -51,20 +54,25 @@ export interface reviewReport {
    liked: boolean;
 }
 
-export interface getPhotographerReviewsResponse {
+export interface GetPhotographerReviewsResponse {
    pageNo: number;
    recordsPerPage: number;
+   allPages: number;
+   allRecords: number;
    list: {
+      authorLogin: string;
       id: number;
       name: string;
       surname: string;
+      email: string;
       score: number;
       content: string;
-      likeCount: string;
+      likeCount: number;
+      liked: boolean;
    }[];
 }
 
-export interface getPhotographerReviewsRequest {
+export interface GetPhotographerReviewsRequest {
    pageNo: number;
    recordsPerPage?: number;
    photographerLogin: string;
@@ -95,9 +103,16 @@ export interface ReviewInfo {
    reviewerLogin: string;
    score: number;
    likeCount: number;
+   liked: boolean;
    content: string;
    active: boolean;
    createdAt: Date;
+}
+
+export interface AddReservationRequest {
+   photographerLogin: string;
+   from: DateTime;
+   to: DateTime;
 }
 
 export interface ReservationRequest {
@@ -125,4 +140,34 @@ export interface ReservationResponse {
 export interface ReportPhotographerRequest {
    photographerLogin: string;
    cause: string;
+}
+
+export interface SimpleReservation {
+   id: number;
+   from: string;
+   to: string;
+}
+
+export interface DetailedPhotographerInfo extends BasicUserInfoResponse {
+   login: string;
+   score: number;
+   reviewCount: number;
+   description: string;
+   latitude: number;
+   longitude: number;
+   specializations: Specialization[];
+}
+
+export interface PhotographerListResponse {
+   allPages: number;
+   allRecords: number;
+   pageNo: number;
+   recordsPerPage: number;
+   list: DetailedPhotographerInfo[];
+}
+
+export interface PhotographerListRequest {
+   query: string;
+   pageNo: number;
+   recordsPerPage: number;
 }

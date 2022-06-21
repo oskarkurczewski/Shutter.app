@@ -19,7 +19,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 
 @ReportAsSingleViolation
-@Size(min = 1, max = 64)
 @Pattern(regexp = REGEXP.NAME_SURNAME_QUERY_PATTERN)
 public @interface NameSurnameQuery {
     String message() default "validator.incorrect.name_surname_query.regexp";

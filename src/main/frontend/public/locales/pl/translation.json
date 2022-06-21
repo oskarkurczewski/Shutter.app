@@ -1,5 +1,15 @@
 {
    "global": {
+      "query": {
+         "results_zero": "Brak wyników",
+         "results_one": "{{count}} wynik",
+         "results_few": "{{count}} wyniki",
+         "results_many": "{{count}} wyników",
+         "reviews_zero": "Brak opinii",
+         "reviews_one": "{{count}} opinia",
+         "reviews_few": "{{count}} opinie",
+         "reviews_many": "{{count}} opinii"
+      },
       "label": {
          "id": "Id",
          "login": "Login",
@@ -38,9 +48,17 @@
          "client": "Klient",
          "photographer": "Fotograf",
          "guest": "Niezalogowany"
+      },
+      "specialization": {
+         "specialization_studio": "Fotografia studyjna",
+         "specialization_photoreport": "Fotoreportaż",
+         "specialization_product": "Fotografia produktowa",
+         "specialization_landscape": "Fotografia krajobrazowa"
       }
    },
    "exception": {
+      "couldnt_fetch_data": "Nie udało się pobrać danych",
+      "unexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
       "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
@@ -79,21 +97,38 @@
       "availability_not_found": "TODO",
       "availability_overlap": "TODO",
       "photo_upload_error": "Nie udało się dodać zdjęcia",
-      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony"
+      "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony",
+      "reservation_already_exists": "Rezerwacje już istnieje",
+      "cannot_perform_on_self": "Nie można dokonać operacji na samym sobie"
    },
    "validator": {
       "incorrect": {
          "cause": {
             "null": "Nie podano przyczyny zgłoszenia"
-         }
-      }
-   },
-   "validator": {
-      "incorrect": {
+         },
          "name_surname_query": {
             "regexp": "Podano niepoprawną wartość"
+         },
+         "length": {
+            "min": "{{field}} musi mieć co najmniej {{min}} znaków.",
+            "max": "{{field}} może mieć co najwyżej {{max}} znaków."
+         },
+         "regx": {
+            "email": "Email musi być w formacie example@domain.com.",
+            "upper_lower_only": "{{field}} może zawierać tylko wielkie i małe litery.",
+            "first_uppercase": "{{field}} musi zaczynać się od wielkiej litery.",
+            "password": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
+            "login": "Login może zawierać tylko znaki alfanumeryczne oraz <>{}-_=*",
+            "login_first_last": "Login musi zaczynać i kończyć sie się literą lub cyfrą"
+         },
+         "search": {
+            "regexp": "Niepoprawne parametry wyszukiwania"
+         },
+         "token": {
+            "regexp": "Podano niepoprawny żeton"
          }
-      }
+      },
+      "not_same": "Pola muszą być takie same."
    },
    "navigation": {
       "home": "Strona główna",
@@ -116,7 +151,6 @@
       "change_availability": "Zmiana godzin dostępności",
       "jobs": "Rezerwacje",
       "reservations": "Rezerwacje",
-      "change_availability": "Zmiana godzin dostępności",
       "reports": "Zgłoszenia"
    },
    "toast": {
@@ -127,8 +161,13 @@
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
       "success_like": "Pomyślnie polubiono",
       "error_like": "Polubienie nie powiodło się",
+      "success_unlike": "Pomyślnie cofnięto polubienie",
+      "error_unlike": "Cofnięcie polubienia nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
+      "success_remove_review": "Pomyślnie usunięto recenzję",
+      "error_remove_review": "Usunięcie recenzji nie powiodło się",
       "error_review": "Dodanie recenzji nie powiodło się",
+      "success_reservation_create": "Pomyślnie utworzono rezerwację",
       "success_report": "Zgłoszenie zostało wysłane"
    },
    "navbar": {
@@ -222,6 +261,15 @@
       }
    },
    "photographer_list_page": {
+      "search_photographer": "Wyszukaj fotografa",
+      "photographers": "Fotografowie",
+      "photographer": "Fotograf",
+      "profile": "Profil",
+      "hire": "Wynajmij",
+      "list": "Lista",
+      "az": "A-Z"
+   },
+   "photographer_list_admin_page": {
       "login": "Login",
       "email": "Email",
       "name": "Imię",
@@ -405,6 +453,7 @@
       }
    },
    "photographer_page": {
+      "not_found": "Nie znaleziono takiego fotografa",
       "title": "Profil Fotografa",
       "photographer_session_count": "Liczba skończonych rezerwacji",
       "photographer_photos_count": "Liczba zdjęć fotografa",
@@ -420,11 +469,24 @@
       "report_review_modal_title": "Zgłaszanie recenzji",
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
+      "calendar_title": "Kalendarz",
       "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
       "report": {
          "success_message": "Zgłoszenie zostało wysłane pomyślnie",
          "review_title": "Zgłaszanie recenzji",
          "photographer_title": "Zgłaszanie fotografa"
+      },
+      "calendar": {
+         "past_date": "Wybrano datę z przeszłości",
+         "no_avalibility": "W danym terminie fotograf nie jest dostępny",
+         "conflict_reservation_time": "W danym terminie istnieje już inna rezerwacja. Wybierz inny termin.",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
+      },
+      "modal": {
+         "create_reservation": "Utwórz rezerwację",
+         "user": "Osoba rezerwująca",
+         "photographer": "Rezerwowany fotograf",
+         "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
       }
    },
    "photographer_specialization": {
@@ -460,11 +522,33 @@
    },
    "photographer_jobs_page": {
       "search_client": "Wyszukaj klienta",
-      "no_reservations": "Brak rezerwacji na ten tydzień"
+      "no_reservations": "Brak rezerwacji na ten tydzień",
+      "discard_reservation": {
+         "success": "Pomyślnie odrzucono rezerwację",
+         "modal": {
+            "title": "Odrzucenie rezerwacji",
+            "description": "Czy na pewno chcesz odrzucić rezerwację?"
+         }
+      },
+      "report_modal": {
+         "title": "Zgłoś klienta",
+         "report": "Zgłoś",
+         "pay_on_time": "Nie zapłacił na czas",
+         "show_up": "Nie pojawił się",
+         "success_toast": "Pomyślnie zgłoszono klienta",
+         "report_message": "Wybierz powód zgłoszenia klienta"
+      }
    },
    "user_reservations_page": {
       "search_client": "Wyszukaj klienta",
-      "no_reservations": "Brak rezerwacji na ten tydzień"
+      "no_reservations": "Brak rezerwacji na ten tydzień",
+      "cancel_modal": {
+         "title": "Odwołaj rezerwację",
+         "description": "Czy na pewno chcesz odwołać tę rezerwację? Po zatwierdzeniu nie będzie możliwe cofnięcie tej operacji.",
+         "submit": "Odwołaj",
+         "success": "Rezerwacja została odwołana pomyślnie",
+         "error": "Odwoływanie rezerwacji nie powiodło się"
+      }
    },
    "change_availability_page": {
       "availability_hours": "Godziny Dostępności",

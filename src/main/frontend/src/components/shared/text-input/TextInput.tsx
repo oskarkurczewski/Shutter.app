@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./TextInput.module.scss";
 
 interface TextInputProps {
-   icon?: string;
+   icon?: JSX.Element;
    type?: React.HTMLInputTypeAttribute;
    label?: string;
    className?: string;
@@ -12,8 +12,7 @@ interface TextInputProps {
    onChange: React.ChangeEventHandler<HTMLInputElement>;
    name?: string;
    disabled?: boolean;
-   validation?: number | boolean;
-   validationMessages?: string[];
+   validation?: string;
 }
 
 export const TextInput = ({
@@ -27,16 +26,14 @@ export const TextInput = ({
    onChange,
    name,
    disabled,
-   validation,
-   validationMessages,
+   validation = "",
 }: TextInputProps) => {
    const input = useRef<HTMLInputElement>(null);
 
    return (
       <div className={`${styles.text_input_wrapper} ${className ? className : ""}`}>
          {label && <p className={`label ${required ? styles.required : ""}`}>{label}</p>}
-         <div className={styles.field}>
-            {icon && <span className="material-icons">{icon}</span>}
+         <div className={`${styles.field} ${validation !== "" ? styles.invalid : ""}`}>
             <input
                type={type ? type : "text"}
                value={value}
@@ -44,26 +41,14 @@ export const TextInput = ({
                placeholder={placeholder}
                name={name}
                disabled={disabled}
-               className={`${
-                  typeof validation === "number"
-                     ? validation !== undefined && validation !== null && styles.invalid
-                     : validation === false && styles.invalid
-               }`}
                ref={input}
             />
+            {icon}
          </div>
-         <div className={styles.messages}>
-            {!disabled &&
-               (typeof validation === "number" ? (
-                  <p
-                     style={{ width: input?.current?.offsetWidth }}
-                     title={validationMessages[validation]}
-                  >
-                     {validationMessages[validation]}
-                  </p>
-               ) : (
-                  validation === false && <p>{validationMessages[0]}</p>
-               ))}
+         <div className={styles.messages} title={validation}>
+            <p style={{ width: `${input?.current?.getBoundingClientRect().width}px` }}>
+               {validation}
+            </p>
          </div>
       </div>
    );

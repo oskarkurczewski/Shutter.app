@@ -22,7 +22,7 @@ import java.util.Objects;
 @Table(name = "reservation")
 @NamedQueries({
         @NamedQuery(name = "reservation.findInPeriod",
-                query = "SELECT r FROM Reservation r WHERE r.photographer = :photographer AND r.account = :account AND :time_from < r.timeTo AND r.timeFrom < :time_to"),
+                query = "SELECT r FROM Reservation r WHERE r.photographer = :photographer AND :time_from < r.timeTo AND r.timeFrom < :time_to"),
 })
 public class Reservation extends ManagedEntity {
 

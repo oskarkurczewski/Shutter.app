@@ -6,11 +6,11 @@ interface Props {
    color?: "purple" | "red" | "blue" | "green";
    className?: string;
    text?: string;
-   Icon?: IconType;
+   icon?: IconType;
    onClick?: () => void;
 }
 
-export const IconText: React.FC<Props> = ({ color, className, text, Icon, onClick }) => {
+export const IconText: React.FC<Props> = ({ color, className, text, icon, onClick }) => {
    return (
       <div
          tabIndex={-1}
@@ -21,8 +21,10 @@ export const IconText: React.FC<Props> = ({ color, className, text, Icon, onClic
             className ? className : ""
          }`}
       >
-         {Icon && <Icon />}
-         {text && <p>{text}</p>}
+         <>
+            {icon}
+            {text && <p>{text}</p>}
+         </>
       </div>
    );
 };

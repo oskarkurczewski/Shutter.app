@@ -6,28 +6,40 @@
    flex-direction: column;
    gap: 40px;
 
-   .content {
-      display: flex;
-      gap: 20px;
+   & > p {
+      color: variables.$gray-300;
    }
 
-   .column {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-   }
+   .photographer_info_container {
+      .content {
+         display: flex;
+         gap: 20px;
 
-   .photographer_gallery_container {
-      margin-top: 4rem;
+         .column {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+         }
+      }
 
-      .photographer_gallery_card {
-         padding: 2rem 2.5rem;
+      .photographer_gallery_container {
+         margin-top: 4rem;
 
-         .gallery_title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 3rem;
+         .photographer_gallery_card {
+            padding: 2rem 2.5rem;
+
+            .gallery_title {
+               font-size: 1.5rem;
+               font-weight: bold;
+               margin-bottom: 3rem;
+            }
          }
       }
    }
+
+   .photographer_callendar_container {
+      margin-top: 4rem;
+   }
+
 }

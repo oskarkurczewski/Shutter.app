@@ -21,7 +21,7 @@ export const Dropdown: React.FC<Props> = ({
    className,
 }) => {
    return (
-      <div className={`${styles.dropdown_wrapper} ${className && className}`}>
+      <div className={`${styles.dropdown_wrapper} ${className ? className : ""}`}>
          {children && <p className="label">{children}</p>}
          <select
             name={name}
@@ -29,8 +29,7 @@ export const Dropdown: React.FC<Props> = ({
             onChange={(e) => {
                onChange(e);
             }}
-            defaultValue={selectedValue.toString()}
-            className={className ? className : ""}
+            value={selectedValue.toString()}
          >
             {values.map((value, index) => {
                return (
