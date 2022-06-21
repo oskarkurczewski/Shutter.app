@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountChangeLogFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AccountListPreferencesFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.BCryptUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.OneTimeCodeUtils;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
@@ -257,7 +256,7 @@ public class AccountService {
      * Metoda pomocnicza służąca do wysyłania powiadomień o zmianach poziomu dostępu użytkownika
      *
      * @param accessLevelValue wartość poziomu dostępu
-     * @param account          konto dla, którego poziom dostępu został zmieniony
+     * @param account          konto dla którego poziom dostępu został zmieniony
      * @param active           określa czy zmiana stanowiła przyznanie, czy odebranie poziomu dostępu
      */
     private void sendAccessLevelChangeMail(AccessLevelValue accessLevelValue, Account account, Boolean active) {
@@ -644,7 +643,7 @@ public class AccountService {
      * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
      *
      * @param account użytkownik
-     * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
+     * @return true, jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
      * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
      */
     @PermitAll
@@ -657,7 +656,7 @@ public class AccountService {
      *
      * @param newPassword nowe hasło do sprawdzenia
      * @param account     użytkownik zmieniający hasło
-     * @return true jeżeli użytkownik nie miał ustawionego danego hasła
+     * @return true, jeżeli użytkownik nie miał ustawionego danego hasła
      */
     private boolean isPasswordUniqueForUser(String newPassword, Account account) {
         return account.getOldPasswordList().stream().noneMatch(op -> op.getPassword().equals(newPassword));
@@ -685,7 +684,7 @@ public class AccountService {
      * @param login          Login użytkownika, którego historia zmian konta ma być wyszukana
      * @param page           numer strony
      * @param recordsPerPage liczba rekordów na stronę
-     * @param orderBy        kolumna po której następuje sortowanie
+     * @param orderBy        kolumna, po której następuje sortowanie
      * @param orderAsc       kolejność sortowania
      * @return Historia zmian konta
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
@@ -723,7 +722,7 @@ public class AccountService {
      * Ustawia preferowany język przez użytkownika
      *
      * @param account Konto użytkownika
-     * @param locale Język
+     * @param locale  Język
      */
     @PermitAll
     public void changeAccountLocale(Account account, Locale locale) throws BaseApplicationException {

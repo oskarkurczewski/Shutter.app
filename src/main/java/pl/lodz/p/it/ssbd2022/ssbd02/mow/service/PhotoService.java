@@ -6,9 +6,9 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyLikedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyUnlikedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ListResponseDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.PhotoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyUnlikedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -79,7 +79,7 @@ public class PhotoService {
     /**
      * Usuwa podane zdjęcie z galerii użytkownika
      *
-     * @param photo zdjęcie które ma zostać usunięte z galerii
+     * @param photo zdjęcie, które ma zostać usunięte z galerii
      */
     @RolesAllowed(deletePhotoFromGallery)
     public void deletePhoto(Photo photo) throws BaseApplicationException {

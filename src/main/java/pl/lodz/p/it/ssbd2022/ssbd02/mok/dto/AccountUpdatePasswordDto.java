@@ -4,7 +4,6 @@ import lombok.Data;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Password;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Klasa DTO służąca do wysłania do serwera informacji o żądaniu

@@ -141,7 +141,7 @@ public class ProfileController extends AbstractController {
      *
      * @param pageNo            numer strony do pobrania
      * @param recordsPerPage    liczba rekordów na stronie
-     * @param photographerLogin login fotografa którego dotyczą recenzje
+     * @param photographerLogin login fotografa, którego dotyczą recenzje
      * @return lista recenzji
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */

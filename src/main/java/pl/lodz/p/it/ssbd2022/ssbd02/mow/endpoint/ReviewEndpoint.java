@@ -5,11 +5,13 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.CreateReviewDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.GetReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ListResponseDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ReviewDto;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.AccountService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.PhotographerService;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ProfileService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.service.ReviewService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
@@ -43,6 +45,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
 
     /**
      * Dodaje recenzje przez zalogowanego użytkownika
+     *
      * @param review obiekt DTO zawierający login fotografa, ocenę w skali od 1 do 10 i słowną opinię
      * @throws BaseApplicationException w przypadku niepowodzenia operacji
      */
@@ -70,9 +73,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
      * Usuwa recenzje dodana przez zalogowanego użytkownika
      *
      * @param reviewId id recenzji fotografa
-     *
      * @throws BaseApplicationException w przypadku niepowodzenia operacji
-     *
      */
     @RolesAllowed(deleteOwnPhotographerReview)
     public void deleteOwnPhotographerReview(Long reviewId)
@@ -92,9 +93,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
      * Usuwa recenzje dodana przez dowolnego użytkownika
      *
      * @param reviewId id recenzji fotografa
-     *
      * @throws BaseApplicationException w przypadku niepowodzenia operacji
-     *
      */
     @RolesAllowed(deleteSomeonesPhotographerReview)
     public void deleteSomeonesPhotographerReview(Long reviewId)
@@ -132,8 +131,8 @@ public class ReviewEndpoint extends AbstractEndpoint {
         Account account = accountService.findByLogin(user);
         reviewService.unlikeReview(account, review);
     }
-    
-    
+
+
     @RolesAllowed(listAllReports)
     public GetReviewDto getReviewById(Long reviewId) throws BaseApplicationException {
         Review review = reviewService.findById(reviewId);

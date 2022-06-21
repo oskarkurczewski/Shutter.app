@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 
 @ReportAsSingleViolation
-@Size(min = 0, max = 64)
+@Size(max = 64)
 @Pattern(regexp = REGEXP.SEARCH_PATTERN)
 public @interface SearchPattern {
     String message() default "validator.incorrect.search.regexp";

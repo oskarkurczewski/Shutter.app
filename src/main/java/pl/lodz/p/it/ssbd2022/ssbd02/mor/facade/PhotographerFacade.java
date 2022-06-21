@@ -20,11 +20,9 @@ import javax.persistence.*;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
 
@@ -264,7 +262,7 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
                                 criteriaBuilder.lower(from.get("account").get("surname")), criteriaBuilder.parameter(String.class, "name")
                         )
                 )));
-        
+
         criteriaQuery.select(from).where(predicates.toArray(new Predicate[predicates.size()]));
         criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.quot(from.get("score"), from.get("reviewCount"))));
 

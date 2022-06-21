@@ -9,14 +9,11 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotographerInfoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-
-import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.getPhotographerInfo;
 
 @Stateless
 @Interceptors(LoggingInterceptor.class)
@@ -29,7 +26,7 @@ public class PhotographerService {
     /**
      * Odnajduje informacje o fotografie na podstawie jego loginu
      *
-     * @param login Login fotografa dla którego chemy pozyskać informacje
+     * @param login Login fotografa, dla którego chcemy pozyskać informacje
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @PermitAll ponieważ każdy może wyświetlić informacje o fotografie
      */

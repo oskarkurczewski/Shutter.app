@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -98,10 +97,10 @@ public class ReviewFacade extends FacadeTemplate<Review> {
         Root<Review> table = query.from(Review.class);
         query.select(table);
         query.where(
-            criteriaBuilder.and(
-                    criteriaBuilder.equal(table.get("photographer").get("id"), photographerId),
-                    criteriaBuilder.equal(table.get("active"), true)
-            )
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(table.get("photographer").get("id"), photographerId),
+                        criteriaBuilder.equal(table.get("active"), true)
+                )
         );
 
         return em

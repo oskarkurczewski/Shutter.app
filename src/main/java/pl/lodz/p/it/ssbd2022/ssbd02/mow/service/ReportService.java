@@ -1,24 +1,13 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.service;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotographerReportFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountReport;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerReport;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReport;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.ReviewReportCause;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAccountReportFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerReportFoundException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoReviewReportFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.DataNotFoundException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.AccountFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ReviewReportFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.AccountReportCauseFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.AccountReportFacade;
-import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.MowAccessLevelFacade;
+import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -68,7 +57,8 @@ public class ReportService {
 
     @PermitAll
     public PhotographerReport findPhotographerReportById(Long id) throws BaseApplicationException {
-        return photographerReportFacade.find(id);}
+        return photographerReportFacade.find(id);
+    }
 
     @PermitAll
     public ReviewReport findReviewReportById(Long id) throws BaseApplicationException {
@@ -88,16 +78,16 @@ public class ReportService {
      */
     @RolesAllowed(reportClient)
     public void addClientAccountReport(AccountReport report) throws BaseApplicationException {
-            if (report.getReported().getLogin().equals(report.getReportee().getLogin())) {
-                throw ExceptionFactory.selfReportException();
-            }
+        if (report.getReported().getLogin().equals(report.getReportee().getLogin())) {
+            throw ExceptionFactory.selfReportException();
+        }
 
-            AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName("CLIENT");
-            if (accessLevelFacade.getAccessLevelAssignmentForAccount(report.getReported(), accessLevelValue) == null) {
-                throw ExceptionFactory.noAccountFound("exception.no_client_found");
-            }
+        AccessLevelValue accessLevelValue = accountService.findAccessLevelValueByName("CLIENT");
+        if (accessLevelFacade.getAccessLevelAssignmentForAccount(report.getReported(), accessLevelValue) == null) {
+            throw ExceptionFactory.noAccountFound("exception.no_client_found");
+        }
 
-            accountReportFacade.persist(report);
+        accountReportFacade.persist(report);
     }
 
     /**
@@ -236,6 +226,6 @@ public class ReportService {
 
     @PermitAll
     public AccountReportCause getAccountReportCause(String cause) throws DataNotFoundException {
-        return  accountReportCauseFacade.getAccountReportCause(cause);
+        return accountReportCauseFacade.getAccountReportCause(cause);
     }
 }

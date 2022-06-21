@@ -2,11 +2,9 @@ package pl.lodz.p.it.ssbd2022.ssbd02.security;
 
 import com.bastiaanjansen.otp.HMACAlgorithm;
 import com.bastiaanjansen.otp.TOTP;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoConfigFileFound;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -30,7 +28,8 @@ public class OneTimeCodeUtils {
 
     @PermitAll
     public String generateCode(String secret) {
-        TOTP generator = createTotp(secret); return generator.now();
+        TOTP generator = createTotp(secret);
+        return generator.now();
     }
 
     @PermitAll

@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.exceptions;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.ErrorDto;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 /**
