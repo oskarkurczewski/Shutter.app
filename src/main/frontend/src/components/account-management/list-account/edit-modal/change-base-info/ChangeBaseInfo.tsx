@@ -1,11 +1,14 @@
-import { Button, Card, Checkbox, SquareButton, TextInput } from "components/shared";
+import { Button, Checkbox, TextInput } from "components/shared";
 import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaCheck } from "react-icons/fa";
+import { useAppDispatch } from "redux/hooks";
 import { useChangeAccountInfoMutation } from "redux/service/usersManagementService";
 import { AdvancedUserInfoResponse } from "redux/types/api";
+import { push, ToastTypes } from "redux/slices/toastSlice";
 import { EtagData } from "redux/types/api/dataTypes";
+import { ErrorResponse, Toast } from "types";
+import { parseError } from "util/errorUtil";
 import {
    emailPattern,
    nameSurnameFirstLetterPattern,
@@ -21,6 +24,7 @@ interface Props {
 
 export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
 
    const [login, setLogin] = useState<string>("");
    const [active, setActive] = useState<boolean>(false);
@@ -39,18 +43,18 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
       useStateWithValidationAndComparison<string>(emailRules(t), ["", ""]);
 
    const [canSubmit, setCanSubmit] = useState(
-      nameValidationMessage &&
-         surnameValidationMessage &&
-         emailValidationMessages[0] === "" &&
-         emailValidationMessages[1] === ""
+      nameValidationMessage === "" &&
+         surnameValidationMessage === "" &&
+         emailValidationMessages.valueB === "" &&
+         emailValidationMessages.valueA === ""
    );
 
    useEffect(() => {
       setCanSubmit(
-         nameValidationMessage &&
-            surnameValidationMessage &&
-            emailValidationMessages[0] === "" &&
-            emailValidationMessages[1] === ""
+         nameValidationMessage === "" &&
+            surnameValidationMessage === "" &&
+            emailValidationMessages.valueA === "" &&
+            emailValidationMessages.valueB === ""
       );
    }, [nameValidationMessage, surnameValidationMessage, emailValidationMessages]);
 
@@ -68,16 +72,12 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
 
    const [infoMutation, infoMutationState] = useChangeAccountInfoMutation();
 
-   useEffect(() => {
-      // TODO: add toast
-   }, [infoMutationState]);
-
    const submit = () => {
       canSubmit &&
          infoMutation({
             body: {
                login: login,
-               email: emails[0],
+               email: emails.valueA,
                name: name,
                surname: surname,
                active: active,
@@ -87,8 +87,24 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
    };
 
    useEffect(() => {
-      infoMutationState.isSuccess && refetch();
-   }, [infoMutationState.isSuccess]);
+      if (infoMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_edit_account_info"),
+         };
+         dispatch(push(successToast));
+         refetch();
+      }
+
+      if (infoMutationState.isError) {
+         const err = infoMutationState.error as ErrorResponse;
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(parseError(err)),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [infoMutationState]);
 
    return (
       <div className={styles.base_info_wrapper}>
@@ -174,14 +190,14 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
          </div>
 
          <div className={styles.save}>
-            <Button onClick={submit} disabled={!canSubmit} className={styles.btn}>
+            <Button
+               loading={infoMutationState.isLoading}
+               onClick={submit}
+               disabled={!canSubmit}
+               className={styles.btn}
+            >
                {t("edit_account_page.confirm")}
             </Button>
-
-            {/* TODO: change to toast */}
-            {infoMutationState.isError && (
-               <p className={styles.error_message}>Nie można zapisać edycji</p>
-            )}
          </div>
       </div>
    );

@@ -13,10 +13,10 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 public class AddPhotoDto {
-    @NotNull(message = "validator.incorrect.photo.title.null")
+    @NotNull(message = "validator.incorrect.photo_title.null")
     @PhotoTitle
     private String title;
-    @NotNull(message = "validator.incorrect.photo.description.null")
+    @NotNull(message = "validator.incorrect.photo_description.null")
     @PhotoDescription
     private String description;
     @NotNull

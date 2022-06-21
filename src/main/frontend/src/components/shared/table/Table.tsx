@@ -11,6 +11,7 @@ import {
 
 import { Dropdown, SquareButton } from "components/shared";
 import { tableHeader } from "types/ComponentTypes";
+import { useTranslation } from "react-i18next";
 
 interface Props {
    data: (string | ReactNode)[][];
@@ -35,6 +36,8 @@ export const Table: React.FC<Props> = ({
    recordsPerPage,
    setRecordsPerPage,
 }) => {
+   const { t } = useTranslation();
+
    const changeOrder = (id: string, order: string) => {
       const newHeaders = (headers: tableHeader[]) => {
          return headers.map((header) => {
@@ -49,7 +52,7 @@ export const Table: React.FC<Props> = ({
    return (
       <div className={styles.table_wrapper}>
          <table>
-            <tbody>
+            <thead>
                <tr className={styles.table_header}>
                   {headers.map((header, index) => (
                      <th key={header.id}>
@@ -96,6 +99,8 @@ export const Table: React.FC<Props> = ({
                      </th>
                   ))}
                </tr>
+            </thead>
+            <tbody>
                {data.map((row, rowIndex) => (
                   <tr key={rowIndex} className={styles.table_row}>
                      {row.map((item, columnIndex) => (
@@ -105,6 +110,11 @@ export const Table: React.FC<Props> = ({
                ))}
             </tbody>
          </table>
+
+         {data.length == 0 && (
+            <div className={styles.no_records}>{t("global.query.results_zero")}</div>
+         )}
+
          <div className={styles.pages}>
             <div className={styles.pages_wrapper}>
                <div className={styles.all_records}>{allRecords} wyników</div>

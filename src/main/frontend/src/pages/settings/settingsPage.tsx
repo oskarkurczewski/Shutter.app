@@ -12,6 +12,7 @@ import {
    ChangePasswordSettings,
    ChangeDescriptionSettings,
    ChangeSpecializationsSettings,
+   LoginInfoSettings,
 } from "components/settings";
 import { useAppSelector } from "redux/hooks";
 import { AccessLevel } from "types/AccessLevel";
@@ -55,15 +56,15 @@ export const SettingsPage: React.FC = () => {
          label: t("settings_page.photographer_settings.title"),
       },
       {
-         icon: <BsChatSquareTextFill />,
-         id: "change-description",
-         label: t("settings_page.change_description.title"),
-         roles: [AccessLevel.PHOTOGRAPHER],
-      },
-      {
          icon: <FaStar />,
          id: "change-specializations",
          label: t("settings_page.change_specializations.title"),
+         roles: [AccessLevel.PHOTOGRAPHER],
+      },
+      {
+         icon: <BsChatSquareTextFill />,
+         id: "change-description",
+         label: t("settings_page.change_description.title"),
          roles: [AccessLevel.PHOTOGRAPHER],
       },
    ];
@@ -99,7 +100,7 @@ export const SettingsPage: React.FC = () => {
             <MainSettings />
             <ChangeEmailSettings />
             <ChangePasswordSettings />
-            {roles.includes(AccessLevel.PHOTOGRAPHER) ? (
+            {accessLevel == AccessLevel.PHOTOGRAPHER ? (
                <>
                   <StopBeingPhotographerSettings />
                   <ChangeSpecializationsSettings />
@@ -108,6 +109,7 @@ export const SettingsPage: React.FC = () => {
             ) : (
                <BecomePhotographerSettings />
             )}
+            <LoginInfoSettings />
          </div>
       </section>
    );

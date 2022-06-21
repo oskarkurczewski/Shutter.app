@@ -6,7 +6,7 @@ interface Props {
    color?: "purple" | "red" | "blue" | "green";
    className?: string;
    text?: string;
-   icon?: IconType;
+   icon?: IconType | JSX.Element;
    onClick?: () => void;
 }
 
@@ -22,7 +22,7 @@ export const IconText: React.FC<Props> = ({ color, className, text, icon, onClic
          }`}
       >
          <>
-            {icon}
+            {icon && icon}
             {text && <p>{text}</p>}
          </>
       </div>

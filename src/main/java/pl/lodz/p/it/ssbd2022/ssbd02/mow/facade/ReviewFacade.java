@@ -97,7 +97,12 @@ public class ReviewFacade extends FacadeTemplate<Review> {
         CriteriaQuery<Review> query = criteriaBuilder.createQuery(Review.class);
         Root<Review> table = query.from(Review.class);
         query.select(table);
-        query.where(criteriaBuilder.equal(table.get("photographer"), photographerId));
+        query.where(
+            criteriaBuilder.and(
+                    criteriaBuilder.equal(table.get("photographer").get("id"), photographerId),
+                    criteriaBuilder.equal(table.get("active"), true)
+            )
+        );
 
         return em
                 .createQuery(query)
@@ -112,7 +117,12 @@ public class ReviewFacade extends FacadeTemplate<Review> {
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Review> table = query.from(Review.class);
         query.select(criteriaBuilder.count(table));
-        query.where(criteriaBuilder.equal(table.get("photographer").get("id"), photographerId));
+        query.where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(table.get("photographer").get("id"), photographerId),
+                        criteriaBuilder.equal(table.get("active"), true)
+                )
+        );
         try {
             return em.createQuery(query).getSingleResult();
         } catch (NoResultException e) {

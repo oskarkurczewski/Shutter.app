@@ -1,25 +1,54 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./requestResetPasswordPage.module.scss";
 import { Button, Card, TextInput } from "components/shared";
 import { useSendResetPasswordLinkMutation } from "redux/service/userSettingsService";
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useAppDispatch } from "redux/hooks";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ErrorResponse, Toast } from "types";
+import { parseError } from "util/errorUtil";
 
 export const RequestResetPasswordPage = () => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
 
    const recaptchaRef = useRef(null);
 
    const [login, setLogin] = useState<string>("");
-   const [requestResetPasswordMutation, { isLoading, isSuccess, isError }] =
-      useSendResetPasswordLinkMutation();
+   const [resetPassword, mutationState] = useSendResetPasswordLinkMutation();
 
    const onSubmit = async (e) => {
       e.preventDefault();
       const captchaToken = await recaptchaRef.current.getValue();
 
-      await requestResetPasswordMutation({ login: login, captcha: captchaToken });
+      await resetPassword({ login: login, captcha: captchaToken });
    };
+
+   useEffect(() => {
+      if (mutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_send_reset_password_link_message"),
+         };
+         dispatch(push(successToast));
+      }
+
+      if (mutationState.isError) {
+         let err = "";
+         if (login == "") {
+            err = "validator.incorrect.login.regexp";
+         } else {
+            err = parseError(mutationState.error as ErrorResponse);
+         }
+
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(err),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [mutationState]);
 
    return (
       <section className={styles.reset_password_page_wrapper}>
@@ -39,21 +68,10 @@ export const RequestResetPasswordPage = () => {
                   sitekey="6LcOjh4gAAAAAJRdv-oKWqqj8565Bz6Y3QlmJv5L"
                />
                <div className={styles.footer}>
-                  <Button onClick={(e) => onSubmit(e)}>
+                  <Button loading={mutationState.isLoading} onClick={(e) => onSubmit(e)}>
                      {t("request_reset_password_page.confirm")}
                   </Button>
                </div>
-               {(() => {
-                  if (isLoading) {
-                     return <p>{t("message.loading.reset-password")}</p>;
-                  }
-                  if (isError) {
-                     return <p className="error">{t("message.error.reset-password")}</p>;
-                  }
-                  if (isSuccess) {
-                     return <p>{t("message.success.reset-password")}</p>;
-                  }
-               })()}
             </form>
          </Card>
       </section>

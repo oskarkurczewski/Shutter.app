@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styles from "./MainSettings.module.scss";
 import { Button, TextInput, Card } from "components/shared";
 import { useChangeUserDataMutation } from "redux/service/userSettingsService";
-import { useGetUserInfoQuery } from "redux/service/authService";
+import { useGetOwnUserInfoQuery } from "redux/service/authService";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { nameSurnameFirstLetterPattern, nameSurnamePattern } from "util/regex";
 import { useStateWithValidation } from "hooks";
 import { Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
-import { nameRules, passwordRules } from "util/validationRules";
+import { nameRules, surnameRules } from "util/validationRules";
 
 export const MainSettings = () => {
    const { t } = useTranslation();
@@ -21,13 +20,13 @@ export const MainSettings = () => {
    );
 
    const [surname, setSurname, surnameValidationMessage] = useStateWithValidation<string>(
-      passwordRules(t),
+      surnameRules(t),
       ""
    );
 
    const { username } = useAppSelector((state) => state.auth);
    const [mutation, mutationState] = useChangeUserDataMutation();
-   const { data } = useGetUserInfoQuery();
+   const { data } = useGetOwnUserInfoQuery();
 
    useEffect(() => {
       if (mutationState.isSuccess) {
@@ -76,8 +75,8 @@ export const MainSettings = () => {
             onClick={() => {
                mutation({
                   data: {
-                     name: data.data.name,
-                     surname: data.data.surname,
+                     name: name,
+                     surname: surname,
                      login: username,
                   },
                   etag: data.etag,

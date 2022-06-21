@@ -4,6 +4,8 @@ import {
    nameSurnameFirstLetterPattern,
    nameSurnamePattern,
    passwordPattern,
+   loginPattern,
+   loginFirstLastPattern,
 } from "./regex";
 
 export const loginRules = (t: TFunction<"translation", undefined>) => {
@@ -23,11 +25,11 @@ export const loginRules = (t: TFunction<"translation", undefined>) => {
          }),
       },
       {
-         function: (login) => nameSurnamePattern.test(login),
+         function: (login) => loginPattern.test(login),
          message: t("validator.incorrect.regx.login"),
       },
       {
-         function: (login) => nameSurnameFirstLetterPattern.test(login),
+         function: (login) => loginFirstLastPattern.test(login),
          message: t("validator.incorrect.regx.login_first_last"),
       },
    ];
