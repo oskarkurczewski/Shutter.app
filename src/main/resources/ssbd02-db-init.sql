@@ -1,28 +1,28 @@
 SET
-statement_timeout = 0;
+    statement_timeout = 0;
 SET
-lock_timeout = 0;
+    lock_timeout = 0;
 SET
-idle_in_transaction_session_timeout = 0;
+    idle_in_transaction_session_timeout = 0;
 SET
-client_encoding = 'UTF8';
+    client_encoding = 'UTF8';
 SET
-standard_conforming_strings = on;
+    standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET
-check_function_bodies = false;
+    check_function_bodies = false;
 SET
-xmloption = content;
+    xmloption = content;
 SET
-client_min_messages = warning;
+    client_min_messages = warning;
 SET
-row_security = off;
+    row_security = off;
 
 SET
-default_tablespace = '';
+    default_tablespace = '';
 
 SET
-default_table_access_method = heap;
+    default_table_access_method = heap;
 
 CREATE TABLE public.account
 (
@@ -48,7 +48,8 @@ CREATE TABLE public.account
     last_failed_login_ip varchar(64)
 );
 
-ALTER TABLE public.account OWNER TO ssbd02admin;
+ALTER TABLE public.account
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.account_change_log
 (
@@ -70,7 +71,8 @@ CREATE TABLE public.account_change_log
     change_type   character varying(16)
 );
 
-ALTER TABLE public.account_change_log OWNER TO ssbd02admin;
+ALTER TABLE public.account_change_log
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.access_level
 (
@@ -79,7 +81,8 @@ CREATE TABLE public.access_level
     name    character varying(64) NOT NULL
 );
 
-ALTER TABLE public.access_level OWNER TO ssbd02admin;
+ALTER TABLE public.access_level
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.access_level_assignment
 (
@@ -94,7 +97,8 @@ CREATE TABLE public.access_level_assignment
     modified_at     timestamp
 );
 
-ALTER TABLE public.access_level_assignment OWNER TO ssbd02admin;
+ALTER TABLE public.access_level_assignment
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.account_report
 (
@@ -110,7 +114,8 @@ CREATE TABLE public.account_report
     modified_at timestamp
 );
 
-ALTER TABLE public.account_report OWNER TO ssbd02admin;
+ALTER TABLE public.account_report
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.account_report_cause
 (
@@ -123,7 +128,8 @@ CREATE TABLE public.account_report_cause
     modified_at timestamp
 );
 
-ALTER TABLE public.account_report_cause OWNER TO ssbd02admin;
+ALTER TABLE public.account_report_cause
+    OWNER TO ssbd02admin;
 
 CREATE VIEW public.authorization_view AS
 SELECT account.login,
@@ -134,16 +140,17 @@ FROM ((public.account
          JOIN public.access_level ON ((access_level.id = access_level_assignment.access_level_id)))
 WHERE ((account.active = true) AND (access_level_assignment.active = true) AND (account.registered = true));
 
-ALTER TABLE public.authorization_view OWNER TO ssbd02admin;
+ALTER TABLE public.authorization_view
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.availability
 (
     version         bigint,
-    id              bigint   NOT NULL GENERATED ALWAYS AS IDENTITY,
-    photographer_id bigint   NOT NULL,
-    weekday         smallint NOT NULL,
-    time_from     time without time zone NOT NULL,
-    time_to       time without time zone NOT NULL,
+    id              bigint                 NOT NULL GENERATED ALWAYS AS IDENTITY,
+    photographer_id bigint                 NOT NULL,
+    weekday         smallint               NOT NULL,
+    time_from       time without time zone NOT NULL,
+    time_to         time without time zone NOT NULL,
     created_by      bigint,
     created_at      timestamp,
     modified_by     bigint,
@@ -151,7 +158,8 @@ CREATE TABLE public.availability
     CONSTRAINT weekday_check CHECK (((weekday >= 0) AND (weekday <= 6)))
 );
 
-ALTER TABLE public.availability OWNER TO ssbd02admin;
+ALTER TABLE public.availability
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.photo
 (
@@ -169,7 +177,8 @@ CREATE TABLE public.photo
     modified_at     timestamp
 );
 
-ALTER TABLE public.photo OWNER TO ssbd02admin;
+ALTER TABLE public.photo
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.photo_like
 (
@@ -182,7 +191,8 @@ CREATE TABLE public.photo_like
     modified_at timestamp
 );
 
-ALTER TABLE public.photo_like OWNER TO ssbd02admin;
+ALTER TABLE public.photo_like
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.photographer_info
 (
@@ -200,7 +210,8 @@ CREATE TABLE public.photographer_info
     modified_at  timestamp
 );
 
-ALTER TABLE public.photographer_info OWNER TO ssbd02admin;
+ALTER TABLE public.photographer_info
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.photographer_report
 (
@@ -216,7 +227,8 @@ CREATE TABLE public.photographer_report
     modified_at     timestamp
 );
 
-ALTER TABLE public.photographer_report OWNER TO ssbd02admin;
+ALTER TABLE public.photographer_report
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.photographer_report_cause
 (
@@ -225,7 +237,8 @@ CREATE TABLE public.photographer_report_cause
     cause   character varying(128) NOT NULL
 );
 
-ALTER TABLE public.photographer_report_cause OWNER TO ssbd02admin;
+ALTER TABLE public.photographer_report_cause
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.photographer_specialization
 (
@@ -238,14 +251,15 @@ CREATE TABLE public.photographer_specialization
     modified_at       timestamp
 );
 
-ALTER TABLE public.photographer_specialization OWNER TO ssbd02admin;
+ALTER TABLE public.photographer_specialization
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.reservation
 (
     version         bigint,
-    id              bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-    photographer_id bigint NOT NULL,
-    account_id      bigint NOT NULL,
+    id              bigint                      NOT NULL GENERATED ALWAYS AS IDENTITY,
+    photographer_id bigint                      NOT NULL,
+    account_id      bigint                      NOT NULL,
     time_from       timestamp without time zone NOT NULL,
     time_to         timestamp without time zone NOT NULL,
     created_by      bigint,
@@ -254,7 +268,8 @@ CREATE TABLE public.reservation
     modified_at     timestamp
 );
 
-ALTER TABLE public.reservation OWNER TO ssbd02admin;
+ALTER TABLE public.reservation
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.review
 (
@@ -273,7 +288,8 @@ CREATE TABLE public.review
     CONSTRAINT score_check CHECK (((score >= 0) AND (score <= 10)))
 );
 
-ALTER TABLE public.review OWNER TO ssbd02admin;
+ALTER TABLE public.review
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.review_like
 (
@@ -286,7 +302,8 @@ CREATE TABLE public.review_like
     modified_at timestamp
 );
 
-ALTER TABLE public.review_like OWNER TO ssbd02admin;
+ALTER TABLE public.review_like
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.review_report
 (
@@ -302,7 +319,8 @@ CREATE TABLE public.review_report
     modified_at timestamp
 );
 
-ALTER TABLE public.review_report OWNER TO ssbd02admin;
+ALTER TABLE public.review_report
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.review_report_cause
 (
@@ -312,7 +330,8 @@ CREATE TABLE public.review_report_cause
 );
 
 
-ALTER TABLE public.review_report_cause OWNER TO ssbd02admin;
+ALTER TABLE public.review_report_cause
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.specialization
 (
@@ -321,15 +340,16 @@ CREATE TABLE public.specialization
     name    character varying(64) NOT NULL
 );
 
-ALTER TABLE public.specialization OWNER TO ssbd02admin;
+ALTER TABLE public.specialization
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.token
 (
     version      bigint,
-    id           bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    id           bigint                      NOT NULL GENERATED ALWAYS AS IDENTITY,
     token        character varying(64),
     "expiration" timestamp without time zone NOT NULL,
-    account_id   bigint NOT NULL,
+    account_id   bigint                      NOT NULL,
     token_type   character varying(32),
     created_by   bigint,
     created_at   timestamp,
@@ -337,7 +357,8 @@ CREATE TABLE public.token
     modified_at  timestamp
 );
 
-ALTER TABLE public.token OWNER TO ssbd02admin;
+ALTER TABLE public.token
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.old_password
 (
@@ -351,7 +372,8 @@ CREATE TABLE public.old_password
     modified_at timestamp
 );
 
-ALTER TABLE public.old_password OWNER TO ssbd02admin;
+ALTER TABLE public.old_password
+    OWNER TO ssbd02admin;
 
 CREATE TABLE public.account_list_preferences
 (
@@ -368,261 +390,459 @@ CREATE TABLE public.account_list_preferences
     modified_at      timestamp
 );
 
-ALTER TABLE public.account_list_preferences OWNER TO ssbd02admin;
+ALTER TABLE public.account_list_preferences
+    OWNER TO ssbd02admin;
 
-ALTER TABLE ONLY public.token ADD CONSTRAINT token_key UNIQUE (token);
+ALTER TABLE ONLY public.token
+    ADD CONSTRAINT token_key UNIQUE (token);
 
-ALTER TABLE ONLY public.token OWNER TO ssbd02admin;
+ALTER TABLE ONLY public.token
+    OWNER TO ssbd02admin;
 
-ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT access_level_assignment_account_id_access_level_id_key UNIQUE (account_id, access_level_id);
+ALTER TABLE ONLY public.access_level_assignment
+    ADD CONSTRAINT access_level_assignment_account_id_access_level_id_key UNIQUE (account_id, access_level_id);
 
-ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT access_level_assignment_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.access_level_assignment
+    ADD CONSTRAINT access_level_assignment_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.access_level ADD CONSTRAINT access_level_name_key UNIQUE (name);
+ALTER TABLE ONLY public.access_level
+    ADD CONSTRAINT access_level_name_key UNIQUE (name);
 
-ALTER TABLE ONLY public.access_level ADD CONSTRAINT access_level_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.access_level
+    ADD CONSTRAINT access_level_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.account ADD CONSTRAINT account_email_key UNIQUE (email);
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_email_key UNIQUE (email);
 
-ALTER TABLE ONLY public.account ADD CONSTRAINT account_login_key UNIQUE (login);
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_login_key UNIQUE (login);
 
-ALTER TABLE ONLY public.account ADD CONSTRAINT account_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.availability ADD CONSTRAINT availability_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.availability
+    ADD CONSTRAINT availability_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.photo_like ADD CONSTRAINT photo_like_pkey PRIMARY KEY (photo_id, account_id);
+ALTER TABLE ONLY public.photo_like
+    ADD CONSTRAINT photo_like_pkey PRIMARY KEY (photo_id, account_id);
 
-ALTER TABLE ONLY public.photo ADD CONSTRAINT photo_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.photo
+    ADD CONSTRAINT photo_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.photographer_info ADD CONSTRAINT photographer_pkey PRIMARY KEY (account_id);
+ALTER TABLE ONLY public.photographer_info
+    ADD CONSTRAINT photographer_pkey PRIMARY KEY (account_id);
 
-ALTER TABLE ONLY public.photographer_report_cause ADD CONSTRAINT photographer_report_cause_cause_key UNIQUE (cause);
+ALTER TABLE ONLY public.photographer_report_cause
+    ADD CONSTRAINT photographer_report_cause_cause_key UNIQUE (cause);
 
-ALTER TABLE ONLY public.photographer_report_cause ADD CONSTRAINT photographer_report_cause_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.photographer_report_cause
+    ADD CONSTRAINT photographer_report_cause_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT photographer_report_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.photographer_report
+    ADD CONSTRAINT photographer_report_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.photographer_specialization ADD CONSTRAINT photographer_specialization_pkey PRIMARY KEY (photographer_id, specialization_id);
+ALTER TABLE ONLY public.photographer_specialization
+    ADD CONSTRAINT photographer_specialization_pkey PRIMARY KEY (photographer_id, specialization_id);
 
-ALTER TABLE ONLY public.reservation ADD CONSTRAINT reservation_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT reservation_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.review_like ADD CONSTRAINT review_like_pkey PRIMARY KEY (account_id, review_id);
+ALTER TABLE ONLY public.review_like
+    ADD CONSTRAINT review_like_pkey PRIMARY KEY (account_id, review_id);
 
-ALTER TABLE ONLY public.review ADD CONSTRAINT review_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT review_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.review_report_cause ADD CONSTRAINT review_report_cause_cause_key UNIQUE (cause);
+ALTER TABLE ONLY public.review_report_cause
+    ADD CONSTRAINT review_report_cause_cause_key UNIQUE (cause);
 
-ALTER TABLE ONLY public.review_report_cause ADD CONSTRAINT review_report_cause_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.review_report_cause
+    ADD CONSTRAINT review_report_cause_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.review_report ADD CONSTRAINT review_report_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.review_report
+    ADD CONSTRAINT review_report_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.specialization ADD CONSTRAINT specialization_name_key UNIQUE (name);
+ALTER TABLE ONLY public.specialization
+    ADD CONSTRAINT specialization_name_key UNIQUE (name);
 
-ALTER TABLE ONLY public.specialization ADD CONSTRAINT specialization_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.specialization
+    ADD CONSTRAINT specialization_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT user_report_cause_cause_key UNIQUE (cause);
+ALTER TABLE ONLY public.account_report_cause
+    ADD CONSTRAINT user_report_cause_cause_key UNIQUE (cause);
 
-ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT user_report_cause_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.account_report_cause
+    ADD CONSTRAINT user_report_cause_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.account_report ADD CONSTRAINT user_report_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.account_report
+    ADD CONSTRAINT user_report_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+ALTER TABLE ONLY public.token
+    ADD CONSTRAINT "FK_token.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
 
-ALTER TABLE ONLY public.account_list_preferences ADD CONSTRAINT account_list_preferences_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.account_list_preferences
+    ADD CONSTRAINT account_list_preferences_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.account_list_preferences ADD CONSTRAINT account_list_preferences_account_id UNIQUE (account_id);
+ALTER TABLE ONLY public.account_list_preferences
+    ADD CONSTRAINT account_list_preferences_account_id UNIQUE (account_id);
 
-ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_account_list_preferences.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+ALTER TABLE ONLY public.token
+    ADD CONSTRAINT "FK_account_list_preferences.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
 
-
-CREATE
-INDEX access_level_assignment_access_level_id_idx ON public.access_level_assignment USING btree (access_level_id);
-
-CREATE
-INDEX access_level_assignment_account_id_idx ON public.access_level_assignment USING btree (account_id);
-
-CREATE
-INDEX account_report_cause_id_idx ON public.account_report USING btree (cause_id);
-
-CREATE
-INDEX account_report_reported_id_idx ON public.account_report USING btree (reported_id);
-
-CREATE
-INDEX account_report_reportee_id_idx ON public.account_report USING btree (reportee_id);
-
-CREATE
-INDEX availability_photographer_id_idx ON public.availability USING btree (photographer_id);
-
-CREATE
-INDEX photo_like_photo_id_idx ON public.photo_like USING btree (photo_id);
-
-CREATE
-INDEX photo_like_user_id_idx ON public.photo_like USING btree (account_id);
-
-CREATE
-INDEX photo_photographer_id_idx ON public.photo USING btree (photographer_id);
-
-CREATE
-INDEX photographer_account_id_idx ON public.photographer_info USING btree (account_id);
-
-CREATE
-INDEX photographer_report_account_id_idx ON public.photographer_report USING btree (account_id);
-
-CREATE
-INDEX photographer_report_cause_id_idx ON public.photographer_report USING btree (cause_id);
 
 CREATE
-INDEX photographer_report_photographer_id_idx ON public.photographer_report USING btree (photographer_id);
+    INDEX access_level_assignment_access_level_id_idx ON public.access_level_assignment USING btree (access_level_id);
 
 CREATE
-INDEX photographer_specialization_photographer_id_idx ON public.photographer_specialization USING btree (photographer_id);
+    INDEX access_level_assignment_account_id_idx ON public.access_level_assignment USING btree (account_id);
 
 CREATE
-INDEX photographer_specialization_specialization_id_idx ON public.photographer_specialization USING btree (specialization_id);
+    INDEX access_level_assignment_created_by_idx ON public.access_level_assignment USING btree (created_by);
 
 CREATE
-INDEX reservation_account_id_idx ON public.reservation USING btree (account_id);
+    INDEX access_level_assignment_modified_by_idx ON public.access_level_assignment USING btree (modified_by);
 
 CREATE
-INDEX reservation_photographer_id_idx ON public.reservation USING btree (photographer_id);
+    INDEX account_created_by_idx ON public.account USING btree (created_by);
 
 CREATE
-INDEX review_account_id_idx ON public.review USING btree (account_id);
+    INDEX account_modified_by_idx ON public.account USING btree (modified_by);
 
 CREATE
-INDEX review_like_account_id_idx ON public.review_like USING btree (account_id);
+    INDEX account_change_log_account_id_idx ON public.account_change_log USING btree (account_id);
 
 CREATE
-INDEX review_like_review_id_idx ON public.review_like USING btree (review_id);
+    INDEX account_change_log_changed_by_idx ON public.account_change_log USING btree (changed_by);
 
 CREATE
-INDEX review_photographer_id_idx ON public.review USING btree (photographer_id);
+    INDEX account_report_cause_id_idx ON public.account_report USING btree (cause_id);
 
 CREATE
-INDEX review_report_account_id_idx ON public.review_report USING btree (account_id);
+    INDEX account_report_reported_id_idx ON public.account_report USING btree (reported_id);
 
 CREATE
-INDEX review_report_cause_id_idx ON public.review_report USING btree (cause_id);
+    INDEX account_report_reportee_id_idx ON public.account_report USING btree (reportee_id);
 
 CREATE
-INDEX review_report_review_id_idx ON public.review_report USING btree (review_id);
+    INDEX account_report_created_by_idx ON public.account_report USING btree (created_by);
 
 CREATE
-INDEX account_list_preferences_account_id_idx ON public.account_list_preferences USING btree (account_id);
+    INDEX account_report_modified_by_idx ON public.account_report USING btree (modified_by);
 
-ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.access_level_id" FOREIGN KEY (access_level_id) REFERENCES public.access_level(id);
+CREATE
+    INDEX account_report_cause_created_by_idx ON public.account_report_cause USING btree (created_by);
 
-ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX account_report_cause_modified_by_idx ON public.account_report_cause USING btree (modified_by);
 
-ALTER TABLE ONLY public.availability ADD CONSTRAINT "FK_availability.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info(account_id);
+CREATE
+    INDEX availability_photographer_id_idx ON public.availability USING btree (photographer_id);
 
-ALTER TABLE ONLY public.photo ADD CONSTRAINT "FK_photo.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info(account_id);
+CREATE
+    INDEX availability_created_by_idx ON public.availability USING btree (created_by);
 
-ALTER TABLE ONLY public.photo_like ADD CONSTRAINT "FK_photo_like.photo_id" FOREIGN KEY (photo_id) REFERENCES public.photo(id);
+CREATE
+    INDEX availability_modified_by_idx ON public.availability USING btree (modified_by);
 
-ALTER TABLE ONLY public.photo_like ADD CONSTRAINT "FK_photo_like.user_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX old_password_account_id_idx ON public.old_password USING btree (account_id);
 
-ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT "FK_photographer_report.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX old_password_created_by_idx ON public.old_password USING btree (created_by);
 
-ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT "FK_photographer_report.cause_id" FOREIGN KEY (cause_id) REFERENCES public.photographer_report_cause(id);
+CREATE
+    INDEX old_password_modified_by_idx ON public.old_password USING btree (modified_by);
 
-ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT "FK_photographer_report.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info(account_id);
+CREATE
+    INDEX photo_like_photo_id_idx ON public.photo_like USING btree (photo_id);
 
-ALTER TABLE ONLY public.photographer_specialization ADD CONSTRAINT "FK_photographer_specialization.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info(account_id);
+CREATE
+    INDEX photo_like_user_id_idx ON public.photo_like USING btree (account_id);
 
-ALTER TABLE ONLY public.photographer_specialization ADD CONSTRAINT "FK_photographer_specialization.specialization_id" FOREIGN KEY (specialization_id) REFERENCES public.specialization(id);
+CREATE
+    INDEX photo_like_created_by_idx ON public.photo_like USING btree (created_by);
 
-ALTER TABLE ONLY public.reservation ADD CONSTRAINT "FK_reservation.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX photo_like_modified_by_idx ON public.photo_like USING btree (modified_by);
 
-ALTER TABLE ONLY public.reservation ADD CONSTRAINT "FK_reservation.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info(account_id);
+CREATE
+    INDEX photo_photographer_id_idx ON public.photo USING btree (photographer_id);
 
-ALTER TABLE ONLY public.review ADD CONSTRAINT "FK_review.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX photo_created_by_idx ON public.photo USING btree (created_by);
 
-ALTER TABLE ONLY public.review ADD CONSTRAINT "FK_review.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info(account_id);
+CREATE
+    INDEX photo_modified_by_idx ON public.photo USING btree (modified_by);
 
-ALTER TABLE ONLY public.review_like ADD CONSTRAINT "FK_review_like.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX photographer_account_id_idx ON public.photographer_info USING btree (account_id);
 
-ALTER TABLE ONLY public.review_like ADD CONSTRAINT "FK_review_like.review_id" FOREIGN KEY (review_id) REFERENCES public.review(id);
+CREATE
+    INDEX photographer_created_by_idx ON public.photographer_info USING btree (created_by);
 
-ALTER TABLE ONLY public.review_report ADD CONSTRAINT "FK_review_report.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX photographer_modified_by_idx ON public.photographer_info USING btree (modified_by);
 
-ALTER TABLE ONLY public.review_report ADD CONSTRAINT "FK_review_report.cause_id" FOREIGN KEY (cause_id) REFERENCES public.review_report_cause(id);
+CREATE
+    INDEX photographer_report_account_id_idx ON public.photographer_report USING btree (account_id);
 
-ALTER TABLE ONLY public.review_report ADD CONSTRAINT "FK_review_report.review_id" FOREIGN KEY (review_id) REFERENCES public.review(id);
+CREATE
+    INDEX photographer_report_cause_id_idx ON public.photographer_report USING btree (cause_id);
 
-ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_user_report.cause_id" FOREIGN KEY (cause_id) REFERENCES public.account_report_cause(id);
+CREATE
+    INDEX photographer_report_photographer_id_idx ON public.photographer_report USING btree (photographer_id);
 
-ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_user_report.reported_id" FOREIGN KEY (reported_id) REFERENCES public.account(id);
+CREATE
+    INDEX photographer_report_created_by_idx ON public.photographer_report USING btree (created_by);
 
-ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_user_report.reportee_Id" FOREIGN KEY (reportee_id) REFERENCES public.account(id);
+CREATE
+    INDEX photographer_report_modified_by_idx ON public.photographer_report USING btree (modified_by);
 
-ALTER TABLE ONLY public.photographer_info ADD CONSTRAINT account_id FOREIGN KEY (account_id) REFERENCES public.account(id) NOT VALID;
+CREATE
+    INDEX photographer_specialization_photographer_id_idx ON public.photographer_specialization USING btree (photographer_id);
 
-ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX photographer_specialization_specialization_id_idx ON public.photographer_specialization USING btree (specialization_id);
 
-ALTER TABLE ONLY public.account ADD CONSTRAINT "FK_account.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX photographer_specialization_created_by_idx ON public.photographer_specialization USING btree (created_by);
 
-ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+CREATE
+    INDEX photographer_specialization_modified_by_idx ON public.photographer_specialization USING btree (modified_by);
 
-ALTER TABLE ONLY public.account_change_log ADD CONSTRAINT "FK_account_change_log.changed_by" FOREIGN KEY (changed_by) REFERENCES public.account(id);
+CREATE
+    INDEX reservation_account_id_idx ON public.reservation USING btree (account_id);
 
-ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX reservation_photographer_id_idx ON public.reservation USING btree (photographer_id);
 
-ALTER TABLE ONLY public.access_level_assignment ADD CONSTRAINT "FK_access_level_assignment.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX reservation_created_by_idx ON public.reservation USING btree (created_by);
 
-ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_account_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX reservation_modified_by_idx ON public.reservation USING btree (modified_by);
 
-ALTER TABLE ONLY public.account_report ADD CONSTRAINT "FK_account_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_account_id_idx ON public.review USING btree (account_id);
 
-ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT "FK_account_report_cause.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_created_by_idx ON public.review USING btree (created_by);
 
-ALTER TABLE ONLY public.account_report_cause ADD CONSTRAINT "FK_account_report_cause.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_modified_by_idx ON public.review USING btree (modified_by);
 
-ALTER TABLE ONLY public.availability ADD CONSTRAINT "FK_availability.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_like_account_id_idx ON public.review_like USING btree (account_id);
 
-ALTER TABLE ONLY public.availability ADD CONSTRAINT "FK_availability.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_like_review_id_idx ON public.review_like USING btree (review_id);
 
-ALTER TABLE ONLY public.photo ADD CONSTRAINT "FK_photo.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_like_created_by_idx ON public.review_like USING btree (created_by);
 
-ALTER TABLE ONLY public.photo ADD CONSTRAINT "FK_photo.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_like_modified_by_idx ON public.review_like USING btree (modified_by);
 
-ALTER TABLE ONLY public.photo_like ADD CONSTRAINT "FK_photo_like.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_photographer_id_idx ON public.review USING btree (photographer_id);
 
-ALTER TABLE ONLY public.photo_like ADD CONSTRAINT "FK_photo_like.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_report_account_id_idx ON public.review_report USING btree (account_id);
 
-ALTER TABLE ONLY public.photographer_info ADD CONSTRAINT "FK_photographer_info.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_report_cause_id_idx ON public.review_report USING btree (cause_id);
 
-ALTER TABLE ONLY public.photographer_info ADD CONSTRAINT "FK_photographer_info.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_report_review_id_idx ON public.review_report USING btree (review_id);
 
-ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT "FK_photographer_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_report_created_by_idx ON public.review_report USING btree (created_by);
 
-ALTER TABLE ONLY public.photographer_report ADD CONSTRAINT "FK_photographer_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX review_report_modified_by_idx ON public.review_report USING btree (modified_by);
 
-ALTER TABLE ONLY public.photographer_specialization ADD CONSTRAINT "FK_photographer_specialization.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX token_account_id_idx ON public.token USING btree (account_id);
 
-ALTER TABLE ONLY public.photographer_specialization ADD CONSTRAINT "FK_photographer_specialization.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX token_created_by_idx ON public.review_report USING btree (created_by);
 
-ALTER TABLE ONLY public.reservation ADD CONSTRAINT "FK_reservation.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+CREATE
+    INDEX token_modified_by_idx ON public.review_report USING btree (modified_by);
 
-ALTER TABLE ONLY public.reservation ADD CONSTRAINT "FK_reservation.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+CREATE
+    INDEX account_list_preferences_account_id_idx ON public.account_list_preferences USING btree (account_id);
 
-ALTER TABLE ONLY public.review ADD CONSTRAINT "FK_review.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.access_level_assignment
+    ADD CONSTRAINT "FK_access_level_assignment.access_level_id" FOREIGN KEY (access_level_id) REFERENCES public.access_level (id);
 
-ALTER TABLE ONLY public.review ADD CONSTRAINT "FK_review.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.access_level_assignment
+    ADD CONSTRAINT "FK_access_level_assignment.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
 
-ALTER TABLE ONLY public.review_like ADD CONSTRAINT "FK_review_like.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.availability
+    ADD CONSTRAINT "FK_availability.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info (account_id);
 
-ALTER TABLE ONLY public.review_like ADD CONSTRAINT "FK_review_like.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.photo
+    ADD CONSTRAINT "FK_photo.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info (account_id);
 
-ALTER TABLE ONLY public.review_report ADD CONSTRAINT "FK_review_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.photo_like
+    ADD CONSTRAINT "FK_photo_like.photo_id" FOREIGN KEY (photo_id) REFERENCES public.photo (id);
 
-ALTER TABLE ONLY public.review_report ADD CONSTRAINT "FK_review_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.photo_like
+    ADD CONSTRAINT "FK_photo_like.user_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
 
-ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.created_by" FOREIGN KEY (created_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.photographer_report
+    ADD CONSTRAINT "FK_photographer_report.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
 
-ALTER TABLE ONLY public.token ADD CONSTRAINT "FK_token.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account(id);
+ALTER TABLE ONLY public.photographer_report
+    ADD CONSTRAINT "FK_photographer_report.cause_id" FOREIGN KEY (cause_id) REFERENCES public.photographer_report_cause (id);
 
-ALTER TABLE ONLY public.old_password ADD CONSTRAINT "FK_old_password.account_id" FOREIGN KEY (account_id) REFERENCES public.account(id);
+ALTER TABLE ONLY public.photographer_report
+    ADD CONSTRAINT "FK_photographer_report.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info (account_id);
+
+ALTER TABLE ONLY public.photographer_specialization
+    ADD CONSTRAINT "FK_photographer_specialization.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info (account_id);
+
+ALTER TABLE ONLY public.photographer_specialization
+    ADD CONSTRAINT "FK_photographer_specialization.specialization_id" FOREIGN KEY (specialization_id) REFERENCES public.specialization (id);
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT "FK_reservation.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT "FK_reservation.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info (account_id);
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT "FK_review.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT "FK_review.photographer_id" FOREIGN KEY (photographer_id) REFERENCES public.photographer_info (account_id);
+
+ALTER TABLE ONLY public.review_like
+    ADD CONSTRAINT "FK_review_like.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review_like
+    ADD CONSTRAINT "FK_review_like.review_id" FOREIGN KEY (review_id) REFERENCES public.review (id);
+
+ALTER TABLE ONLY public.review_report
+    ADD CONSTRAINT "FK_review_report.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review_report
+    ADD CONSTRAINT "FK_review_report.cause_id" FOREIGN KEY (cause_id) REFERENCES public.review_report_cause (id);
+
+ALTER TABLE ONLY public.review_report
+    ADD CONSTRAINT "FK_review_report.review_id" FOREIGN KEY (review_id) REFERENCES public.review (id);
+
+ALTER TABLE ONLY public.account_report
+    ADD CONSTRAINT "FK_user_report.cause_id" FOREIGN KEY (cause_id) REFERENCES public.account_report_cause (id);
+
+ALTER TABLE ONLY public.account_report
+    ADD CONSTRAINT "FK_user_report.reported_id" FOREIGN KEY (reported_id) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account_report
+    ADD CONSTRAINT "FK_user_report.reportee_Id" FOREIGN KEY (reportee_id) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photographer_info
+    ADD CONSTRAINT account_id FOREIGN KEY (account_id) REFERENCES public.account (id) NOT VALID;
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT "FK_account.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT "FK_account.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account_change_log
+    ADD CONSTRAINT "FK_account_change_log.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account_change_log
+    ADD CONSTRAINT "FK_account_change_log.changed_by" FOREIGN KEY (changed_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.access_level_assignment
+    ADD CONSTRAINT "FK_access_level_assignment.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.access_level_assignment
+    ADD CONSTRAINT "FK_access_level_assignment.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account_report
+    ADD CONSTRAINT "FK_account_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account_report
+    ADD CONSTRAINT "FK_account_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account_report_cause
+    ADD CONSTRAINT "FK_account_report_cause.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.account_report_cause
+    ADD CONSTRAINT "FK_account_report_cause.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.availability
+    ADD CONSTRAINT "FK_availability.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.availability
+    ADD CONSTRAINT "FK_availability.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photo
+    ADD CONSTRAINT "FK_photo.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photo
+    ADD CONSTRAINT "FK_photo.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photo_like
+    ADD CONSTRAINT "FK_photo_like.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photo_like
+    ADD CONSTRAINT "FK_photo_like.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photographer_info
+    ADD CONSTRAINT "FK_photographer_info.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photographer_info
+    ADD CONSTRAINT "FK_photographer_info.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photographer_report
+    ADD CONSTRAINT "FK_photographer_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photographer_report
+    ADD CONSTRAINT "FK_photographer_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photographer_specialization
+    ADD CONSTRAINT "FK_photographer_specialization.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.photographer_specialization
+    ADD CONSTRAINT "FK_photographer_specialization.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT "FK_reservation.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT "FK_reservation.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT "FK_review.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT "FK_review.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review_like
+    ADD CONSTRAINT "FK_review_like.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review_like
+    ADD CONSTRAINT "FK_review_like.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review_report
+    ADD CONSTRAINT "FK_review_report.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.review_report
+    ADD CONSTRAINT "FK_review_report.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.token
+    ADD CONSTRAINT "FK_token.created_by" FOREIGN KEY (created_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.token
+    ADD CONSTRAINT "FK_token.modified_by" FOREIGN KEY (modified_by) REFERENCES public.account (id);
+
+ALTER TABLE ONLY public.old_password
+    ADD CONSTRAINT "FK_old_password.account_id" FOREIGN KEY (account_id) REFERENCES public.account (id);
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.access_level TO ssbd02mok;
 
@@ -640,7 +860,7 @@ GRANT SELECT, INSERT, DELETE ON public.token TO ssbd02mok;
 
 GRANT SELECT, INSERT, UPDATE ON TABLE public.account_report TO ssbd02mow;
 
-GRANT SELECT, UPDATE ON TABLE  public.photographer_info TO ssbd02mow;
+GRANT SELECT, UPDATE ON TABLE public.photographer_info TO ssbd02mow;
 
 GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE public.account_report_cause TO ssbd02mow;
 
