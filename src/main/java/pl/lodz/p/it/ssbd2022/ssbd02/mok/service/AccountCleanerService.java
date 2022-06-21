@@ -13,6 +13,9 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Klasa dokonujące periodycznego usuwania niepotwierdzonych kont użytkowników
+ */
 @Startup
 @Singleton
 public class AccountCleanerService {

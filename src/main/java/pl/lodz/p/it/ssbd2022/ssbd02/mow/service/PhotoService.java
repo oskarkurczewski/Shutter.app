@@ -94,7 +94,6 @@ public class PhotoService {
      * @param account użytkownik dokonujący polubienie
      * @throws PhotoAlreadyLikedException w przypadku gry zdjęcie zostało już polubione
      */
-
     @RolesAllowed(likePhoto)
     public void likePhoto(Photo photo, Account account) throws BaseApplicationException {
         if (photo.getLikesList().contains(account) || account.getLikedPhotosList().contains(photo)) {
@@ -129,7 +128,7 @@ public class PhotoService {
      * @param photographerInfo konto fotografa, dla którego pobierane są zdjęcia
      * @param pageNo           numer strony do pobrania
      * @param recordsPerPage   liczba rekordów na stronie
-     * @return ListResponseDto<PhotoDto>      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll

@@ -74,6 +74,7 @@ public class PhotographerService {
      * Szuka fotografa
      *
      * @param photographerInfo Informacje o fotografie, które próbuje pozyskać użytkownik
+     * @return informacje o fotografie
      * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                             gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                             profil nieaktywny i informacje próbuje uzyskać użytkownik

@@ -25,6 +25,13 @@ public class ReservationController extends AbstractController {
     @Inject
     private ReservationEndpoint reservationEndpoint;
 
+    /**
+     * Punkt końcowy tworzący rezerwacją fotografa o podanych parametrach
+     *
+     * @param createReservationDto informacje o rezerwacji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createReservation(
@@ -34,6 +41,13 @@ public class ReservationController extends AbstractController {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     * Punkt końcowy anulujący rezerwację o podanym identyfikatorze
+     *
+     * @param reservationId identyfikator rezerwacji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @DELETE
     @Path("/{id}/cancel")
     public Response cancelReservation(
@@ -43,6 +57,13 @@ public class ReservationController extends AbstractController {
         return Response.ok().build();
     }
 
+    /**
+     * Punkt końcowy odrzucający rezerwację o podanym identyfikatorze
+     *
+     * @param reservationId identyfikator rezerwacji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @DELETE
     @Path("/{id}/discard")
     public Response discardReservation(
@@ -85,7 +106,7 @@ public class ReservationController extends AbstractController {
     }
 
     /**
-     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     * Punkt końcowy pozwalający na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
      *
      * @param name   imię lub nazwisko do wyszukania
      * @param order  kolejność sortowania względem kolumny time_from

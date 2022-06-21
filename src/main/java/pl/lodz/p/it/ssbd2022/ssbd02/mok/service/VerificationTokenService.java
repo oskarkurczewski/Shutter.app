@@ -178,6 +178,7 @@ public class VerificationTokenService {
      * Sprawdza oraz usuwa żeton weryfikacyjny użyty do resetu hasła.
      *
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @return konto, dla którego zostało wykonane potwierdzenie zmiany hasła
      * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł
@@ -216,6 +217,12 @@ public class VerificationTokenService {
         );
     }
 
+    /**
+     * Wysyła użytkownikowi wiadomość email z żeton weryfikacyjnym pozwalającym na odblokowanie własnego konta
+     *
+     * @param account konto, na którego email ma zostać wysłany żeton
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @PermitAll
     public void sendUnblockOwnAccountEmail(Account account) throws BaseApplicationException {
         if (!account.getRegistered()) {
@@ -281,6 +288,7 @@ public class VerificationTokenService {
      * Sprawdza oraz usuwa żeton weryfikacyjny użyty do odblokowania własnego konta
      *
      * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do aktywacji własnego konta
+     * @return konto, do którego został wysłany żeton weryfikacyjny
      * @throws InvalidTokenException    Żeton jest nieprawidłowego typu lub nieaktualny
      * @throws NoVerificationTokenFound Żeton nie zostanie odnaleziony w bazie
      * @throws ExpiredTokenException    Żeton wygasł

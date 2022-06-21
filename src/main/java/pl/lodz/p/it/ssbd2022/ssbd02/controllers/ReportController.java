@@ -1,8 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.controllers;
 
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.CannotChangeException;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.WrongParameterException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.*;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.endpoint.ReportEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.validation.constraint.Order;
@@ -22,9 +20,10 @@ public class ReportController extends AbstractController {
     private ReportEndpoint reportEndpoint;
 
     /**
-     * Punkt końcowy pozwalający na zgłoszenie klienta z podanym powodem.
+     * Punkt końcowy tworzący zgłoszenie klienta o podanych danych
      *
      * @param createAccountReportDto Obiekt przedstawiający dane zawierające login zgłoszonego klienta oraz powód.
+     * @return odpowiedź HTTP
      * @throws BaseApplicationException W przypadku niepowodzenia operacji
      */
     @POST
@@ -37,9 +36,10 @@ public class ReportController extends AbstractController {
     }
 
     /**
-     * Punkt końcowy pozwalający zgłosić fotografa
+     * Punkt końcowy tworzący zgłoszenie fotografa o podanych danych
      *
      * @param createPhotographerReportDto obiekt DTO zawierający dane zgłoszenia
+     * @return odpowiedź HTTP
      * @throws WrongParameterException  podano nieprawidłowy powód zgłoszenia
      * @throws CannotChangeException    dany użytkownik zgłosił już danego fotografa
      * @throws BaseApplicationException wystąpił nieznany błąd podczas dodawania do bazy danych
@@ -56,8 +56,8 @@ public class ReportController extends AbstractController {
     /**
      * Punkt końcowy zwracający listę powodów zgłoszeń fotografa
      *
-     * @return the all photographer report causes
-     * @throws BaseApplicationException the base application exception
+     * @return wszystkie istniejące w aplikacji powody zgłoszeń fotografów
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @GET
     @Path("/photographer/report-causes")
@@ -67,6 +67,13 @@ public class ReportController extends AbstractController {
     }
 
 
+    /**
+     * Punkt końcowy tworzący nowe zgłoszenie recenzji o podanych danych
+     *
+     * @param createReviewReportDto dane zgłoszenia recenzji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Path("/review")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -76,6 +83,12 @@ public class ReportController extends AbstractController {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     * Punkt końcowy pobierający wszystkie występujące w aplikacji powody zgłoszeń recenzji
+     *
+     * @return lista powodów zgłoszeń recenzji
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @GET
     @Path("/review/report-causes")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,7 +101,7 @@ public class ReportController extends AbstractController {
      * Punkt końcowy zwracający listę zgłoszeń kont
      *
      * @return lista zgłoszeń kont
-     * @throws WrongParameterException niepoprawna kolejność sortowania
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @GET
     @Path("/list/account")
@@ -106,10 +119,10 @@ public class ReportController extends AbstractController {
     }
 
     /**
-     * Punkt końcowy zwracający listę zgłoszeń fotografów
+     * Punkt końcowy zwracający zgłsozenia fotografów
      *
      * @return lista zgłoszeń fotografów
-     * @throws WrongParameterException niepoprawna kolejność sortowania
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @GET
     @Path("/list/photographer")
@@ -131,7 +144,7 @@ public class ReportController extends AbstractController {
      * Punkt końcowy zwracający listę zgłoszeń recenzji
      *
      * @return lista zgłoszeń recenzji
-     * @throws WrongParameterException niepoprawna kolejność sortowania
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @GET
     @Path("/list/review")
@@ -149,6 +162,13 @@ public class ReportController extends AbstractController {
     }
 
 
+    /**
+     * Punkt końcowy rozpatrujący zgłoszenie użytkownika o podanym id
+     *
+     * @param reportId identyfikator zgłoszenia użytkownika
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Path("/account/{id}/resolve")
     public Response resolveAccountReport(@NotNull @PathParam("id") Long reportId) throws BaseApplicationException {
@@ -156,6 +176,13 @@ public class ReportController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Punkt końcowy rozpatrujący zgłoszenie fotografa o podanym id
+     *
+     * @param photographerId identyfikator recenzji fotografa
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Path("/photographer/{id}/resolve")
     public Response resolvePhotographerReport(@NotNull @PathParam("id") Long photographerId) throws BaseApplicationException {
@@ -163,6 +190,13 @@ public class ReportController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Punkt końcowy rozpatrujący zgłoszenie recenzji o podanym id
+     *
+     * @param reviewId identyfikator recenzji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Path("/review/{id}/resolve")
     public Response resolveReviewReport(@NotNull @PathParam("id") Long reviewId) throws BaseApplicationException {
