@@ -25,10 +25,6 @@ public class PhotographerListEntryDto {
     private final Long reviewCount;
     @NotNull
     private final List<String> specializations;
-    @NotNull
-    private final Double longitude;
-    @NotNull
-    private final Double latitude;
 
     public PhotographerListEntryDto(PhotographerInfo pInfo) {
         Account photographerAccountInfo = pInfo.getAccount();
@@ -40,7 +36,5 @@ public class PhotographerListEntryDto {
         this.reviewCount = pInfo.getReviewCount();
         this.specializations = pInfo.getSpecializationList().stream()
                 .map(Specialization::getCode).collect(Collectors.toList());
-        this.longitude = pInfo.getLongitude();
-        this.latitude = pInfo.getLatitude();
     }
 }

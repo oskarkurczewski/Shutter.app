@@ -59,10 +59,10 @@ VALUES (1, 0, 1, 1, true, current_timestamp),
        (7, 1, 5, 4, true, current_timestamp)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible,
+INSERT INTO public.photographer_info (version, account_id, score, review_count, description, visible,
                                       created_at)
-VALUES (1, 3, 17, 2, 'Aby poznac stawki, zapraszam do kontaktu mailowego.', 10,
-        20, true, current_timestamp)
+VALUES (1, 3, 17, 2, 'Aby poznac stawki, zapraszam do kontaktu mailowego.',
+        true, current_timestamp)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)

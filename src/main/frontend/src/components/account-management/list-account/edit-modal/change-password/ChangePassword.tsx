@@ -27,9 +27,9 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered, refetch }
       useStateWithValidationAndComparison<string>(passwordRules(t), ["", ""]);
 
    const save = () => {
-      passwordValidation[0] === "" &&
-         passwordValidation[1] === "" &&
-         passwordMutation({ login: login, data: { password: password[0] } });
+      passwordValidation.valueA === "" &&
+         passwordValidation.valueB === "" &&
+         passwordMutation({ login: login, data: { password: password.valueA } });
    };
 
    useEffect(() => {
@@ -85,8 +85,8 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered, refetch }
             className={styles.save}
             disabled={
                !isRegistered ||
-               passwordValidation[0] !== "" ||
-               passwordValidation[1] !== ""
+               passwordValidation.valueA !== "" ||
+               passwordValidation.valueB !== ""
             }
             title={!isRegistered && t("edit_account_page.password.cant_change")}
          >
