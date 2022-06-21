@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mow.facade;
 
+import org.hibernate.exception.ConstraintViolationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Review;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.*;
+import static pl.lodz.p.it.ssbd2022.ssbd02.util.ConstraintNames.IDENTICAL_ID;
 
 @Stateless
 @Interceptors({LoggingInterceptor.class, MowFacadeAccessInterceptor.class})
@@ -66,6 +68,13 @@ public class ReviewFacade extends FacadeTemplate<Review> {
         } catch (OptimisticLockException ex) {
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
+            if (ex.getCause() instanceof ConstraintViolationException) {
+                String name = ((ConstraintViolationException) ex.getCause()).getConstraintName();
+                if (IDENTICAL_ID.equals(name)) {
+                    throw ExceptionFactory.identicalFieldException("exception.review_already_exists");
+                }
+            }
+
             throw ExceptionFactory.databaseException();
         } catch (Exception ex) {
             throw ExceptionFactory.unexpectedFailException();

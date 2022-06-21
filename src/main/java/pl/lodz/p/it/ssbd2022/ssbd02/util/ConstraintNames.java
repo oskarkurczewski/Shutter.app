@@ -7,5 +7,6 @@ public final class ConstraintNames {
 
     public static final String IDENTICAL_LOGIN = "account_login_key";
     public static final String IDENTICAL_EMAIL = "account_email_key";
+    public static final String IDENTICAL_ID = "review_account_id_photographer_id_key";
 
 }
