@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mow.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.DetailedAccountInfoDto;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -27,12 +26,6 @@ public class DetailedPhotographerInfoDto extends DetailedAccountInfoDto {
     private final String description;
 
     @NotNull
-    private final Double latitude;
-
-    @NotNull
-    private final Double longitude;
-
-    @NotNull
     private List<String> specializationList = new ArrayList<>();
 
     @NotNull
@@ -49,8 +42,6 @@ public class DetailedPhotographerInfoDto extends DetailedAccountInfoDto {
         score = photographerInfo.getScore();
         reviewCount = photographerInfo.getReviewCount();
         description = photographerInfo.getDescription();
-        latitude = photographerInfo.getLatitude();
-        longitude = photographerInfo.getLongitude();
         visible = photographerInfo.getVisible();
         photographerInfo.getSpecializationList().forEach(specialization -> specializationList.add(specialization.getName()));
     }

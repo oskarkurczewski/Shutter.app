@@ -6,9 +6,9 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyLikedException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyUnlikedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.ListResponseDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.dto.PhotoDto;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.PhotoAlreadyUnlikedException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.PhotoFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mow.facade.ProfileFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
@@ -79,7 +79,7 @@ public class PhotoService {
     /**
      * Usuwa podane zdjęcie z galerii użytkownika
      *
-     * @param photo zdjęcie które ma zostać usunięte z galerii
+     * @param photo zdjęcie, które ma zostać usunięte z galerii
      */
     @RolesAllowed(deletePhotoFromGallery)
     public void deletePhoto(Photo photo) throws BaseApplicationException {
@@ -94,7 +94,6 @@ public class PhotoService {
      * @param account użytkownik dokonujący polubienie
      * @throws PhotoAlreadyLikedException w przypadku gry zdjęcie zostało już polubione
      */
-
     @RolesAllowed(likePhoto)
     public void likePhoto(Photo photo, Account account) throws BaseApplicationException {
         if (photo.getLikesList().contains(account) || account.getLikedPhotosList().contains(photo)) {
@@ -129,7 +128,7 @@ public class PhotoService {
      * @param photographerInfo konto fotografa, dla którego pobierane są zdjęcia
      * @param pageNo           numer strony do pobrania
      * @param recordsPerPage   liczba rekordów na stronie
-     * @return ListResponseDto<PhotoDto>      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll

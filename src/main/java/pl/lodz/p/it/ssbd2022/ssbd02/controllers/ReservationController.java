@@ -25,6 +25,13 @@ public class ReservationController extends AbstractController {
     @Inject
     private ReservationEndpoint reservationEndpoint;
 
+    /**
+     * Punkt końcowy tworzący rezerwacją fotografa o podanych parametrach
+     *
+     * @param createReservationDto informacje o rezerwacji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createReservation(
@@ -34,6 +41,13 @@ public class ReservationController extends AbstractController {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     * Punkt końcowy anulujący rezerwację o podanym identyfikatorze
+     *
+     * @param reservationId identyfikator rezerwacji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @DELETE
     @Path("/{id}/cancel")
     public Response cancelReservation(
@@ -43,6 +57,13 @@ public class ReservationController extends AbstractController {
         return Response.ok().build();
     }
 
+    /**
+     * Punkt końcowy odrzucający rezerwację o podanym identyfikatorze
+     *
+     * @param reservationId identyfikator rezerwacji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @DELETE
     @Path("/{id}/discard")
     public Response discardReservation(
@@ -85,7 +106,7 @@ public class ReservationController extends AbstractController {
     }
 
     /**
-     * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
+     * Punkt końcowy pozwalający na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
      *
      * @param name   imię lub nazwisko do wyszukania
      * @param order  kolejność sortowania względem kolumny time_from
@@ -120,6 +141,7 @@ public class ReservationController extends AbstractController {
      * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
      *
      * @param date poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
+     * @param photographerLogin login fotografa
      * @return ReservationListEntryDto      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -158,30 +180,6 @@ public class ReservationController extends AbstractController {
             @QueryParam("pageNo") @DefaultValue("1") Integer page,
             @QueryParam("recordsPerPage") @DefaultValue("25") Integer recordsPerPage
     ) throws BaseApplicationException {
-        return reservationEndpoint.listPhotographers(page, recordsPerPage);
-    }
-
-    @GET
-    @Path("/photographers/find/byAvailability")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PhotographerListEntryDto> findPhotographerByAvailability(@NotNull @Valid TimePeriodDto timePeriod) {
-        throw new UnsupportedOperationException();
-    }
-
-    @GET
-    @Path("/photographers/find/byName")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PhotographerListEntryDto> findPhotographerByName(@NotNull @Valid String name) {
-        throw new UnsupportedOperationException();
-    }
-
-    @GET
-    @Path("/photographers/find/bySpecialization")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<PhotographerListEntryDto> findPhotographerBySpeciality(@NotNull @Valid String specialization) {
-        throw new UnsupportedOperationException();
+        return repeat(() -> reservationEndpoint.listPhotographers(page, recordsPerPage), reservationEndpoint);
     }
 }

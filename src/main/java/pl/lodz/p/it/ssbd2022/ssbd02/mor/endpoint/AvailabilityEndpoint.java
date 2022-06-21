@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AvailabilityService;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.PhotographerService;
 import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
+import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -16,6 +17,7 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.changeAvailabilityHours;
 
 @Stateful
+@Interceptors({LoggingInterceptor.class})
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class AvailabilityEndpoint extends AbstractEndpoint {
 
@@ -37,8 +40,9 @@ public class AvailabilityEndpoint extends AbstractEndpoint {
 
     /**
      * Metoda nadpisująca przedziały dostępności fotografa. Poprzednie zakresy zastępowane są tymi, podanymi przez parametr
+     *
      * @param availabilitiesDto lista nowych przedziałów dostępności
-     * @throws NoAuthenticatedAccountFound akcja wykonywana przez niezalogowanego użytkownika
+     * @throws NoAuthenticatedAccountFound  akcja wykonywana przez niezalogowanego użytkownika
      * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
      */
     @RolesAllowed(changeAvailabilityHours)
@@ -53,7 +57,7 @@ public class AvailabilityEndpoint extends AbstractEndpoint {
             availability.setFrom(availabilityDto.getFrom());
 
             LocalTime toFixed = availabilityDto.getTo();
-            if(toFixed.equals(LocalTime.MIDNIGHT)) {
+            if (toFixed.equals(LocalTime.MIDNIGHT)) {
                 toFixed = LocalTime.of(23, 59, 59);
             }
             availability.setTo(toFixed);

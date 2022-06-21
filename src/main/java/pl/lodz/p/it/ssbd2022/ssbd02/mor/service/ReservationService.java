@@ -139,7 +139,7 @@ public class ReservationService {
      * @param account konto użytkownika, dla którego pobierane są rezerwacje
      * @param order   kolejność sortowania względem kolumny time_from
      * @param getAll  flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
-     * @return Reservation      lista rezerwacji
+     * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(showReservations)
@@ -226,15 +226,5 @@ public class ReservationService {
     @PermitAll
     public Long countAllVisiblePhotographersByNameSurname(String name) throws BaseApplicationException {
         return photographerFacade.countAllVisiblePhotographersByNameSurname(name);
-    }
-
-    @PermitAll
-    public List<PhotographerInfo> findPhotographerBySpecialization(Specialization specialization) {
-        throw new UnsupportedOperationException();
-    }
-
-    @PermitAll
-    public List<PhotographerInfo> findPhotographerByAvailability(LocalDateTime start, LocalDateTime end) {
-        throw new UnsupportedOperationException();
     }
 }

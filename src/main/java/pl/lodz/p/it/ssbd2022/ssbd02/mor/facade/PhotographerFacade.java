@@ -20,11 +20,9 @@ import javax.persistence.*;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2022.ssbd02.security.Roles.reservePhotographer;
 
@@ -43,8 +41,8 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
      * Metoda zwracająca encję zawierającą informacje o fotografie
      *
      * @param login login fotografa
-     * @return PhotographerInfo
-     * @throws BaseApplicationException
+     * @return informacje o fotografie
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public PhotographerInfo getPhotographerByLogin(String login) throws BaseApplicationException {
@@ -54,16 +52,12 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
-            System.out.println("not found");
             throw ExceptionFactory.noAccountFound();
         } catch (OptimisticLockException ex) {
-            System.out.println("opt lock");
             throw ExceptionFactory.OptLockException();
         } catch (PersistenceException ex) {
-            System.out.println("persistence");
             throw ExceptionFactory.databaseException();
         } catch (Exception ex) {
-            System.out.println("exception");
             throw ExceptionFactory.unexpectedFailException();
         }
     }
@@ -145,6 +139,7 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
      * Szuka profilu fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return informacje o fotografie
      * @throws NoPhotographerFound W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @see PhotographerInfo
      */
@@ -264,7 +259,7 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
                                 criteriaBuilder.lower(from.get("account").get("surname")), criteriaBuilder.parameter(String.class, "name")
                         )
                 )));
-        
+
         criteriaQuery.select(from).where(predicates.toArray(new Predicate[predicates.size()]));
         criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.quot(from.get("score"), from.get("reviewCount"))));
 

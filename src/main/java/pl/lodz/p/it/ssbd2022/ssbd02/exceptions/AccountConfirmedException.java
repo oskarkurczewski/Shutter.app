@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.mok.dto.ErrorDto;
 import javax.ws.rs.core.Response;
 
 /**
- * Klasa wyjąku reprezentująca próbę potwierdzenia konta które zostało już wcześniej potwierdzone.
+ * Klasa wyjątku reprezentująca próbę potwierdzenia konta, które zostało już wcześniej potwierdzone.
  */
 public class AccountConfirmedException extends BaseApplicationException {
     public AccountConfirmedException(String message) {

@@ -1,4 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.util;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Singleton;
@@ -93,7 +94,7 @@ public class ConfigLoader {
     }
 
     /**
-     * Zwraca czas przez jaki żeton potwierdzenia rejestracji jest ważny (w godzinach)
+     * Zwraca czas, przez jaki żeton potwierdzenia rejestracji jest ważny (w godzinach)
      */
     public int getRegistrationConfirmationTokenLifetime() {
         return getOrDefaultInt(propertiesToken, REGISTRATION_CONFIRMATION_TOKEN_LIFETIME, 24);
@@ -176,7 +177,7 @@ public class ConfigLoader {
     public String getRecaptchaApiKey() {
         return propertiesRecaptcha.getProperty(RECAPTCHA_API_KEY);
     }
-    
+
     /**
      * Zwraca sekret, do tworzenia etaga
      */

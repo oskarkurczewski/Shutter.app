@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PhotographerReviewsCardWrapper.module.scss";
 import { Button, Card, SquareButton } from "components/shared";
 import { useTranslation } from "react-i18next";
 import { PhotographerReview } from "../photographer-review";
-import { GetPhotographerReviewsRequest } from "redux/types/api";
-import { useGetPhotographerReviewsQuery } from "redux/service/reviewService";
+import { useGetPhotographerReviewsMutation } from "redux/service/reviewService";
 import AddReviewModal from "../add-review-modal/AddReviewModal";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { GetPhotographerReviewsResponse } from "redux/types/api";
 interface Props {
    photographerLogin: string;
    reviewCount: number;
@@ -14,16 +14,40 @@ interface Props {
 
 export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
    photographerLogin,
-   reviewCount,
 }) => {
    const { t } = useTranslation();
    const [reviewPage, setReviewPage] = useState<number>(1);
-   const { data } = useGetPhotographerReviewsQuery({
-      pageNo: reviewPage,
-      photographerLogin: photographerLogin,
-   });
    const [reviewModalIsOpen, setReviewModalIsOpen] = useState<boolean>(false);
    const openReviewModal = () => setReviewModalIsOpen(true);
+
+   const [fetchReviews] = useGetPhotographerReviewsMutation();
+
+   const [data, setData] = useState<GetPhotographerReviewsResponse>({
+      pageNo: 1,
+      recordsPerPage: 1,
+      allPages: 1,
+      allRecords: 1,
+      list: [],
+   });
+
+   useEffect(() => {
+      fetchReviews({
+         pageNo: reviewPage,
+         photographerLogin: photographerLogin,
+      })
+         .unwrap()
+         .then((res) => setData(res));
+   }, []);
+
+   useEffect(() => {
+      fetchReviews({
+         pageNo: reviewPage,
+         photographerLogin: photographerLogin,
+      })
+         .unwrap()
+         .then((res) => setData(res));
+   }, [reviewPage]);
+
    const closeReviewModal = () => {
       setReviewModalIsOpen(false);
    };
@@ -87,6 +111,8 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
                         description={review.content}
                         likeCount={review.likeCount}
                         liked={review.liked}
+                        changeState={setData}
+                        state={data}
                      />
                   ))}
             </>

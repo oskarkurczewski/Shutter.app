@@ -43,10 +43,9 @@ public class AccountChangeLogFacade extends FacadeTemplate<AccountChangeLog> {
      * @param login          Login użytkownika, którego historia zmian konta ma być wyszukana
      * @param page           numer strony
      * @param recordsPerPage liczba rekordów na stronę
-     * @param orderBy        kolumna po której następuje sortowanie
+     * @param orderBy        kolumna, po której następuje sortowanie
      * @param orderAsc       kolejność sortowania
      * @return Historia zmian konta
-     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
     @PermitAll
     public List<AccountChangeLog> findByLogin(

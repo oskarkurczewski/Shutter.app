@@ -16,7 +16,6 @@ export const LanguageDropdown = () => {
    const lng = {
       pl: "Polski",
       en: "English",
-      de: "Deutsch",
    };
 
    useEffect(() => {

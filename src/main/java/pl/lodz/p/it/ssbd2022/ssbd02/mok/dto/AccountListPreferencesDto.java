@@ -1,11 +1,11 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
-import lombok.*;
-import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountListPreferences;
-import pl.lodz.p.it.ssbd2022.ssbd02.util.ManagedEntity;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter

@@ -18,9 +18,11 @@ public class MorAccountService {
     @Inject
     private MorAccountFacade accountFacade;
 
-    /** Odnajduje konto użytkownika o podanym loginie
+    /**
+     * Odnajduje konto użytkownika o podanym loginie
      *
      * @param login Login użytkownika, którego konta ma być wyszukane
+     * @return użytkownik o podanym loginie
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll

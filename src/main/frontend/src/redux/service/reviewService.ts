@@ -51,13 +51,14 @@ const ReviewService = api.injectEndpoints({
          }),
       }),
 
-      getPhotographerReviews: builder.query<
+      getPhotographerReviews: builder.mutation<
          GetPhotographerReviewsResponse,
          GetPhotographerReviewsRequest
       >({
          query: (data) => ({
             url: "profile/review/list",
             params: data,
+            method: "GET",
          }),
       }),
    }),
@@ -70,5 +71,5 @@ export const {
    useRemoveOwnPhotographerReviewMutation,
    useRemoveSomeonesPhotographerReviewMutation,
    useAddReviewMutation,
-   useGetPhotographerReviewsQuery,
+   useGetPhotographerReviewsMutation,
 } = ReviewService;

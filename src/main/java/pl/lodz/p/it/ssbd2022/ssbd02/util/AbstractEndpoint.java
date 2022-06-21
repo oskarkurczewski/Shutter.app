@@ -25,7 +25,7 @@ public abstract class AbstractEndpoint implements TransactionClass {
     private boolean lastTransactionRollback;
 
     /**
-     * Metoda rozpoczynająca transakcję aplikacyjną, generuje id transakcji
+     * Metoda rozpoczynająca transakcję aplikacyjną generuje id transakcji
      */
     @AfterBegin
     public void generateTransaction() {

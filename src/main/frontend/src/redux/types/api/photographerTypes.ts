@@ -8,8 +8,6 @@ export interface BasicPhotographerInfo extends BasicUserInfoResponse {
    score: number;
    reviewCount: number;
    description: string;
-   latitude: number;
-   longitude: number;
    specializationList: Specialization[];
 }
 
@@ -21,8 +19,6 @@ export interface PhotographerTableEntry {
    reviewCount: number;
    score: number;
    specializations: string[];
-   longitude: number;
-   latitude: number;
 }
 
 export interface GetPhotographersListRequest {
@@ -153,8 +149,6 @@ export interface DetailedPhotographerInfo extends BasicUserInfoResponse {
    score: number;
    reviewCount: number;
    description: string;
-   latitude: number;
-   longitude: number;
    specializations: Specialization[];
 }
 
@@ -167,7 +161,11 @@ export interface PhotographerListResponse {
 }
 
 export interface PhotographerListRequest {
-   query: string;
+   name: string;
+   specialization: string;
    pageNo: number;
    recordsPerPage: number;
+   weekDay: string;
+   from: string;
+   to: string;
 }

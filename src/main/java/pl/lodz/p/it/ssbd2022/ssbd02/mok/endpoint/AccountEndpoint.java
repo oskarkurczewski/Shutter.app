@@ -85,8 +85,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji.
      *
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
-     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
-     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException  Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto)
@@ -100,8 +99,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Konwertuje obiekt transferu danych użytkownika (z dodatkowymi polami registered oraz active) obiekt klasy encji.
      *
      * @param accountRegisterAsAdminDto Obiekt zawierający dane użytkownika (z dodatkowymi polami registered oraz active)
-     * @throws IdenticalFieldException, Występuje w przypadku gdy rejestracja się nie powiedzie
-     * @throws DatabaseException,       Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException  Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @RolesAllowed({createAccount})
     public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto)
@@ -176,7 +174,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @throws NoAuthenticatedAccountFound W przypadku nieznalezienia konta użytkownika w bazie danych
      *                                     na podstawie żetonu JWT
      * @throws DataNotFoundException       W przypadku nieznalezienia na koncie użytkownika roli fotografa
-     * @throws CannotChangeException       W przypadku próby odebrania roli fotografa przez uzytkownika nie będącego
+     * @throws CannotChangeException       W przypadku próby odebrania roli fotografa przez użytkownika niebędącego
      *                                     fotografem
      * @see AccountAccessLevelChangeDto
      */
@@ -218,6 +216,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika przez administratora
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
+     * @param login login użytkownika
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @RolesAllowed({editSomeonesAccountData})
@@ -262,7 +261,8 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Zwraca wartość secret użytkownika o danym loginie
      *
      * @param login Login użytkownika
-     * @return secret
+     * @return sekret
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public String getSecret(String login) throws BaseApplicationException {
@@ -283,6 +283,12 @@ public class AccountEndpoint extends AbstractEndpoint {
         return new DetailedAccountInfoDto(account);
     }
 
+    /**
+     * Aktualizuje hasło obecnie uwierzytelnionego użytkownika
+     *
+     * @param data dane wymagane do zaktualizowania hasła
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @RolesAllowed({changeOwnPassword})
     public void updateOwnPassword(AccountUpdatePasswordDto data) throws BaseApplicationException {
         Account account = accountService.findByLogin(authenticationContext.getCurrentUsersLogin());
@@ -292,6 +298,16 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
+     * @param recordsPerPage ilość krotek na stronę
+     * @param order kolejność sortowania
+     * @param pageNo numer strony
+     * @param name imie
+     * @param surname nazwisko
+     * @param active czy użytkownik jest aktywny
+     * @param columnName nazwa kolumny do sortowania
+     * @param email email użytkownika
+     * @param login login użytkownika
+     * @param registered czy użytkownik jest zarejestrowany
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
@@ -339,6 +355,7 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
      *
+     * @return obiekt dto preferencji sortowania oraz stronicowania listy użytkowników
      * @throws BaseApplicationException kiedy preferencje dla danego użytkownika nie zostaną odnalezione
      */
     @RolesAllowed(listAllAccounts)
@@ -437,6 +454,17 @@ public class AccountEndpoint extends AbstractEndpoint {
         accountService.updateEmail(emailUpdateDto);
     }
 
+    /**
+     * Wyszukuje użytkownika na podstawie frazy zawartej w jego imieniu lub nazwisku
+     *
+     * @param name           fraza zawarta w imieniu lub nazwisku
+     * @param page           number strony
+     * @param recordsPerPage liczba krotek na stronę
+     * @param orderBy        parametr, po którym ma się dokonywać sortowanie
+     * @param order          kolejność sortowania
+     * @return lista DTO krotek użytkowników spełniająca określone kryteria
+     * @throws BaseApplicationException
+     */
     @RolesAllowed(getAccountInfo)
     public ListResponseDto<TableAccountDto> findByNameSurname(
             String name,
@@ -491,8 +519,8 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Sprawdza, czy dany użytkownik ma uruchomione uwierzytelnianie dwuetapowe
      *
      * @param login użytkownik
-     * @return true jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
-     * @return false jezeli użytkownik ma wyłaczone uwierzytelnianie dwuetapowe
+     * @return true, jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
+     * @return false jeżeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
      */
     @PermitAll
     public Boolean is2FAEnabledForUser(String login) throws BaseApplicationException {
@@ -501,10 +529,10 @@ public class AccountEndpoint extends AbstractEndpoint {
     }
 
     /**
-     * Pobiera wszystkie grupy w których znajduje się użytkownik o danym loginie
+     * Pobiera wszystkie grupy, w których znajduje się użytkownik o danym loginie
      *
      * @param login login użytkownika, dla którego mają zostać pobrane grupy
-     * @return lista grup w których znajduje się użytkownik o podanym loginie
+     * @return lista grup, w których znajduje się użytkownik o podanym loginie
      * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
      */
     @PermitAll
@@ -521,10 +549,10 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param pageNo         numer strony
      * @param recordsPerPage liczba rekordów na stronę
-     * @param orderBy        kolumna po której następuje sortowanie
+     * @param orderBy        kolumna, po której następuje sortowanie
      * @param order          kolejność sortowania
      * @return Historia zmian konta
-     * @throws BaseApplicationException jeżeli użytkownik o podanym loginie nie istnieje
+     * @throws BaseApplicationException użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getOwnAccountInfo})
     public ListResponseDto<AccountChangeLogDto> getOwnAccountChangeLog(
@@ -553,7 +581,6 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param login Login użytkownika, którego historia zmian konta ma być wyszukana
      * @return Historia zmian konta
-     * @throws BaseApplicationException, jeżeli użytkownik o podanym loginie nie istnieje
      */
     @RolesAllowed({getEnhancedAccountInfo})
     public ListResponseDto<AccountChangeLogDto> getAccountChangeLog(
@@ -581,6 +608,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Zwraca preferowany przez użytkownika język
      *
      * @return Preferowany język
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public LocaleDto getAccountLocale() throws BaseApplicationException {
@@ -594,6 +622,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Ustawia preferowany język przez użytkownika
      *
      * @param languageTag Preferowany język
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public void changeAccountLocale(String languageTag) throws BaseApplicationException {

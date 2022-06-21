@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
-import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -52,6 +51,8 @@ public class AccountBlockerService {
      * blokująca konta nieaktywne przez określony również w pliku czas
      * lub w przypadku braku możliwości odczytania wartości z pliku,
      * przez domyślną wartość 30dni
+     *
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @Timeout
     public void blockUnusedAccounts() throws BaseApplicationException {

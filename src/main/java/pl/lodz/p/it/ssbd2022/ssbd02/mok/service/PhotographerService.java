@@ -31,6 +31,7 @@ public class PhotographerService {
      * jeżeli już istnieje
      *
      * @param account Account Konto fotografa, któremu chcemy dodać informacje
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(becomePhotographer)
     public void createOrActivatePhotographerInfo(Account account) throws BaseApplicationException {
@@ -46,8 +47,6 @@ public class PhotographerService {
             photographerInfo.setReviewCount(0L);
             photographerInfo.setAccount(account);
             photographerInfo.setDescription("");
-            photographerInfo.setLatitude(null);
-            photographerInfo.setLongitude(null);
             photographerInfo.setVisible(true);
 
             photographerInfoFacade.persist(photographerInfo);
@@ -58,6 +57,7 @@ public class PhotographerService {
      * Ukrywa informacje o fotografie
      *
      * @param login Login Konto fotografa, któremu chcemy ukryć informacje
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(stopBeingPhotographer)
     public void hidePhotographerInfo(String login) throws BaseApplicationException {
@@ -76,11 +76,11 @@ public class PhotographerService {
      * Szuka fotografa
      *
      * @param photographerInfo Informacje o fotografie, które próbuje pozyskać użytkownik
+     * @return informacje o fotografie
      * @throws NoPhotographerFound W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                             gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                             profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                             niebędący ani administratorem, ani moderatorem
-     * @see BasePhotographerInfoMokDto
      */
     @RolesAllowed(getPhotographerInfo)
     public PhotographerInfo getPhotographerInfo(PhotographerInfo photographerInfo)

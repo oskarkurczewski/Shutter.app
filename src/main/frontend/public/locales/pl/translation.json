@@ -55,6 +55,12 @@
          "specialization_photoreport": "Fotoreportaż",
          "specialization_product": "Fotografia produktowa",
          "specialization_landscape": "Fotografia krajobrazowa"
+      },
+      "component": {
+         "photo": {
+            "like_successful_message": "Polubienie powiodło się!",
+            "unlike_successful_message": "Anulowanie polubienia powiodło się!"
+         }
       }
    },
    "exception": {
@@ -144,7 +150,7 @@
             "regexp": "Niepoprawne parametry wyszukiwania"
          },
          "token": {
-            "regexp": "Podano niepoprawny żeton"
+            "regexp": "Nie wypełniono pola ReCaptcha"
          }
       },
       "not_same": "Pola muszą być takie same."
@@ -178,7 +184,7 @@
 
       "success_update": "Pomyślnie zmodyfikowano",
       "success_login_message": "Pomyślnie zalogowano.",
-      "success_register_message": "Pomyślnie zarejestrowano. Potwierdź rejestrację za pomocą linku wysłanego na twój adres email",
+      "success_register_message": "Pomyślnie zarejestrowano. Potwierdź rejestrację za pomocą linku wysłanego na twój adres email.",
       "success_send_reset_password_link_message": "Pomyślnie wysłano wiadomość",
       "success_send_reset_email_link_message": "Pomyślnie wysłano wiadomość z linkiem zmiany adresu email",
       "success_become_photographer_message": "Pomyślnie zostano fotografem",
@@ -303,7 +309,11 @@
       "profile": "Profil",
       "hire": "Wynajmij",
       "list": "Lista",
-      "az": "A-Z"
+      "az": "A-Z",
+      "specialization": "Specjalizacja",
+      "availability": "Dostępność",
+      "from": "Od",
+      "to": "Do"
    },
    "photographer_list_admin_page": {
       "login": "Login",

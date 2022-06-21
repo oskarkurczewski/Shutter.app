@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

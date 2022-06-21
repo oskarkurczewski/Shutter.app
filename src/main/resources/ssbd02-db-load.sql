@@ -44,7 +44,7 @@ VALUES (1, 0, 'aurelian', '229888@edu.p.lodz.pl', 'Lucjusz', 'Aurelian', 'pl', f
        (4, 1, 'majster3', 'iydvxvqhxwiuhlbvqf@nthrl.com', 'Dydiusz', 'Julian', 'pl', false, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '97ee343b-9e6b-429f-8ece-d0c103c0f483'),
-       (5, 1, 'majster4', 'gefop58515@tagbert.com', 'Septymiusz', 'Sewer', 'pl', true, true,
+       (5, 1, 'majster4', '229944@edu.p.lodz.pl', 'Septymiusz', 'Sewer', 'pl', true, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '52ee343b-9e6b-429f-8ece-d0c103c0f4fr')
 ON CONFLICT DO NOTHING;
@@ -59,10 +59,10 @@ VALUES (1, 0, 1, 1, true, current_timestamp),
        (7, 1, 5, 4, true, current_timestamp)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.photographer_info (version, account_id, score, review_count, description, lat, long, visible,
+INSERT INTO public.photographer_info (version, account_id, score, review_count, description, visible,
                                       created_at)
-VALUES (1, 3, 17, 2, 'Aby poznac stawki, zapraszam do kontaktu mailowego.', 10,
-        20, true, current_timestamp)
+VALUES (1, 3, 17, 2, 'Aby poznac stawki, zapraszam do kontaktu mailowego.',
+        true, current_timestamp)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.photographer_specialization (version, photographer_id, specialization_id)

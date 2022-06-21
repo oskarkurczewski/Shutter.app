@@ -3,6 +3,7 @@ import styles from "./dashboardPage.module.scss";
 import { Button, Card } from "components/shared";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { logout } from "redux/slices/authSlice";
+import { AvailabilityFilter } from "components/photographers-list/availability-filter";
 
 export const DashboardPage = () => {
    const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export const DashboardPage = () => {
                Logout
             </Button>
          )}
+         {/* <AvailabilityFilter /> */}
       </section>
    );
 };

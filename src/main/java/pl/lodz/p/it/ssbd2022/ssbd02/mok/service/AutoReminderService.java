@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mok.service;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.TokenType;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
-import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.AuthenticationFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.mok.facade.TokenFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.ConfigLoader;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.EmailService;
@@ -17,8 +16,11 @@ import javax.ejb.TimerService;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
+/**
+ * Serwis wysyłający powiadomienia o konieczności potwierdzenia rejestracji w połowie okresu pozwalającego na
+ * dokonanie tejże operacji
+ */
 @Startup
 @Singleton
 public class AutoReminderService {

@@ -43,18 +43,18 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
       useStateWithValidationAndComparison<string>(emailRules(t), ["", ""]);
 
    const [canSubmit, setCanSubmit] = useState(
-      nameValidationMessage &&
-         surnameValidationMessage &&
-         emailValidationMessages[0] === "" &&
-         emailValidationMessages[1] === ""
+      nameValidationMessage === "" &&
+         surnameValidationMessage === "" &&
+         emailValidationMessages.valueB === "" &&
+         emailValidationMessages.valueA === ""
    );
 
    useEffect(() => {
       setCanSubmit(
-         nameValidationMessage &&
-            surnameValidationMessage &&
-            emailValidationMessages[0] === "" &&
-            emailValidationMessages[1] === ""
+         nameValidationMessage === "" &&
+            surnameValidationMessage === "" &&
+            emailValidationMessages.valueA === "" &&
+            emailValidationMessages.valueB === ""
       );
    }, [nameValidationMessage, surnameValidationMessage, emailValidationMessages]);
 
@@ -72,16 +72,12 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
 
    const [infoMutation, infoMutationState] = useChangeAccountInfoMutation();
 
-   useEffect(() => {
-      // TODO: add toast
-   }, [infoMutationState]);
-
    const submit = () => {
       canSubmit &&
          infoMutation({
             body: {
                login: login,
-               email: emails[0],
+               email: emails.valueA,
                name: name,
                surname: surname,
                active: active,
@@ -202,11 +198,6 @@ export const ChangeBaseInfo: React.FC<Props> = ({ userInfoData, refetch }) => {
             >
                {t("edit_account_page.confirm")}
             </Button>
-
-            {/* TODO: change to toast */}
-            {infoMutationState.isError && (
-               <p className={styles.error_message}>Nie można zapisać edycji</p>
-            )}
          </div>
       </div>
    );

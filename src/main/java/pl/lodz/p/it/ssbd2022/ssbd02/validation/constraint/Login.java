@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 @ReportAsSingleViolation
 @Pattern(regexp = REGEXP.LOGIN_PATTERN)
 public @interface Login {
-    String message() default "validator.incorrect.login_regexp";
+    String message() default "validator.incorrect.login.regexp";
 
     Class<?>[] groups() default {};
 

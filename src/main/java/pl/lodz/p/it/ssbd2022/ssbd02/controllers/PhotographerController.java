@@ -48,6 +48,7 @@ public class PhotographerController extends AbstractController {
      * Punkt końcowy szukający fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return podstawowe informacje o fotografie
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                                     profil nieaktywny i informacje próbuje uzyskać użytkownik
@@ -67,6 +68,7 @@ public class PhotographerController extends AbstractController {
      * Punkt końcowy szukający fotografa
      *
      * @param login Login użytkownika fotografa
+     * @return odpowiedź HTTP
      * @throws NoPhotographerFound         W przypadku gdy fotograf o podanej nazwie użytkownika nie istnieje,
      *                                     gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub profil
      *                                     nieaktywny i informacje próbuje uzyskać użytkownik
@@ -91,6 +93,7 @@ public class PhotographerController extends AbstractController {
     /**
      * Punkt końcowy zwracający informacje o zalogowanym fotografie
      *
+     * @return odpowiedź HTTP
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound W przypadku gdy dane próbuje uzyskać niezalogowana osoba
      * @see DetailedPhotographerInfoDto
@@ -111,6 +114,7 @@ public class PhotographerController extends AbstractController {
      * Punkt końcowy pozwalający uwierzytelnionemu fotografowi zmienić opis na swoim profilu
      *
      * @param changeDescriptionDto obiekt DTO zawierający nowy opis
+     * @return odpowiedź HTTP
      * @throws NoPhotographerFound         W przypadku gdy profil fotografa dla użytkownika nie istnieje
      * @throws NoAuthenticatedAccountFound Gdy użytkownik nie jest uwierzytelniony
      * @throws BaseApplicationException    gdy aktualizacja opisu się nie powiedzie
@@ -152,26 +156,18 @@ public class PhotographerController extends AbstractController {
             @Time @QueryParam("from") String from,
             @Time @QueryParam("to") String to
     ) throws BaseApplicationException {
-        WeekDay weekDayParsed = null;
-        if (weekDay != null) {
-            try {
-                weekDayParsed = WeekDay.valueOf(weekDay);
-
-            } catch (IllegalArgumentException e) {
-                throw ExceptionFactory.wrongDayNameException();
-            }
-        }
         LocalTime fromTime = from == null ? null : LocalTime.of(Integer.parseInt(from.split(":")[0]), Integer.parseInt(from.split(":")[1]));
         LocalTime toTime = to == null ? null : LocalTime.of(Integer.parseInt(to.split(":")[0]), Integer.parseInt(to.split(":")[1]));
-        MorListResponseDto<PhotographerListEntryDto> responseDto = reservationEndpoint.findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
+        MorListResponseDto<PhotographerListEntryDto> responseDto = repeat(
+            () -> reservationEndpoint.findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
                 name,
                 page,
                 recordsPerPage,
                 spec,
-                weekDayParsed,
+                weekDay,
                 fromTime,
                 toTime
-        );
+        ), reservationEndpoint);
         return Response.status(Response.Status.OK).entity(responseDto).build();
     }
 }

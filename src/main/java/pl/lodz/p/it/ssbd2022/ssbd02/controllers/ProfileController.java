@@ -31,16 +31,8 @@ public class ProfileController extends AbstractController {
     @Inject
     ReviewEndpoint reviewEndpoint;
 
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/description")
-    public Response changeDescription(@NotNull @Description String newDescription) throws NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
-    }
-
     /**
-     * Dodaje nowe zdjęcie do galerii obecnie uwierzytelnionego fotografa
+     * Punkt końcowy dodający nowe zdjęcie do galerii obecnie uwierzytelnionego fotografa
      *
      * @param addPhotoDto obiekt DTO zawierający informacje potrzebne do dodania zdjęcia
      * @throws BaseApplicationException niepowodzenie operacji
@@ -53,7 +45,7 @@ public class ProfileController extends AbstractController {
     }
 
     /**
-     * Usuwa zdjęcie o podanym identyfikatorze z galerii fotografa
+     * Punkt końcowy usuwający zdjęcie o podanym identyfikatorze z galerii fotografa
      *
      * @param photoId identyfikator zdjęcia, które ma zostać usunięte
      * @throws BaseApplicationException przy niepowodzeniu operacji
@@ -64,6 +56,13 @@ public class ProfileController extends AbstractController {
         repeat(() -> photoEndpoint.deletePhotoFromGallery(photoId), photoEndpoint);
     }
 
+    /**
+     * Punkt końcowy dodający polubienie do zdjęcia fotografa o danym identyfikatorze
+     *
+     * @param photoId identyfikator zdjęcia
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Path("/photo/{id}/like")
     public Response likePhoto(@NotNull @PathParam("id") Long photoId) throws BaseApplicationException {
@@ -72,9 +71,10 @@ public class ProfileController extends AbstractController {
     }
 
     /**
-     * Usuwa polubienie na wybranym zdjęciu
+     * Punkt końcowy usuwający polubienie na wybranym zdjęciu
      *
      * @param photoId Id zdjęcia
+     * @return odpowiedź HTTP
      * @throws BaseApplicationException W przypadku niepowodzenia akcji
      */
     @POST
@@ -85,9 +85,10 @@ public class ProfileController extends AbstractController {
     }
 
     /**
-     * Dodaje recenzję fotografowi
+     * Punkt końcowy dodający recenzję fotografowi
      *
      * @param review obiekt DTO zawierający login fotografa, ocenę w skali od 1 do 10 i słowną opinię
+     * @return odpowiedź HTTP
      * @throws BaseApplicationException przy niepowodzeniu operacji
      */
     @POST
@@ -99,6 +100,13 @@ public class ProfileController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Punkt końcowy usuwający recenzję o podanym identyfikatorze z profilu obecnie uwierzytelnionego fotografa
+     *
+     * @param reviewId identyfikator recenzji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @DELETE
     @Path("/review/{id}")
     public Response deleteOwnPhotographerReview(@NotNull @PathParam("id") Long reviewId)
@@ -107,6 +115,13 @@ public class ProfileController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Punkt końcowy wyszukujący daną recenzję po identyfikatorze
+     *
+     * @param reviewId identyfikator recenzji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @GET
     @Path("/review/{id}")
     public GetReviewDto getReviewById(@NotNull @PathParam("id") Long reviewId)
@@ -114,6 +129,13 @@ public class ProfileController extends AbstractController {
         return repeat(() -> reviewEndpoint.getReviewById(reviewId), reviewEndpoint);
     }
 
+    /**
+     * Punkt końcowy usuwający dowolną recenzję o danym identyfikatorze
+     *
+     * @param reviewId identyfikator recenzji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @DELETE
     @Path("/review/{id}/admin")
     public Response deleteSomeonesPhotographerReview(@NotNull @PathParam("id") Long reviewId)
@@ -122,6 +144,13 @@ public class ProfileController extends AbstractController {
         return Response.status(Response.Status.OK).build();
     }
 
+    /**
+     * Punkt końcowy dodający polubienie do recenzji o podanym identyfikatorze
+     *
+     * @param reviewId identyfikator recenzji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Path("/review/{id}/like")
     public Response likeReview(@NotNull @PathParam("id") Long reviewId) throws BaseApplicationException {
@@ -129,6 +158,13 @@ public class ProfileController extends AbstractController {
         return Response.accepted().build();
     }
 
+    /**
+     * Punkt końcowy usuwający polubienie z recenzji o podanym identyfikatorze
+     *
+     * @param reviewId identyfikator recenzji
+     * @return odpowiedź HTTP
+     * @throws BaseApplicationException niepowodzenie operacji
+     */
     @POST
     @Path("/review/{id}/unlike")
     public Response unlikeReview(@NotNull @PathParam("id") Long reviewId) throws BaseApplicationException {
@@ -141,7 +177,7 @@ public class ProfileController extends AbstractController {
      *
      * @param pageNo            numer strony do pobrania
      * @param recordsPerPage    liczba rekordów na stronie
-     * @param photographerLogin login fotografa którego dotyczą recenzje
+     * @param photographerLogin login fotografa, którego dotyczą recenzje
      * @return lista recenzji
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
@@ -158,7 +194,7 @@ public class ProfileController extends AbstractController {
     }
 
     /**
-     * Punkt końcowy zwracający listę zdjęc danego fotografa
+     * Punkt końcowy zwracający listę zdjęć danego fotografa
      *
      * @param pageNo            numer strony do pobrania
      * @param recordsPerPage    liczba rekordów na stronie
@@ -180,7 +216,7 @@ public class ProfileController extends AbstractController {
 
 
     /**
-     * Punkt końcowy pozwalający edytować listę specjalizacji fotografa
+     * Punkt końcowy edytujący listę specjalizacji fotografa
      *
      * @param specializations lista specjalizacji
      * @return status
@@ -196,7 +232,7 @@ public class ProfileController extends AbstractController {
     }
 
     /**
-     * Punkt końcowy zwracający listę specjalizacji fotografa
+     * Punkt końcowy pobierający listę specjalizacji fotografa
      *
      * @return lista specjalizacji
      * @throws BaseApplicationException przy niepowodzeniu operacji

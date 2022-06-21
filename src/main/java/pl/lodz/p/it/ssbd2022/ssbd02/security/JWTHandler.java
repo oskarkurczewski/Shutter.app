@@ -23,7 +23,7 @@ public class JWTHandler {
     public final static String BEARER = "Bearer ";
 
     private static final String SECRET = "90FAB1385C02FE80158890349649253C7F39121342FC09388427E8F49C4E7BF8";
-    private static final int TIMEOUT = 10;
+    private static final int TIMEOUT = 100;
     private static final String ISSUER = "Shutter.app";
 
     /**
@@ -91,7 +91,9 @@ public class JWTHandler {
 
     /**
      * Odświeża podany żeton JWT
+     *
      * @param oldToken Żeton, który ma zostać odświeżony
+     * @param newGroups nowe grupy przypisane użytkownikowi od ostatniego uzyskania żetonu
      * @return Odświeżony żeton JWT
      */
     public static String refresh(JWT oldToken, List<String> newGroups) {
