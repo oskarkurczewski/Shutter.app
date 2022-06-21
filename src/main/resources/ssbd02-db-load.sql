@@ -44,7 +44,7 @@ VALUES (1, 0, 'aurelian', '229888@edu.p.lodz.pl', 'Lucjusz', 'Aurelian', 'pl', f
        (4, 1, 'majster3', 'iydvxvqhxwiuhlbvqf@nthrl.com', 'Dydiusz', 'Julian', 'pl', false, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '97ee343b-9e6b-429f-8ece-d0c103c0f483'),
-       (5, 1, 'majster4', 'gefop58515@tagbert.com', 'Septymiusz', 'Sewer', 'pl', true, true,
+       (5, 1, 'majster4', '229944@edu.p.lodz.pl', 'Septymiusz', 'Sewer', 'pl', true, true,
         '$2a$06$YXhULrtOFarRlrSrdWc7oO4e6xtEp303QOg4KgTAK0nY51jgu8Vl6', true, current_timestamp,
         '52ee343b-9e6b-429f-8ece-d0c103c0f4fr')
 ON CONFLICT DO NOTHING;

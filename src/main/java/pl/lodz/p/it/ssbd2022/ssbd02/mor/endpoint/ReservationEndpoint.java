@@ -200,10 +200,20 @@ public class ReservationEndpoint extends AbstractEndpoint {
             int page,
             int recordsPerPage,
             String spec,
-            WeekDay weekDay,
+            String weekDay ,
             LocalTime fromTime,
             LocalTime toTime
     ) throws BaseApplicationException {
+        WeekDay weekDayParsed = null;
+        if (weekDay != null) {
+            try {
+                weekDayParsed = WeekDay.valueOf(weekDay);
+
+            } catch (IllegalArgumentException e) {
+                throw ExceptionFactory.wrongDayNameException();
+            }
+        }
+
         Specialization specialization;
 
         if (spec != null) {
@@ -212,7 +222,8 @@ public class ReservationEndpoint extends AbstractEndpoint {
             specialization = null;
         }
 
-        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurnameSpecialization(name, page, recordsPerPage, specialization, weekDay, fromTime, toTime);
+        List<PhotographerInfo> list = reservationService.findPhotographerByNameSurnameSpecialization(
+                name, page, recordsPerPage, specialization, weekDayParsed, fromTime, toTime);
         Long photographerCount = (long) list.size();
 
         return new MorListResponseDto(

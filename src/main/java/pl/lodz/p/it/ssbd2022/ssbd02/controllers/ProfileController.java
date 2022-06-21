@@ -31,14 +31,6 @@ public class ProfileController extends AbstractController {
     @Inject
     ReviewEndpoint reviewEndpoint;
 
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/description")
-    public Response changeDescription(@NotNull @Description String newDescription) throws NoAuthenticatedAccountFound {
-        throw new UnsupportedOperationException();
-    }
-
     /**
      * Dodaje nowe zdjęcie do galerii obecnie uwierzytelnionego fotografa
      *
