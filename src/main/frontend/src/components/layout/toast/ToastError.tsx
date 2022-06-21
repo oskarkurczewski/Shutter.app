@@ -10,6 +10,12 @@ interface Props {
 
 export const ToastError: FC<Props> = ({ text, id }) => {
    return (
-      <Toast id={id} icon={<RiCloseCircleFill />} text={text} className={styles.toast} />
+      <Toast
+         id={id}
+         icon={<RiCloseCircleFill />}
+         text={text}
+         className={styles.toast}
+         permanent
+      />
    );
 };
