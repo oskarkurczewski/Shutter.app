@@ -126,6 +126,9 @@
          },
          "token": {
             "regexp": "Incorrect token was provided"
+         },
+         "reservation": {
+            "time": "Invalid reservation time"
          }
       },
       "not_same": "Fields must be the same."
