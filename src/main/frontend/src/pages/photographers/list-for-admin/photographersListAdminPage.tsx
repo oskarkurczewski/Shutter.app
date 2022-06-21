@@ -46,18 +46,6 @@ export const PhotographersListAdminPage = () => {
          sortable: false,
          sort: "asc",
       },
-      {
-         id: "longitude",
-         label: t("photographer_list_admin_page.longitude"),
-         sortable: false,
-         sort: "asc",
-      },
-      {
-         id: "latitutde",
-         label: t("photographer_list_admin_page.latitude"),
-         sortable: false,
-         sort: "asc",
-      },
    ]);
 
    const [tableData, setTableData] = useState([]);
@@ -108,8 +96,6 @@ export const PhotographersListAdminPage = () => {
                <p key={`${item.login}-${speciatlization}`}>{speciatlization}</p>
             ))}
          </>,
-         item.longitude,
-         item.latitude,
       ]);
 
       list && setTableData(list);

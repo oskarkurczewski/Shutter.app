@@ -46,8 +46,6 @@ public class PhotographerService {
             photographerInfo.setReviewCount(0L);
             photographerInfo.setAccount(account);
             photographerInfo.setDescription("");
-            photographerInfo.setLatitude(null);
-            photographerInfo.setLongitude(null);
             photographerInfo.setVisible(true);
 
             photographerInfoFacade.persist(photographerInfo);
@@ -80,7 +78,6 @@ public class PhotographerService {
      *                             gdy konto szukanego fotografa jest nieaktywne, niepotwierdzone lub
      *                             profil nieaktywny i informacje próbuje uzyskać użytkownik
      *                             niebędący ani administratorem, ani moderatorem
-     * @see BasePhotographerInfoMokDto
      */
     @RolesAllowed(getPhotographerInfo)
     public PhotographerInfo getPhotographerInfo(PhotographerInfo photographerInfo)

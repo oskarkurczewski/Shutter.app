@@ -75,8 +75,8 @@ export const MainSettings = () => {
             onClick={() => {
                mutation({
                   data: {
-                     name: data.data.name,
-                     surname: data.data.surname,
+                     name: name,
+                     surname: surname,
                      login: username,
                   },
                   etag: data.etag,
