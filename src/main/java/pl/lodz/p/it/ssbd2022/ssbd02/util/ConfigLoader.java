@@ -35,10 +35,16 @@ public class ConfigLoader {
     private static final String UNBLOCK_OWN_ACCOUNT_TOKEN_LIFETIME = "unblock.own.account.token.lifespan";
     private static final String PERIOD_2FA = "2fa.period";
     private static final String ALLOWED_FAILED_ATTEMPTS = "allowed.failed.attempts";
-    private static final String EMAIL_API_KEY = "api.key";
-    private static final String EMAIL_SENDER_ADDRESS = "email.sender.email";
+
     private static final String EMAIL_SENDER_NAME = "email.sender.name";
-    private static final String EMAIL_APP_NAME = "app.name";
+    private static final String MAIL_SMTP_HOST = "mail.smtp.host";
+    private static final String MAIL_SMTP_PORT = "mail.smtp.port";
+    private static final String MAIL_SMTP_AUTH = "mail.smtp.auth";
+    private static final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
+    private static final String MAIL_SMTP_USER = "mail.smtp.user";
+    private static final String MAIL_SMTP_PASSWORD = "mail.smtp.password";
+    private static final String MAIL_SMTP_FROM = "mail.smtp.from";
+
     private static final String EMAIL_APP_URL = "app.url";
     private static final String BLOCK_CHECK_TIMEOUT = "block.check-timeout";
     private static final String BLOCK_TIMEOUT = "block.timeout";
@@ -136,20 +142,32 @@ public class ConfigLoader {
         return Integer.parseInt(propertiesAuth.getProperty(ALLOWED_FAILED_ATTEMPTS));
     }
 
-    public String getEmailApiKey() {
-        return propertiesEmail.getProperty(EMAIL_API_KEY);
-    }
-
-    public String getEmailSenderName() {
+    public String getEmailSenderAddress() {
         return propertiesEmail.getProperty(EMAIL_SENDER_NAME);
     }
 
-    public String getEmailSenderAddress() {
-        return propertiesEmail.getProperty(EMAIL_SENDER_ADDRESS);
+    public String getMailSmtpHost() {
+        return propertiesEmail.getProperty(MAIL_SMTP_HOST);
     }
 
-    public String getEmailAppName() {
-        return propertiesEmail.getProperty(EMAIL_APP_NAME);
+    public String getMailSmtpPort() {
+        return propertiesEmail.getProperty(MAIL_SMTP_PORT);
+    }
+
+    public String getMailSmtpAuth() {
+        return propertiesEmail.getProperty(MAIL_SMTP_AUTH);
+    }
+
+    public String getMailSsl() {
+        return propertiesEmail.getProperty(MAIL_SMTP_STARTTLS_ENABLE);
+    }
+
+    public String getMailSmtpUser() {
+        return propertiesEmail.getProperty(MAIL_SMTP_USER);
+    }
+
+    public String getMailSmtpPassword() {
+        return propertiesEmail.getProperty(MAIL_SMTP_PASSWORD);
     }
 
     public String getEmailAppUrl() {

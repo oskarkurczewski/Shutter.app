@@ -3,15 +3,6 @@ package pl.lodz.p.it.ssbd2022.ssbd02.util;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.VerificationToken;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.EmailException;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import sendinblue.ApiClient;
-import sendinblue.ApiException;
-import sendinblue.Configuration;
-import sendinblue.auth.ApiKeyAuth;
-import sibApi.TransactionalEmailsApi;
-import sibModel.CreateSmtpEmail;
-import sibModel.SendSmtpEmail;
-import sibModel.SendSmtpEmailSender;
-import sibModel.SendSmtpEmailTo;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
@@ -19,7 +10,12 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.Collections;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -32,8 +28,9 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.util.I18n.*;
 @Stateless
 @Interceptors(LoggingInterceptor.class)
 public class EmailService {
-    private TransactionalEmailsApi api;
-    private SendSmtpEmailSender sender;
+
+    private String fromEmail;
+    private Session session;
 
     @Inject
     private ConfigLoader configLoader;
@@ -44,16 +41,20 @@ public class EmailService {
 
     @PostConstruct
     public void init() {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        fromEmail = configLoader.getEmailSenderAddress();
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.host", configLoader.getMailSmtpHost());
+        properties.put("mail.smtp.port", configLoader.getMailSmtpPort());
+        properties.put("mail.smtp.starttls.enable", configLoader.getMailSsl());
+        properties.put("mail.smtp.auth", configLoader.getMailSmtpAuth());
 
-        // Configure API key authorization: api-key
-        ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
-        apiKey.setApiKey(configLoader.getEmailApiKey());
+        session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            @Override
+            protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                return new javax.mail.PasswordAuthentication(configLoader.getMailSmtpUser(), configLoader.getMailSmtpPassword());
+            }
+        });
 
-        api = new TransactionalEmailsApi();
-        sender = new SendSmtpEmailSender();
-        sender.setEmail(configLoader.getEmailSenderAddress());
-        sender.setName(configLoader.getEmailSenderName());
     }
 
     /**
@@ -369,42 +370,6 @@ public class EmailService {
 
 
     /**
-     * Funkcja służąca do wysyłania emaili
-     *
-     * @param toEmail  adres email odbiorcy
-     * @param subject  tytuł emaila
-     * @param bodyText treść emaila w html
-     * @see "https://developers.sendinblue.com/reference/sendtransacemail/"
-     */
-    @PermitAll
-    public void sendEmail(String toEmail,
-                          String subject,
-                          String bodyText
-                          ) throws EmailException {
-
-        SendSmtpEmailTo to = new SendSmtpEmailTo();
-        to.setEmail(toEmail);
-
-        Properties params = new Properties();
-        params.setProperty("parameter", bodyText);
-        params.setProperty("subject", subject);
-
-
-        SendSmtpEmail sendSmtpEmail = new SendSmtpEmail();
-        sendSmtpEmail.setParams(params);
-        sendSmtpEmail.setSender(sender);
-        sendSmtpEmail.setTo(Collections.singletonList(to));
-        sendSmtpEmail.setHtmlContent("<html> <head> <style> body { font-family: 'Nunito', sans-serif; color: #7143d2; background-color: #eeeeee; padding-top: 30px; padding-bottom: 30px; width: 100%; height: max-content; } .card { padding: 20px; padding-bottom: 10px; border-radius: 10px; box-shadow: 6px 6px 16px 0 #dbdbdb80, -6px -6px 16px 0 #fbfbfb80; background-color: white; width: 50%; margin: 0 auto; margin-top: 100px; height: fit-content; } img { width: 50px; height: 50px; display: block; margin-left: auto; margin-right: auto; margin-bottom: -10px; } h1 { text-align: center; } p { margin-left: auto; margin-right: auto; } .content { color: black; text-align: left; max-width: 70%; margin: 0 auto; } .divisor { width: 75%; margin-left: 12.5%; background-color: #969696; height: 1px; } #footer { padding-top: 20px; padding-bottom: 10px; } .footer { width: 100%; font-weight: bold; text-align: center; padding-top: 10px; height: 60px; } </style> </head> <body> <div class='card'> <div> <img src='https://ssbd02.s3.eu-central-1.amazonaws.com/logo.png'/> <h1>SHUTTER.APP</h1> </div> <div class='content'> <p>{{params.parameter}}</p> </div> <div class='footer'> <div class='divisor'/> <p id='footer'>ⓒ 2022 SHUTTER.APP | SSBD202202</p> </div> </div> </body></html>");
-        sendSmtpEmail.setSubject("{{params.subject}}");
-
-        try {
-            CreateSmtpEmail response = api.sendTransacEmail(sendSmtpEmail);
-        } catch (ApiException e) {
-            throw ExceptionFactory.emailException(e.getMessage());
-        }
-    }
-
-    /**
      * Funkcja wysyłająca email informujący fotografa o odwołaniu rezerwacji przez jego klienta
      *
      * @param to            adres email fotografa
@@ -437,6 +402,35 @@ public class EmailService {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Funkcja służąca do wysyłania emaili
+     *
+     * @param toEmail  adres email odbiorcy
+     * @param subject  tytuł emaila
+     * @param bodyText treść emaila w html
+     */
+    @PermitAll
+    public void sendEmail(String toEmail,
+                          String subject,
+                          String bodyText
+    ) throws EmailException {
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject(subject);
+            message.setContent("<html> <head> <style> body { font-family: 'Nunito', sans-serif; color: #7143d2; background-color: #eeeeee; padding-top: 30px; padding-bottom: 30px; width: 100%; height: max-content; } .card { padding: 20px; padding-bottom: 10px; border-radius: 10px; box-shadow: 6px 6px 16px 0 #dbdbdb80, -6px -6px 16px 0 #fbfbfb80; background-color: white; width: 50%; margin: 0 auto; margin-top: 100px; height: fit-content; } img { width: 50px; height: 50px; display: block; margin-left: auto; margin-right: auto; margin-bottom: -10px; } h1 { text-align: center; } p { margin-left: auto; margin-right: auto; } .content { color: black; text-align: left; max-width: 70%; margin: 0 auto; } .divisor { width: 75%; margin-left: 12.5%; background-color: #969696; height: 1px; } #footer { padding-top: 20px; padding-bottom: 10px; } .footer { width: 100%; font-weight: bold; text-align: center; padding-top: 10px; height: 60px; } </style> </head> <body> <div class='card'> <div> <img src='https://ssbd02.s3.eu-central-1.amazonaws.com/logo.png'/> <h1>SHUTTER.APP</h1> </div> <div class='content'> <p>" +
+                            bodyText +
+                            "</p> </div> <div class='footer'> <div class='divisor'/> <p id='footer'>ⓒ 2022 SHUTTER.APP | SSBD202202</p> </div> </div> </body></html>"
+                    , "text/html");
+            Transport.send(message);
+        } catch (MessagingException e) {
+            throw ExceptionFactory.emailException(e.getMessage());
         }
     }
 }
