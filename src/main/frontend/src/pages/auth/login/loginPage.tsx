@@ -53,12 +53,13 @@ export const LoginPage: React.FC = () => {
 
          if (err.data?.message == "exception.2_fa_code_required") {
             setShow2FAPage(true);
+            setFormState({ ...formState, twoFACode: "" });
          } else {
-            const successToast: Toast = {
+            const errorToast: Toast = {
                type: ToastTypes.ERROR,
                text: t("exception.invalid_credentials"),
             };
-            dispatch(push(successToast));
+            dispatch(push(errorToast));
          }
       }
    }, [loginMutationState]);

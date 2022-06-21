@@ -40,7 +40,8 @@
          "filters": "Filtry",
          "calendar": "Kalendarz",
          "choose_file": "Wybierz Plik",
-         "submit_operation": "Potwierdź wykonanie operacji"
+         "submit_operation": "Potwierdź wykonanie operacji",
+         "confirm": "Potwierdź"
       },
       "roles": {
          "administrator": "Administrator",
@@ -78,7 +79,7 @@
       "2_fa_code_required": "Do zalogowania wymagany jest kod uwierzytelniający.",
       "account_already_confirmed": "Twoje jest już potwierdzone.",
       "token_not_found": "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem.",
-      "token_expired": "Twoja sesja wygasła. Zaloguj się ponownie.",
+      "token_expired": "Twój link wygasł. Wygeneruj go ponownie.",
       "token_invalid": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "optlock": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "search_wrong_parameter": "Podano błędne parametry wyszukania.",
@@ -103,8 +104,26 @@
    },
    "validator": {
       "incorrect": {
+         "name": {
+            "regexp": "Podano niepoprawne imię"
+         },
+         "surname": {
+            "regexp": "Podano niepoprawne nazwisko"
+         },
+         "login": {
+            "regexp": "Podano niepoprawny login"
+         },
+         "email": {
+            "regexp": "Podano niepoprawny adres email"
+         },
+         "password": {
+            "regexp": "Podane hasło nie spełnia wymagań"
+         },
          "cause": {
             "null": "Nie podano przyczyny zgłoszenia"
+         },
+         "description": {
+            "regexp": "Podano niepoprawny opis"
          },
          "name_surname_query": {
             "regexp": "Podano niepoprawną wartość"
@@ -118,7 +137,7 @@
             "upper_lower_only": "{{field}} może zawierać tylko wielkie i małe litery.",
             "first_uppercase": "{{field}} musi zaczynać się od wielkiej litery.",
             "password": "Hasło musi zawierać co najmniej jedną małą i wielką literę, cyfrę i znak specjalny",
-            "login": "Login może zawierać tylko znaki alfanumeryczne oraz <>{}-_=*",
+            "login": "Login może zawierać tylko znaki alfanumeryczne",
             "login_first_last": "Login musi zaczynać i kończyć sie się literą lub cyfrą"
          },
          "search": {
@@ -155,20 +174,32 @@
    },
    "toast": {
       "renew": "Przedłuż",
-      "success_update": "Pomyślnie zmodyfikowano",
-      "error_update": "Modyfikacja nie powiodła się",
-      "success_login_message": "Pomyślnie zalogowano.",
       "renew_session_message": "Twoja sesja zaraz wygaśnie, kliknij w przycisk poniżej, aby ją przedłużyć.",
+
+      "success_update": "Pomyślnie zmodyfikowano",
+      "success_login_message": "Pomyślnie zalogowano.",
+      "success_register_message": "Pomyślnie zarejestrowano. Potwierdź rejestrację za pomocą linku wysłanego na twój adres email",
+      "success_send_reset_password_link_message": "Pomyślnie wysłano wiadomość",
+      "success_send_reset_email_link_message": "Pomyślnie wysłano wiadomość z linkiem zmiany adresu email",
+      "success_become_photographer_message": "Pomyślnie zostano fotografem",
+      "success_stop_being_photographer_message": "Pomyślnie przestano być fotografem",
+      "success_change_own_email_message": "Pomyślnie zmieniono adres email",
+      "success_edit_account_info": "Pomyślnie zaktualizowano dane",
+      "success_change_description_message": "Pomyślnie zmieniono opis",
+      "success_add_photo": "Pomyślnie dodano zdjęcie",
+      "success_remove_photo": "Pomyślnie usunięto zdjęcie",
       "success_like": "Pomyślnie polubiono",
-      "error_like": "Polubienie nie powiodło się",
       "success_unlike": "Pomyślnie cofnięto polubienie",
-      "error_unlike": "Cofnięcie polubienia nie powiodło się",
       "success_review": "Pomyślnie dodano recenzję",
       "success_remove_review": "Pomyślnie usunięto recenzję",
-      "error_remove_review": "Usunięcie recenzji nie powiodło się",
-      "error_review": "Dodanie recenzji nie powiodło się",
       "success_reservation_create": "Pomyślnie utworzono rezerwację",
-      "success_report": "Zgłoszenie zostało wysłane"
+      "success_report": "Zgłoszenie zostało wysłane",
+
+      "error_update": "Modyfikacja nie powiodła się",
+      "error_like": "Polubienie nie powiodło się",
+      "error_unlike": "Cofnięcie polubienia nie powiodło się",
+      "error_remove_review": "Usunięcie recenzji nie powiodło się",
+      "error_review": "Dodanie recenzji nie powiodło się"
    },
    "navbar": {
       "title": "shutter.app",
@@ -221,6 +252,10 @@
       "twoFA_desc": "Podaj kod dwustopniowego logowania wysłany na Twój adres email w celu potwierdzenia swojej tożsamości."
    },
    "register_page": {
+      "not_user_message_up": "Masz już",
+      "not_user_message_down": "założone konto?",
+      "inviting_message_up": "Przejdź do",
+      "inviting_message_down": "formularza logowania!",
       "form_title": "Rejestracja",
       "processing_message": "Wyrażam zgodę na przetwarzanie moich danych osobowych.",
       "tos_message": "Potwierdzam, że zapoznałem się z regulaminem.",
@@ -305,8 +340,10 @@
          "details_message": "W każdej chwili możesz edytować widoczność swojego profilu fotografa.",
          "warning_message": "Uwaga! Po dokonaniu tej operacji zostaną anulowane wszystkie Twoje przyszłe rezerwacje, a klienci dostaną wiadomość o wyłączeniu widoczności profilu fotografa.",
          "become_message": "W każdym momencie możesz zostać fotografem! Dzięki temu zyskasz możliwość tworzenia profilu, umieszczania w nim zdjęć, a także zarządzania rezerwacjami.",
-         "resign_confirm": "Przestań być fotografem",
-         "become_confirm": "Zostań fotografem"
+         "resign_label": "Przestań być fotografem",
+         "resign_confirm": "Czy na pewno chcesz przestać być fotografem?",
+         "become_label": "Zostań fotografem",
+         "become_confirm": "Czy na pewno chcesz zostać fotografem?"
       },
       "change_description": {
          "title": "Zmiana opisu",
@@ -322,6 +359,10 @@
          "description": "Specjalizacje reprezentują kategorie, w których specjalizujesz się jako fotograf. Wybranie ich pomoże przy wyszukiwaniu twojego profilu. Możesz mieć jednocześnie wybranych wiele specjalizacji.",
          "select": "Wybierz specjalizacje",
          "confirm": "Zatwierdź"
+      },
+      "login_info": {
+         "last_successful_login": "Ostatnie udane logowanie",
+         "last_unsuccessful_login": "Ostatnie nieudane logowanie"
       }
    },
    "edit_account_page": {
@@ -376,12 +417,13 @@
    },
    "change_own_email_page": {
       "title": "Zmiana adresu email",
+      "description": "Wprowadź swój nowy adres email. Od teraz twoje konto będzie przypisane do tego adresu.",
       "email_new": "Nowy adres email",
       "confirm": "Zatwierdź"
    },
    "request_reset_password_page": {
       "title": "Nie pamiętasz hasła?",
-      "details_message": "Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.",
+      "details_message": "W celu zresetowania swojego hasła podaj login konta. Wyślemy do Ciebie wiadomość e-mail z instrukcją resetowania hasła.",
       "confirm": "Przypomnij hasło"
    },
    "reset_password_page": {
@@ -442,11 +484,11 @@
             "REVIEW_REPORT_FAKE_REVIEW": "Fałszywa recenzja"
          },
          "modal": {
-            "title": "Recenzja",
+            "title": "Recenzjaaaa",
             "visible": "Widoczna",
             "invisible": "Niewidoczna",
             "submit": "Zamknij",
-            "cancel": "Usuń",
+            "delete": "Usuń",
             "success_message": "Recenzja została usunięta pomyślnie",
             "error_message": "Wystąpił błąd podczas usuwania recenzji"
          }
@@ -469,8 +511,14 @@
       "report_review_modal_title": "Zgłaszanie recenzji",
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
+      "confirm_remove_photo": "Czy na pewno chcesz usunąć to zdjęcie?",
       "calendar_title": "Kalendarz",
       "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
+      "button": {
+         "settings": "Ustawienia",
+         "availability": "Godziny Dostępności",
+         "gallery": "Galeria"
+      },
       "report": {
          "success_message": "Zgłoszenie zostało wysłane pomyślnie",
          "review_title": "Zgłaszanie recenzji",
@@ -516,6 +564,9 @@
          "incorrect": {
             "title": {
                "regexp": "Tytuł powinien mieć od 1 do 64 znaków"
+            },
+            "photo_description": {
+               "regexp": "Opis zdjęcia powinien mieć maksymalnie 1024 znaki"
             }
          }
       }

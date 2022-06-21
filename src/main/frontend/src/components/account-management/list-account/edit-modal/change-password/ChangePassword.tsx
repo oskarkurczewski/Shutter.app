@@ -1,18 +1,25 @@
 import { Button, TextInput } from "components/shared";
 import { useStateWithValidationAndComparison } from "hooks";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useAppDispatch } from "redux/hooks";
 import { useChangeSomeonesPasswordMutation } from "redux/service/usersManagementService";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ErrorResponse, Toast } from "types";
+import { parseError } from "util/errorUtil";
+import { passwordPattern } from "util/regex";
 import { passwordRules } from "util/validationRules";
 import styles from "./ChangePassword.module.scss";
 
 interface Props {
    login: string;
    isRegistered: boolean;
+   refetch: () => void;
 }
 
-export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
+export const ChangePassword: React.FC<Props> = ({ login, isRegistered, refetch }) => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
 
    const [passwordMutation, passwordMutationState] = useChangeSomeonesPasswordMutation();
 
@@ -24,6 +31,26 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
          passwordValidation[1] === "" &&
          passwordMutation({ login: login, data: { password: password[0] } });
    };
+
+   useEffect(() => {
+      if (passwordMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_edit_account_info"),
+         };
+         dispatch(push(successToast));
+         refetch();
+      }
+
+      if (passwordMutationState.isError) {
+         const err = passwordMutationState.error as ErrorResponse;
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(parseError(err)),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [passwordMutationState]);
 
    return (
       <div className={styles["changePassword-wrapper"]}>
@@ -54,6 +81,7 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
          </div>
          <Button
             onClick={save}
+            loading={passwordMutationState.isLoading}
             className={styles.save}
             disabled={
                !isRegistered ||
@@ -64,10 +92,6 @@ export const ChangePassword: React.FC<Props> = ({ login, isRegistered }) => {
          >
             {t("edit_account_page.confirm")}
          </Button>
-         {/* TODO: change to toast */}
-         {passwordMutationState.isError && (
-            <p className={styles.error_message}>Nie można zapisać edycji</p>
-         )}
       </div>
    );
 };

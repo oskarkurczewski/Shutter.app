@@ -2,6 +2,8 @@
 
 .reports_page_wrapper {
    display: flex;
+   align-items: flex-start;
+
    .nav {
       padding: 1rem;
       width: 300px;
@@ -56,6 +58,7 @@
    }
    .card {
       flex: 1;
+
       .table_link {
          cursor: pointer;
          display: flex;

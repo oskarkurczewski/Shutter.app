@@ -3,15 +3,18 @@
 .modal_container {
    display: flex;
    flex-direction: row;
+   gap: 2rem;
 
    .photo {
       border-radius: 5px;
+      max-width: 50vw;
+      max-height: 65vh;
       box-shadow: variables.$shadow-strong;
    }
 
    .photo_info {
-      max-width: 550px;
-      margin-left: 2rem;
+      min-width: 300px;
+      max-width: 50vw;
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -20,6 +23,7 @@
       .summary {
          display: flex;
          flex-direction: row;
+         align-items: center;
          justify-content: space-between;
          gap: 0.5rem;
 

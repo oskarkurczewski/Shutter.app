@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useGetPhotosRequestQuery } from "redux/service/photoService";
 import { Photo } from "../photo/Photo";
 import styles from "./PhotoMasonry.module.scss";
+import PhotoModal from "components/photos/photo-modal/PhotoModal";
+
 interface Props {
    login: string;
 }
@@ -11,6 +13,7 @@ export const PhotoMasonry: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
    const { data } = useGetPhotosRequestQuery({
       photographerLogin: login,
+      recordsPerPage: 100,
    });
 
    return (
@@ -34,7 +37,7 @@ export const PhotoMasonry: React.FC<Props> = ({ login }) => {
                         likeCount={photo.likeCount}
                         liked={photo.liked}
                         showDeleteButton={false}
-                     ></Photo>
+                     />
                   </div>
                );
             })
