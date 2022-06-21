@@ -1,0 +1,8 @@
+@use "variables.scss" as variables;
+
+.login_info_wrapper {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   text-align: center;
+}

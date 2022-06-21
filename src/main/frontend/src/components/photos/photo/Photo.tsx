@@ -1,7 +1,8 @@
 import { Button } from "components/shared";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
+   useDeletePhotoRequestMutation,
    useLikePhotoRequestMutation,
    useUnlikePhotoMutation,
 } from "redux/service/photoService";
@@ -9,6 +10,8 @@ import styles from "./Photo.module.scss";
 import { DateTime } from "luxon";
 import { useAppDispatch } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ErrorResponse, Toast } from "types";
+import { parseError } from "util/errorUtil";
 import PhotoModal from "../photo-modal/PhotoModal";
 
 interface Props {
@@ -23,6 +26,7 @@ interface Props {
    showDeleteButton: boolean;
    onDelete?: (number) => void;
    photo: any;
+   refetch?: () => void;
 }
 
 export const Photo: React.FC<Props> = ({
@@ -36,6 +40,7 @@ export const Photo: React.FC<Props> = ({
    showDeleteButton,
    onDelete,
    photo = {},
+   refetch,
 }) => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
@@ -47,6 +52,30 @@ export const Photo: React.FC<Props> = ({
    const [modalOpen, setModalOpen] = useState(false);
 
    const photoData = { ...photo, liked: isLiked, likeCount: likes };
+
+   const [deletePhotoMutation, deletePhotoMutationState] =
+      useDeletePhotoRequestMutation();
+
+   //Handle delete photo response
+   useEffect(() => {
+      if (deletePhotoMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_remove_photo"),
+         };
+
+         dispatch(push(successToast));
+         refetch();
+      }
+      if (deletePhotoMutationState.isError) {
+         const err = deletePhotoMutationState.error as ErrorResponse;
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t(parseError(err)),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [deletePhotoMutationState]);
 
    const likePhoto = () => {
       if (isLiked) {
@@ -136,7 +165,17 @@ export const Photo: React.FC<Props> = ({
                <div className={styles.photo_label_delete}>
                   <Button
                      className={styles.photo_label_delete_button}
-                     onClick={() => onDelete(photo_id)}
+                     onClick={() => {
+                        const confirmToast: Toast = {
+                           type: ToastTypes.WARNING,
+                           text: t("photographer_page.confirm_remove_photo"),
+                           confirm: {
+                              onClick: () => deletePhotoMutation(photo_id),
+                              text: t("global.label.confirm"),
+                           },
+                        };
+                        dispatch(push(confirmToast));
+                     }}
                      icon="delete"
                   >
                      {" "}

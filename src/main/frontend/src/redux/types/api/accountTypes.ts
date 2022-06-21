@@ -14,6 +14,9 @@ export interface BasicUserInfoResponse {
    email: string;
    name: string;
    surname: string;
+   lastLogIn: string;
+   lastFailedLogInAttempt: string;
+   lastFailedLoginIp: string;
 }
 
 export interface AdvancedUserInfoResponse extends BasicUserInfoResponse, Traceable {

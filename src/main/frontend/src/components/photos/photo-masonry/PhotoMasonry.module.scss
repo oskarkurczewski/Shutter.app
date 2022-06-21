@@ -4,5 +4,9 @@
 
    .photo_masonry_item {
       margin-bottom: 2rem;
+
+      & > div {
+         width: 100%;
+      }
    }
 }

@@ -112,6 +112,13 @@
       }
    }
 
+   .no_records {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
+   }
+
    .pages {
       .pages_wrapper {
          display: flex;

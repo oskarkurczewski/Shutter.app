@@ -1,5 +1,5 @@
-import { Button, Checkbox, Modal, SquareButton, Stars } from "components/shared";
-import React, { useEffect } from "react";
+import { Button, Modal, Stars } from "components/shared";
+import React from "react";
 import styles from "./ReviewReportModal.module.scss";
 import {
    useGetReviewByIdQuery,
@@ -9,8 +9,7 @@ import { DateTime } from "luxon";
 import { MdThumbUp } from "react-icons/md";
 import { HiCamera, HiClock, HiUser } from "react-icons/hi";
 import { InfoElement } from "./InfoElement";
-import { FaCheck, FaEye } from "react-icons/fa";
-import { ImBin } from "react-icons/im";
+import { FaEye } from "react-icons/fa";
 import { Toast } from "types";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useAppDispatch } from "redux/hooks";
@@ -93,7 +92,7 @@ export const ReviewReportModal: React.FC<Props> = ({ isOpen, onSubmit, reviewId 
                }}
                loading={removeMutationState.isLoading}
             >
-               Usuń
+               {t("reports_page.review.modal.delete")}
             </Button>
          </section>
       </Modal>

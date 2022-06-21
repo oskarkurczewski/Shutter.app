@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./userAccountListPage.module.scss";
-import { Card, Modal, Table } from "components/shared";
+import { Card, Table } from "components/shared";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaAngleRight, FaCheck, FaEdit } from "react-icons/fa";
 import {
    useGetAccountListPreferencesMutation,
-   useGetAdvancedUserListMutation,
    useGetBasicUserListMutation,
 } from "redux/service/usersManagementService";
 import { tableHeader } from "types/ComponentTypes";
@@ -100,12 +99,7 @@ export const UserAccountListPage = () => {
       { data: databaseParameters, isSuccess: parametersSuccess, isUninitialized },
    ] = useGetAccountListPreferencesMutation();
 
-   const [fetchAdvancedList, { data: dataAdvanced }] = useGetAdvancedUserListMutation();
    const [fetchBasicList, { data: dataBasic }] = useGetBasicUserListMutation();
-   // const pageNo = parseInt(queryParams.get("pageNo")) || 1;
-   // const recordsPerPage = parseInt(queryParams.get("records")) || 25;
-   // const columnName = queryParams.get("column") || "id";
-   // const order = queryParams.get("order") || "asc";
 
    const allRecords = dataBasic?.allRecords || 0;
    const allPages = dataBasic?.allPages || 0;

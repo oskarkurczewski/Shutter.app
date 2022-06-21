@@ -4,6 +4,7 @@ import { Avatar, Card, IconText } from "components/shared";
 import { RiFileList2Fill } from "react-icons/ri";
 import { Stars } from "../../shared/stars";
 import { useTranslation } from "react-i18next";
+import { MdEmail } from "react-icons/md";
 
 interface Props {
    name: string;
@@ -34,7 +35,12 @@ export const PhotographerInfo: React.FC<Props> = ({
             />
             <IconText
                text={`${reviewCount} ${t("photographer_page.photographer_review_count")}`}
-               icon={RiFileList2Fill}
+               icon={<RiFileList2Fill />}
+               className={`label-bold ${styles.label}`}
+            />
+            <IconText
+               text={email}
+               icon={<MdEmail />}
                className={`label-bold ${styles.label}`}
             />
          </div>
