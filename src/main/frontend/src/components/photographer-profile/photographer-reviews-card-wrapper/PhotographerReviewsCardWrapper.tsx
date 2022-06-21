@@ -18,7 +18,7 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
 }) => {
    const { t } = useTranslation();
    const [reviewPage, setReviewPage] = useState<number>(1);
-   const { data } = useGetPhotographerReviewsQuery({
+   const { data, refetch } = useGetPhotographerReviewsQuery({
       pageNo: reviewPage,
       photographerLogin: photographerLogin,
    });
@@ -92,6 +92,7 @@ export const PhotographerReviewsCardWrapper: React.FC<Props> = ({
             </>
          </Card>
          <AddReviewModal
+            refetch={refetch}
             isOpen={reviewModalIsOpen}
             photographerLogin={photographerLogin}
             onSubmit={addReview}

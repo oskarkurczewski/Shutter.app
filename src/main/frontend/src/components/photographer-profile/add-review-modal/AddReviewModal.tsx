@@ -11,6 +11,7 @@ import { useAppDispatch } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 interface Props {
    isOpen: boolean;
+   refetch: () => void;
    photographerLogin: string;
    onSubmit: () => void;
    onCancel: () => void;
@@ -18,6 +19,7 @@ interface Props {
 
 const AddReviewModal: React.FC<Props> = ({
    isOpen,
+   refetch,
    photographerLogin,
    onSubmit,
    onCancel,
@@ -37,6 +39,7 @@ const AddReviewModal: React.FC<Props> = ({
    useEffect(() => {
       if (addReviewMutationState.isSuccess) {
          dispatch(push(successToast));
+         refetch();
          onSubmit();
       }
       if (addReviewMutationState.isError) {

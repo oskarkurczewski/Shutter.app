@@ -21,7 +21,7 @@ export const PhotographerButtonList: FC<Props> = ({ path, expanded }) => {
          text: t("navbar.buttons.photographers"),
       },
       {
-         to: "/reservations",
+         to: "/profile/jobs",
          icon: <IoCalendarSharp />,
          text: t("navbar.buttons.reservations"),
       },

@@ -29,7 +29,7 @@ export const PhotographerInfo: React.FC<Props> = ({
          <div className={styles.labels_wrapper}>
             <p className="section-title">{`${name} ${surname}`}</p>
             <Stars
-               stars={Math.round((stars / reviewCount) * 10) / 10}
+               stars={Math.round((stars / reviewCount) * 10) / 10 || 0}
                className={`label-bold ${styles.label}`}
                backgroundVariant="all"
             />
