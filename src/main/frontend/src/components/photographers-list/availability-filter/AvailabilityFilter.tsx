@@ -68,7 +68,6 @@ export const AvailabilityFilter: React.FC<Props> = ({ onChange, state }) => {
                            id={Weekday[index + 1]}
                            onChange={(e) => {
                               if (e.target.checked) {
-                                 console.log(e.target.id);
                                  setSelectedDay(e.target.id);
                               }
                            }}
