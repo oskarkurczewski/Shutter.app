@@ -85,7 +85,7 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
 
             <div className={styles.score_container}>
                <p className="label">
-                  {score.toPrecision(2)} (
+                  {(score / reviewCount).toPrecision(2)} (
                   {t("global.query.reviews", { count: reviewCount })})
                </p>
             </div>

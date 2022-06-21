@@ -165,4 +165,7 @@ export interface PhotographerListRequest {
    specialization: string;
    pageNo: number;
    recordsPerPage: number;
+   weekDay: string;
+   from: string;
+   to: string;
 }
