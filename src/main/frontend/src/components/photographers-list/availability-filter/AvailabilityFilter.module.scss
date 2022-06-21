@@ -1,0 +1,67 @@
+@use "variables.scss" as variables;
+
+.availability_filter_wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
+
+   .title {
+      display: flex;
+      align-items: center;
+   }
+   .content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .days {
+         display: flex;
+         gap: 0.3rem;
+         .day {
+            input {
+               display: none;
+            }
+
+            label {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               width: 2rem;
+               aspect-ratio: 1;
+               font-weight: bold;
+               border-radius: 3px;
+               cursor: pointer;
+               color: variables.$gray-200;
+            }
+            input:checked + label {
+               background-color: variables.$gray-200;
+               color: variables.$white;
+            }
+         }
+      }
+
+      .line {
+         height: 1px;
+         background-color: variables.$gray-100;
+      }
+      .hours_container {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+
+         .text {
+            font-size: 18px;
+            font-weight: bold;
+            color: variables.$gray-200;
+         }
+         .from_to {
+            padding-right: 0.5rem;
+         }
+         .hours {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+         }
+      }
+   }
+}

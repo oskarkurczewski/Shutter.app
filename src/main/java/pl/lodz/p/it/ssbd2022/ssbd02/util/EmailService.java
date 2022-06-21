@@ -70,6 +70,7 @@ public class EmailService {
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -91,6 +92,7 @@ public class EmailService {
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -112,6 +114,7 @@ public class EmailService {
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -134,6 +137,7 @@ public class EmailService {
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -151,6 +155,7 @@ public class EmailService {
     public void sendAccountBlockedDueToToManyLogInAttemptsEmail(String to, Locale locale) {
         String subject = i18n.getMessage(INACTIVE_ACCOUNT_BLOCK_SUBJECT, locale);
         String body = i18n.getMessage(INACTIVE_ACCOUNT_BLOCK_BODY, locale);
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -173,6 +178,7 @@ public class EmailService {
                 login,
                 ipAddress
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -194,6 +200,7 @@ public class EmailService {
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -215,6 +222,7 @@ public class EmailService {
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -237,6 +245,7 @@ public class EmailService {
                         name.substring(1) +
                         i18n.getMessage(TWO_FA_BODY, locale) +
                         code;
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -258,6 +267,7 @@ public class EmailService {
                 configLoader.getEmailAppUrl(),
                 token.getToken()
         );
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -275,6 +285,7 @@ public class EmailService {
     public void sendAccountUnblockedEmail(String to, Locale locale) {
         String subject = i18n.getMessage(ACCOUNT_UNBLOCKED_SUBJECT, locale);
         String body = i18n.getMessage(ACCOUNT_UNBLOCKED_BODY, locale);
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -292,6 +303,7 @@ public class EmailService {
     public void sendAccountBlocked(String to, Locale locale) {
         String subject = i18n.getMessage(ACCOUNT_BLOCKED_SUBJECT, locale);
         String body = i18n.getMessage(ACCOUNT_BLOCKED_BODY, locale);
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -310,6 +322,7 @@ public class EmailService {
     public void sendAccessLevelGrantedEmail(String to, Locale locale, String accessLevelName) {
         String subject = i18n.getMessage(ACCESS_LEVEL_GRANTED_SUBJECT, locale);
         String body = i18n.getMessage(ACCESS_LEVEL_GRANTED_BODY, locale) + accessLevelName + ".";
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -328,6 +341,7 @@ public class EmailService {
     public void sendAccessLevelRevokedEmail(String to, Locale locale, String accessLevelName) {
         String subject = i18n.getMessage(ACCESS_LEVEL_REVOKED_SUBJECT, locale);
         String body = i18n.getMessage(ACCESS_LEVEL_REVOKED_BODY, locale) + accessLevelName + ".";
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -345,6 +359,7 @@ public class EmailService {
     public void sendAccountActivated(String to, Locale locale) {
         String subject = i18n.getMessage(ACCOUNT_ACTIVATED_SUBJECT, locale);
         String body = i18n.getMessage(ACCOUNT_ACTIVATED_BODY, locale);
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -364,7 +379,8 @@ public class EmailService {
     @PermitAll
     public void sendEmail(String toEmail,
                           String subject,
-                          String bodyText) throws EmailException {
+                          String bodyText
+                          ) throws EmailException {
 
         SendSmtpEmailTo to = new SendSmtpEmailTo();
         to.setEmail(toEmail);
@@ -378,7 +394,7 @@ public class EmailService {
         sendSmtpEmail.setParams(params);
         sendSmtpEmail.setSender(sender);
         sendSmtpEmail.setTo(Collections.singletonList(to));
-        sendSmtpEmail.setHtmlContent("<html><body>{{params.parameter}}</body></html>");
+        sendSmtpEmail.setHtmlContent("<html> <head> <style> body { font-family: 'Nunito', sans-serif; color: #7143d2; background-color: #eeeeee; padding-top: 30px; padding-bottom: 30px; width: 100%; height: max-content; } .card { padding: 20px; padding-bottom: 10px; border-radius: 10px; box-shadow: 6px 6px 16px 0 #dbdbdb80, -6px -6px 16px 0 #fbfbfb80; background-color: white; width: 50%; margin: 0 auto; margin-top: 100px; height: fit-content; } img { width: 50px; height: 50px; display: block; margin-left: auto; margin-right: auto; margin-bottom: -10px; } h1 { text-align: center; } p { margin-left: auto; margin-right: auto; } .content { color: black; text-align: left; max-width: 70%; margin: 0 auto; } .divisor { width: 75%; margin-left: 12.5%; background-color: #969696; height: 1px; } #footer { padding-top: 20px; padding-bottom: 10px; } .footer { width: 100%; font-weight: bold; text-align: center; padding-top: 10px; height: 60px; } </style> </head> <body> <div class='card'> <div> <img src='https://ssbd02.s3.eu-central-1.amazonaws.com/logo.png'/> <h1>SHUTTER.APP</h1> </div> <div class='content'> <p>{{params.parameter}}</p> </div> <div class='footer'> <div class='divisor'/> <p id='footer'>ⓒ 2022 SHUTTER.APP | SSBD202202</p> </div> </div> </body></html>");
         sendSmtpEmail.setSubject("{{params.subject}}");
 
         try {
@@ -398,6 +414,7 @@ public class EmailService {
     public void sendReservationCanceledEmail(String to, Long reservationId, Locale locale) {
         String subject = i18n.getMessage(RESERVATION_CANCELED, locale);
         String body = i18n.getMessage(RESERVATION_CANCELED_BODY, locale) + reservationId + ".";
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {
@@ -415,6 +432,7 @@ public class EmailService {
     public void sendReservationDiscardedEmail(String to, Long reservationId, Locale locale) {
         String subject = i18n.getMessage(RESERVATION_DISCARDED, locale);
         String body = i18n.getMessage(RESERVATION_DISCARDED_BODY, locale) + reservationId + ".";
+
         try {
             sendEmail(to, subject, body);
         } catch (EmailException e) {

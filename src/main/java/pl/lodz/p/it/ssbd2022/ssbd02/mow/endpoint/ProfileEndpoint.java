@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2022.ssbd02.security.AuthenticationContext;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.AbstractEndpoint;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -98,7 +99,7 @@ public class ProfileEndpoint extends AbstractEndpoint {
      * @return lista specjalizacji
      * @throws BaseApplicationException w przypadku wystąpienia błędu
      */
-    @RolesAllowed(changeSpecializations)
+    @PermitAll
     public List<String> getAllSpecializations() throws BaseApplicationException {
         List<Specialization> specializations = profileService.getSpecializationList();
         return specializations.stream().map(Specialization::getName).collect(Collectors.toList());

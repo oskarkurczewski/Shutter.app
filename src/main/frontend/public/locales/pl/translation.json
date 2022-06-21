@@ -58,6 +58,7 @@
    },
    "exception": {
       "couldnt_fetch_data": "Nie udało się pobrać danych",
+      "unexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
       "server_down": "Nie udało się połączyć z serwerem",
       "invalid_credentials": "Niepoprawne dane logowania",
@@ -266,7 +267,11 @@
       "profile": "Profil",
       "hire": "Wynajmij",
       "list": "Lista",
-      "az": "A-Z"
+      "az": "A-Z",
+      "specialization": "Specjalizacja",
+      "availability": "Dostępność",
+      "from": "Od",
+      "to": "Do"
    },
    "photographer_list_admin_page": {
       "login": "Login",
@@ -477,8 +482,8 @@
       },
       "calendar": {
          "past_date": "Wybrano datę z przeszłości",
-         "no_avalibility": "Brak dostępności fotografa",
-         "conflict_reservation_time": "Konflikt z inną rezerwacją",
+         "no_avalibility": "W danym terminie fotograf nie jest dostępny",
+         "conflict_reservation_time": "W danym terminie istnieje już inna rezerwacja. Wybierz inny termin.",
          "user_not_logged_in": "Zaloguj się, aby zarezerwować fotografa"
       },
       "modal": {
@@ -528,6 +533,14 @@
             "title": "Odrzucenie rezerwacji",
             "description": "Czy na pewno chcesz odrzucić rezerwację?"
          }
+      },
+      "report_modal": {
+         "title": "Zgłoś klienta",
+         "report": "Zgłoś",
+         "pay_on_time": "Nie zapłacił na czas",
+         "show_up": "Nie pojawił się",
+         "success_toast": "Pomyślnie zgłoszono klienta",
+         "report_message": "Wybierz powód zgłoszenia klienta"
       }
    },
    "user_reservations_page": {

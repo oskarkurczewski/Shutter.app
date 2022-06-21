@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./jobsListPage.module.scss";
 import { Calendar } from "components/shared/calendar";
 import { Button, Card, Modal, TextInput } from "components/shared";
@@ -15,6 +15,7 @@ import { AvailabilityHour, ErrorResponse, Reservation, Toast } from "types";
 import { parseToAvailabilityHour } from "redux/converters";
 import { parseError } from "util/errorUtil";
 import { push, ToastTypes } from "redux/slices/toastSlice";
+import { ReportModal } from "components/job-list-page/report-modal";
 
 export const JobsListPage = () => {
    const { t } = useTranslation();
@@ -30,6 +31,8 @@ export const JobsListPage = () => {
    const [discardJobMutation, discardJobMutationState] = useDiscardJobMutation();
    const [modalOpen, setModalOpen] = useState<boolean>(false);
    const [reservationId, setReservationId] = useState(null);
+   const [reportModalOpen, setReportModalOpen] = useState(false);
+   const clinetLogin = useRef("");
 
    const sendRequest = () => {
       getJobsMutation({
@@ -43,8 +46,9 @@ export const JobsListPage = () => {
       setModalOpen(true);
    };
 
-   const reportReservation = (id: number) => {
-      console.log("reservation to remove", id);
+   const reportReservation = (login: string) => {
+      clinetLogin.current = login;
+      setReportModalOpen(true);
    };
 
    // Parse availability
@@ -123,7 +127,13 @@ export const JobsListPage = () => {
          >
             <p>{t("photographer_jobs_page.discard_reservation.modal.description")}</p>
          </Modal>
-                  <Card className={styles.calendar_wrapper}>
+         <ReportModal
+            isOpen={reportModalOpen}
+            onCancel={() => setReportModalOpen(false)}
+            onSubmit={() => setReportModalOpen(false)}
+            login={clinetLogin.current}
+         />
+         <Card className={styles.calendar_wrapper}>
             <Calendar
                title={t("global.label.calendar")}
                availability={availability}
@@ -176,7 +186,7 @@ export const JobsListPage = () => {
                            reservation={reservation}
                            reservationFor="photogapher"
                            onCancel={() => cancelReservation(reservation.id)}
-                           onReport={() => reportReservation(reservation.id)}
+                           onReport={() => reportReservation(reservation.client.login)}
                         />
                      ));
                   })()}

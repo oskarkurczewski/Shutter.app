@@ -54,14 +54,14 @@ export const UserAccountListPage = () => {
          sort: null,
       },
       {
-         id: "registered",
-         label: t("user_account_list_page.registered"),
+         id: "active",
+         label: t("user_account_list_page.active"),
          sortable: false,
          sort: null,
       },
       {
-         id: "active",
-         label: t("user_account_list_page.active"),
+         id: "registered",
+         label: t("user_account_list_page.registered"),
          sortable: false,
          sort: null,
       },

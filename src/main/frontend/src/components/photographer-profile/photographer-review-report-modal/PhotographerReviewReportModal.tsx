@@ -27,8 +27,6 @@ export const PhotographerReviewReportModal: React.FC<Props> = ({
    const { t } = useTranslation();
    const dispatch = useDispatch();
 
-   const [cause, setCause] = useState<string>(ReviewReportCause.SPAM);
-
    const reportCauses = useGetPhotographerReviewReportCausesQuery();
    const [reportMutation, reportMutationState] = useReportPhotographerReviewMutation();
 
@@ -73,7 +71,7 @@ export const PhotographerReviewReportModal: React.FC<Props> = ({
          isOpen={isOpen}
          type="confirm"
          onSubmit={async () => {
-            await reportMutation({ reviewId: reviewId, cause: cause });
+            await reportMutation({ reviewId: reviewId, cause: selected });
          }}
          onCancel={onCancel}
          className={styles.photographer_review_report_modal_wrapper}
