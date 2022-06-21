@@ -262,11 +262,7 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
                         ),
                         criteriaBuilder.like(
                                 criteriaBuilder.lower(from.get("account").get("surname")), criteriaBuilder.parameter(String.class, "name")
-                        ),
-                        criteriaBuilder.and(
-
                         )
-
                 )));
         
         criteriaQuery.select(from).where(predicates.toArray(new Predicate[predicates.size()]));

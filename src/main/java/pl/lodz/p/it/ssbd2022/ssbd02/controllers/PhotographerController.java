@@ -151,12 +151,14 @@ public class PhotographerController extends AbstractController {
             @Time @QueryParam("from") String from,
             @Time @QueryParam("to") String to
     ) throws BaseApplicationException {
-        WeekDay weekDayParsed =  null;
-        try{
-        weekDayParsed = WeekDay.valueOf(weekDay);
-            
-        } catch (IllegalArgumentException e) {
-            throw ExceptionFactory.wrongDayNameException();
+        WeekDay weekDayParsed = null;
+        if (weekDay != null) {
+            try {
+                weekDayParsed = WeekDay.valueOf(weekDay);
+
+            } catch (IllegalArgumentException e) {
+                throw ExceptionFactory.wrongDayNameException();
+            }
         }
         LocalTime fromTime = from == null ? null : LocalTime.of(Integer.parseInt(from.split(":")[0]), Integer.parseInt(from.split(":")[1]));
         LocalTime toTime = to == null ? null : LocalTime.of(Integer.parseInt(to.split(":")[0]), Integer.parseInt(to.split(":")[1]));
