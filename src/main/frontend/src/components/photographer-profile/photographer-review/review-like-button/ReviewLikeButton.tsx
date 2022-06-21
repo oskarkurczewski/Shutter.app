@@ -11,28 +11,29 @@ import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "redux/hooks";
 import Animation from "assets/animations/like_boom.json";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { GetPhotographerReviewsResponse } from "redux/types/api";
 
 interface Props {
    id: number;
-   likeCount: number;
-   liked: boolean;
+   changeState: (x: GetPhotographerReviewsResponse) => void;
+   state: GetPhotographerReviewsResponse;
 }
 
-export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
+export const ReviewLikeButton: React.FC<Props> = ({ id, changeState, state }) => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
 
    const [likeMutation, likeMutationState] = useLikeReviewMutation();
    const [unlikeMutation, unlikeMutationState] = useUnlikeReviewMutation();
 
-   const [isLiked, setIsLiked] = useState(false);
-   const [likeCounter, setLikeCounter] = useState(0);
+   // const [isLiked, setIsLiked] = useState(false);
+   // const [likeCounter, setLikeCounter] = useState(0);
    const [showAnimation, setShowAnimation] = useState(false);
 
-   useEffect(() => {
-      setIsLiked(liked);
-      setLikeCounter(likeCount);
-   }, []);
+   // useEffect(() => {
+   //    setIsLiked(liked);
+   //    setLikeCounter(likeCount);
+   // }, []);
 
    // Remove animation after 1s
    useEffect(() => {
@@ -50,8 +51,14 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
             text: t("toast.success_like"),
          };
 
-         setIsLiked(true);
-         setLikeCounter(likeCounter + 1);
+         const element = {
+            ...state.list[0],
+            likeCount: state.list[0].likeCount + 1,
+            liked: true,
+         };
+
+         changeState({ ...state, list: [element] });
+
          setShowAnimation(true);
          dispatch(push(successToast));
       }
@@ -72,8 +79,13 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
             text: t("toast.success_unlike"),
          };
 
-         setIsLiked(false);
-         setLikeCounter(likeCounter - 1);
+         const element = {
+            ...state.list[0],
+            likeCount: state.list[0].likeCount - 1,
+            liked: false,
+         };
+
+         changeState({ ...state, list: [element] });
          dispatch(push(successToast));
       }
       if (unlikeMutationState.isError) {
@@ -90,13 +102,15 @@ export const ReviewLikeButton: React.FC<Props> = ({ id, likeCount, liked }) => {
       <div className={styles.wrapper}>
          {showAnimation && <Player autoplay src={Animation} background="transparent" />}
          <Button
-            className={`${styles.button_wrapper} ${isLiked ? styles.liked : ""}`}
+            className={`${styles.button_wrapper} ${
+               state.list[0].liked ? styles.liked : ""
+            }`}
             onClick={() => {
-               isLiked ? unlikeMutation(id) : likeMutation(id);
+               state.list[0].liked ? unlikeMutation(id) : likeMutation(id);
             }}
             icon="favorite"
          >
-            {likeCounter?.toString()}
+            {state.list[0].likeCount?.toString()}
          </Button>
       </div>
    );
