@@ -56,7 +56,11 @@ public class ReservationEndpoint extends AbstractEndpoint {
         if (login.equals(createReservationDto.getPhotographerLogin())) {
             throw ExceptionFactory.cannotPerformOnSelfException();
         }
-        reservation.setPhotographer(photographerService.getPhotographer(createReservationDto.getPhotographerLogin()));
+        PhotographerInfo photographerInfo = photographerService.getPhotographer(createReservationDto.getPhotographerLogin());
+        if (!photographerInfo.getVisible()) {
+            throw ExceptionFactory.noPhotographerFound();
+        }
+        reservation.setPhotographer(photographerInfo);
         reservation.setAccount(accountService.findByLogin(login));
         reservation.setTimeFrom(createReservationDto.getFrom());
         reservation.setTimeTo(createReservationDto.getTo());
@@ -206,7 +210,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
             int page,
             int recordsPerPage,
             String spec,
-            String weekDay ,
+            String weekDay,
             LocalTime fromTime,
             LocalTime toTime
     ) throws BaseApplicationException {
