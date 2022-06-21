@@ -8,10 +8,12 @@ import { useAppDispatch } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { ErrorResponse, Toast } from "types";
 import { parseError } from "util/errorUtil";
+import { useNavigate } from "react-router-dom";
 
 export const RequestResetPasswordPage = () => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
+   const navigate = useNavigate();
 
    const recaptchaRef = useRef(null);
 
@@ -32,6 +34,7 @@ export const RequestResetPasswordPage = () => {
             text: t("toast.success_send_reset_password_link_message"),
          };
          dispatch(push(successToast));
+         navigate("/", { replace: true });
       }
 
       if (mutationState.isError) {
