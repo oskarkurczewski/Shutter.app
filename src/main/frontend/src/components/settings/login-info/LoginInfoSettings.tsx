@@ -19,15 +19,17 @@ export const LoginInfoSettings = () => {
                {DateTime.fromISO(data?.lastLogIn).toFormat("dd.LL.yyyy HH:mm:ss")}
             </span>
          </p>
-         <p className="label-bold">
-            {t("settings_page.login_info.last_unsuccessful_login")}:{" "}
-            <span className="label">
-               {DateTime.fromISO(data?.lastFailedLogInAttempt).toFormat(
-                  "dd.LL.yyyy HH:mm:ss"
-               )}{" "}
-               - {data?.lastFailedLoginIp}
-            </span>
-         </p>
+         {data?.lastFailedLogInAttempt && (
+            <p className="label-bold">
+               {t("settings_page.login_info.last_unsuccessful_login")}:{" "}
+               <span className="label">
+                  {DateTime.fromISO(data?.lastFailedLogInAttempt).toFormat(
+                     "dd.LL.yyyy HH:mm:ss"
+                  )}{" "}
+                  - {data?.lastFailedLoginIp}
+               </span>
+            </p>
+         )}
       </div>
    );
 };
