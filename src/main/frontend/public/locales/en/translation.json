@@ -3,12 +3,10 @@
       "query": {
          "results_zero": "No results",
          "results_one": "{{count}} result",
-         "results_few": "{{count}} results",
-         "results_many": "{{count}} results",
+         "results": "{{count}} results",
          "reviews_zero": "No reviews",
          "reviews_one": "{{count}} review",
-         "reviews_few": "{{count}} reviews",
-         "reviews_many": "{{count}} reviews"
+         "reviews": "{{count}} reviews"
       },
       "label": {
          "id": "Id",
@@ -172,7 +170,19 @@
       "error_remove_review": "Couldn't remove review",
       "error_review": "Couldn't add review",
       "success_reservation_create": "Successfully created reservation",
-      "success_report": "Successfully created report"
+      "success_report": "Successfully created report",
+      "success_change_own_email_message": "Successfully changed email address",
+      "success_register_message": "Successfully registered. Confirm the registration via the activation link sent to you email inbox",
+      "success_send_reset_password_link_message": "Successfully sent password reset message",
+      "success_send_reset_email_link_message": "Successfully sent email reset message",
+      "success_become_photographer_message": "You just became a photographer",
+      "success_stop_being_photographer_message": "You just stopped being a photographer",
+      "success_change_password": "Successfully changed account password",
+      "success_edit_account_info": "Successfully changed account details",
+      "success_change_description_message": "Successfully changed description",
+      "success_add_photo": "Successfully added photo",
+      "success_remove_photo": "Successfully deleted photo",
+      "success_create_account": "Successfully created account"
    },
    "navbar": {
       "title": "shutter.app",
@@ -289,6 +299,7 @@
       "latitude": "Latitude"
    },
    "create_user_account_page": {
+      "title": "Create new account",
       "create_account": "Create account"
    },
    "settings_page": {
@@ -313,7 +324,9 @@
          "details_message": "You can eddit your profile visibility at any time.",
          "warning_message": "Warning! All of your reservations will be canceled and your clients will be notified about the visibility change.",
          "become_message": "You can become a photographer at any point! You'll be able to create your photographer profile, upload pictures to your gallery and manage reservations.",
+         "resign_label": "Stop being a photographer",
          "resign_confirm": "Stop being photographer",
+         "become_label": "Become a photographer",
          "become_confirm": "Become photographer"
       },
       "change_description": {
@@ -462,7 +475,7 @@
             "visible": "Visible",
             "invisible": "Invisible",
             "submit": "Close",
-            "cancel": "Delete",
+            "delete": "Delete",
             "success_message": "Review has been successfully removed",
             "error_message": "Couldn't delete review"
          }

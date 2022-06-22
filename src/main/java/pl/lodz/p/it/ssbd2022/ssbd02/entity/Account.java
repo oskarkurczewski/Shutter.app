@@ -75,7 +75,7 @@ public class Account extends ManagedEntity {
     private Locale locale;
 
     @NotNull
-    @Column(name="two_factor_auth", nullable = false)
+    @Column(name = "two_factor_auth", nullable = false)
     private Boolean twoFAEnabled;
 
     @NotNull

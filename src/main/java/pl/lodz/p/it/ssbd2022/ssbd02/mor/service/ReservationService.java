@@ -46,6 +46,7 @@ public class ReservationService {
      *
      * @param id id rezerwacji
      * @return rezerwacja o wskazanym ID
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public Reservation findById(Long id) throws BaseApplicationException {
@@ -57,6 +58,7 @@ public class ReservationService {
      *
      * @param specialization nazwa specjalizacji
      * @return specjalizacja
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public Specialization getSpecialization(String specialization) throws BaseApplicationException {
@@ -96,6 +98,7 @@ public class ReservationService {
      *
      * @param caller        login klienta odwołującego rezerwację
      * @param reservationId id rezerwacji mającej być odwołanej
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(cancelReservation)
     public void cancelReservation(String caller, Long reservationId) throws BaseApplicationException {
@@ -117,6 +120,7 @@ public class ReservationService {
      *
      * @param caller        login fotografa odwołującego rezerwację
      * @param reservationId id rezerwacji mającej być odwołanej
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(discardReservation)
     public void discardReservation(String caller, Long reservationId) throws BaseApplicationException {
@@ -136,9 +140,11 @@ public class ReservationService {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param account konto użytkownika, dla którego pobierane są rezerwacje
-     * @param order   kolejność sortowania względem kolumny time_from
-     * @param getAll  flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param account   konto użytkownika, dla którego pobierane są rezerwacje
+     * @param order     kolejność sortowania względem kolumny time_from
+     * @param getAll    flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param localDate data, po której ma odbywać się wyszukiwanie
+     * @param name      data, po której ma odbywać się wyszukiwanie
      * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -154,6 +160,8 @@ public class ReservationService {
      * @param photographerInfo konto użytkownika, dla którego pobierane są rezerwacje
      * @param order            kolejność sortowania względem kolumny time_from
      * @param getAll           flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param localDate        data, po której mają być wyszukiwane prace
+     * @param name             fraza, po której ma odbywać się wyszukiwanie
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -166,6 +174,7 @@ public class ReservationService {
      * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
      *
      * @param photographerInfo konto użytkownika, dla którego pobierane są rezerwacje
+     * @param localDate        data p której a
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -207,6 +216,8 @@ public class ReservationService {
      * @param weekDay        dzień tygodnia, w którym szukani są fotografowie
      * @param fromTime       godzina, od której szukani są fotografowie
      * @param toTime         godzina, do której szukani są fotografowie
+     * @param spec           specjalizacja, po której należy szukać
+     * @param name           fraza, po której należy szukać
      * @return stronicowana lista aktywnych fotografów obecnych systemie
      * @throws BaseApplicationException niepowodzenie operacji
      */

@@ -51,6 +51,7 @@ public class ProfileService {
      *
      * @param photographer   fotograf, którego opis zmieniamy
      * @param newDescription nowy opis
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(changePhotographerDescription)
     public void changeDescription(PhotographerInfo photographer, String newDescription) throws BaseApplicationException {
@@ -75,6 +76,7 @@ public class ProfileService {
      * Pobiera listę wszystkich dostępnych specjalizacji
      *
      * @return lista specjalizacji
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public List<Specialization> getSpecializationList() throws BaseApplicationException {

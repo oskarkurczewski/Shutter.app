@@ -22,8 +22,8 @@ export const HomePage = () => {
       ],
       PHOTOGRAPHER: [
          { url: "/settings", label: "main_page.settings" },
-         { url: "/profile/gallery", label: "main_page.gallery" },
          { url: `/profile/${username}`, label: "main_page.photographer_profile" },
+         { url: "/profile/gallery", label: "main_page.gallery" },
       ],
       ADMINISTRATOR: [
          { url: "/settings", label: "main_page.settings" },
@@ -53,6 +53,11 @@ export const HomePage = () => {
 
    return (
       <div className={styles.home_page}>
+         <img
+            src="/images/home-background.png"
+            alt="page backround"
+            className={styles.background}
+         />
          <Player
             src={Animation}
             background="transparent"

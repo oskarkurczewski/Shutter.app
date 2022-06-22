@@ -29,7 +29,7 @@ public class PhotographerService {
      *
      * @param login login fotografa
      * @return PhotographerInfo
-     * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
+     * @throws NoPhotographerFound nie znaleziono fotografa o podanym loginie
      */
     @PermitAll
     public PhotographerInfo getPhotographer(String login) throws NoPhotographerFound {

@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Data;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccountChangeLog;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.ChangeType;
 
@@ -31,7 +32,7 @@ public class AccountChangeLogDto {
         this.lastLogIn = accountChangeLog.getLastLogIn();
         this.changedAt = accountChangeLog.getChangedAt();
         this.changeType = accountChangeLog.getChangeType();
-        this.changedBy = accountChangeLog.getChangedBy().getLogin();
+        Account changedBy = accountChangeLog.getChangedBy();
+        if (changedBy != null) this.changedBy = changedBy.getLogin();
     }
-
 }

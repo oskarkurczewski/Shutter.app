@@ -108,7 +108,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
      * Wykonuje polubienie danej recenzji przez zalogowanego użytkownika
      *
      * @param reviewId id recenzji mającej być polubioną
-     * @throws BaseApplicationException
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(likeReview)
     public void likeReview(Long reviewId) throws BaseApplicationException {
@@ -122,7 +122,7 @@ public class ReviewEndpoint extends AbstractEndpoint {
      * Wykonuje usunięcie polubienia danej recenzji przez zalogowanego użytkownika
      *
      * @param reviewId id recenzji mającej przestać być polubioną
-     * @throws BaseApplicationException
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(unlikeReview)
     public void unlikeReview(Long reviewId) throws BaseApplicationException {

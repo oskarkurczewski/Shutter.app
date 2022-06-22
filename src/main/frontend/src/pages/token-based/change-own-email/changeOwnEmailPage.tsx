@@ -16,7 +16,6 @@ export const ChangeOwnEmailPage = () => {
 
    const [newEmail, setNewEmail] = useState("");
    const [confirmEmail, setConfirmEmail] = useState("");
-   // TODO
    const [equalityError, setEqualityError] = useState(false);
 
    const [changeEmailMutation, changeEmailMutationState] = useChangeEmailMutation();

@@ -34,7 +34,6 @@ public class AccountRegisterDto {
     @Surname
     private String surname;
 
-    @NotNull(message = "validator.incorrect.re_captcha.null")
     @ReCaptchaToken
     private String reCaptchaToken;
 

@@ -26,14 +26,8 @@ public class ReCaptchaService {
 
     public static String RECAPTCHA_API_URL = "https://www.google.com/recaptcha/api/siteverify";
 
-    private static final Pattern RESPONSE_REGEX = Pattern.compile("[A-Za-z0-9_-]+");
-
     @PermitAll
     public void verify(String res) throws BaseApplicationException {
-        if (res.length() == 0 || !RESPONSE_REGEX.matcher(res).matches()) {
-            throw ExceptionFactory.invalidRecaptchaException();
-        }
-
         try {
             String response = Unirest.post(RECAPTCHA_API_URL)
                     .field("secret", configLoader.getRecaptchaApiKey())
