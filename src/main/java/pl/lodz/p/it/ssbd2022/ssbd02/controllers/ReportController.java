@@ -100,10 +100,10 @@ public class ReportController extends AbstractController {
     /**
      * Punkt końcowy zwracający listę zgłoszeń kont
      *
-     * @param pageNo numer strony
-     * @param order kolejność sortowania
+     * @param pageNo         numer strony
+     * @param order          kolejność sortowania
      * @param recordsPerPage ilość krotek na stronę
-     * @param reviewed czy zgłoszenie zostało rozpatrzone
+     * @param reviewed       czy zgłoszenie zostało rozpatrzone
      * @return lista zgłoszeń kont
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -125,10 +125,10 @@ public class ReportController extends AbstractController {
     /**
      * Punkt końcowy zwracający zgłsozenia fotografów
      *
-     * @param pageNo numer strony
+     * @param pageNo         numer strony
      * @param recordsPerPage ilość krotek na stronę
-     * @param reviewed czy zgłoszenie zostało rozpatrzone
-     * @param order kolejność sortowania
+     * @param reviewed       czy zgłoszenie zostało rozpatrzone
+     * @param order          kolejność sortowania
      * @return lista zgłoszeń fotografów
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -151,9 +151,9 @@ public class ReportController extends AbstractController {
     /**
      * Punkt końcowy zwracający listę zgłoszeń recenzji
      *
-     * @param pageNo numer strony
-     * @param order kolejność sortowania
-     * @param reviewed czy zgłoszenie zostało rozpatrzone
+     * @param pageNo         numer strony
+     * @param order          kolejność sortowania
+     * @param reviewed       czy zgłoszenie zostało rozpatrzone
      * @param recordsPerPage ilość krotek na stronę
      * @return lista zgłoszeń recenzji
      * @throws BaseApplicationException niepowodzenie operacji

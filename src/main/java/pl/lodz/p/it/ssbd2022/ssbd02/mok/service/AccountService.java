@@ -151,7 +151,8 @@ public class AccountService {
     /**
      * Metoda pozwalająca zmienić własne hasło
      *
-     * @param data obiekt zawierający stare hasło (w celu weryfikacji) oraz nowe mające być ustawione dla użytkownika
+     * @param data    obiekt zawierający stare hasło (w celu weryfikacji) oraz nowe mające być ustawione dla użytkownika
+     * @param account konto, dla którego należy zmienić hasło
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(changeOwnPassword)
@@ -453,6 +454,7 @@ public class AccountService {
      * Funkcja do edycji danych użytkownika. Zmienia tylko proste informacje, a nie role dostępu itp
      *
      * @param editAccountInfoDto klasa zawierająca zmienione dane danego użytkownika
+     * @param account            donto, dla którego należy dokonać edycji danych
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(editOwnAccountData)
@@ -467,6 +469,7 @@ public class AccountService {
      * imię oraz nazwisko
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
+     * @param account                   konto, dla którego należy zmienić dane
      * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed({editSomeonesAccountData})
@@ -520,10 +523,10 @@ public class AccountService {
     /**
      * Zapisuje preferencje wyświetlania listy kont użytkownika
      *
-     * @param account konto użytkownika, dla którego mają zostać zapisane preferencje
-     * @param orderAsc kierunek sortowania
-     * @param orderBy parametr sortowania
-     * @param page numer strony
+     * @param account        konto użytkownika, dla którego mają zostać zapisane preferencje
+     * @param orderAsc       kierunek sortowania
+     * @param orderBy        parametr sortowania
+     * @param page           numer strony
      * @param recordsPerPage ilość krotek na stronie
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -572,6 +575,7 @@ public class AccountService {
      * Zwraca ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
      *
      * @param account konto, dla którego należy zwrócić preferencje
+     * @return ostatnio ustawione w dla danego użytkownika preferencje sortowania oraz stronicowania list kont
      * @throws BaseApplicationException preferencje dla danego użytkownika nie zostaną odnalezione
      */
     @RolesAllowed(listAllAccounts)
@@ -584,7 +588,7 @@ public class AccountService {
      * logowań jego konta. Jeżeli liczba nieudanych logowań będzie równa lub większa od 3, to konto zostaje
      * automatycznie zablokowane, a użytkownik zostaje powiadomiony o tym drogą mailową.
      *
-     * @param account Konto, dla którego należy zarejestrować nieudaną operację logowania
+     * @param account   Konto, dla którego należy zarejestrować nieudaną operację logowania
      * @param ipAddress Adres IP, z którego doszło do logowania
      */
     @PermitAll
@@ -657,7 +661,7 @@ public class AccountService {
      *
      * @param account użytkownik
      * @return true, jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
-     *         false jezeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
+     * false jezeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
      */
     @PermitAll
     public Boolean is2FAEnabledForUser(Account account) {

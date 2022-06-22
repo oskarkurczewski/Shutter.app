@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
  * Klasa wyjątku reprezentująca niemożliwość aktualizacji wartości.
  * Mapowany na kod odpowiedzi 409 - Conflict
  */
-public class CannotChangeException extends BaseApplicationException{
+public class CannotChangeException extends BaseApplicationException {
     public CannotChangeException(String message) {
         super(Response.status(Response.Status.CONFLICT).entity(new ErrorDto(message)).build());
     }

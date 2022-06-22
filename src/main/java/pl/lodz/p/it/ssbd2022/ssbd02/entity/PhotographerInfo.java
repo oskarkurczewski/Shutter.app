@@ -23,8 +23,8 @@ import java.util.Objects;
 @Table(name = "photographer_info")
 @NamedQueries({
         @NamedQuery(
-            name = "photographer_info.findByLogin",
-            query = "SELECT p FROM PhotographerInfo p JOIN Account a ON p.id=a.id WHERE a.login = :login"
+                name = "photographer_info.findByLogin",
+                query = "SELECT p FROM PhotographerInfo p JOIN Account a ON p.id=a.id WHERE a.login = :login"
         ),
         @NamedQuery(
                 name = "photographer_info.findAllWithVisibility",

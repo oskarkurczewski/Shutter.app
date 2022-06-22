@@ -71,7 +71,8 @@ public class S3Service {
 
     /**
      * Usuwa z serwisu AWS S3 zdjęcie należące do podanego użytkownika o podanym kluczu
-     * @param owner nazwa użytkownika, którego zdjęcie ma zostać usunięte
+     *
+     * @param owner     nazwa użytkownika, którego zdjęcie ma zostać usunięte
      * @param objectKey klucz zdjęcia, które ma zostać usunięte
      * @throws NoPhotoFoundException zdjęcie o danym kluczu / właścicielu nie istnieje
      */

@@ -101,7 +101,7 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy wysyłający link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
      *
-     * @param login Login użytkownika, na którego email ma zostać wysłany link
+     * @param login   Login użytkownika, na którego email ma zostać wysłany link
      * @param captcha Wynik rozwiązania captchy
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje lub jest niepotwierdzone/zablokowane
      */
@@ -320,6 +320,7 @@ public class AccountController extends AbstractController {
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
      * @param tagValue                  Etag służący do sprawdzenia wiarygodność przysłanych danych. Wykorzystywany w SignatureValidator
+     * @param login                     login konta, którego informacje mają zostać zmienione
      * @return Odpowiedź HTTP
      * @throws BaseApplicationException niepowodzenie operacji
      * @see SignatureValidatorFilter
@@ -396,7 +397,7 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy pozwalający na dodanie poziomu uprawnień dla wskazanego użytkownika.
      *
-     * @param data Obiekt przedstawiające dane zawierające poziom dostępu
+     * @param data  Obiekt przedstawiające dane zawierające poziom dostępu
      * @param login login użytkownika, któremu należy przydzielić poziom dostępu
      * @return Odpowiedź HTTP
      * @throws DataNotFoundException W przypadku próby podania niepoprawnej nazwie poziomu dostępu
@@ -510,11 +511,11 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy zwracający historię zmian dla aktualnego użytkownika
      *
-     * @return Historia zmian konta
-     * @param pageNo numer strony
+     * @param pageNo         numer strony
      * @param recordsPerPage numer krotek na stronę
-     * @param order kolejność sortowania
-     * @param orderBy parametr sortowania
+     * @param order          kolejność sortowania
+     * @param orderBy        parametr sortowania
+     * @return Historia zmian konta
      * @throws BaseApplicationException użytkownik o podanym loginie nie istnieje
      */
     @GET
@@ -535,7 +536,11 @@ public class AccountController extends AbstractController {
     /**
      * Punkt końcowy zwracający historię zmian dla użytkownika o podanym loginie
      *
-     * @param login login użytkownika, dla którego zwracana jest historia zmian
+     * @param login          login użytkownika, dla którego zwracana jest historia zmian
+     * @param order          kolejność sortowania
+     * @param orderBy        parametr, po którym ma odbywać się sortowanie
+     * @param pageNo         numer strony
+     * @param recordsPerPage ilość krotek na stronę
      * @return Historia zmian konta
      * @throws BaseApplicationException użytkownik o podanym loginie nie istnieje
      */

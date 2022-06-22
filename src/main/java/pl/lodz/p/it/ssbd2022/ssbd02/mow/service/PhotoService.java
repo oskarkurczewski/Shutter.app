@@ -80,6 +80,7 @@ public class PhotoService {
      * Usuwa podane zdjęcie z galerii użytkownika
      *
      * @param photo zdjęcie, które ma zostać usunięte z galerii
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(deletePhotoFromGallery)
     public void deletePhoto(Photo photo) throws BaseApplicationException {

@@ -40,6 +40,7 @@ public class ProfileEndpoint extends AbstractEndpoint {
      * Metoda zmieniająca opis zalogowanego fotografa
      *
      * @param newDescription obiekt zawierający nowy opis spełniający warunki poprawności
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(changePhotographerDescription)
     public void changeDescription(ChangeDescriptionDto newDescription) throws BaseApplicationException {

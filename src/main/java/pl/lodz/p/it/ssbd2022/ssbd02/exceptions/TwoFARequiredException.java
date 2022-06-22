@@ -6,7 +6,7 @@ import javax.ws.rs.core.Response;
 
 public class TwoFARequiredException extends BaseApplicationException {
 
-    public TwoFARequiredException(String message)  {
+    public TwoFARequiredException(String message) {
         super(Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDto(message)).build());
     }
 }

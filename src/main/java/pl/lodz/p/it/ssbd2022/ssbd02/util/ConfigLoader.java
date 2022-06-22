@@ -95,6 +95,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca czas, przez jaki żeton potwierdzenia rejestracji jest ważny (w godzinach)
+     *
+     * @return czas, przez jaki żeton potwierdzenia rejestracji jest ważny (w godzinach)
      */
     public int getRegistrationConfirmationTokenLifetime() {
         return getOrDefaultInt(propertiesToken, REGISTRATION_CONFIRMATION_TOKEN_LIFETIME, 24);
@@ -102,6 +104,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca czas, przez jaki żeton zmiany adresu email jest ważny (w godzinach)
+     *
+     * @return czas, przez jaki żeton zmiany adresu email jest ważny (w godzinach)
      */
     public int getEmailResetTokenLifetime() {
         return getOrDefaultInt(propertiesToken, EMAIL_RESET_TOKEN_LIFETIME, 24);
@@ -109,6 +113,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca czas, przez jaki żeton resetu hasła jest ważny (w minutach)
+     *
+     * @return czas, przez jaki żeton resetu hasła jest ważny (w minutach)
      */
     public int getPasswordResetTokenLifetime() {
         return getOrDefaultInt(propertiesToken, PASSWORD_RESET_TOKEN_LIFETIME, 15);
@@ -116,6 +122,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca czas, przez jaki żeton wymuszonego resetu hasła jest ważny (w godzinach)
+     *
+     * @return czas, przez jaki żeton wymuszonego resetu hasła jest ważny (w godzinach)
      */
     public int getForcedPasswordResetTokenLifetime() {
         return getOrDefaultInt(propertiesToken, FORCED_PASSWORD_RESET_TOKEN_LIFETIME, 48);
@@ -123,6 +131,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca czas, przez jaki żeton odblokowania własnego konta jest ważny (w godzinach)
+     *
+     * @return czas, przez jaki żeton odblokowania własnego konta jest ważny (w godzinach)
      */
     public int getUnblockOwnAccountTokenLifetime() {
         return getOrDefaultInt(propertiesToken, UNBLOCK_OWN_ACCOUNT_TOKEN_LIFETIME, 168);
@@ -158,6 +168,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca czas, co jaki następuje sprawdzenie, czy użytkownik w serwisie był nieaktywny przez dany czas (w godzinach)
+     *
+     * @return czas, co jaki następuje sprawdzenie, czy użytkownik w serwisie był nieaktywny przez dany czas (w godzinach)
      */
     public long getBlockCheckTimeout() {
         return Long.parseLong(propertiesTimeout.getProperty(BLOCK_CHECK_TIMEOUT));
@@ -165,6 +177,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca czas, po jakim użytkownik będzie zablokowany z powodu braku aktywności (w dniach)
+     *
+     * @return czas, po jakim użytkownik będzie zablokowany z powodu braku aktywności
      */
     public long getBlockTimeout() {
         return Long.parseLong(propertiesTimeout.getProperty(BLOCK_TIMEOUT));
@@ -180,6 +194,8 @@ public class ConfigLoader {
 
     /**
      * Zwraca sekret, do tworzenia etaga
+     *
+     * @return sekret używany do generowania e-tagów
      */
     public String getETagSecret() {
         return propertiesETag.getProperty(ETAG_SECRET);

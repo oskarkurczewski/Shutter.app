@@ -159,15 +159,15 @@ public class PhotographerController extends AbstractController {
         LocalTime fromTime = from == null ? null : LocalTime.of(Integer.parseInt(from.split(":")[0]), Integer.parseInt(from.split(":")[1]));
         LocalTime toTime = to == null ? null : LocalTime.of(Integer.parseInt(to.split(":")[0]), Integer.parseInt(to.split(":")[1]));
         MorListResponseDto<PhotographerListEntryDto> responseDto = repeat(
-            () -> reservationEndpoint.findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
-                name,
-                page,
-                recordsPerPage,
-                spec,
-                weekDay,
-                fromTime,
-                toTime
-        ), reservationEndpoint);
+                () -> reservationEndpoint.findPhotographerByNameSurnameSpecializationWeekDayFromTimeEndTime(
+                        name,
+                        page,
+                        recordsPerPage,
+                        spec,
+                        weekDay,
+                        fromTime,
+                        toTime
+                ), reservationEndpoint);
         return Response.status(Response.Status.OK).entity(responseDto).build();
     }
 }

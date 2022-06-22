@@ -71,6 +71,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * Metoda do anulowania rezerwacji przez klienta
      *
      * @param reservationId id rezerwacji, która ma być anulowana
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(cancelReservation)
     public void cancelReservation(Long reservationId) throws BaseApplicationException {
@@ -82,6 +83,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * Metoda do anulowania rezerwacji przez fotografa
      *
      * @param reservationId id rezerwacji, która ma być anulowana
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(discardReservation)
     public void discardReservation(Long reservationId) throws BaseApplicationException {
@@ -92,9 +94,10 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla użytkownika (niezakończonych lub wszystkich)
      *
-     * @param name   imię lub nazwisko do wyszukania
-     * @param order  kolejność sortowania względem kolumny time_from
-     * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param name      imię lub nazwisko do wyszukania
+     * @param order     kolejność sortowania względem kolumny time_from
+     * @param getAll    flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param localDate data, po której ma być wykonane wyszukiwanie
      * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -117,9 +120,10 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
      *
-     * @param name   imię lub nazwisko do wyszukania
-     * @param order  kolejność sortowania względem kolumny time_from
-     * @param getAll flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param name      imię lub nazwisko do wyszukania
+     * @param order     kolejność sortowania względem kolumny time_from
+     * @param getAll    flaga decydująca o tym, czy pobierane są wszystkie rekordy, czy tylko niezakończone
+     * @param localDate data, od której ma odbywać się wyszukiwanie
      * @return lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */
@@ -185,7 +189,7 @@ public class ReservationEndpoint extends AbstractEndpoint {
     /**
      * Wyszukuje wszystkich fotografów dostępnych w podanych godzinach
      *
-     * @param timePeriod
+     * @param timePeriod zakres czasu, w którym ma być wyszukiwanie
      * @return lista fotografów dostępnych w podanych godzinach
      */
     @PermitAll
@@ -201,6 +205,9 @@ public class ReservationEndpoint extends AbstractEndpoint {
      * @param spec           specjalizacja
      * @param page           strona listy, którą należy pozyskać
      * @param recordsPerPage ilość krotek fotografów na stronie
+     * @param toTime         czas, do którego ma być wyszukiwanie
+     * @param fromTime       czas, od którego ma być wyszukiwanie
+     * @param weekDay        dzień dnia, w którym ma być wyszukiwanie
      * @return stronicowana lista aktywnych fotografów obecnych systemie, których imię lub nazwisko zawiera podaną frazę
      * @throws BaseApplicationException niepowodzenie operacji
      */

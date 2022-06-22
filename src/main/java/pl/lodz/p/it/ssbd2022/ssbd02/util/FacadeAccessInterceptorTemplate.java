@@ -15,30 +15,30 @@ import javax.interceptor.InvocationContext;
  */
 public abstract class FacadeAccessInterceptorTemplate {
 
-        @Inject
-        private AuthenticationContext authenticationContext;
+    @Inject
+    private AuthenticationContext authenticationContext;
 
-        protected abstract Account getCurrentlyAuthenticatedUserByLogin(String login) throws BaseApplicationException;
+    protected abstract Account getCurrentlyAuthenticatedUserByLogin(String login) throws BaseApplicationException;
 
-        @AroundInvoke
-        public Object intercept(InvocationContext ctx) throws Exception {
-            String methodName = ctx.getMethod().getName();
-            if (!methodName.equals("persist") && !methodName.equals("update")) return ctx.proceed();
+    @AroundInvoke
+    public Object intercept(InvocationContext ctx) throws Exception {
+        String methodName = ctx.getMethod().getName();
+        if (!methodName.equals("persist") && !methodName.equals("update")) return ctx.proceed();
 
-            Account account;
-            try {
+        Account account;
+        try {
 
-                account = getCurrentlyAuthenticatedUserByLogin(authenticationContext.getCurrentUsersLogin());
-            } catch (NoAuthenticatedAccountFound e) {
-                return ctx.proceed();
-            }
-
-            ManagedEntity entity = (ManagedEntity) ctx.getParameters()[0];
-            if (methodName.equals("persist")) {
-                entity.setCreatedBy(account);
-            } else {
-                entity.setModifiedBy(account);
-            }
+            account = getCurrentlyAuthenticatedUserByLogin(authenticationContext.getCurrentUsersLogin());
+        } catch (NoAuthenticatedAccountFound e) {
             return ctx.proceed();
         }
+
+        ManagedEntity entity = (ManagedEntity) ctx.getParameters()[0];
+        if (methodName.equals("persist")) {
+            entity.setCreatedBy(account);
+        } else {
+            entity.setModifiedBy(account);
+        }
+        return ctx.proceed();
+    }
 }
