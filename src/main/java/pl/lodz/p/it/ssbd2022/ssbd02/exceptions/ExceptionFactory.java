@@ -76,10 +76,6 @@ public class ExceptionFactory {
         return new NoReservationFoundException("exception.reservation_not_found");
     }
 
-    // istnieje już podobny wyjątek noPhotographerFound do podmianki / zostawienia?
-    public static NoPhotographerFoundException noPhotographerFoundException() {
-        return new NoPhotographerFoundException("exception.photographer_not_found");
-    }
 
     public static NoReviewFoundException noReviewFoundException() {
         return new NoReviewFoundException("exception.review_not_found");
@@ -188,10 +184,11 @@ public class ExceptionFactory {
     public static WrongParameterException specializationNotFoundException() {
         return new WrongParameterException("exception.specialization_not_found");
     }
+
     public static CannotPerformOnSelfException cannotPerformOnSelfException() {
         return new CannotPerformOnSelfException("exception.cannot_perform_on_self");
     }
-    
+
     public static WrongParameterException wrongDayNameException() {
         return new WrongParameterException("exception.wrong_day_name");
     }

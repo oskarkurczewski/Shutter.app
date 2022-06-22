@@ -40,9 +40,10 @@ const AddReviewModal: React.FC<Props> = ({
          onSubmit();
       }
       if (addReviewMutationState.isError) {
+         const err = addReviewMutationState.error as ErrorResponse;
          setNotification({
             type: "error",
-            content: t("toast.error_review"),
+            content: t([err.data.message || ".", "exception.unexpected"]),
          });
       }
    }, [addReviewMutationState]);

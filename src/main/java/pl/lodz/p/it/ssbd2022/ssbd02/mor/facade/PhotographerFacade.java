@@ -261,7 +261,7 @@ public class PhotographerFacade extends FacadeTemplate<PhotographerInfo> {
                 )));
 
         criteriaQuery.select(from).where(predicates.toArray(new Predicate[predicates.size()]));
-        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.quot(from.get("score"), from.get("reviewCount"))));
+        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("score")));
 
         TypedQuery<PhotographerInfo> typedQuery = em.createQuery(criteriaQuery);
         typedQuery.setParameter("name", "%" + name.toLowerCase() + "%");

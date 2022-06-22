@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2022.ssbd02.mok.dto;
 
 import lombok.Data;
+import pl.lodz.p.it.ssbd2022.ssbd02.entity.AccessLevelAssignment;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Account;
 
 import java.util.ArrayList;
@@ -26,6 +27,6 @@ public class TableAccountDto {
         this.surname = account.getSurname();
         this.isActive = account.getActive();
         this.isRegistered = account.getRegistered();
-        account.getAccessLevelAssignmentList().forEach(level -> accessLevels.add(level.getLevel().getName()));
+        account.getAccessLevelAssignmentList().stream().filter(AccessLevelAssignment::getActive).forEach(level -> accessLevels.add(level.getLevel().getName()));
     }
 }

@@ -99,7 +99,8 @@
       "photo_upload_error": "Couldn't upload file",
       "photographer_already_reported": "This photographer has already been reported by you",
       "reservation_already_exists": "Reservation already exists",
-      "cannot_perform_on_self": "You cannot perform this operation on yourself"
+      "cannot_perform_on_self": "You cannot perform this operation on yourself.",
+      "review_already_exists": "You have already reviewed this photographer."
    },
    "validator": {
       "incorrect": {
@@ -126,6 +127,9 @@
          },
          "token": {
             "regexp": "Incorrect token was provided"
+         },
+         "reservation": {
+            "time": "Invalid reservation time"
          }
       },
       "not_same": "Fields must be the same."

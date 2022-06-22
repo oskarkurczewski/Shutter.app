@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 
 @ReportAsSingleViolation
-@Pattern(regexp= REGEXP.TIME_PATTREN)
+@Pattern(regexp = REGEXP.TIME_PATTERN)
 public @interface Time {
     String message() default "validator.incorrect.time";
 
