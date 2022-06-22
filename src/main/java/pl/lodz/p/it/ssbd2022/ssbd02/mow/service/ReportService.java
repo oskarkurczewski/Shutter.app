@@ -101,7 +101,7 @@ public class ReportService {
      * Tworzy zgłoszenie na podanego klienta.
      *
      * @param report Obiekt zgłoszenia
-     * @throws BaseApplicationException
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(reportClient)
     public void addClientAccountReport(AccountReport report) throws BaseApplicationException {
@@ -235,6 +235,7 @@ public class ReportService {
      *
      * @param cause ciąg znaków określający powód zgłoszenia
      * @return powód zgłoszenia fotografa
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(reportPhotographer)
     public PhotographerReportCause getPhotographerReportCause(String cause) throws BaseApplicationException {

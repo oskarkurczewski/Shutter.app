@@ -59,8 +59,9 @@ public class EmailService {
     /**
      * Przykładowa funkcja korzystająca z funkcji sendMail
      *
-     * @param to    adresat wiadomości email
-     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @param to     adresat wiadomości email
+     * @param token  Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendRegistrationEmail(String to, Locale locale, VerificationToken token) {
@@ -81,8 +82,9 @@ public class EmailService {
     /**
      * Funkcja wysyłająca do wskazanego użytkownika maila z przypomnieniem o konieczności potwierdzenia rejestracji
      *
-     * @param to    adresat wiadomości email
-     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @param to     adresat wiadomości email
+     * @param token  Obiekt przedstawiający żeton weryfikacyjny użyty do potwierdzenia rejestracji
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendRegistrationConfirmationReminder(String to, Locale locale, VerificationToken token) {
@@ -103,8 +105,9 @@ public class EmailService {
     /**
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła
      *
-     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
-     * @param token Żeton, który ma zostać wysłany
+     * @param to     Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param token  Żeton, który ma zostać wysłany
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendPasswordResetEmail(String to, Locale locale, VerificationToken token) {
@@ -126,8 +129,9 @@ public class EmailService {
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny resetowania hasła w przypadku kiedy
      * zostanie ono zmienione przez administratora systemu
      *
-     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
-     * @param token Żeton, który ma zostać wysłany
+     * @param to     Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param token  Żeton, który ma zostać wysłany
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @RolesAllowed(changeSomeonesPassword)
     public void sendForcedPasswordResetEmail(String to, Locale locale, VerificationToken token) {
@@ -149,7 +153,8 @@ public class EmailService {
      * Wysyła email powiadamiający użytkownika o zablokowaniu jego konta z powodu zbyt wielu nieudanych
      * prób logowania
      *
-     * @param to Adres e-mail, na który należy wysłać wiadomość
+     * @param to     Adres e-mail, na który należy wysłać wiadomość
+     * @param locale preferencje językowe użytkownika
      */
     @PermitAll
     public void sendAccountBlockedDueToToManyLogInAttemptsEmail(String to, Locale locale) {
@@ -169,6 +174,7 @@ public class EmailService {
      * @param to        Email, na który zostać ma wysłane powiadomienie. Powinien być to email administratora systemu
      * @param login     Login użytkownika, na którego email ma zostać przesłane powiadomienie
      * @param ipAddress adres IP, z którego dokonano logowania na konto administratora
+     * @param locale    wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendAdminAuthenticationWaringEmail(String to, Locale locale, String login, String ipAddress) {
@@ -189,8 +195,9 @@ public class EmailService {
     /**
      * Wysyła na adres email podany jako parametr żeton weryfikacyjny do aktualizacji adresu email
      *
-     * @param to    Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
-     * @param token Żeton, który ma zostać wysłany
+     * @param to     Adres e-mail, na który wysłany ma zostać wiadomość zawierająca żeton
+     * @param token  Żeton, który ma zostać wysłany
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @RolesAllowed(updateEmail)
     public void sendEmailUpdateEmail(String to, Locale locale, VerificationToken token) {
@@ -211,8 +218,9 @@ public class EmailService {
     /**
      * Funkcja wysyłająca do wskazanego użytkownika maila z przypomnieniem o żądaniu zmiany maila konta
      *
-     * @param to    adresat wiadomości email
-     * @param token Obiekt przedstawiający żeton weryfikacyjny użyty do zmiany maila
+     * @param to     adresat wiadomości email
+     * @param token  Obiekt przedstawiający żeton weryfikacyjny użyty do zmiany maila
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendEmailResetReminderEmail(String to, Locale locale, VerificationToken token) {
@@ -233,9 +241,10 @@ public class EmailService {
     /**
      * Wysyła na adres email podany jako parametr kod 2FA
      *
-     * @param to   Adres e-mail, na który wysłany ma zostać wiadomość zawierająca kod 2FA
-     * @param name Imię użytkownika, do którego jest wysyłany kod
-     * @param code Kod 2FA
+     * @param to     Adres e-mail, na który wysłany ma zostać wiadomość zawierająca kod 2FA
+     * @param name   Imię użytkownika, do którego jest wysyłany kod
+     * @param code   Kod 2FA
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendEmail2FA(String to, Locale locale, String name, String code) {
@@ -256,8 +265,9 @@ public class EmailService {
     /**
      * Wysyła na adres email podany jako parametr link do aktywacji konta po jego zablokowaniu
      *
-     * @param to    Adres e-mail, na który wysłana ma zostać wiadomość
-     * @param token Żeton, który ma zostać wysłany
+     * @param to     Adres e-mail, na który wysłana ma zostać wiadomość
+     * @param token  Żeton, który ma zostać wysłany
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendEmailUnblockAccount(String to, Locale locale, VerificationToken token) {
@@ -279,7 +289,8 @@ public class EmailService {
      * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
      * odblokowane w systemie.
      *
-     * @param to adresat wiadomości email
+     * @param to     adresat wiadomości email
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @RolesAllowed(unblockAccount)
     public void sendAccountUnblockedEmail(String to, Locale locale) {
@@ -297,7 +308,8 @@ public class EmailService {
      * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
      * zablokowane w systemie.
      *
-     * @param to adresat wiadomości email
+     * @param to     adresat wiadomości email
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @RolesAllowed(blockAccount)
     public void sendAccountBlocked(String to, Locale locale) {
@@ -317,6 +329,7 @@ public class EmailService {
      *
      * @param to              adresat wiadomości email
      * @param accessLevelName nazwa poziomu dostępu, który został przypisany
+     * @param locale          wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendAccessLevelGrantedEmail(String to, Locale locale, String accessLevelName) {
@@ -336,6 +349,7 @@ public class EmailService {
      *
      * @param to              adresat wiadomości email
      * @param accessLevelName nazwa poziomu dostępu, który został odebrany
+     * @param locale          wersja językowa preferowana przez użytkownika
      */
     @RolesAllowed(revokeAccessLevel)
     public void sendAccessLevelRevokedEmail(String to, Locale locale, String accessLevelName) {
@@ -353,7 +367,8 @@ public class EmailService {
      * Funkcja wysyłająca na podany adres email informację o tym, że konto użytkownika z nim powiązane zostało
      * aktywowane w systemie.
      *
-     * @param to adresat wiadomości email
+     * @param to     adresat wiadomości email
+     * @param locale wersja językowa preferowana przez użytkownika
      */
     @PermitAll
     public void sendAccountActivated(String to, Locale locale) {
@@ -374,13 +389,14 @@ public class EmailService {
      * @param toEmail  adres email odbiorcy
      * @param subject  tytuł emaila
      * @param bodyText treść emaila w html
+     * @throws EmailException nie udało się wysłać wiadomości e-mail
      * @see "https://developers.sendinblue.com/reference/sendtransacemail/"
      */
     @PermitAll
     public void sendEmail(String toEmail,
                           String subject,
                           String bodyText
-                          ) throws EmailException {
+    ) throws EmailException {
 
         SendSmtpEmailTo to = new SendSmtpEmailTo();
         to.setEmail(toEmail);

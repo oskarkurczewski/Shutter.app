@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Klasa reprezentująca obiekt transferu danych reprezentujący preferowany jezyk użytkownika
- *
  */
 @Data
 public class LocaleDto {

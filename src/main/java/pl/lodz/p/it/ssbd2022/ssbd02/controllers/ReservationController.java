@@ -140,7 +140,7 @@ public class ReservationController extends AbstractController {
     /**
      * Metoda pozwalająca na pobieranie rezerwacji dla fotografa. Służy do wyświetlania danych w kalendarzu
      *
-     * @param date poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
+     * @param date              poniedziałek dla tygodnia, dla którego mają być pobrane rezerwacje
      * @param photographerLogin login fotografa
      * @return ReservationListEntryDto      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji

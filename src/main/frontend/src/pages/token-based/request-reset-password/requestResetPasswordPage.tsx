@@ -68,7 +68,7 @@ export const RequestResetPasswordPage = () => {
                />
                <ReCAPTCHA
                   ref={recaptchaRef}
-                  sitekey="6LcOjh4gAAAAAJRdv-oKWqqj8565Bz6Y3QlmJv5L"
+                  sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
                />
                <div className={styles.footer}>
                   <Button loading={mutationState.isLoading} onClick={(e) => onSubmit(e)}>
