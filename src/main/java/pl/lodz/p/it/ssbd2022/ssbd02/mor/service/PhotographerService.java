@@ -3,10 +3,11 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mor.service;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
 import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.facade.PhotographerFacade;
 import pl.lodz.p.it.ssbd2022.ssbd02.util.LoggingInterceptor;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.ExceptionFactory;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -31,11 +32,11 @@ public class PhotographerService {
      * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
      */
     @PermitAll
-    public PhotographerInfo getPhotographer(String login) throws NoPhotographerFoundException {
+    public PhotographerInfo getPhotographer(String login) throws NoPhotographerFound {
         try {
             return photographerFacade.getPhotographerByLogin(login);
         } catch (BaseApplicationException e) {
-            throw ExceptionFactory.noPhotographerFoundException();
+            throw ExceptionFactory.noPhotographerFound();
         }
     }
 }

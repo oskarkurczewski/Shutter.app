@@ -2,7 +2,10 @@ package pl.lodz.p.it.ssbd2022.ssbd02.mor.endpoint;
 
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.Availability;
 import pl.lodz.p.it.ssbd2022.ssbd02.entity.PhotographerInfo;
-import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.*;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.BaseApplicationException;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoAuthenticatedAccountFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFound;
+import pl.lodz.p.it.ssbd2022.ssbd02.exceptions.NoPhotographerFoundException;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.AvailabilityDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.dto.EditAvailabilityDto;
 import pl.lodz.p.it.ssbd2022.ssbd02.mor.service.AvailabilityService;
@@ -76,7 +79,7 @@ public class AvailabilityEndpoint extends AbstractEndpoint {
      * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
      */
     @PermitAll
-    public List<AvailabilityDto> listAvailabilities(String photographerLogin) throws NoPhotographerFoundException {
+    public List<AvailabilityDto> listAvailabilities(String photographerLogin) throws NoPhotographerFound {
         List<Availability> availabilities = photographerService.getPhotographer(photographerLogin).getAvailability();
 
         List<AvailabilityDto> availabilityDtoList = new ArrayList<>();
