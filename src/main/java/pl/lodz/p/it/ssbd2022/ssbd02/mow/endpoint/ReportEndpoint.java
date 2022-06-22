@@ -126,7 +126,7 @@ public class ReportEndpoint extends AbstractEndpoint {
      * Zgłasza recenzję fotografa używając podanych informacji
      *
      * @param createReviewReportDto informację potrzebne do dokonania zgłoszenia
-     * @throws BaseApplicationException
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(reportReview)
     public void reportReview(CreateReviewReportDto createReviewReportDto)

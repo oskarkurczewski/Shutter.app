@@ -5,9 +5,8 @@ import lombok.*;
 import javax.validation.constraints.NotNull;
 
 /**
- *  Klasa DTO wykorzystywana przy zwracaniu do użytkownika informacji o błędzie. Zawiera ona informację o błędzie
- *  oraz typ mówiący o tym, z czym powiązany jest dany błąd.
- *
+ * Klasa DTO wykorzystywana przy zwracaniu do użytkownika informacji o błędzie. Zawiera ona informację o błędzie
+ * oraz typ mówiący o tym, z czym powiązany jest dany błąd.
  */
 @Getter
 @Setter

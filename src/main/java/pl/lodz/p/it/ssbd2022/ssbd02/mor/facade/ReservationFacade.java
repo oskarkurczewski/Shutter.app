@@ -202,7 +202,7 @@ public class ReservationFacade extends FacadeTemplate<Reservation> {
      * Metoda pozwalająca na pobieranie rezerwacji dla fotografa (niezakończonych lub wszystkich)
      *
      * @param photographerInfo konto fotografa, dla którego pobierane są rezerwacje
-     * @param localDate         data użyta przy wyszukiwaniu
+     * @param localDate        data użyta przy wyszukiwaniu
      * @return Reservation      lista rezerwacji
      * @throws BaseApplicationException niepowodzenie operacji
      */

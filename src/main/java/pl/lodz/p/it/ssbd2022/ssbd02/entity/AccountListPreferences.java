@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "account_list_preferences")
 @NamedQueries({
-    @NamedQuery(name = "accountListPreferences.findByAccount",
-            query = "SELECT p FROM AccountListPreferences p WHERE p.account = :account")
+        @NamedQuery(name = "accountListPreferences.findByAccount",
+                query = "SELECT p FROM AccountListPreferences p WHERE p.account = :account")
 })
 public class AccountListPreferences extends ManagedEntity {
 

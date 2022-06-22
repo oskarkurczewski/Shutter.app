@@ -14,11 +14,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 
 @ReportAsSingleViolation
-@Pattern(regexp= REGEXP.UNIX_TIMESTAMP_PATTERN)
+@Pattern(regexp = REGEXP.UNIX_TIMESTAMP_PATTERN)
 public @interface UnixTimestamp {
     String message() default "validator.incorrect.timestamp";
-    
+
     Class<?>[] groups() default {};
-    
+
     Class<? extends Payload>[] payload() default {};
 }

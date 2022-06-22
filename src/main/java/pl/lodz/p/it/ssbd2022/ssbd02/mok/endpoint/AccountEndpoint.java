@@ -85,7 +85,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Konwertuje obiekt transferu danych użytkownika na obiekt klasy encji.
      *
      * @param accountRegisterDto Obiekt zawierający dane użytkownika
-     * @throws IdenticalFieldException  Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @PermitAll
     public void registerAccount(AccountRegisterDto accountRegisterDto)
@@ -99,7 +99,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Konwertuje obiekt transferu danych użytkownika (z dodatkowymi polami registered oraz active) obiekt klasy encji.
      *
      * @param accountRegisterAsAdminDto Obiekt zawierający dane użytkownika (z dodatkowymi polami registered oraz active)
-     * @throws IdenticalFieldException  Występuje w przypadku gdy rejestracja się nie powiedzie
+     * @throws IdenticalFieldException Występuje w przypadku gdy rejestracja się nie powiedzie
      */
     @RolesAllowed({createAccount})
     public void registerAccountByAdmin(AccountRegisterAsAdminDto accountRegisterAsAdminDto)
@@ -216,7 +216,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Wywołuję funkcję do edycji danych użytkownika przez administratora
      *
      * @param editAccountInfoAsAdminDto klasa zawierająca zmienione dane danego użytkownika
-     * @param login login użytkownika
+     * @param login                     login użytkownika
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @RolesAllowed({editSomeonesAccountData})
@@ -299,15 +299,15 @@ public class AccountEndpoint extends AbstractEndpoint {
      * Zwraca listę wszystkich użytkowników w zadanej kolejności spełniających warunki zapytania
      *
      * @param recordsPerPage ilość krotek na stronę
-     * @param order kolejność sortowania
-     * @param pageNo numer strony
-     * @param name imie
-     * @param surname nazwisko
-     * @param active czy użytkownik jest aktywny
-     * @param columnName nazwa kolumny do sortowania
-     * @param email email użytkownika
-     * @param login login użytkownika
-     * @param registered czy użytkownik jest zarejestrowany
+     * @param order          kolejność sortowania
+     * @param pageNo         numer strony
+     * @param name           imie
+     * @param surname        nazwisko
+     * @param active         czy użytkownik jest aktywny
+     * @param columnName     nazwa kolumny do sortowania
+     * @param email          email użytkownika
+     * @param login          login użytkownika
+     * @param registered     czy użytkownik jest zarejestrowany
      * @return lista użytkowników
      * @throws WrongParameterException w przypadku gdy podano złą nazwę kolumny lub kolejność sortowania
      */
@@ -380,7 +380,8 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Wysyła link zawierający żeton resetu hasła na adres e-mail konta o podanym loginie
      *
-     * @param login Login użytkownika, na którego email ma zostać wysłany link
+     * @param login   Login użytkownika, na którego email ma zostać wysłany link
+     * @param captcha wynik wymaganego zadania reCaptcha
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje w systemie lub jest niepotwierdzone/zablokowane
      */
     @PermitAll
@@ -405,7 +406,8 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Rejestruje nieudane logowanie na konto użytkownika.
      *
-     * @param login Login użytkownika, dla którego konta należy zarejestrować nieudaną operację logowania
+     * @param login     Login użytkownika, dla którego konta należy zarejestrować nieudaną operację logowania
+     * @param ipAddress adres, z którego dokonana była próba uwierzytelnienia
      * @throws NoAccountFound Konto o podanej nazwie nie istnieje
      */
     @PermitAll
@@ -420,6 +422,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param login     Login konto administratora, na które doszło do zalogowania
      * @param ipAddress adres IP, z którego zostało wykonane logowanie
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public void sendAdminAuthenticationWarningEmail(String login, String ipAddress) throws BaseApplicationException {
@@ -463,7 +466,7 @@ public class AccountEndpoint extends AbstractEndpoint {
      * @param orderBy        parametr, po którym ma się dokonywać sortowanie
      * @param order          kolejność sortowania
      * @return lista DTO krotek użytkowników spełniająca określone kryteria
-     * @throws BaseApplicationException
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @RolesAllowed(getAccountInfo)
     public ListResponseDto<TableAccountDto> findByNameSurname(
@@ -520,7 +523,8 @@ public class AccountEndpoint extends AbstractEndpoint {
      *
      * @param login użytkownik
      * @return true, jeżeli użytkownik ma włączone uwierzytelnianie dwuetapowe
-     * @return false jeżeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
+     * false jeżeli użytkownik ma wyłączone uwierzytelnianie dwuetapowe
+     * @throws BaseApplicationException niepowodzenie operacji
      */
     @PermitAll
     public Boolean is2FAEnabledForUser(String login) throws BaseApplicationException {
@@ -579,7 +583,11 @@ public class AccountEndpoint extends AbstractEndpoint {
     /**
      * Zwraca historię zmian dla konta
      *
-     * @param login Login użytkownika, którego historia zmian konta ma być wyszukana
+     * @param login          Login użytkownika, którego historia zmian konta ma być wyszukana
+     * @param order          kolejność sortowania
+     * @param orderBy        parametr, po którym ma być dokonane sortowanie
+     * @param pageNo         numer strony
+     * @param recordsPerPage ilość krotek na stronę
      * @return Historia zmian konta
      */
     @RolesAllowed({getEnhancedAccountInfo})

@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "account_change_log")
 @NamedQueries({
-    @NamedQuery(name = "account_change_log.findByLogin", query = "SELECT l FROM AccountChangeLog l WHERE l.account.login = :login"),
-    @NamedQuery(name = "account_change_log.findByAccount", query = "SELECT l FROM AccountChangeLog l WHERE l.account = :account")
+        @NamedQuery(name = "account_change_log.findByLogin", query = "SELECT l FROM AccountChangeLog l WHERE l.account.login = :login"),
+        @NamedQuery(name = "account_change_log.findByAccount", query = "SELECT l FROM AccountChangeLog l WHERE l.account = :account")
 })
 public class AccountChangeLog {
 

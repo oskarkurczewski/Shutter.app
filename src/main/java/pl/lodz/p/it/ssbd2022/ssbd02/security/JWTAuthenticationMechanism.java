@@ -22,7 +22,6 @@ import static pl.lodz.p.it.ssbd2022.ssbd02.security.JWTHandler.getJwtFromRequest
 public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
 
 
-
     /**
      * Pobiera żeton JWT z nagłówka "Authorization" żądania. Jeżeli żeton
      * JWT jest prawidłowy, to przekazuje kontenerowi login użytkownika oraz

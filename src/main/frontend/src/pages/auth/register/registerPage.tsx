@@ -197,7 +197,7 @@ export const RegisterPage = () => {
                   </div>
                   <ReCAPTCHA
                      ref={recaptchaRef}
-                     sitekey="6LcOjh4gAAAAAJRdv-oKWqqj8565Bz6Y3QlmJv5L"
+                     sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
                   />
                   <div className={styles.footer}>
                      <Link to="/login">{t("register_page.sign_in")}</Link>

@@ -76,7 +76,7 @@ public class AvailabilityEndpoint extends AbstractEndpoint {
      *
      * @param photographerLogin login fotografa
      * @return AvailabilityDto lista godzin dostępności
-     * @throws NoPhotographerFoundException nie znaleziono fotografa o podanym loginie
+     * @throws NoPhotographerFound nie znaleziono fotografa o podanym loginie
      */
     @PermitAll
     public List<AvailabilityDto> listAvailabilities(String photographerLogin) throws NoPhotographerFound {
