@@ -48,6 +48,7 @@ export const LoginPage: React.FC = () => {
          };
          dispatch(push(successToast));
       }
+
       if (loginMutationState.isError) {
          const err = loginMutationState.error as ErrorResponse;
 

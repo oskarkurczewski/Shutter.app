@@ -7,14 +7,19 @@ import { useCreateAccountMutation } from "redux/service/usersManagementService";
 import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
 import {
    emailPattern,
+   loginFirstLastPattern,
    loginPattern,
    nameSurnameFirstLetterPattern,
    nameSurnamePattern,
    passwordPattern,
 } from "util/regex";
+import { useAppDispatch } from "redux/hooks";
+import { push, ToastTypes } from "redux/slices/toastSlice";
+import { Toast } from "types";
 
 export const CreateUserAccountPage = () => {
    const { t } = useTranslation();
+   const dispatch = useAppDispatch();
 
    const [login, setLogin, loginValidationMessage] = useStateWithValidation<string>(
       [
@@ -33,11 +38,11 @@ export const CreateUserAccountPage = () => {
             }),
          },
          {
-            function: (name) => nameSurnamePattern.test(name),
+            function: (name) => loginPattern.test(name),
             message: t("validator.incorrect.regx.login"),
          },
          {
-            function: (name) => nameSurnameFirstLetterPattern.test(name),
+            function: (name) => loginFirstLastPattern.test(name),
             message: t("validator.incorrect.regx.login_first_last"),
          },
       ],
@@ -161,23 +166,117 @@ export const CreateUserAccountPage = () => {
       );
    }, []);
 
+   useEffect(() => {
+      if (createAccountMutationState.isSuccess) {
+         const successToast: Toast = {
+            type: ToastTypes.SUCCESS,
+            text: t("toast.success_create_account"),
+         };
+         dispatch(push(successToast));
+      }
+      if (createAccountMutationState.isError) {
+         const errorToast: Toast = {
+            type: ToastTypes.ERROR,
+            text: t("toast.error_update"),
+         };
+         dispatch(push(errorToast));
+      }
+   }, [createAccountMutationState]);
+
+   // navigate("/users");
    return (
       <div className={styles.create_account_page_wrapper}>
          <Card className={styles.card_wrapper}>
-            <div>
-               <TextInput
-                  value={login}
-                  onChange={(e) => {
-                     setLogin(e.target.value);
-                  }}
-                  label={t("global.label.login")}
-                  required
-                  className="text"
-                  validation={loginValidationMessage}
-               />
+            <p className="category-title">{t("create_user_account_page.title")}</p>
+            <div className={styles.content}>
+               <div className={styles.row}>
+                  <TextInput
+                     value={login}
+                     onChange={(e) => {
+                        setLogin(e.target.value);
+                     }}
+                     label={t("global.label.login")}
+                     required
+                     className="text"
+                     validation={loginValidationMessage}
+                  />
+               </div>
+               <div className={styles.row}>
+                  <TextInput
+                     value={name}
+                     onChange={(e) => {
+                        setName(e.target.value);
+                     }}
+                     label={t("global.label.first_name")}
+                     required
+                     className="text"
+                     validation={nameValidationMessage}
+                  />
+                  <TextInput
+                     value={surname}
+                     onChange={(e) => {
+                        setSurname(e.target.value);
+                     }}
+                     label={t("global.label.second_name")}
+                     required
+                     className="text"
+                     validation={surnameValidationMessage}
+                  />
+               </div>
+               <div className={styles.row}>
+                  <TextInput
+                     value={emails.valueA}
+                     onChange={(e) => {
+                        setEmail({ valueA: e.target.value });
+                     }}
+                     label={t("global.label.email")}
+                     required
+                     className="text"
+                     type="email"
+                     validation={emailValidationMessages.valueA}
+                  />
+                  <TextInput
+                     value={emails.valueB}
+                     onChange={(e) => {
+                        setEmail({ valueB: e.target.value });
+                     }}
+                     label={t("global.label.repeat_email")}
+                     required
+                     className="text"
+                     type="email"
+                     validation={emailValidationMessages.valueB}
+                  />
+               </div>
+               <div className={styles.row}>
+                  <TextInput
+                     value={password.valueA}
+                     onChange={(e) => {
+                        setPassword({ valueA: e.target.value });
+                     }}
+                     label={t("global.label.password")}
+                     required
+                     className="text"
+                     type="password"
+                     validation={passwordValidation.valueA}
+                  />
+
+                  <TextInput
+                     value={password.valueB}
+                     onChange={(e) => {
+                        setPassword({ valueB: e.target.value });
+                     }}
+                     label={t("global.label.repeat_password")}
+                     required
+                     className="text"
+                     type="password"
+                     validation={passwordValidation.valueB}
+                  />
+               </div>
             </div>
+
             <div className={styles.checkboxes}>
                <Checkbox
+                  className={styles.checkbox}
                   id="active"
                   value={active}
                   onChange={(e) => {
@@ -187,85 +286,10 @@ export const CreateUserAccountPage = () => {
                   {t("global.label.active")}
                </Checkbox>
             </div>
-            <div>
-               <TextInput
-                  value={name}
-                  onChange={(e) => {
-                     setName(e.target.value);
-                  }}
-                  label={t("global.label.first_name")}
-                  required
-                  className="text"
-                  validation={nameValidationMessage}
-               />
-            </div>
-            <div>
-               <TextInput
-                  value={surname}
-                  onChange={(e) => {
-                     setSurname(e.target.value);
-                  }}
-                  label={t("global.label.second_name")}
-                  required
-                  className="text"
-                  validation={surnameValidationMessage}
-               />
-            </div>
-            <div>
-               <TextInput
-                  value={emails.valueA}
-                  onChange={(e) => {
-                     setEmail({ valueA: e.target.value });
-                  }}
-                  label={t("global.label.email")}
-                  required
-                  className="text"
-                  type="email"
-                  validation={emailValidationMessages.valueA}
-               />
-            </div>
-            <div>
-               <TextInput
-                  value={emails.valueB}
-                  onChange={(e) => {
-                     setEmail({ valueB: e.target.value });
-                  }}
-                  label={t("global.label.repeat_email")}
-                  required
-                  className="text"
-                  type="email"
-                  validation={emailValidationMessages.valueB}
-               />
-            </div>
-            <div>
-               <TextInput
-                  value={password.valueA}
-                  onChange={(e) => {
-                     setPassword({ valueA: e.target.value });
-                  }}
-                  label={t("global.label.password")}
-                  required
-                  className="text"
-                  type="password"
-                  validation={passwordValidation.valueA}
-               />
-            </div>
-            <div>
-               <TextInput
-                  value={password.valueB}
-                  onChange={(e) => {
-                     setPassword({ valueB: e.target.value });
-                  }}
-                  label={t("global.label.repeat_password")}
-                  required
-                  className="text"
-                  type="password"
-                  validation={passwordValidation.valueB}
-               />
-            </div>
-            <div />
-            <div>
+
+            <div className={styles.footer}>
                <Button
+                  loading={createAccountMutationState.isLoading}
                   onClick={() => {
                      if (checkValidation()) {
                         createAccountMutation({
@@ -276,11 +300,7 @@ export const CreateUserAccountPage = () => {
                            surname: surname,
                            registered: true,
                            active: active,
-                        }).then(() => {
-                           if (createAccountMutationState.isSuccess) {
-                              navigate("/users");
-                              //TODO add toast
-                           }
+                           locale: "en",
                         });
                      }
                   }}
@@ -288,13 +308,6 @@ export const CreateUserAccountPage = () => {
                >
                   {t("create_user_account_page.create_account")}
                </Button>
-
-               {/* TODO: change to toast */}
-               {createAccountMutationState.isError && (
-                  <p className={styles.error_message}>
-                     {t("message.error.create-account")}
-                  </p>
-               )}
             </div>
          </Card>
       </div>

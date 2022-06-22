@@ -139,7 +139,7 @@
       margin-bottom: 25px;
       gap: 30px 20px;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
 
       &.hidden {
          display: none;
@@ -152,18 +152,28 @@
       .card_wrapper {
          width: 100%;
       }
+
       .search_filters {
          display: flex;
-         flex-direction: column;
+         flex-wrap: wrap;
+         align-items: flex-start;
          gap: 1.5rem;
 
-         .search_filters_top_row {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            gap: 1.5rem;
+         & > div {
+            width: auto;
+
+            // availability
+            &:nth-of-type(2) {
+               align-self: stretch;
+            }
+
+            // by name
+            &:nth-of-type(3) {
+               width: 400px;
+            }
          }
       }
+
       .card {
          display: flex;
          flex-direction: column;

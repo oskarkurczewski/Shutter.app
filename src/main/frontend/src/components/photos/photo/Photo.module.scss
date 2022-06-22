@@ -53,33 +53,37 @@
          }
       }
 
-      .photo_label_likes {
-         .photo_label_likes_button {
-            background-color: transparent;
-            box-shadow: none;
+      .buttons {
+         display: flex;
 
-            button {
-               display: flex;
-               flex-direction: row;
-            }
+         .photo_label_likes {
+            .photo_label_likes_button {
+               background-color: transparent;
+               box-shadow: none;
 
-            &.active,
-            &:hover {
-               button span {
-                  color: rgb(215, 56, 56);
+               button {
+                  display: flex;
+                  flex-direction: row;
+               }
+
+               &.active,
+               &:hover {
+                  button span {
+                     color: variables.$red-300;
+                  }
                }
             }
          }
-      }
 
-      .photo_label_delete {
-         .photo_label_delete_button {
-            background-color: transparent;
-            box-shadow: none;
+         .photo_label_delete {
+            .photo_label_delete_button {
+               background-color: transparent;
+               box-shadow: none;
 
-            button {
-               display: flex;
-               flex-direction: row;
+               button {
+                  display: flex;
+                  flex-direction: row;
+               }
             }
          }
       }

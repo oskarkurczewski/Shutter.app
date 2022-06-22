@@ -1,4 +1,4 @@
-@use "../../../variables.scss" as variables;
+@use "variables.scss" as variables;
 
 .modal_container {
    display: flex;
@@ -10,6 +10,7 @@
       max-width: 50vw;
       max-height: 65vh;
       box-shadow: variables.$shadow-strong;
+      object-fit: cover;
    }
 
    .photo_info {
@@ -27,19 +28,27 @@
          justify-content: space-between;
          gap: 0.5rem;
 
+         h3 {
+            color: variables.$gray-300;
+         }
+
          .photo_label_likes {
             .photo_label_likes_button {
-               background-color: variables.$gray-150;
+               background-color: variables.$blue-gray-200;
                box-shadow: none;
 
                button {
                   display: flex;
-                  flex-direction: row;
                   justify-content: space-around;
-               }
 
-               p {
-                  margin-right: -6px;
+                  p,
+                  span {
+                     color: variables.$gray-300;
+                  }
+
+                  p {
+                     margin-right: -6px;
+                  }
                }
             }
          }

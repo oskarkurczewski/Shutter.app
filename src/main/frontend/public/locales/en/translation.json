@@ -62,6 +62,7 @@
       }
    },
    "exception": {
+      "default": "Unexpected error occured",
       "bad_auth_token": "Unexpected error occured. Please log-in again.",
       "database": "Unexpected error occured. Try again later.",
       "cannot_change": "Unexpected error occured. Selected resource is already in this state.",

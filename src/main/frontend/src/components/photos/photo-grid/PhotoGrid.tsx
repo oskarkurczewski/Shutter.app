@@ -1,20 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "redux/hooks";
-import {
-   useDeletePhotoRequestMutation,
-   useGetPhotosRequestQuery,
-} from "redux/service/photoService";
 import { getPhotosResponse } from "redux/types/api";
 import { Photo } from "../photo/Photo";
 import styles from "./PhotoGrid.module.scss";
 
 interface Props {
    data: getPhotosResponse;
-   refetch: () => void;
 }
 
-export const PhotoGrid: React.FC<Props> = ({ data, refetch }) => {
+export const PhotoGrid: React.FC<Props> = ({ data }) => {
    const { t } = useTranslation();
 
    if (data?.list.length == 0) {
@@ -38,7 +32,6 @@ export const PhotoGrid: React.FC<Props> = ({ data, refetch }) => {
                      likeCount={photo.likeCount}
                      liked={photo.liked}
                      showDeleteButton={true}
-                     refetch={refetch}
                      photo={photo}
                   />
                </div>

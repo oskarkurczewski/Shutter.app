@@ -76,7 +76,9 @@ export const ReportsPage: React.FC = () => {
                values={Object.values(filterValues).map((value): string =>
                   t(`reports_page.filter.${value}`)
                )}
-               selectedValue={filter}
+               selectedValue={t(
+                  `reports_page.filter.${filterValues[Object.keys(filterValues)[filter]]}`
+               )}
                onChange={(e) => {
                   setFilter(e.target.selectedIndex);
                }}

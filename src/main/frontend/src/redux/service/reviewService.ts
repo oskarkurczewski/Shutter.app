@@ -13,6 +13,10 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}/like`,
             method: "POST",
          }),
+         invalidatesTags: (result, error, id) => [
+            { type: "Review", id },
+            { type: "Review", id: "PARTIAL-LIST" },
+         ],
       }),
 
       unlikeReview: builder.mutation<void, number>({
@@ -20,6 +24,10 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}/unlike`,
             method: "POST",
          }),
+         invalidatesTags: (result, error, id) => [
+            { type: "Review", id },
+            { type: "Review", id: "PARTIAL-LIST" },
+         ],
       }),
 
       getReviewById: builder.query<ReviewInfo, number>({
@@ -34,6 +42,10 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}`,
             method: "DELETE",
          }),
+         invalidatesTags: (result, error, id) => [
+            { type: "Review", id },
+            { type: "Review", id: "PARTIAL-LIST" },
+         ],
       }),
 
       removeSomeonesPhotographerReview: builder.mutation<void, number>({
@@ -41,6 +53,10 @@ const ReviewService = api.injectEndpoints({
             url: `/profile/review/${reviewId}/admin`,
             method: "DELETE",
          }),
+         invalidatesTags: (result, error, id) => [
+            { type: "Review", id },
+            { type: "Review", id: "PARTIAL-LIST" },
+         ],
       }),
 
       addReview: builder.mutation<void, addReviewRequest>({
@@ -49,9 +65,10 @@ const ReviewService = api.injectEndpoints({
             method: "POST",
             body: data,
          }),
+         invalidatesTags: ["Review"],
       }),
 
-      getPhotographerReviews: builder.mutation<
+      getPhotographerReviews: builder.query<
          GetPhotographerReviewsResponse,
          GetPhotographerReviewsRequest
       >({
@@ -60,6 +77,13 @@ const ReviewService = api.injectEndpoints({
             params: data,
             method: "GET",
          }),
+         providesTags: (result, error, page) =>
+            result
+               ? [
+                    ...result.list.map(({ id }) => ({ type: "Review" as const, id })),
+                    { type: "Review", id: "PARTIAL-LIST" },
+                 ]
+               : [{ type: "Review", id: "PARTIAL-LIST" }],
       }),
    }),
 });
@@ -71,5 +95,5 @@ export const {
    useRemoveOwnPhotographerReviewMutation,
    useRemoveSomeonesPhotographerReviewMutation,
    useAddReviewMutation,
-   useGetPhotographerReviewsMutation,
+   useGetPhotographerReviewsQuery,
 } = ReviewService;

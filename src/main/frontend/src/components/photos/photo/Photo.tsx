@@ -24,9 +24,7 @@ interface Props {
    liked: boolean;
    likeCount: number;
    showDeleteButton: boolean;
-   onDelete?: (number) => void;
    photo: any;
-   refetch?: () => void;
 }
 
 export const Photo: React.FC<Props> = ({
@@ -38,20 +36,16 @@ export const Photo: React.FC<Props> = ({
    liked,
    likeCount,
    showDeleteButton,
-   onDelete,
    photo = {},
-   refetch,
 }) => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
 
-   const [likes, setLikes] = useState<number>(likeCount);
-   const [isLiked, setIsLiked] = useState<boolean>(liked);
    const [likePhotoMutation] = useLikePhotoRequestMutation();
    const [unlikePhoto] = useUnlikePhotoMutation();
    const [modalOpen, setModalOpen] = useState(false);
 
-   const photoData = { ...photo, liked: isLiked, likeCount: likes };
+   const photoData = { ...photo, liked, likeCount };
 
    const [deletePhotoMutation, deletePhotoMutationState] =
       useDeletePhotoRequestMutation();
@@ -65,7 +59,6 @@ export const Photo: React.FC<Props> = ({
          };
 
          dispatch(push(successToast));
-         refetch();
       }
       if (deletePhotoMutationState.isError) {
          const err = deletePhotoMutationState.error as ErrorResponse;
@@ -78,13 +71,11 @@ export const Photo: React.FC<Props> = ({
    }, [deletePhotoMutationState]);
 
    const likePhoto = () => {
-      if (isLiked) {
+      if (liked) {
          unlikePhoto(photo_id)
             .unwrap()
             .then(
                () => {
-                  setIsLiked(false);
-                  setLikes(likes - 1);
                   dispatch(
                      push({
                         text: t("global.component.photo.unlike_successful_message"),
@@ -106,8 +97,6 @@ export const Photo: React.FC<Props> = ({
             .unwrap()
             .then(
                () => {
-                  setIsLiked(true);
-                  setLikes(likes + 1);
                   dispatch(
                      push({
                         text: t("global.component.photo.like_successful_message"),
@@ -150,45 +139,45 @@ export const Photo: React.FC<Props> = ({
                   {DateTime.fromISO(date).toFormat("yyyy.MM.dd")}
                </p>
             </div>
-            <div className={styles.photo_label_likes}>
-               <Button
-                  className={`${styles.photo_label_likes_button} ${
-                     isLiked ? styles.active : ""
-                  }`}
-                  onClick={likePhoto}
-                  icon={isLiked ? "favorite" : "favorite_outline"}
-               >
-                  {`${likes}`}
-               </Button>
-            </div>
-            {showDeleteButton && (
-               <div className={styles.photo_label_delete}>
+            <div className={styles.buttons}>
+               <div className={styles.photo_label_likes}>
                   <Button
-                     className={styles.photo_label_delete_button}
-                     onClick={() => {
-                        const confirmToast: Toast = {
-                           type: ToastTypes.WARNING,
-                           text: t("photographer_page.confirm_remove_photo"),
-                           confirm: {
-                              onClick: () => deletePhotoMutation(photo_id),
-                              text: t("global.label.confirm"),
-                           },
-                        };
-                        dispatch(push(confirmToast));
-                     }}
-                     icon="delete"
+                     className={`${styles.photo_label_likes_button} ${
+                        liked ? styles.active : ""
+                     }`}
+                     onClick={likePhoto}
+                     icon={liked ? "favorite" : "favorite_outline"}
                   >
-                     {" "}
+                     {`${likeCount}`}
                   </Button>
                </div>
-            )}
+               {showDeleteButton && (
+                  <div className={styles.photo_label_delete}>
+                     <Button
+                        className={styles.photo_label_delete_button}
+                        onClick={() => {
+                           const confirmToast: Toast = {
+                              type: ToastTypes.WARNING,
+                              text: t("photographer_page.confirm_remove_photo"),
+                              confirm: {
+                                 onClick: () => deletePhotoMutation(photo_id),
+                                 text: t("global.label.confirm"),
+                              },
+                           };
+                           dispatch(push(confirmToast));
+                        }}
+                        icon="delete"
+                     >
+                        {" "}
+                     </Button>
+                  </div>
+               )}
+            </div>
          </div>
          <PhotoModal
             photo={photoData}
             isOpen={modalOpen}
-            onSubmit={(likes, isLiked) => {
-               setLikes(likes);
-               setIsLiked(isLiked);
+            onSubmit={() => {
                setModalOpen(false);
             }}
          />

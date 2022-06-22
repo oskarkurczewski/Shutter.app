@@ -64,6 +64,7 @@
       }
    },
    "exception": {
+      "default": "Wystąpił nieoczekiwany błąd",
       "couldnt_fetch_data": "Nie udało się pobrać danych",
       "unexpected": "Wystąpił nieoczekiwany błąd. Proszę spróbować ponownie za chwilę.",
       "account_unauthorized": "Nie jesteś autoryzowany do tej operacji",
@@ -190,10 +191,12 @@
       "success_become_photographer_message": "Pomyślnie zostano fotografem",
       "success_stop_being_photographer_message": "Pomyślnie przestano być fotografem",
       "success_change_own_email_message": "Pomyślnie zmieniono adres email",
+      "success_change_password": "Pomyślnie zmieniono hasło",
       "success_edit_account_info": "Pomyślnie zaktualizowano dane",
       "success_change_description_message": "Pomyślnie zmieniono opis",
       "success_add_photo": "Pomyślnie dodano zdjęcie",
       "success_remove_photo": "Pomyślnie usunięto zdjęcie",
+      "success_create_account": "Pomyślnie utworzono konto",
       "success_like": "Pomyślnie polubiono",
       "success_unlike": "Pomyślnie cofnięto polubienie",
       "success_review": "Pomyślnie dodano recenzję",
@@ -326,6 +329,7 @@
       "latitude": "Szer"
    },
    "create_user_account_page": {
+      "title": "Tworzenie konta użytkownika",
       "create_account": "Utwórz konto"
    },
    "settings_page": {
@@ -522,6 +526,7 @@
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
       "confirm_remove_photo": "Czy na pewno chcesz usunąć to zdjęcie?",
+      "confirm_remove_review": "Czy na pewno chcesz usunąć tę recenzję?",
       "calendar_title": "Kalendarz",
       "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
       "button": {

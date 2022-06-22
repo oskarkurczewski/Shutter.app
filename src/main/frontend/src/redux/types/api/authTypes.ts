@@ -28,4 +28,5 @@ export interface createAccountRequest {
    surname: string;
    registered: boolean;
    active: boolean;
+   locale: string;
 }

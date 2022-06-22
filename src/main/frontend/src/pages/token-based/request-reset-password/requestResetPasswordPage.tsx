@@ -38,9 +38,9 @@ export const RequestResetPasswordPage = () => {
       }
 
       if (mutationState.isError) {
-         let err = "";
+         let err = [];
          if (login == "") {
-            err = "validator.incorrect.login.regexp";
+            err = ["validator.incorrect.login.regexp"];
          } else {
             err = parseError(mutationState.error as ErrorResponse);
          }

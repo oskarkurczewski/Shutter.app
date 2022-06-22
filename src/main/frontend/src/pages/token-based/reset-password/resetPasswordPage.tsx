@@ -27,7 +27,7 @@ export const ResetPasswordPage = () => {
       if (mutationState.isSuccess) {
          const successToast: Toast = {
             type: ToastTypes.SUCCESS,
-            text: t("toast.success_send_reset_password_link_message"),
+            text: t("toast.success_change_password"),
          };
          dispatch(push(successToast));
          navigate("/login", { replace: true });

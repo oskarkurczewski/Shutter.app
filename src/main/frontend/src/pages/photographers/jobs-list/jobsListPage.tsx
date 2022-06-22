@@ -95,7 +95,7 @@ export const JobsListPage = () => {
 
    // Handle errors
    useEffect(() => {
-      let err: string;
+      let err: string[];
 
       availabilityQuery.isError &&
          (err = parseError(availabilityQuery.error as ErrorResponse));

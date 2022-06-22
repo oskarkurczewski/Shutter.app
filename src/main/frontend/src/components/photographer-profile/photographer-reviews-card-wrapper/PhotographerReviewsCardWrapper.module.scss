@@ -8,6 +8,13 @@
    align-items: flex-start;
    gap: 15px;
 
+   .loader_wrapper {
+      display: flex;
+      align-self: stretch;
+      align-items: center;
+      justify-content: center;
+   }
+
    .header {
       display: flex;
       width: 100%;
