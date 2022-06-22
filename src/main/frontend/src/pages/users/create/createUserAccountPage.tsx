@@ -7,6 +7,7 @@ import { useCreateAccountMutation } from "redux/service/usersManagementService";
 import { useStateWithValidation, useStateWithValidationAndComparison } from "hooks";
 import {
    emailPattern,
+   loginFirstLastPattern,
    loginPattern,
    nameSurnameFirstLetterPattern,
    nameSurnamePattern,
@@ -37,11 +38,11 @@ export const CreateUserAccountPage = () => {
             }),
          },
          {
-            function: (name) => nameSurnamePattern.test(name),
+            function: (name) => loginPattern.test(name),
             message: t("validator.incorrect.regx.login"),
          },
          {
-            function: (name) => nameSurnameFirstLetterPattern.test(name),
+            function: (name) => loginFirstLastPattern.test(name),
             message: t("validator.incorrect.regx.login_first_last"),
          },
       ],
@@ -299,6 +300,7 @@ export const CreateUserAccountPage = () => {
                            surname: surname,
                            registered: true,
                            active: active,
+                           locale: "en",
                         });
                      }
                   }}

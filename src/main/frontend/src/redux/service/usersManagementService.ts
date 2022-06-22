@@ -44,7 +44,7 @@ const UsersManagementService = api.injectEndpoints({
 
       createAccount: builder.mutation<void, createAccountRequest>({
          query: (data) => ({
-            url: "account/register",
+            url: "account/register-as-admin",
             method: "POST",
             body: data,
          }),
@@ -121,7 +121,6 @@ const UsersManagementService = api.injectEndpoints({
          }),
       }),
 
-
       resolveAccountReport: builder.mutation<void, number>({
          query: (id) => ({ url: `/report/account/${id}/resolve`, method: "POST" }),
       }),
@@ -134,9 +133,9 @@ const UsersManagementService = api.injectEndpoints({
       }),
 
       getAccountReportList: builder.query<
-          getListResponse<accountReport>,
-          getReportListRequest
-          >({
+         getListResponse<accountReport>,
+         getReportListRequest
+      >({
          query: (params) => ({ url: `/report/list/account`, params }),
       }),
 
