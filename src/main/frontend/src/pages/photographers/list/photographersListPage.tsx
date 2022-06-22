@@ -142,17 +142,15 @@ export const PhotographersListPage = () => {
                            animate="animate"
                            exit="exit"
                         >
-                           <div className={styles.search_filters_top_row}>
-                              <SpecializationFilter
-                                 className={styles.card}
-                                 selectedSpecialization={selectedSpecialization}
-                                 setSelectedSpecialization={setSelectedSpecialization}
-                              />
-                              <AvailabilityFilter
-                                 onChange={setPhotographerSearchFilters}
-                                 state={photographerSearchFilters}
-                              />
-                           </div>
+                           <SpecializationFilter
+                              className={styles.card}
+                              selectedSpecialization={selectedSpecialization}
+                              setSelectedSpecialization={setSelectedSpecialization}
+                           />
+                           <AvailabilityFilter
+                              onChange={setPhotographerSearchFilters}
+                              state={photographerSearchFilters}
+                           />
                            <Card className={styles.card}>
                               <p className="section-title">
                                  {t("photographer_list_page.search_photographer")}
