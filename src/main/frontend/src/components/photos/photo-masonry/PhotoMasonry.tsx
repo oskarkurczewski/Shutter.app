@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useGetPhotosRequestQuery } from "redux/service/photoService";
 import { Photo } from "../photo/Photo";
 import styles from "./PhotoMasonry.module.scss";
-import PhotoModal from "components/photos/photo-modal/PhotoModal";
 
 interface Props {
    login: string;
@@ -11,10 +10,18 @@ interface Props {
 
 export const PhotoMasonry: React.FC<Props> = ({ login }) => {
    const { t } = useTranslation();
-   const { data } = useGetPhotosRequestQuery({
-      photographerLogin: login,
-      recordsPerPage: 100,
-   });
+   const { data } = useGetPhotosRequestQuery(
+      {
+         photographerLogin: login,
+         recordsPerPage: 100,
+      },
+      {
+         refetchOnMountOrArgChange: true,
+         // pollingInterval: 3000,
+      }
+   );
+
+   console.log("DATA", data);
 
    return (
       <div className={styles.photo_masonry}>

@@ -15,7 +15,7 @@ export const PhotographerGalleryPage = () => {
    const [modalOpen, setModalOpen] = useState<boolean>(false);
    const [file, setFile] = useState<File>(null);
 
-   const { data, refetch } = useGetPhotosRequestQuery({
+   const { data } = useGetPhotosRequestQuery({
       photographerLogin: auth.username,
    });
 
@@ -35,11 +35,10 @@ export const PhotographerGalleryPage = () => {
                isOpen={modalOpen}
                onCancel={() => setModalOpen(false)}
                onSubmit={() => {
-                  refetch();
                   setModalOpen(false);
                }}
             />
-            <PhotoGrid data={data} refetch={refetch} />
+            <PhotoGrid data={data} />
          </Card>
       </div>
    );

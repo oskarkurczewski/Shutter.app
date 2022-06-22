@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Modal } from "components/shared";
 import styles from "./PhotoModal.module.scss";
 import { t } from "i18next";
@@ -12,31 +12,22 @@ import { useAppDispatch } from "redux/hooks";
 
 interface Props {
    isOpen: boolean;
-   onSubmit: (likes, isLiked) => void;
+   onSubmit: () => void;
    photo;
 }
 
 const PhotoModal: React.FC<Props> = ({ isOpen, onSubmit, photo }) => {
    const dispatch = useAppDispatch();
 
-   const [isLiked, setIsLiked] = useState<boolean>(photo.liked);
-   const [likes, setLikes] = useState<number>(photo.likeCount);
    const [likePhotoMutation] = useLikePhotoRequestMutation();
    const [unlikePhoto] = useUnlikePhotoMutation();
 
-   useEffect(() => {
-      setIsLiked(photo.liked);
-      setLikes(photo.likeCount);
-   }, [photo]);
-
    const likePhoto = () => {
-      if (isLiked) {
+      if (photo.liked) {
          unlikePhoto(photo.id)
             .unwrap()
             .then(
                () => {
-                  setIsLiked(false);
-                  setLikes(likes - 1);
                   dispatch(
                      push({
                         text: t("global.component.photo.unlike_successful_message"),
@@ -58,8 +49,6 @@ const PhotoModal: React.FC<Props> = ({ isOpen, onSubmit, photo }) => {
             .unwrap()
             .then(
                () => {
-                  setIsLiked(true);
-                  setLikes(likes + 1);
                   dispatch(
                      push({
                         text: t("global.component.photo.like_successful_message"),
@@ -84,13 +73,13 @@ const PhotoModal: React.FC<Props> = ({ isOpen, onSubmit, photo }) => {
          type="info"
          isOpen={isOpen}
          onSubmit={() => {
-            onSubmit(likes, isLiked);
+            onSubmit();
          }}
          title={t("photographer_gallery_page.photo")}
          submitText={t("photographer_gallery_page.close")}
       >
          <div className={styles.modal_container}>
-            <img className={styles.photo} src={photo.s3Url} alt={photo.title}></img>
+            <img className={styles.photo} src={photo.s3Url} alt={photo.title} />
             <div className={styles.photo_info}>
                <div className={styles.summary}>
                   <h3>{photo.title}</h3>
@@ -98,9 +87,9 @@ const PhotoModal: React.FC<Props> = ({ isOpen, onSubmit, photo }) => {
                      <Button
                         className={styles.photo_label_likes_button}
                         onClick={likePhoto}
-                        icon={isLiked ? "favorite" : "favorite_outline"}
+                        icon={photo.liked ? "favorite" : "favorite_outline"}
                      >
-                        {`${likes}`}
+                        {`${photo.likeCount}`}
                      </Button>
                   </div>
                </div>

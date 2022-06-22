@@ -65,6 +65,7 @@ const ReviewService = api.injectEndpoints({
             method: "POST",
             body: data,
          }),
+         invalidatesTags: ["Review"],
       }),
 
       getPhotographerReviews: builder.query<
