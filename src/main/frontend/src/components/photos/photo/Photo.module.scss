@@ -69,7 +69,7 @@
                &.active,
                &:hover {
                   button span {
-                     color: rgb(215, 56, 56);
+                     color: variables.$red-300;
                   }
                }
             }

@@ -12,7 +12,7 @@ import {
 import { Toast } from "types";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { push, ToastTypes } from "redux/slices/toastSlice";
-import { ReviewLikeButton } from "./review-like-button";
+import { ReviewLikeButton } from "components/photographer-profile/like-button";
 import { Avatar } from "components/shared";
 import { AccessLevel } from "types";
 
