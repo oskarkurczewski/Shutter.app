@@ -62,12 +62,7 @@ export const AppRoutes = () => {
                path="reports"
                element={
                   <ProtectedRoute
-                     roles={[
-                        AccessLevel.ADMINISTRATOR,
-                        AccessLevel.MODERATOR,
-                        AccessLevel.PHOTOGRAPHER,
-                        AccessLevel.CLIENT,
-                     ]}
+                     roles={[AccessLevel.ADMINISTRATOR, AccessLevel.MODERATOR]}
                   >
                      <ReportsPage />
                   </ProtectedRoute>

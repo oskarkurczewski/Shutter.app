@@ -191,6 +191,7 @@
       "success_become_photographer_message": "Pomyślnie zostano fotografem",
       "success_stop_being_photographer_message": "Pomyślnie przestano być fotografem",
       "success_change_own_email_message": "Pomyślnie zmieniono adres email",
+      "success_change_password": "Pomyślnie zmieniono hasło",
       "success_edit_account_info": "Pomyślnie zaktualizowano dane",
       "success_change_description_message": "Pomyślnie zmieniono opis",
       "success_add_photo": "Pomyślnie dodano zdjęcie",
@@ -525,6 +526,7 @@
       "report_review_dropdown": "Przyczyna zgłoszenia:",
       "gallery_title": "Galeria Zdjęć",
       "confirm_remove_photo": "Czy na pewno chcesz usunąć to zdjęcie?",
+      "confirm_remove_review": "Czy na pewno chcesz usunąć tę recenzję?",
       "calendar_title": "Kalendarz",
       "gallery_no_photos": "Ten fotograf nie posiada jeszcze zdjęć.",
       "button": {

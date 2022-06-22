@@ -113,7 +113,17 @@ export const PhotographerReview: React.FC<Props> = ({
                   accessLevel === AccessLevel.ADMINISTRATOR) && (
                   <MenuDropdownItem
                      value={t("photographer_page.delete_button")}
-                     onClick={deleteReview}
+                     onClick={() => {
+                        const confirmToast: Toast = {
+                           type: ToastTypes.WARNING,
+                           text: t("photographer_page.confirm_remove_review"),
+                           confirm: {
+                              onClick: () => deleteReview(),
+                              text: t("global.label.confirm"),
+                           },
+                        };
+                        dispatch(push(confirmToast));
+                     }}
                   />
                )}
             </MenuDropdown>
