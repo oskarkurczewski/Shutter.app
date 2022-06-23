@@ -37,7 +37,8 @@
          "filters": "Filters",
          "calendar": "Callendar",
          "choose_file": "Select File",
-         "submit_operation": "Confirm action"
+         "submit_operation": "Confirm action",
+         "confirm": "Confirm"
       },
       "specialization": {
          "specialization_studio": "Studio photography",
@@ -524,6 +525,11 @@
          "user": "Client",
          "photographer": "Contractor",
          "user_not_logged_in": "Log-in, to register photographer"
+      },
+      "button": {
+         "settings": "Settings",
+         "availability": "Availability",
+         "gallery": "Gallery"
       }
    },
    "photographer_specialization": {
