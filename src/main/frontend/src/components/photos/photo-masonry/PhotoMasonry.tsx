@@ -21,8 +21,6 @@ export const PhotoMasonry: React.FC<Props> = ({ login }) => {
       }
    );
 
-   console.log("DATA", data);
-
    return (
       <div className={styles.photo_masonry}>
          {data !== undefined && data.list.length > 0 ? (

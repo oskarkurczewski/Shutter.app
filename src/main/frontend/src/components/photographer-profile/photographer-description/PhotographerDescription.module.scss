@@ -39,8 +39,17 @@
       display: flex;
       align-items: center;
       font-weight: bold;
-      padding: 7px 10px;
+      padding: 7px 10px 7px 10px;
       font-size: 14px;
       white-space: nowrap;
+      width: 100%;
+
+      svg {
+         font-size: 1.1rem;
+      }
+
+      p {
+         padding-top: 2px;
+      }
    }
 }

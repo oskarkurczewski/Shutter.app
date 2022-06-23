@@ -60,6 +60,8 @@
       }
    },
    "exception": {
+      "server_down": "Failed to connect to the server.",
+      "invalid_credentials": "Incorrect credentials.",
       "default": "Unexpected error occured",
       "bad_auth_token": "Unexpected error occured. Please log-in again.",
       "database": "Unexpected error occured. Try again later.",
@@ -235,6 +237,10 @@
       "twoFA_desc": "Enter the two factor authentication code sent to your email inbox in order to confirm your identity."
    },
    "register_page": {
+      "not_user_message_up": "Already have",
+      "not_user_message_down": "an account?",
+      "inviting_message_up": "Go to the",
+      "inviting_message_down": "login form!",
       "form_title": "Sign-up",
       "processing_message": "I agree to share my personal information with Shutter.app inc.",
       "tos_message": "I agree to the terms of service.",
@@ -285,7 +291,9 @@
       "specialization": "Specialization",
       "availability": "Availability",
       "from": "From",
-      "to": "To"
+      "to": "To",
+      "next": "next",
+      "previous": "prev."
    },
    "photographer_list_admin_page": {
       "login": "Login",
@@ -586,6 +594,6 @@
    "logout_modal": {
       "title": "Log-out",
       "description": "Are you sure you want to log-out?",
-      "successfully_logged_out": "Successfully logged-outk"
+      "successfully_logged_out": "Successfully logged-out."
    }
 }

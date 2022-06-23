@@ -5,6 +5,7 @@ import { logout } from "redux/slices/authSlice";
 import { useTranslation } from "react-i18next";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { Toast } from "types";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
    isOpen: boolean;
@@ -14,6 +15,7 @@ interface Props {
 export const LogoutModal: React.FC<Props> = ({ isOpen, setIsOpen }) => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
+   const navigate = useNavigate();
 
    return (
       <Modal
@@ -31,6 +33,7 @@ export const LogoutModal: React.FC<Props> = ({ isOpen, setIsOpen }) => {
             dispatch(push(successToast));
 
             setIsOpen(false);
+            navigate("/");
          }}
          submitText={t("logout_modal.title")}
       >

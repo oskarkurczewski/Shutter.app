@@ -11,18 +11,9 @@
    gap: 1rem;
    margin-bottom: 5rem;
 
-   .background {
-      z-index: -1;
-      position: fixed;
-      opacity: 0.5;
-      top: 0;
-      left: 0;
-      width: 100%;
-   }
-
    .particles {
       position: absolute;
-      z-index: -1;
+      // z-index: -1;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%) rotate(90deg);

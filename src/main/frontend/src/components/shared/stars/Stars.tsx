@@ -6,7 +6,7 @@ import { FaRegStar, FaStarHalfAlt, FaStar } from "react-icons/fa";
 interface Props {
    className?: string;
    stars: number;
-   backgroundVariant?: "all" | "score" | "none";
+   backgroundVariant?: "all" | "score" | "none" | "hidden";
    setStars?: (stars: number) => void;
 }
 
@@ -72,9 +72,11 @@ export const Stars: React.FC<Props> = ({
                </li>
             ))}
          </ul>
-         <span className={backgroundVariant === "score" ? styles.score : ""}>
-            {fullStars + halfStars * 0.5}/5
-         </span>
+         {backgroundVariant !== "hidden" && (
+            <span className={backgroundVariant === "score" ? styles.score : ""}>
+               {fullStars + halfStars * 0.5}/5
+            </span>
+         )}
       </div>
    );
 };

@@ -44,6 +44,11 @@
          height: 1px;
          background-color: variables.$gray-100;
       }
+
+      table {
+         border-spacing: 0 10px;
+      }
+
       .hours_container {
          display: flex;
          align-items: center;

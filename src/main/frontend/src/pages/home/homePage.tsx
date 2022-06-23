@@ -53,11 +53,6 @@ export const HomePage = () => {
 
    return (
       <div className={styles.home_page}>
-         <img
-            src="/images/home-background.png"
-            alt="page backround"
-            className={styles.background}
-         />
          <Player
             src={Animation}
             background="transparent"

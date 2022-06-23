@@ -3,7 +3,7 @@ import { ErrorResponse } from "types";
 export const parseError = (err: ErrorResponse, prefix?: string): string[] => {
    const defaultError = "exception.default";
 
-   if (!err.data) {
+   if (!err || !err.data || !err.data.message) {
       return ["exception.server_down"];
    }
 
