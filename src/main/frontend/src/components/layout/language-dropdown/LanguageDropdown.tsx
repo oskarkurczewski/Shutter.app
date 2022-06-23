@@ -19,7 +19,11 @@ export const LanguageDropdown = () => {
    };
 
    useEffect(() => {
-      setSelected(i18n.language);
+      if (Object.keys(lng).includes(i18n.language)) {
+         setSelected(i18n.language);
+      } else {
+         i18n.changeLanguage("en");
+      }
    }, [i18n.language]);
 
    const [selected, setSelected] = useState(i18n.language);

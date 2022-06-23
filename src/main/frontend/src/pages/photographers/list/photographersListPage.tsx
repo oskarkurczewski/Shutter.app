@@ -210,7 +210,9 @@ export const PhotographersListPage = () => {
                         }}
                      >
                         <MdKeyboardArrowLeft />
-                        <span className="label">poprz.</span>
+                        <span className="label">
+                           {t("photographer_list_page.previous")}
+                        </span>
                      </button>
                      <span className="label-bold">
                         {photographerSearchFilters.pageNo}
@@ -227,7 +229,7 @@ export const PhotographersListPage = () => {
                            });
                         }}
                      >
-                        <span className="label">nast.</span>
+                        <span className="label">{t("photographer_list_page.next")}</span>
                         <MdKeyboardArrowRight />
                      </button>
                   </div>

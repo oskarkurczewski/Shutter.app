@@ -242,6 +242,11 @@
                white-space: nowrap;
                justify-self: end;
                grid-area: score;
+               row-gap: 2px;
+
+               p {
+                  padding-right: 2px;
+               }
             }
 
             .button_container {

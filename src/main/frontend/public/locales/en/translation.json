@@ -11,7 +11,7 @@
       "label": {
          "id": "Id",
          "login": "Login",
-         "password": "Passowrd",
+         "password": "Password",
          "repeat_password": "Confirm password",
          "current_password": "Current password",
          "2fa_code": "Authentication code",
@@ -60,6 +60,8 @@
       }
    },
    "exception": {
+      "server_down": "Failed to connect to the server.",
+      "invalid_credentials": "Incorrect credentials.",
       "default": "Unexpected error occured",
       "bad_auth_token": "Unexpected error occured. Please log-in again.",
       "database": "Unexpected error occured. Try again later.",
@@ -235,6 +237,10 @@
       "twoFA_desc": "Enter the two factor authentication code sent to your email inbox in order to confirm your identity."
    },
    "register_page": {
+      "not_user_message_up": "Already have",
+      "not_user_message_down": "an account?",
+      "inviting_message_up": "Go to the",
+      "inviting_message_down": "login form!",
       "form_title": "Sign-up",
       "processing_message": "I agree to share my personal information with Shutter.app inc.",
       "tos_message": "I agree to the terms of service.",
@@ -245,8 +251,8 @@
          "login_max": "Login cannot be longer than 15 characters",
          "email_format": "Email address has to follow the email format",
          "password_min": "Password has to be at least 8 characters long",
-         "password_max": "Passowrd cannot be longer than 64 characters",
-         "password_match": "Both passowrds have to match",
+         "password_max": "Password cannot be longer than 64 characters",
+         "password_match": "Both passwords have to match",
          "first_name_empty": "Field \"name\" cannot be empty",
          "second_name_empty": "Field \"surname\" cannot be empty",
          "processing_unchecked": "You have to agree to sharing you data",
@@ -285,7 +291,9 @@
       "specialization": "Specialization",
       "availability": "Availability",
       "from": "From",
-      "to": "To"
+      "to": "To",
+      "next": "next",
+      "previous": "prev."
    },
    "photographer_list_admin_page": {
       "login": "Login",
@@ -586,6 +594,6 @@
    "logout_modal": {
       "title": "Log-out",
       "description": "Are you sure you want to log-out?",
-      "successfully_logged_out": "Successfully logged-outk"
+      "successfully_logged_out": "Successfully logged-out."
    }
 }

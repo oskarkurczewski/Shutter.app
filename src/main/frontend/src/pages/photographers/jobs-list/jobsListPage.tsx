@@ -102,7 +102,7 @@ export const JobsListPage = () => {
       getJobsMutationState.isError &&
          (err = parseError(getJobsMutationState.error as ErrorResponse));
       discardJobMutationState.isError &&
-         (err = parseError(getJobsMutationState.error as ErrorResponse));
+         (err = parseError(discardJobMutationState.error as ErrorResponse));
 
       const errorToast: Toast = {
          type: ToastTypes.ERROR,

@@ -100,13 +100,13 @@
       "account_report_not_found": "Nie znaleziono zgłoszenia konta",
       "photo_not_found": "Nie znaleziono zdjęcia",
       "review_not_found": "Nie znaleziono recenzji.",
-      "reservation_not_found": "Nie znaleziono rezerwacji.",
+      "reservation_not_found": "Nie znaleziono rezerwacji. Proszę odświeżyć stronę.",
       "reservation_invalid_time": "Niewłaściwy okres rezerwacji.",
       "availability_not_found": "Nie znaleziono godzin dostępności.",
       "availability_overlap": "Godziny dostępności nachodzą na siebie.",
       "photo_upload_error": "Nie udało się dodać zdjęcia.",
       "photographer_already_reported": "Ten fotograf został już przez ciebie zgłoszony.",
-      "reservation_already_exists": "Rezerwacje już istnieje.",
+      "reservation_already_exists": "Te godziny już są zajęte, proszę wybrać inny termin.",
       "cannot_perform_on_self": "Nie można dokonać operacji na samym sobie.",
       "review_already_exists": "Już zrecenzowałeś fotografa."
    },
@@ -319,7 +319,9 @@
       "specialization": "Specjalizacja",
       "availability": "Dostępność",
       "from": "Od",
-      "to": "Do"
+      "to": "Do",
+      "next": "nast.",
+      "previous": "poprz."
    },
    "photographer_list_admin_page": {
       "login": "Login",
@@ -617,7 +619,7 @@
          "description": "Czy na pewno chcesz odwołać tę rezerwację? Po zatwierdzeniu nie będzie możliwe cofnięcie tej operacji.",
          "submit": "Odwołaj",
          "success": "Rezerwacja została odwołana pomyślnie",
-         "error": "Odwoływanie rezerwacji nie powiodło się"
+         "error": "Odwołanie rezerwacji nie powiodło się."
       }
    },
    "change_availability_page": {

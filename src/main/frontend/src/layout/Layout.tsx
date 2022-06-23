@@ -80,7 +80,11 @@ export const PageLayout: React.FC = () => {
    return (
       <>
          <Navbar />
-         <div className={styles.content}>
+         <div
+            className={`${styles.content} ${
+               location.pathname === "/" ? styles.background : ""
+            }`}
+         >
             <Breadcrumbs />
 
             <motion.div

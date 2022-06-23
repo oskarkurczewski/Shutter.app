@@ -1,4 +1,4 @@
-import { Avatar, Button, Card } from "components/shared";
+import { Avatar, Button, Card, Stars } from "components/shared";
 import { motion } from "framer-motion";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -82,9 +82,10 @@ export const ListElement: FC<ListElementProps> = ({ data, styles, custom }) => {
 
             <div className={styles.score_container}>
                <p className="label">
-                  {((score / reviewCount) || 0).toPrecision(2)} (
+                  {(score / reviewCount / 2 || 0).toPrecision(2)} (
                   {t("global.query.reviews", { count: reviewCount })})
                </p>
+               <Stars stars={score / reviewCount || 0} backgroundVariant="hidden" />
             </div>
 
             <div className={styles.button_container}>
