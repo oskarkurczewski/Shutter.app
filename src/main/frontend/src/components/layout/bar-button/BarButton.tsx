@@ -35,13 +35,13 @@ export const BarButton: FC<Props> = ({
       return (
          <button
             onClick={onClick}
-            className={`${styles.bar_button} label-bold ${
-               active ? styles.bar_button_active : ""
-            } ${expanded ? styles.expanded : ""}`}
+            className={`${styles.bar_button} ${active ? styles.bar_button_active : ""} ${
+               expanded ? styles.expanded : ""
+            }`}
             style={style}
          >
             {icon}
-            {<p className={expanded ? "" : styles.hide_text}>{text}</p>}
+            {<p className={`label-bold ${expanded ? "" : styles.hide_text}`}>{text}</p>}
          </button>
       );
    }
@@ -49,13 +49,13 @@ export const BarButton: FC<Props> = ({
    return (
       <Link
          to={to}
-         className={`${styles.bar_button} label-bold ${
-            active ? styles.bar_button_active : ""
-         } ${expanded ? styles.expanded : ""}`}
+         className={`${styles.bar_button} ${active ? styles.bar_button_active : ""} ${
+            expanded ? styles.expanded : ""
+         }`}
          style={style}
       >
          {icon}
-         {<p className={expanded ? "" : styles.hide_text}>{text}</p>}
+         {<p className={`label-bold ${expanded ? "" : styles.hide_text}`}>{text}</p>}
       </Link>
    );
 };
