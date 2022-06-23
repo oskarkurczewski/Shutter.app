@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./reservationsListPage.module.scss";
 import { Calendar } from "components/shared/calendar";
 import { Button, Card, TextInput } from "components/shared";
@@ -11,6 +11,8 @@ import { parseError } from "util/errorUtil";
 import { push, ToastTypes } from "redux/slices/toastSlice";
 import { useGetReservationsListMutation } from "redux/service/usersManagementService";
 import { ReservationCancelModal } from "components/reservations/reservation-cancel-modal";
+import { PhotographerReportModal } from "components/photographer-profile/photographer-report-modal";
+import { ReportModal } from "components/job-list-page/report-modal";
 
 export const ReservationsListPage = () => {
    const { t } = useTranslation();
@@ -22,6 +24,8 @@ export const ReservationsListPage = () => {
 
    const [filter, setFilter] = useState("");
    const [dateFrom, setDateFrom] = useState(DateTime.local().startOf("week"));
+   const [reportModalOpen, setReportModalOpen] = useState(false);
+   const photographerLogin = useRef("");
 
    const [getReservationsMutation, getReservationsMutationState] =
       useGetReservationsListMutation();
@@ -38,8 +42,9 @@ export const ReservationsListPage = () => {
       setCancelReservationModalIsOpen(true);
    };
 
-   const reportReservation = (id: number) => {
-      console.log("reservation to remove", id);
+   const reportReservation = (login: string) => {
+      photographerLogin.current = login;
+      setReportModalOpen(true);
    };
 
    // Parse reservations
@@ -75,6 +80,13 @@ export const ReservationsListPage = () => {
 
    return (
       <section className={styles.reservations_list_page_wrapper}>
+         <PhotographerReportModal
+            isOpen={reportModalOpen}
+            onCancel={() => {
+               setReportModalOpen(false);
+            }}
+            photographerLogin={photographerLogin.current}
+         />
          <Card className={styles.calendar_wrapper}>
             <Calendar
                title={t("global.label.calendar")}
@@ -129,7 +141,9 @@ export const ReservationsListPage = () => {
                               reservation={reservation}
                               reservationFor="client"
                               onCancel={() => cancelReservation(reservation.id)}
-                              onReport={() => reportReservation(reservation.id)}
+                              onReport={() =>
+                                 reportReservation(reservation.photographer.login)
+                              }
                            />
                         )
                      );

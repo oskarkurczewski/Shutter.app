@@ -638,5 +638,8 @@
       "title": "Wyloguj się",
       "description": "Czy na pewno chcesz się wylogować z aplikacji?",
       "successfully_logged_out": "Pomyślnie wylogowano"
+   },
+   "photographer_report_modal": {
+      "report_reason": "Przyczyna zgłoszenia"
    }
 }

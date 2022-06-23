@@ -602,5 +602,8 @@
       "title": "Log-out",
       "description": "Are you sure you want to log-out?",
       "successfully_logged_out": "Successfully logged-out."
+   },
+   "photographer_report_modal": {
+      "report_reason": "Report reason"
    }
 }
