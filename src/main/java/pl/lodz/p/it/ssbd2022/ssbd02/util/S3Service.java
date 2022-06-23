@@ -66,7 +66,7 @@ public class S3Service {
                         .build())
                 .toString();
 
-        return httpsUrl.replace("https", "http");
+        return httpsUrl;
     }
 
     /**
