@@ -509,6 +509,7 @@
       "gallery_title": "Photo gallery",
       "calendar_title": "Callendar",
       "gallery_no_photos": "This photographer doesn't have any photos yet.",
+      "confirm_remove_photo": "Are you sure you want to delete this photo?",
       "report": {
          "success_message": "Successfully reported",
          "review_title": "Review report",
