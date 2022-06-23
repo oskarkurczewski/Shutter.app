@@ -15,9 +15,14 @@ import {
 interface Props {
    isOpen: boolean;
    onCancel: () => void;
+   photographerLogin?: string;
 }
 
-export const PhotographerReportModal: React.FC<Props> = ({ isOpen, onCancel }) => {
+export const PhotographerReportModal: React.FC<Props> = ({
+   isOpen,
+   onCancel,
+   photographerLogin,
+}) => {
    const { t } = useTranslation();
    const dispatch = useAppDispatch();
 
@@ -68,7 +73,7 @@ export const PhotographerReportModal: React.FC<Props> = ({ isOpen, onCancel }) =
          type="confirm"
          onSubmit={async () => {
             await reportMutation({
-               photographerLogin: login,
+               photographerLogin: photographerLogin ? photographerLogin : login,
                cause: selected,
             });
          }}
@@ -76,7 +81,7 @@ export const PhotographerReportModal: React.FC<Props> = ({ isOpen, onCancel }) =
          className={styles.photographer_review_report_modal_wrapper}
          notification={notification}
       >
-         <p className="label">Przyczyna zgłoszenia</p>
+         <p className="label">{t("photographer_report_modal.report_reason")}</p>
          <IconDropdown
             className={styles.icon_dropdown}
             options={options}

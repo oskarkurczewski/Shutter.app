@@ -165,13 +165,15 @@ export const JobsListPage = () => {
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
                      />
-                     <Button onClick={() => sendRequest()}>Szukaj</Button>
+                     <Button onClick={() => sendRequest()}>
+                        {t("global.label.search")}
+                     </Button>
                   </form>
                </Card>
             </div>
             <Card className={`${styles.card_wrapper} ${styles.content}`}>
                <div className={styles.scroll_wrapper}>
-                  <p className="section-title">Rezerwacje</p>
+                  <p className="section-title">{t("global.navigation.jobs")}</p>
 
                   {(function renderReservations() {
                      if (

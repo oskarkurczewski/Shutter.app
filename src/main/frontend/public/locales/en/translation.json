@@ -37,7 +37,8 @@
          "filters": "Filters",
          "calendar": "Callendar",
          "choose_file": "Select File",
-         "submit_operation": "Confirm action"
+         "submit_operation": "Confirm action",
+         "confirm": "Confirm"
       },
       "specialization": {
          "specialization_studio": "Studio photography",
@@ -508,6 +509,7 @@
       "gallery_title": "Photo gallery",
       "calendar_title": "Callendar",
       "gallery_no_photos": "This photographer doesn't have any photos yet.",
+      "confirm_remove_photo": "Are you sure you want to delete this photo?",
       "report": {
          "success_message": "Successfully reported",
          "review_title": "Review report",
@@ -524,6 +526,11 @@
          "user": "Client",
          "photographer": "Contractor",
          "user_not_logged_in": "Log-in, to register photographer"
+      },
+      "button": {
+         "settings": "Settings",
+         "availability": "Availability",
+         "gallery": "Gallery"
       }
    },
    "photographer_specialization": {
@@ -595,5 +602,8 @@
       "title": "Log-out",
       "description": "Are you sure you want to log-out?",
       "successfully_logged_out": "Successfully logged-out."
+   },
+   "photographer_report_modal": {
+      "report_reason": "Report reason"
    }
 }
