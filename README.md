@@ -4,7 +4,7 @@
 
 Aplikacja wielodostępna pisana w zespole 8 osobowym na zaliczenie przedmiotu Sieciowe Systemy Baz Danych.
 
-System przeznaczony jest do rezerwacji fotografów, którzy mają możliwość udostępniania publicznie swoich zdjęć (portfolio), a także umieszczania informacji na swoim profilu.
+System przeznaczony jest do rezerwacji fotografów, którzy mają możliwość udostępniania publicznie swoich zdjęć (portfolio), a także umieszczania opisów na swoim profilu.
 
 <!-- [PREZENTACJA WIDEO](https://youtu.be/3mAFDJOHxhE) -->
 
